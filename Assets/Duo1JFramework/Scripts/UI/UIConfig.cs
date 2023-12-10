@@ -19,5 +19,10 @@ namespace Duo1JFramework.UI
         /// 同步加载
         /// </summary>
         public bool sync = false;
+
+        public UIConfig(string path)
+        {
+            this.path = path;
+        }
     }
 }

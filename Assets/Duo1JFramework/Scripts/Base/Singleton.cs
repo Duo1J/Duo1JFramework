@@ -7,9 +7,9 @@ namespace Duo1JFramework
     {
         private static object locker = new object();
 
-        private T instance;
+        private static T instance;
 
-        public T Instance
+        public static T Instance
         {
             get
             {

@@ -8,7 +8,6 @@ namespace Duo1JFramework
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T instance;
-        private static GameObject singletonRoot;
 
         private bool dispose = false;
 
@@ -34,31 +33,15 @@ namespace Duo1JFramework
             }
         }
 
-        /// <summary>
-        /// 单例物体根节点
-        /// </summary>
-        public static GameObject SingletonRoot
-        {
-            get
-            {
-                if (singletonRoot == null)
-                {
-                    singletonRoot = new GameObject("SingletonRoot");
-                    DontDestroyOnLoad(singletonRoot);
-                }
-                return singletonRoot;
-            }
-        }
-
         private void Awake()
         {
             if (instance == null)
             {
                 instance = this as T;
                 DontDestroyOnLoad(gameObject);
-                if (AddToRoot && transform.parent != SingletonRoot)
+                if (AddToRoot && transform.parent != Root.SingletonRoot)
                 {
-                    transform.SetParent(SingletonRoot.transform);
+                    transform.SetParent(Root.SingletonRoot.transform);
                 }
             }
             else if (instance != this)
