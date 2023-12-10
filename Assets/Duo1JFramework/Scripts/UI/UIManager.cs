@@ -18,14 +18,21 @@ namespace Duo1JFramework.UI
             {
                 Assert.NotNull(wnd, "窗口对象为空");
 
+                Window w = GetWindow(wnd.GetType());
+                if (w != null)
+                {
+                    Log.Info($"重复打开窗口`{w.GetType().FullName}`");
+                    return w;
+                }
+
                 LoadWindowAsset(wnd, () =>
                 {
                     Log.Info($"打开窗口`{typeof(Window).FullName}`");
                 });
             }
-            catch (CommonException e)
+            catch (Exception e)
             {
-                Log.Error($"打开窗口`{typeof(Window).FullName}`失败");
+                Log.Exception(e, $"打开窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
                 return null;
             }
 
@@ -36,14 +43,23 @@ namespace Duo1JFramework.UI
 
         public void CloseWindow(Window wnd)
         {
-            wndList.Remove(wnd);
+            try
+            {
+                Assert.NotNull(wnd, "窗口对象为空");
+                wnd.OnDispose();
+                wndList.Remove(wnd);
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e, $"关闭窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
+            }
         }
 
         public Window GetWindow(Type wndType)
         {
             foreach (Window wnd in wndList)
             {
-                if (typeof(Window) == wndType)
+                if (wnd.GetType() == wndType)
                 {
                     return wnd;
                 }

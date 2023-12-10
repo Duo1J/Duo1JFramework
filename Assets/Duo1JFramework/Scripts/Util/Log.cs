@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using UnityEngine;
 
@@ -29,6 +30,14 @@ namespace Duo1JFramework
             if (CheckLogLevelOpen(LogLevel.Error))
             {
                 Debug.LogError(Concat("[Error] ", msg));
+            }
+        }
+
+        public static void Exception(Exception e, params string[] msg)
+        {
+            if (CheckLogLevelOpen(LogLevel.Exception))
+            {
+                Debug.LogError(Concat("[Exception] ", msg) + $"\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -130,6 +139,7 @@ namespace Duo1JFramework
         Info = 1,
         Warn = 1 << 1,
         Error = 1 << 2,
+        Exception = 1 << 3,
         All = 1 << 30
     }
 }

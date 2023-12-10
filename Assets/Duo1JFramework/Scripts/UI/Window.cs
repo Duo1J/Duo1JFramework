@@ -25,10 +25,45 @@ namespace Duo1JFramework.UI
         }
         private UIConfig config;
 
+        private bool init = false;
+        private bool dispose = false;
+
         /// <summary>
         /// 子类创建UI配置
         /// </summary>
         protected abstract UIConfig CreateUIConfig();
+
+        public void OnInit()
+        {
+            if (init)
+            {
+                return;
+            }
+            init = true;
+            OnInitInner();
+        }
+
+        public void OnDispose()
+        {
+            if (dispose)
+            {
+                return;
+            }
+            dispose = true;
+            OnDisposeInner();
+            if (Go != null)
+            {
+                Object.DestroyImmediate(Go);
+            }
+        }
+
+        protected virtual void OnInitInner()
+        {
+        }
+
+        protected virtual void OnDisposeInner()
+        {
+        }
 
         /// <summary>
         /// 设置父节点
