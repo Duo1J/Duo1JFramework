@@ -33,6 +33,10 @@ namespace Duo1JFramework.UI
             catch (Exception e)
             {
                 Log.Exception(e, $"打开窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
+                if (wnd != null)
+                {
+                    CloseWindow(wnd);
+                }
                 return null;
             }
 
@@ -41,17 +45,18 @@ namespace Duo1JFramework.UI
             return wnd;
         }
 
-        public void CloseWindow(Window wnd)
+        public bool CloseWindow(Window wnd)
         {
             try
             {
                 Assert.NotNull(wnd, "窗口对象为空");
                 wnd.OnDispose();
-                wndList.Remove(wnd);
+                return wndList.Remove(wnd);
             }
             catch (Exception e)
             {
                 Log.Exception(e, $"关闭窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
+                return false;
             }
         }
 
@@ -97,13 +102,25 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 加载窗口资源后处理
         /// </summary>
-        /// <param name="wnd"></param>
-        /// <param name="uiGo"></param>
         private void LoadWindowAssetPostProcess(Window wnd, GameObject uiGo)
         {
             wnd.Go = uiGo;
             Root.UIRoot.AddToLayer(wnd);
-            //TODO 层级调整
+            AdjustWindowLayer(wnd);
+        }
+
+        /// <summary>
+        /// 调整窗口层级
+        /// </summary>
+        private void AdjustWindowLayer(Window wnd)
+        {
+            int maxLayer = 0;
+            foreach (Window w in wndList)
+            {
+                if (w == wnd) continue;
+                if (w.Layer > maxLayer) maxLayer = w.Layer;
+            }
+            wnd.Layer = maxLayer + Def.UI_STEP_LAYER;
         }
 
         protected override void OnInit()

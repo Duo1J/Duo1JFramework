@@ -1,4 +1,3 @@
-
 namespace Duo1JFramework.Asset
 {
     /// <summary>
