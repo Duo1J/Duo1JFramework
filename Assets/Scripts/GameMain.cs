@@ -10,17 +10,10 @@ public class GameMain : MonoBehaviour
 
     private void Start()
     {
+        UIManager.Instance.OpenWindow(new InfoWindow());
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            UIManager.Instance.OpenWindow(new LoginWindow());
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            UIManager.Instance.CloseWindow(UIManager.Instance.GetWindow(typeof(LoginWindow)));
-        }
     }
 }

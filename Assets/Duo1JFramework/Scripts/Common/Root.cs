@@ -35,7 +35,7 @@ namespace Duo1JFramework
             {
                 if (uiRoot == null)
                 {
-                    GameObject uiRootGo = AssetManager.Instance.LoadSync<GameObject>(Def.UI_ROOT_PATH);
+                    GameObject uiRootGo = AssetManager.Instance.LoadResource<GameObject>(Def.UI_ROOT_PATH);
                     uiRoot = uiRootGo.GetComponent<UIRoot>();
                 }
                 return uiRoot;

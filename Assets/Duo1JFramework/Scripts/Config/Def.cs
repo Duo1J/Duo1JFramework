@@ -5,6 +5,6 @@ namespace Duo1JFramework
     /// </summary>
     public static partial class Def
     {
-
+        public const string FRAME_WORK_NAME = "Duo1JFramework";
     }
 }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Duo1JFramework
 {
+    /// <summary>
+    /// 编辑器工具类
+    /// </summary>
     public static class EditorUtil
     {
         /// <summary>

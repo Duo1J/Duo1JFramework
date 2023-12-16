@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -32,5 +33,9 @@ namespace Duo1JFramework
             if (com == null) com = go.AddComponent<T>();
             return com;
         }
+
+        #region Editor
+
+        #endregion Editor
     }
 }
