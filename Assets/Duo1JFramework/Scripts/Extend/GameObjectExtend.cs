@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -20,6 +21,16 @@ namespace Duo1JFramework
             T ret = go.GetComponent<T>();
             Assert.NotNull(ret, msg);
             return ret;
+        }
+
+        /// <summary>
+        /// 获取或添加MB组件
+        /// </summary>
+        public static T GetOrAddComponent<T>(this GameObject go) where T : MonoBehaviour
+        {
+            T com = go.GetComponent<T>();
+            if (com == null) com = go.AddComponent<T>();
+            return com;
         }
     }
 }

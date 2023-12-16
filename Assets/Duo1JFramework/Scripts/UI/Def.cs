@@ -5,11 +5,11 @@ namespace Duo1JFramework
         /// <summary>
         /// UIRoot路径
         /// </summary>
-        public const string UI_ROOT_PATH = "UI/Base/UIRoot.prefab";
+        public static string UI_ROOT_PATH = "UI/Base/UIRoot.prefab";
 
         /// <summary>
         /// 每个UI界面的层级差
         /// </summary>
-        public const int UI_STEP_LAYER = 50;
+        public static int UI_STEP_LAYER = 50;
     }
 }

@@ -8,6 +8,6 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 资源路径前缀
         /// </summary>
-        public const string ASSET_PATH_PREFIX = "Assets/Res/";
+        public static string ASSET_PATH_PREFIX = "Assets/Res/";
     }
 }
