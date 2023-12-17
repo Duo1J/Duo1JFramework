@@ -57,6 +57,8 @@ namespace Duo1JFramework.UI
             if (com != null) return com;
             com = go.AddComponent<TextExtend>();
             com.raycastTarget = false;
+            com.fontSize = 32;
+            com.alignment = TextAnchor.MiddleLeft;
             return com;
         }
     }

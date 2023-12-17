@@ -20,6 +20,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public bool sync = false;
 
+        /// <summary>
+        /// 是否是Resources下资源
+        /// </summary>
+        public bool isResource = false;
+
         public UIConfig(string path)
         {
             this.path = path;

@@ -8,9 +8,9 @@ namespace Duo1JFramework.Event
     /// </summary>
     public class EventModel : IEventModel
     {
-        private Dictionary<Event, List<Action<object>>> eventDict;
+        private Dictionary<eEvent, List<Action<object>>> eventDict;
 
-        public void Register(Event e, Action<object> callback)
+        public void Register(eEvent e, Action<object> callback)
         {
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
@@ -20,7 +20,7 @@ namespace Duo1JFramework.Event
             list.Add(callback);
         }
 
-        public bool UnRegister(Event e, Action<object> callback)
+        public bool UnRegister(eEvent e, Action<object> callback)
         {
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
@@ -29,7 +29,7 @@ namespace Duo1JFramework.Event
             return list.Remove(callback);
         }
 
-        public bool UnRegister(Event e)
+        public bool UnRegister(eEvent e)
         {
             return eventDict.Remove(e);
         }
@@ -39,7 +39,7 @@ namespace Duo1JFramework.Event
             eventDict.Clear();
         }
 
-        public void Dispatch(Event e, object args)
+        public void Dispatch(eEvent e, object args)
         {
             if (eventDict.TryGetValue(e, out List<Action<object>> list))
             {
@@ -49,7 +49,7 @@ namespace Duo1JFramework.Event
 
         public EventModel()
         {
-            eventDict = new Dictionary<Event, List<Action<object>>>();
+            eventDict = new Dictionary<eEvent, List<Action<object>>>();
         }
     }
 }

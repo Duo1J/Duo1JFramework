@@ -9,7 +9,11 @@ namespace Duo1JFramework
         private static LogLevel logLevel = LogLevel.All;
         public static StringBuilder sb = new StringBuilder();
 
-        public static void Info(params string[] msg)
+        /// <summary>
+        /// log
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void Info(params object[] msg)
         {
             if (CheckLogLevelOpen(LogLevel.Info))
             {
@@ -17,7 +21,10 @@ namespace Duo1JFramework
             }
         }
 
-        public static void Warn(params string[] msg)
+        /// <summary>
+        /// 警告
+        /// </summary>
+        public static void Warn(params object[] msg)
         {
             if (CheckLogLevelOpen(LogLevel.Warn))
             {
@@ -25,7 +32,10 @@ namespace Duo1JFramework
             }
         }
 
-        public static void Error(params string[] msg)
+        /// <summary>
+        /// 错误
+        /// </summary>
+        public static void Error(params object[] msg)
         {
             if (CheckLogLevelOpen(LogLevel.Error))
             {
@@ -33,15 +43,19 @@ namespace Duo1JFramework
             }
         }
 
-        public static void Exception(Exception e, params string[] msg)
+        /// <summary>
+        /// 异常打印
+        /// </summary>
+        public static void Exception(Exception e, params object[] msg)
         {
-            if (CheckLogLevelOpen(LogLevel.Exception))
-            {
-                Debug.LogError(Concat("[Exception] ", msg) + $"\n{e.Message}\n{e.StackTrace}");
-            }
+            Debug.LogError(Concat("[Exception] ", msg) + $"\n{e.Message}\n{e.StackTrace}");
         }
 
-        public static void EditorInfo(params string[] msg)
+        /// <summary>
+        /// 编辑器log
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void EditorInfo(params object[] msg)
         {
             if (Game.IsEditor)
             {
@@ -49,7 +63,11 @@ namespace Duo1JFramework
             }
         }
 
-        public static void EditorWarn(params string[] msg)
+        /// <summary>
+        /// 编辑器警告
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void EditorWarn(params object[] msg)
         {
             if (Game.IsEditor)
             {
@@ -57,7 +75,10 @@ namespace Duo1JFramework
             }
         }
 
-        public static void Level(LogLevel _logLevel, params string[] msg)
+        /// <summary>
+        /// 直接按等级打印
+        /// </summary>
+        public static void Level(LogLevel _logLevel, params object[] msg)
         {
             if (CheckLogLevelOpen(_logLevel))
             {
@@ -65,11 +86,26 @@ namespace Duo1JFramework
             }
         }
 
+        /// <summary>
+        /// 强制打印错误
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void ErrorForce(params object[] msg)
+        {
+            Debug.LogError(Concat("[Error] ", msg));
+        }
+
+        /// <summary>
+        /// 设置打印等级
+        /// </summary>
         public static void SetLogLevel(LogLevel _logLevel)
         {
             logLevel = _logLevel;
         }
 
+        /// <summary>
+        /// 设置打印等级
+        /// </summary>
         public static void SetLogLevel(LogLevel _logLevel, bool isOpen)
         {
             if (isOpen)
@@ -89,6 +125,9 @@ namespace Duo1JFramework
             }
         }
 
+        /// <summary>
+        /// 检查打印等级是否开放
+        /// </summary>
         public static bool CheckLogLevelOpen(LogLevel _logLevel)
         {
             if ((logLevel & LogLevel.All) > 0)
@@ -101,7 +140,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 将字符串数组以逗号拼接
         /// </summary>
-        public static string Concat(string tag, params string[] msg)
+        public static string Concat(string tag, params object[] msg)
         {
             sb.Clear();
 
@@ -133,13 +172,15 @@ namespace Duo1JFramework
         }
     }
 
+    /// <summary>
+    /// 日志打印等级
+    /// </summary>
     public enum LogLevel
     {
         None = 0,
         Info = 1,
         Warn = 1 << 1,
         Error = 1 << 2,
-        Exception = 1 << 3,
         All = 1 << 30
     }
 }

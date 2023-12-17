@@ -6,6 +6,7 @@ public class GameMain : MonoBehaviour
 {
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()

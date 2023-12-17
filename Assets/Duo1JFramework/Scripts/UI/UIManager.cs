@@ -83,19 +83,39 @@ namespace Duo1JFramework.UI
 
             if (cfg.sync)
             {
-                GameObject uiGo = AssetManager.Instance.LoadSync<GameObject>(cfg.path);
+                GameObject uiGo;
+                if (cfg.isResource)
+                {
+                    uiGo = AssetManager.Instance.LoadResource<GameObject>(cfg.path);
+                }
+                else
+                {
+                    uiGo = AssetManager.Instance.LoadSync<GameObject>(cfg.path);
+                }
                 Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
                 LoadWindowAssetPostProcess(wnd, uiGo);
                 callback?.Invoke();
             }
             else
             {
-                AssetManager.Instance.Load<GameObject>(cfg.path, (uiGo) =>
+                if (cfg.isResource)
                 {
-                    Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
-                    LoadWindowAssetPostProcess(wnd, uiGo);
-                    callback?.Invoke();
-                });
+                    AssetManager.Instance.LoadResourceASync<GameObject>(cfg.path, (uiGo) =>
+                    {
+                        Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
+                        LoadWindowAssetPostProcess(wnd, uiGo);
+                        callback?.Invoke();
+                    });
+                }
+                else
+                {
+                    AssetManager.Instance.Load<GameObject>(cfg.path, (uiGo) =>
+                    {
+                        Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
+                        LoadWindowAssetPostProcess(wnd, uiGo);
+                        callback?.Invoke();
+                    });
+                }
             }
         }
 
@@ -107,6 +127,7 @@ namespace Duo1JFramework.UI
             wnd.Go = uiGo;
             Root.UIRoot.AddToLayer(wnd);
             AdjustWindowLayer(wnd);
+            wnd.OnInit();
         }
 
         /// <summary>

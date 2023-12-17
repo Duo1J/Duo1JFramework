@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UObject = UnityEngine.Object;
 
@@ -13,9 +13,14 @@ namespace Duo1JFramework.Asset
     {
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject
         {
+            if (callback == null)
+            {
+                Log.Error("AssetManager:Load回调不可为空");
+                return;
+            }
             if (Game.IsEditor)
             {
-                callback?.Invoke(LoadSync<T>(assetPath));
+                callback(LoadSync<T>(assetPath));
             }
             else
             {
@@ -52,11 +57,50 @@ namespace Duo1JFramework.Asset
             T asset = Resources.Load<T>(targetPath);
             if (asset == null)
             {
-                Log.Error($"无法加载到Resources资源`{targetPath}`");
+                Log.Error($"无法加载到Resources资源: `{targetPath}`");
                 return null;
             }
             T ins = Instantiate(asset);
             return ins;
+        }
+
+        /// <summary>
+        /// 异步加载Resources资源
+        /// </summary>
+        public void LoadResourceASync<T>(string targetPath, Action<T> callback) where T : UObject
+        {
+            if (callback == null)
+            {
+                Log.Error("AssetManager:LoadResourceASync回调不可为空");
+                return;
+            }
+            ResourceRequest request = Resources.LoadAsync<T>(targetPath);
+            Coro.Instance.StartCoro(WaitResourceRequest(request, (asset) =>
+            {
+                if (asset == null)
+                {
+                    Log.Error($"无法加载到Resources资源: `{targetPath}`");
+                    callback(null);
+                    return;
+                }
+                T ins = Instantiate(asset) as T;
+                if (ins == null)
+                {
+                    Log.Error($"实例化Resources资源失败: `{targetPath}`");
+                    callback(null);
+                    return;
+                }
+                callback(ins);
+            }));
+        }
+
+        /// <summary>
+        /// 等待Resources资源加载完毕
+        /// </summary>
+        private IEnumerator WaitResourceRequest(ResourceRequest request, Action<UObject> callback)
+        {
+            yield return request;
+            callback?.Invoke(request.asset);
         }
 
         protected override void OnInit()

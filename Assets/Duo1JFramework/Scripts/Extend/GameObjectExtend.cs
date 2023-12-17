@@ -36,6 +36,22 @@ namespace Duo1JFramework
 
         #region Editor
 
+        /// <summary>
+        /// 记录物体撤销
+        /// </summary>
+        /// <param name="go"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static GameObject RecordObject(this GameObject go, string msg)
+        {
+#if UNITY_EDITOR
+            Undo.RecordObject(go, msg);
+#else
+            Log.ErrorForce($"非编辑器下不可调用GameObject:RecordObject(), {msg}");
+#endif
+            return go;
+        }
+
         #endregion Editor
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Duo1JFramework.Pool
+namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
     /// 基础对象池

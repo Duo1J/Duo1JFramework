@@ -1,13 +1,13 @@
 using System;
 
-namespace Duo1JFramework.Pool
+namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
     /// 对象池单例基类
     /// </summary>
-    public class BaseObjectPool<T> : Singleton<BaseObjectPool<T>> where T : new()
+    public abstract class BaseObjectPool<T> where T : new()
     {
-        private ObjectPool<T> pool;
+        private ObjectPool<T> pool = new ObjectPool<T>();
 
         /// <summary>
         /// 入池
@@ -23,7 +23,7 @@ namespace Duo1JFramework.Pool
         public ObjectPoolItem<T> Pop()
         {
             ObjectPoolItem<T> ret = pool.Pop();
-            InitObject(ret.Value);
+            ret.Value = InitObject(ret.Value);
             ret.Using = true;
             return ret;
         }
@@ -33,7 +33,12 @@ namespace Duo1JFramework.Pool
         /// </summary>
         public void Using(Action<ObjectPoolItem<T>> action)
         {
-            pool.Using(action);
+            pool.Using((item) =>
+            {
+                item.Value = InitObject(item.Value);
+                action(item);
+                item.Using = true;
+            });
         }
 
         /// <summary>
@@ -50,11 +55,6 @@ namespace Duo1JFramework.Pool
         public virtual T InitObject(T o)
         {
             return o;
-        }
-
-        protected override void OnInit()
-        {
-            pool = new ObjectPool<T>();
         }
     }
 }

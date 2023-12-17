@@ -1,3 +1,4 @@
+using Duo1JFramework.Config;
 using UnityEngine;
 
 namespace Duo1JFramework.UI
@@ -54,6 +55,25 @@ namespace Duo1JFramework.UI
                         break;
                     }
             }
+        }
+
+        private void Awake()
+        {
+            gameObject.name = GetType().Name;
+            DontDestroyOnLoad(gameObject);
+
+            InitUICamera();
+        }
+
+        private void InitUICamera()
+        {
+            if (uiCamera == null)
+            {
+                throw new CommonException("UICamera为空");
+            }
+            uiCamera.depth = Def.UI_CAMERA_DEPTH;
+            uiCamera.cullingMask = Def.UI_CULLING_MASK;
+            uiCamera.gameObject.layer = LayerDef.UI;
         }
     }
 }

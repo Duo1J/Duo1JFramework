@@ -9,7 +9,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅事件
         /// </summary>
-        public void Register(Event e, Action<object> callback)
+        public void Register(eEvent e, Action<object> callback)
         {
             GetEventModel().Register(e, callback);
         }
@@ -17,7 +17,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 取消订阅事件
         /// </summary>
-        public bool UnRegister(Event e, Action<object> callback)
+        public bool UnRegister(eEvent e, Action<object> callback)
         {
             return GetEventModel().UnRegister(e, callback);
         }
@@ -25,7 +25,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 取消订阅事件下所有注册
         /// </summary>
-        public bool UnRegister(Event e)
+        public bool UnRegister(eEvent e)
         {
             return GetEventModel().UnRegister(e);
         }
@@ -41,7 +41,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 发布事件
         /// </summary>
-        public void Dispatch(Event e, object args)
+        public void Dispatch(eEvent e, object args)
         {
             GetEventModel().Dispatch(e, args);
         }
