@@ -27,7 +27,7 @@ namespace Duo1JFramework.UI
 
         public void AddToLayer(Window wnd)
         {
-            switch (wnd.Config.layer)
+            switch (wnd.Config.Layer)
             {
                 case UILayer.Bottom:
                     {
@@ -51,7 +51,7 @@ namespace Duo1JFramework.UI
                     }
                 default:
                     {
-                        Log.Error($"UIRoot中无法找到层级`{wnd.Config.layer}`");
+                        Log.Error($"UIRoot中无法找到层级`{wnd.Config.Layer}`");
                         break;
                     }
             }

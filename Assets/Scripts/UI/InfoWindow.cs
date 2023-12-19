@@ -10,9 +10,9 @@ public class InfoWindow : Window
 
     protected override UIConfig CreateUIConfig()
     {
-        UIConfig uiConfig = new UIConfig(Path.RES_PATH_UI_PREFIX + "InfoWindow");
-        uiConfig.isResource = true;
-        return uiConfig;
+        return new UIConfig(Path.RES_PATH_UI_PREFIX + "InfoWindow")
+            .SetIsResource(true)
+            .SetLayer(UILayer.Const);
     }
 
     protected override void OnDisposeInner()

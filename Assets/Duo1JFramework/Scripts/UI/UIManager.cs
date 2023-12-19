@@ -81,37 +81,37 @@ namespace Duo1JFramework.UI
             UIConfig cfg = wnd.Config;
             Assert.NotNull(cfg, $"窗口`{wnd.GetType().Name}`配置为空");
 
-            if (cfg.sync)
+            if (cfg.Sync)
             {
                 GameObject uiGo;
-                if (cfg.isResource)
+                if (cfg.IsResource)
                 {
-                    uiGo = AssetManager.Instance.LoadResource<GameObject>(cfg.path);
+                    uiGo = AssetManager.Instance.LoadResource<GameObject>(cfg.Path);
                 }
                 else
                 {
-                    uiGo = AssetManager.Instance.LoadSync<GameObject>(cfg.path);
+                    uiGo = AssetManager.Instance.LoadSync<GameObject>(cfg.Path);
                 }
-                Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
+                Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
                 LoadWindowAssetPostProcess(wnd, uiGo);
                 callback?.Invoke();
             }
             else
             {
-                if (cfg.isResource)
+                if (cfg.IsResource)
                 {
-                    AssetManager.Instance.LoadResourceASync<GameObject>(cfg.path, (uiGo) =>
+                    AssetManager.Instance.LoadResourceASync<GameObject>(cfg.Path, (uiGo) =>
                     {
-                        Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
+                        Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
                         LoadWindowAssetPostProcess(wnd, uiGo);
                         callback?.Invoke();
                     });
                 }
                 else
                 {
-                    AssetManager.Instance.Load<GameObject>(cfg.path, (uiGo) =>
+                    AssetManager.Instance.Load<GameObject>(cfg.Path, (uiGo) =>
                     {
-                        Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.path}`");
+                        Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
                         LoadWindowAssetPostProcess(wnd, uiGo);
                         callback?.Invoke();
                     });

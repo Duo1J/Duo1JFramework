@@ -8,26 +8,44 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 窗口预制体路径
         /// </summary>
-        public string path;
+        public string Path { get; private set; }
 
         /// <summary>
         /// 窗口层级
         /// </summary>
-        public UILayer layer = UILayer.Normal;
+        public UILayer Layer { get; private set; } = UILayer.Normal;
 
         /// <summary>
         /// 同步加载
         /// </summary>
-        public bool sync = false;
+        public bool Sync { get; private set; } = false;
 
         /// <summary>
         /// 是否是Resources下资源
         /// </summary>
-        public bool isResource = false;
+        public bool IsResource { get; private set; } = false;
+
+        public UIConfig SetLayer(UILayer layer)
+        {
+            Layer = layer;
+            return this;
+        }
+
+        public UIConfig SetSync(bool sync)
+        {
+            Sync = sync;
+            return this;
+        }
+
+        public UIConfig SetIsResource(bool isResource)
+        {
+            IsResource = isResource;
+            return this;
+        }
 
         public UIConfig(string path)
         {
-            this.path = path;
+            Path = path;
         }
     }
 }
