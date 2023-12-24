@@ -155,7 +155,10 @@ namespace Duo1JFramework.UI
         protected Timer GetTimer(float interval, Action callback, int repeat = 1)
         {
             Timer timer = TimerManager.Instance.GetTimer(interval, callback, repeat);
-            timerList ??= new List<Timer>();
+            if (timerList == null)
+            {
+                timerList = new List<Timer>();
+            }
             timerList.Add(timer);
             return timer;
         }
@@ -166,7 +169,10 @@ namespace Duo1JFramework.UI
         protected Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
         {
             Timer timer = TimerManager.Instance.GetFrameTimer(frame, callback, repeat);
-            timerList ??= new List<Timer>();
+            if (timerList == null)
+            {
+                timerList = new List<Timer>();
+            }
             timerList.Add(timer);
             return timer;
         }
@@ -203,7 +209,10 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void RegisterEvent(eEvent e, Action<object> callback)
         {
-            eventDict ??= new Dictionary<eEvent, List<Action<object>>>();
+            if (eventDict == null)
+            {
+                eventDict = new Dictionary<eEvent, List<Action<object>>>();
+            }
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
                 list = new List<Action<object>>();

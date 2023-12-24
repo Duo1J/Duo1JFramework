@@ -35,7 +35,10 @@ namespace Duo1JFramework.TimerUpdate
 
         public void RegisterTimer(Timer timer)
         {
-            timerSet ??= new HashSet<Timer>();
+            if (timerSet == null)
+            {
+                timerSet = new HashSet<Timer>();
+            }
             timerSet.Add(timer);
             removeSet?.Remove(timer);
         }
@@ -43,7 +46,10 @@ namespace Duo1JFramework.TimerUpdate
         public void UnRegisterTimer(Timer timer)
         {
             if (timerSet == null) return;
-            removeSet ??= new HashSet<Timer>();
+            if (removeSet == null)
+            {
+                removeSet = new HashSet<Timer>();
+            }
             removeSet.Add(timer);
         }
 

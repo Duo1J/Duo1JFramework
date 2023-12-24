@@ -8,7 +8,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 工具栏路径前缀
         /// </summary>
-        public const string TOOL_PREFIX = "Tools/";
+        public const string TOOL_PREFIX = Def.FRAME_WORK_NAME + "/";
 
         /// <summary>
         /// UI工具栏路径前缀
