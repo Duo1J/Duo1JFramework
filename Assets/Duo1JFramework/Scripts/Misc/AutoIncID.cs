@@ -5,20 +5,34 @@ namespace Duo1JFramework
     /// </summary>
     public class AutoIncID
     {
-        public static AutoIncID Create => new AutoIncID();
+        public static AutoIncID Create(long startID = 0)
+        {
+            return new AutoIncID(startID);
+        }
 
-        public long NewId
+        public long NewID
         {
             get
             {
-                long ret = curId;
-                if (++curId >= long.MaxValue)
+                long ret = curID;
+                if (++curID >= long.MaxValue)
                 {
-                    curId = 0;
+                    Log.ErrorForce("自增ID超过最大上限");
+                    curID = 0;
                 }
                 return ret;
             }
         }
-        private long curId = 0;
+        private long curID = 0;
+
+        public void Reset()
+        {
+            curID = 0;
+        }
+
+        public AutoIncID(long startID)
+        {
+            curID = startID;
+        }
     }
 }

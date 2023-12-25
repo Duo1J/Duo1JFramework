@@ -7,5 +7,6 @@ namespace Duo1JFramework.Actor
     /// </summary>
     public class ActorController : MonoBehaviour
     {
+
     }
 }

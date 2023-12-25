@@ -7,5 +7,6 @@ namespace Duo1JFramework.Actor
     /// </summary>
     public class BaseActor
     {
+        public long ID { get; private set; }
     }
 }
