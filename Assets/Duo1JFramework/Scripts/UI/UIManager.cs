@@ -32,7 +32,7 @@ namespace Duo1JFramework.UI
             }
             catch (Exception e)
             {
-                Log.Exception(e, $"打开窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
+                Assert.ExceptHandle(e, $"打开窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
                 if (wnd != null)
                 {
                     CloseWindow(wnd);
@@ -55,7 +55,7 @@ namespace Duo1JFramework.UI
             }
             catch (Exception e)
             {
-                Log.Exception(e, $"关闭窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
+                Assert.ExceptHandle(e, $"关闭窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
                 return false;
             }
         }
