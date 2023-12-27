@@ -12,13 +12,14 @@ namespace Duo1JFramework.Actor
 
         private AutoIncID IncID = AutoIncID.Create();
 
-        public BaseActor CreateActor(ActorData actorData)
+        public BaseActor CreateActor(ActorData actorData, bool create = true)
         {
             Type logicType = actorData.LogicType;
             try
             {
                 BaseActor actor = Activator.CreateInstance(logicType) as BaseActor;
                 actor.Init(IncID.NewID, actorData);
+                if (create) actor.Create();
                 actorDict.Add(actor.ID, actor);
                 return actor;
             }

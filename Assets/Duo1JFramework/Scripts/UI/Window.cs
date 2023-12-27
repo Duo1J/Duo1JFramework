@@ -8,7 +8,7 @@ using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.UI
 {
-    public abstract class Window
+    public abstract class Window : BaseRegister
     {
         #region Field
 
@@ -67,23 +67,7 @@ namespace Duo1JFramework.UI
         }
         private int layer;
 
-        /// <summary>
-        /// UpdateManager注册的更新回调
-        /// </summary>
-        private Action updater;
-
-        /// <summary>
-        /// 计时器列表
-        /// </summary>
-        private List<Timer> timerList;
-
-        /// <summary>
-        /// 事件列表
-        /// </summary>
-        private Dictionary<eEvent, List<Action<object>>> eventDict;
-
         private bool init = false;
-        private bool dispose = false;
 
         #endregion Field
 
@@ -130,132 +114,6 @@ namespace Duo1JFramework.UI
 
         #region Protected
 
-        #region Update
-
-        protected void RegisterUpdate(Action _updater)
-        {
-            UpdateManager.Instance.Register(Go, _updater);
-            updater = _updater;
-        }
-
-        protected void UnRegisterUpdate()
-        {
-            if (updater == null) return;
-            UpdateManager.Instance.UnRegister(Go, updater);
-            updater = null;
-        }
-
-        #endregion Update
-
-        #region Timer
-
-        /// <summary>
-        /// 获取一个计时器
-        /// </summary>
-        protected Timer GetTimer(float interval, Action callback, int repeat = 1)
-        {
-            Timer timer = TimerManager.Instance.GetTimer(interval, callback, repeat);
-            if (timerList == null)
-            {
-                timerList = new List<Timer>();
-            }
-            timerList.Add(timer);
-            return timer;
-        }
-
-        /// <summary>
-        /// 获取一个帧计时器
-        /// </summary>
-        protected Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
-        {
-            Timer timer = TimerManager.Instance.GetFrameTimer(frame, callback, repeat);
-            if (timerList == null)
-            {
-                timerList = new List<Timer>();
-            }
-            timerList.Add(timer);
-            return timer;
-        }
-
-        /// <summary>
-        /// 停止计时器
-        /// </summary>
-        protected void StopTimer(Timer timer)
-        {
-            timer.Stop();
-            if (timerList == null) return;
-            timerList.Remove(timer);
-        }
-
-        /// <summary>
-        /// 停止所有计时器
-        /// </summary>
-        protected void StopAllTimer()
-        {
-            if (timerList == null) return;
-            foreach (Timer timer in timerList)
-            {
-                timer.Stop();
-            }
-            timerList = null;
-        }
-
-        #endregion Timer
-
-        #region Event
-
-        /// <summary>
-        /// 注册事件
-        /// </summary>
-        public void RegisterEvent(eEvent e, Action<object> callback)
-        {
-            if (eventDict == null)
-            {
-                eventDict = new Dictionary<eEvent, List<Action<object>>>();
-            }
-            if (!eventDict.TryGetValue(e, out List<Action<object>> list))
-            {
-                list = new List<Action<object>>();
-                eventDict.Add(e, list);
-            }
-            list.Add(callback);
-
-            EventManager.Instance.Register(e, callback);
-        }
-
-        /// <summary>
-        /// 取消注册事件
-        /// </summary>
-        public void UnRegisterEvent(eEvent e, Action<object> callback)
-        {
-            if (eventDict != null)
-            {
-                if (eventDict.TryGetValue(e, out List<Action<object>> list))
-                {
-                    list.Remove(callback);
-                }
-            }
-
-            EventManager.Instance.UnRegister(e, callback);
-        }
-
-        /// <summary>
-        /// 取消注册所有事件
-        /// </summary>
-        public void UnRegisterAllEvent()
-        {
-            if (eventDict == null) return;
-            foreach (KeyValuePair<eEvent, List<Action<object>>> kv in eventDict)
-            {
-                foreach (Action<object> callback in kv.Value)
-                {
-                    EventManager.Instance.UnRegister(kv.Key, callback);
-                }
-            }
-        }
-
-        #endregion Event
-
         #endregion Protected
 
         #region Lifecycle
@@ -268,47 +126,36 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 初始化
         /// </summary>
-        public void OnInit()
+        public void Init()
         {
             if (init)
             {
                 return;
             }
             init = true;
-            OnInitInner();
+            OnInit();
         }
 
         /// <summary>
         /// 销毁
         /// </summary>
-        public void OnDispose()
+        public override void Dispose()
         {
-            if (dispose)
-            {
-                return;
-            }
-            dispose = true;
+            base.Dispose();
 
-            OnDisposeInner();
-            UnRegisterUpdate();
-            StopAllTimer();
-            UnRegisterAllEvent();
-
-            if (Go != null)
-            {
-                UObject.DestroyImmediate(Go);
-            }
+            OnDispose();
+            Go?.DestroyImmediate();
         }
 
         /// <summary>
-        /// 子类重写初始化
+        /// 子类初始化
         /// </summary>
-        protected abstract void OnInitInner();
+        protected abstract void OnInit();
 
         /// <summary>
-        /// 子类重写销毁
+        /// 子类销毁
         /// </summary>
-        protected abstract void OnDisposeInner();
+        protected abstract void OnDispose();
 
         #endregion Lifecycle
     }

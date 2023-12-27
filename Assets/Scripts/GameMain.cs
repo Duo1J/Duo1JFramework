@@ -1,4 +1,5 @@
 using Duo1JFramework;
+using Duo1JFramework.Actor;
 using Duo1JFramework.UI;
 using UnityEngine;
 
@@ -12,6 +13,9 @@ public class GameMain : MonoBehaviour
     private void Start()
     {
         UIManager.Instance.OpenWindow(new InfoWindow());
+
+        ActorManager.Instance.CreateActor(
+            new ActorData(typeof(CommonActor), "TestActor", "Actor/Actor-01.prefab"));
     }
 
     private void Update()

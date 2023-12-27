@@ -4,6 +4,22 @@ namespace Duo1JFramework.World
 {
     public class WorldManager : MonoSingleton<WorldManager>
     {
+        private Transform actorRoot;
+
+        /// <summary>
+        /// 获取Actor根节点
+        /// </summary>
+        public Transform GetActorRoot()
+        {
+            if (actorRoot == null)
+            {
+                GameObject go = new GameObject("ActorRoot");
+                go.ResetSRT();
+                actorRoot = go.transform;
+            }
+            return actorRoot;
+        }
+
         protected override void OnDispose()
         {
         }

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,7 +16,28 @@ namespace Duo1JFramework
             go.transform.ResetSRT();
         }
 
-        public static T GetAndAssertComponent<T>(this GameObject go, string msg = null)
+        /// <summary>
+        /// 设置父节点
+        /// </summary>
+        public static void SetParent(this GameObject go, Transform parent)
+        {
+            go.transform.SetParent(parent);
+        }
+
+        public static void SetParent(this GameObject go, GameObject parent)
+        {
+            go.SetParent(parent.transform);
+        }
+
+        /// <summary>
+        /// 立即销毁
+        /// </summary>
+        public static void DestroyImmediate(this GameObject go)
+        {
+            DestroyImmediate(go);
+        }
+
+        public static T GetAndAssertComponent<T>(this GameObject go, string msg = "无法获取到组件")
         {
             T ret = go.GetComponent<T>();
             Assert.NotNull(ret, msg);

@@ -1,3 +1,4 @@
+using Duo1JFramework.GamerInput;
 using UnityEngine;
 
 namespace Duo1JFramework.Actor
@@ -9,13 +10,19 @@ namespace Duo1JFramework.Actor
     {
         protected override void OnCreated()
         {
+            RegisterUpdate(OnUpdate);
         }
 
-        protected override void OnDispose()
+        private void OnUpdate()
         {
+            if (Controller == null) return;
+
+            float h = InputManager.HAxis(true);
+            float v = InputManager.VAxis(true);
+            Controller.MoveByLocalAxis(h, v, 3);
         }
 
-        protected override void OnInit()
+        public override void OnDispose()
         {
         }
     }

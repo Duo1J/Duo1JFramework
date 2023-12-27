@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Duo1JFramework
 {
@@ -14,11 +13,49 @@ namespace Duo1JFramework
             {
                 if (message == null)
                 {
-                    throw new CommonException("空指针异常");
+                    throw new CommonException("<空指针异常>");
                 }
                 else
                 {
-                    throw new CommonException($"空指针异常: {message}");
+                    throw new CommonException($"<空指针异常>: {message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 判断字符串是否不为null以及""，否则抛出异常
+        /// </summary>
+        public static void NotNullOrEmpty(string str, string message)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                if (message == null)
+                {
+                    throw new CommonException("<字符串异常>");
+                }
+                else
+                {
+                    throw new CommonException($"<字符串异常>: {message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 判断是否为真，否则抛出异常
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="message"></param>
+        public static void Guard(bool b, string message)
+        {
+            if (!b)
+            {
+                if (message == null)
+                {
+                    throw new CommonException("<Guard异常>");
+                }
+                else
+                {
+                    throw new CommonException($"<Guard异常>: {message}");
                 }
             }
         }

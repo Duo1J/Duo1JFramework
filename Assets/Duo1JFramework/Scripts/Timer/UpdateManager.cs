@@ -1,60 +1,55 @@
 using System;
 using System.Collections.Generic;
-using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.TimerUpdate
 {
     public class UpdateManager : MonoSingleton<UpdateManager>
     {
-        private Dictionary<int, Action> updateDict;
+        /// <summary>
+        /// 更新集合
+        /// </summary>
+        private HashSet<Action> updateSet;
 
         /// <summary>
         /// 注册Update
         /// </summary>
-        public void Register(UObject obj, Action updater)
+        public void Register(Action updater)
         {
-            updateDict.Add(obj.GetInstanceID(), updater);
+            if (updateSet.Contains(updater))
+            {
+                Log.Warn("重复注册Update");
+                return;
+            }
+            updateSet.Add(updater);
         }
 
         /// <summary>
         /// 取消注册Update
         /// </summary>
-        public void UnRegister(UObject obj, Action updater)
+        public void UnRegister(Action updater)
         {
-            int insID = obj.GetInstanceID();
-            if (updateDict.ContainsKey(insID))
-            {
-                updateDict.Remove(insID);
-            }
+            updateSet.Remove(updater);
         }
 
         private void Update()
         {
-            if (updateDict != null)
+            if (updateSet != null)
             {
-                foreach (KeyValuePair<int, Action> kv in updateDict)
+                foreach (Action action in updateSet)
                 {
-                    if (kv.Value == null)
-                    {
-                        Log.Error($"Update注册字典中，Key: {kv.Key} 对应的回调为空");
-                        updateDict.Remove(kv.Key);
-                    }
-                    else
-                    {
-                        kv.Value.Invoke();
-                    }
+                    action?.Invoke();
                 }
             }
         }
 
         protected override void OnDispose()
         {
-            updateDict = null;
+            updateSet = null;
         }
 
         protected override void OnInit()
         {
-            updateDict = new Dictionary<int, Action>();
+            updateSet = new HashSet<Action>();
         }
     }
 }

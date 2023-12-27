@@ -15,11 +15,11 @@ public class InfoWindow : Window
             .SetLayer(UILayer.Const);
     }
 
-    protected override void OnDisposeInner()
+    protected override void OnDispose()
     {
     }
 
-    protected override void OnInitInner()
+    protected override void OnInit()
     {
         buttomInfoText = GetCom<TextExtend>("BottomInfo");
 

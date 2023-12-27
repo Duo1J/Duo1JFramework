@@ -50,7 +50,7 @@ namespace Duo1JFramework.UI
             try
             {
                 Assert.NotNull(wnd, "窗口对象为空");
-                wnd.OnDispose();
+                wnd.Dispose();
                 return wndList.Remove(wnd);
             }
             catch (Exception e)
@@ -127,7 +127,7 @@ namespace Duo1JFramework.UI
             wnd.Go = uiGo;
             Root.UIRoot.AddToLayer(wnd);
             AdjustWindowLayer(wnd);
-            wnd.OnInit();
+            wnd.Init();
         }
 
         /// <summary>

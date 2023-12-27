@@ -147,7 +147,6 @@ namespace Duo1JFramework
             bool appended = false;
             if (tag != null)
             {
-                appended = true;
                 sb.Append(tag);
             }
 
