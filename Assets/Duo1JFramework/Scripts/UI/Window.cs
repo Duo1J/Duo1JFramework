@@ -1,10 +1,4 @@
-using Duo1JFramework.Event;
-using Duo1JFramework.TimerUpdate;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-
-using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.UI
 {
@@ -155,7 +149,9 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 子类销毁
         /// </summary>
-        protected abstract void OnDispose();
+        protected override void OnDispose()
+        {
+        }
 
         #endregion Lifecycle
     }

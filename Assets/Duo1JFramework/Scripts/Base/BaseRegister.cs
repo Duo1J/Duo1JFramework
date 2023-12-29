@@ -8,12 +8,22 @@ namespace Duo1JFramework
     /// <summary>
     /// 可注册器基类
     /// </summary>
-    public class BaseRegister
+    public abstract class BaseRegister : IDispose
     {
         /// <summary>
-        /// UpdateManager注册的更新回调
+        /// Update注册的更新回调
         /// </summary>
         private Action updater;
+
+        /// <summary>
+        /// LateUpdate注册的更新回调
+        /// </summary>
+        private Action lateUpdater;
+
+        /// <summary>
+        /// FixedUpdate注册的更新回调
+        /// </summary>
+        private Action fixedUpdater;
 
         /// <summary>
         /// 计时器列表
@@ -37,7 +47,7 @@ namespace Duo1JFramework
         /// </summary>
         protected void RegisterUpdate(Action _updater)
         {
-            UpdateManager.Instance.Register(_updater);
+            UpdateManager.Instance.RegisterUpdate(_updater);
             updater = _updater;
         }
 
@@ -47,8 +57,46 @@ namespace Duo1JFramework
         protected void UnRegisterUpdate()
         {
             if (updater == null) return;
-            UpdateManager.Instance.UnRegister(updater);
+            UpdateManager.Instance.UnRegisterUpdate(updater);
             updater = null;
+        }
+
+        /// <summary>
+        /// 注册LateUpdate回调
+        /// </summary>
+        protected void RegisterLateUpdate(Action _lateUpdater)
+        {
+            UpdateManager.Instance.RegisterLateUpdate(_lateUpdater);
+            lateUpdater = _lateUpdater;
+        }
+
+        /// <summary>
+        /// 取消注册Update回调
+        /// </summary>
+        protected void UnRegisterLateUpdate()
+        {
+            if (lateUpdater == null) return;
+            UpdateManager.Instance.UnRegisterLateUpdate(lateUpdater);
+            lateUpdater = null;
+        }
+
+        /// <summary>
+        /// 注册FixedUpdate回调
+        /// </summary>
+        protected void RegisterFixedUpdate(Action _fixedUpdater)
+        {
+            UpdateManager.Instance.RegisterFixedUpdate(_fixedUpdater);
+            fixedUpdater = _fixedUpdater;
+        }
+
+        /// <summary>
+        /// 取消注册FixedUpdate回调
+        /// </summary>
+        protected void UnRegisterFixedUpdate()
+        {
+            if (fixedUpdater == null) return;
+            UpdateManager.Instance.UnRegisterFixedUpdate(fixedUpdater);
+            fixedUpdater = null;
         }
 
         #endregion Update
@@ -162,6 +210,9 @@ namespace Duo1JFramework
 
         #endregion Event
 
+        /// <summary>
+        /// 销毁
+        /// </summary>
         public virtual void Dispose()
         {
             if (Disposed)
@@ -171,8 +222,17 @@ namespace Duo1JFramework
             Disposed = true;
 
             UnRegisterUpdate();
+            UnRegisterLateUpdate();
+            UnRegisterFixedUpdate();
             StopAllTimer();
             UnRegisterAllEvent();
+
+            OnDispose();
         }
+
+        /// <summary>
+        /// 子类销毁
+        /// </summary>
+        protected abstract void OnDispose();
     }
 }

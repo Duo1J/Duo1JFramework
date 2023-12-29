@@ -14,6 +14,7 @@ namespace Duo1JFramework.Actor
         /// 管理器控制ID
         /// </summary>
         public long ID { get; private set; }
+
         /// <summary>
         /// 角色配置数据
         /// </summary>
@@ -151,7 +152,9 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 创建完成后
         /// </summary>
-        protected abstract void OnCreated();
+        protected virtual void OnCreated()
+        {
+        }
 
         /// <summary>
         /// 卸载资源前
@@ -170,7 +173,9 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 子类销毁
         /// </summary>
-        public abstract void OnDispose();
+        protected override void OnDispose()
+        {
+        }
 
         #endregion 子类override
     }

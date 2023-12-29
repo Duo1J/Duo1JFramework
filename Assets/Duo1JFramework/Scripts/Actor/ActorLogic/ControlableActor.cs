@@ -1,12 +1,11 @@
 using Duo1JFramework.GamerInput;
-using UnityEngine;
 
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 通用角色
+    /// 可控制角色
     /// </summary>
-    public class CommonActor : BaseActor
+    public class ControlableActor : CommonActor
     {
         protected override void OnCreated()
         {
@@ -20,10 +19,6 @@ namespace Duo1JFramework.Actor
             float h = InputManager.HAxis(true);
             float v = InputManager.VAxis(true);
             Controller.MoveByLocalAxis(h, v, 3);
-        }
-
-        public override void OnDispose()
-        {
         }
     }
 }
