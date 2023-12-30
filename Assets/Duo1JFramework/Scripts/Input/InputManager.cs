@@ -10,7 +10,7 @@ namespace Duo1JFramework.GamerInput
         /// <summary>
         /// 水平轴输入
         /// </summary>
-        public static float HAxis(bool raw = false)
+        public static float GetAxisH(bool raw = false)
         {
             if (raw)
             {
@@ -25,7 +25,7 @@ namespace Duo1JFramework.GamerInput
         /// <summary>
         /// 垂直轴输入
         /// </summary>
-        public static float VAxis(bool raw = false)
+        public static float GetAxisV(bool raw = false)
         {
             if (raw)
             {
@@ -40,17 +40,17 @@ namespace Duo1JFramework.GamerInput
         /// <summary>
         /// 按键保持
         /// </summary>
-        public static bool Key(KeyCode key)
+        public static bool GetKey(KeyCode key)
         {
             return Input.GetKey(key);
         }
 
-        public static bool KeyDown(KeyCode key)
+        public static bool GetKeyDown(KeyCode key)
         {
             return Input.GetKeyDown(key);
         }
 
-        public static bool KeyUp(KeyCode key)
+        public static bool GetKeyUp(KeyCode key)
         {
             return Input.GetKeyUp(key);
         }

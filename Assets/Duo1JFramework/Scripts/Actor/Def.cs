@@ -8,8 +8,13 @@ namespace Duo1JFramework
     public partial class Def
     {
         /// <summary>
-        /// 轴最小移动
+        /// H轴最小移动盲区
         /// </summary>
-        public const float MIN_AXIS_MOVE = 0.1f;
+        public const float MIN_HAXIS_MOVE = 0.1f;
+
+        /// <summary>
+        /// V轴最小移动盲区
+        /// </summary>
+        public const float MIN_VAXIS_MOVE = 0.1f;
     }
 }

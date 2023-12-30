@@ -45,7 +45,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 注册Update回调
         /// </summary>
-        protected void RegisterUpdate(Action _updater)
+        public void RegisterUpdate(Action _updater)
         {
             UpdateManager.Instance.RegisterUpdate(_updater);
             updater = _updater;
@@ -54,7 +54,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 取消注册Update回调
         /// </summary>
-        protected void UnRegisterUpdate()
+        public void UnRegisterUpdate()
         {
             if (updater == null) return;
             UpdateManager.Instance.UnRegisterUpdate(updater);
@@ -64,7 +64,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 注册LateUpdate回调
         /// </summary>
-        protected void RegisterLateUpdate(Action _lateUpdater)
+        public void RegisterLateUpdate(Action _lateUpdater)
         {
             UpdateManager.Instance.RegisterLateUpdate(_lateUpdater);
             lateUpdater = _lateUpdater;
@@ -73,7 +73,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 取消注册Update回调
         /// </summary>
-        protected void UnRegisterLateUpdate()
+        public void UnRegisterLateUpdate()
         {
             if (lateUpdater == null) return;
             UpdateManager.Instance.UnRegisterLateUpdate(lateUpdater);
@@ -83,7 +83,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 注册FixedUpdate回调
         /// </summary>
-        protected void RegisterFixedUpdate(Action _fixedUpdater)
+        public void RegisterFixedUpdate(Action _fixedUpdater)
         {
             UpdateManager.Instance.RegisterFixedUpdate(_fixedUpdater);
             fixedUpdater = _fixedUpdater;
@@ -92,7 +92,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 取消注册FixedUpdate回调
         /// </summary>
-        protected void UnRegisterFixedUpdate()
+        public void UnRegisterFixedUpdate()
         {
             if (fixedUpdater == null) return;
             UpdateManager.Instance.UnRegisterFixedUpdate(fixedUpdater);
@@ -106,7 +106,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取一个计时器
         /// </summary>
-        protected Timer GetTimer(float interval, Action callback, int repeat = 1)
+        public Timer GetTimer(float interval, Action callback, int repeat = 1)
         {
             Timer timer = TimerManager.Instance.GetTimer(interval, callback, repeat);
             if (timerList == null)
@@ -120,7 +120,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取一个帧计时器
         /// </summary>
-        protected Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
+        public Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
         {
             Timer timer = TimerManager.Instance.GetFrameTimer(frame, callback, repeat);
             if (timerList == null)
@@ -134,7 +134,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 停止计时器
         /// </summary>
-        protected void StopTimer(Timer timer)
+        public void StopTimer(Timer timer)
         {
             timer.Stop();
             if (timerList == null) return;
@@ -144,7 +144,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 停止所有计时器
         /// </summary>
-        protected void StopAllTimer()
+        public void StopAllTimer()
         {
             if (timerList == null) return;
             foreach (Timer timer in timerList)

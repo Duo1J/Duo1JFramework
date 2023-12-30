@@ -36,6 +36,11 @@ namespace Duo1JFramework.Actor
         public ActorController Controller { get; private set; }
 
         /// <summary>
+        /// 角色参数
+        /// </summary>
+        public ActorParam Param { get; private set; }
+
+        /// <summary>
         /// 初始化Actor
         /// </summary>
         public BaseActor Init(long id, ActorData actorData)
@@ -101,6 +106,7 @@ namespace Duo1JFramework.Actor
             Asset.ResetSRT();
 
             Controller = Asset.GetAndAssertComponent<ActorController>("Actor资源预制体上未挂载ActorController组件");
+            Param = Controller.GetActorParam();
 
             OnCreated();
         }
