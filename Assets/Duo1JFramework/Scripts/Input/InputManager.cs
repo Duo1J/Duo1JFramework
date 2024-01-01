@@ -1,3 +1,4 @@
+using Duo1JFramework.UI;
 using UnityEngine;
 
 namespace Duo1JFramework.GamerInput
@@ -35,6 +36,26 @@ namespace Duo1JFramework.GamerInput
             {
                 return Input.GetAxis(VERTICAL);
             }
+        }
+
+        /// <summary>
+        /// 获取椭圆映射后的Raw-HV轴
+        /// </summary>
+        public static void GetCircleMapAxisRaw(out float h, out float v)
+        {
+            h = GetAxisH(true);
+            v = GetAxisV(true);
+            MathUtil.CircleMapping(ref h, ref v);
+        }
+
+        /// <summary>
+        /// 获取椭圆映射后的HV轴
+        /// </summary>
+        public static void GetCircleMapAxis(out float h, out float v)
+        {
+            h = GetAxisH(false);
+            v = GetAxisV(false);
+            MathUtil.CircleMapping(ref h, ref v);
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using Duo1JFramework.FSM;
 using Duo1JFramework.GamerInput;
 using UnityEngine;
 
@@ -8,41 +9,68 @@ namespace Duo1JFramework.Actor
     /// </summary>
     public class ControlableActor : CommonActor
     {
+        /// <summary>
+        /// 初始化状态机
+        /// </summary>
+        protected void InitFSM()
+        {
+            Controller.InitFSM("Move",
+                StateNode.Create("Move",
+                    null,
+                    () =>
+                    {
+                        InputManager.GetCircleMapAxisRaw(out float h, out float v);
+                        Controller.SetMoveSpeedByAxis(h, v);
+                        Controller.RotateByAxis(h, v);
+
+                        if (Controller.CheckAxisZero(h, v))
+                            Controller.AniCrossFade(Param.idleAniName);
+                        else
+                            Controller.AniCrossFade(Param.runAniName);
+                    },
+                    null),
+                StateNode.Create("Jump",
+                    () =>
+                    {
+                        InputManager.GetCircleMapAxisRaw(out float h, out float v);
+                        Controller.Jump(h, v);
+                        Controller.AniCrossFade(Param.jumpAniName);
+                    },
+                    () =>
+                    {
+                    },
+                    null).SetSwitchList("Move")
+            );
+        }
+
+        /// <summary>
+        /// 着地状态改变
+        /// </summary>
+        protected void OnGroundedChange(bool grounded)
+        {
+            if (grounded && Controller.InState("Jump"))
+            {
+                Controller.SwitchState("Move");
+            }
+        }
+
         protected override void OnCreated()
         {
             RegisterUpdate(OnUpdate);
+            InitFSM();
 
-            Controller.SetFallSpeedUp(true);
+            Controller.FallSpeedUp = true;
+            Controller.UpdateGrounded = true;
+            Controller.OnGroundedChange = OnGroundedChange;
         }
 
         private void OnUpdate()
         {
             if (Controller == null) return;
 
-            float h = InputManager.GetAxisH(true);
-            float v = InputManager.GetAxisV(true);
-            Controller.CircleMapping(ref h, ref v);
-
-            Controller.SetMoveSpeedByAxis(h, v);
-            Controller.RotateByAxis(h, v);
-
             if (InputManager.GetKeyDown(KeyCode.Space))
             {
-                Controller.Jump(h, v);
-            }
-
-            UpdateAni(h, v);
-        }
-
-        private void UpdateAni(float h, float v)
-        {
-            if (Controller.CheckAxisZero(h, v))
-            {
-                Controller.AniCrossFade(Param.idleAniName);
-            }
-            else
-            {
-                Controller.AniCrossFade(Param.runAniName);
+                Controller.SwitchState("Jump");
             }
         }
     }

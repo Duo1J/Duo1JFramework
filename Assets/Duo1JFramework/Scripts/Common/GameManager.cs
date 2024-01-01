@@ -7,12 +7,13 @@ namespace Duo1JFramework
     /// </summary>
     public class GameManager : MonoSingleton<GameManager>
     {
-        protected override void OnDispose()
+        protected override void OnInit()
         {
         }
 
-        protected override void OnInit()
+        protected override void OnDispose()
         {
+            Root.StaticDispose();
         }
     }
 }

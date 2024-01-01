@@ -1,3 +1,4 @@
+using Duo1JFramework.FSM;
 using System;
 using UnityEngine;
 
@@ -39,17 +40,88 @@ namespace Duo1JFramework.Actor
         private ActorPoint point;
 
         /// <summary>
+        /// 有限状态机
+        /// </summary>
+        private StateMachine fsm;
+
+        [Space]
+        [Header("状态")]
+        public string curState;
+
+        /// <summary>
+        /// 角色是否着地
+        /// </summary>
+        public bool Grounded
+        {
+            get => grounded;
+            private set => grounded = value;
+        }
+        public bool grounded = false;
+
+        /// <summary>
         /// 当前播放的动画名
         /// </summary>
         [Space]
-        public string curStateName;
+        [Header("动画")]
+        public string curAniName;
+
+        #region Switch
 
         /// <summary>
         /// 下落速度增加
         /// </summary>
-        private bool fallSpeedUp;
+        public bool FallSpeedUp { get; set; }
 
-        #region Public
+        /// <summary>
+        /// 更新着地状态
+        /// </summary>
+        public bool UpdateGrounded { get; set; }
+
+        #endregion Switch
+
+        #region Callback
+
+        /// <summary>
+        /// 落地状态改变
+        /// </summary>
+        public Action<bool> OnGroundedChange;
+
+        #endregion Callback
+
+        #region Public Method
+
+        #region FSM
+
+        /// <summary>
+        /// 初始化状态机
+        /// </summary>
+        public void InitFSM(string curStateName, params StateNode[] stateList)
+        {
+            fsm = StateMachine.Create(curStateName, stateList);
+            curState = curStateName;
+        }
+
+        /// <summary>
+        /// 切换状态
+        /// </summary>
+        public void SwitchState(string stateName)
+        {
+            if (fsm.SwitchState(stateName))
+            {
+                curState = stateName;
+            }
+        }
+
+        /// <summary>
+        /// 是否处在状态
+        /// </summary>
+        /// <param name="stateName"></param>
+        public bool InState(string stateName)
+        {
+            return fsm.InState(stateName);
+        }
+
+        #endregion FSM
 
         #region Transform
 
@@ -88,15 +160,7 @@ namespace Duo1JFramework.Actor
 
         #endregion Transform
 
-        #region Control
-
-        /// <summary>
-        /// 轴椭圆映射
-        /// </summary>
-        public void CircleMapping(ref float h, ref float v)
-        {
-            MathUtil.CircleMapping(ref h, ref v);
-        }
+        #region Helper
 
         /// <summary>
         /// 通过目视方向获取轴
@@ -122,6 +186,10 @@ namespace Duo1JFramework.Actor
         {
             return h == 0 && v == 0;
         }
+
+        #endregion Helper
+
+        #region Control
 
         /// <summary>
         /// 通过轴设置速度 (以目视Forward为参考系)
@@ -163,7 +231,7 @@ namespace Duo1JFramework.Actor
 
         #endregion Control
 
-        #region Rigidbody
+        #region Physic
 
         /// <summary>
         /// 获取刚体组件
@@ -226,15 +294,7 @@ namespace Duo1JFramework.Actor
             }
         }
 
-        /// <summary>
-        /// 设置坠落加速
-        /// </summary>
-        public void SetFallSpeedUp(bool fallSpeedUp)
-        {
-            this.fallSpeedUp = fallSpeedUp;
-        }
-
-        #endregion Rigidbody
+        #endregion Physic
 
         #region Animation
 
@@ -255,7 +315,7 @@ namespace Duo1JFramework.Actor
         {
             if (!AniCanStateChange(stateName))
                 return;
-            curStateName = stateName;
+            curAniName = stateName;
             GetAni()?.CrossFade(stateName, transitionRate, layer);
         }
 
@@ -265,7 +325,7 @@ namespace Duo1JFramework.Actor
         public bool AniCanStateChange(string stateName)
         {
             Assert.NotNullOrEmpty(stateName, "动画状态名不可为空");
-            return !stateName.Equals(curStateName);
+            return !stateName.Equals(curAniName);
         }
 
         #endregion Animation
@@ -282,9 +342,9 @@ namespace Duo1JFramework.Actor
 
         #endregion Misc
 
-        #endregion Public
+        #endregion Public Method
 
-        #region Lifecycle
+        #region Private Method
 
         /// <summary>
         /// 初始化Inspector配置数据
@@ -329,28 +389,70 @@ namespace Duo1JFramework.Actor
             }
         }
 
+        /// <summary>
+        /// 下落加速
+        /// </summary>
+        private void UpdateFallSpeedUp()
+        {
+            if (!FallSpeedUp)
+                return;
+            if (rigidBody == null)
+                return;
+
+            Vector3 veloticy = rigidBody.velocity;
+            if (veloticy.y != 0)
+            {
+                rigidBody.velocity = new Vector3(
+                    veloticy.x,
+                    veloticy.y - param.fallSpeedUp * Time.deltaTime,
+                    veloticy.z
+                );
+            }
+        }
+
+        /// <summary>
+        /// 更新是否着地状态
+        /// </summary>
+        private void UpdateGroundedState()
+        {
+            if (!UpdateGrounded)
+                return;
+
+            bool oldVal = Grounded;
+            Grounded = Physics.Raycast(point.root.position + Vector3.up * 5, Vector3.down, 5.1f, Layer.OnlyLayer(Layer.WORLD));
+            if (oldVal != Grounded)
+            {
+                OnGroundedChange?.Invoke(Grounded);
+            }
+        }
+
+        /// <summary>
+        /// 更新状态机
+        /// </summary>
+        private void UpdateFSM()
+        {
+            if (fsm == null)
+                return;
+            fsm.Tick();
+        }
+
+        #endregion Private Method
+
+        #region Lifecycle
+
+        private void OnUpdate()
+        {
+            UpdateFSM();
+            UpdateFallSpeedUp();
+            UpdateGroundedState();
+        }
+
         private void Awake()
         {
             InitActorMonoData();
             InitComponent();
 
             Register.RegisterUpdate(OnUpdate);
-        }
-
-        private void OnUpdate()
-        {
-            if (fallSpeedUp && rigidBody != null)
-            {
-                Vector3 veloticy = rigidBody.velocity;
-                if (veloticy.y != 0)
-                {
-                    rigidBody.velocity = new Vector3(
-                        veloticy.x,
-                        veloticy.y - param.fallSpeedUp * Time.deltaTime,
-                        veloticy.z
-                    );
-                }
-            }
         }
 
         #endregion Lifecycle

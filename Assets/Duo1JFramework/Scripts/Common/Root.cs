@@ -42,5 +42,11 @@ namespace Duo1JFramework
             }
         }
         private static UIRoot uiRoot;
+
+        public static void StaticDispose()
+        {
+            singletonRoot = null;
+            uiRoot = null;
+        }
     }
 }
