@@ -365,21 +365,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 611291688697154709, guid: 3def52f02f52cbd489ace4e08f3be934, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1047294176979416671, guid: 3def52f02f52cbd489ace4e08f3be934, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 7280423063412134513, guid: 3def52f02f52cbd489ace4e08f3be934, type: 3}
       propertyPath: m_Name
       value: World-01
-      objectReference: {fileID: 0}
-    - target: {fileID: 7280423063412134513, guid: 3def52f02f52cbd489ace4e08f3be934, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8504601354361207447, guid: 3def52f02f52cbd489ace4e08f3be934, type: 3}
       propertyPath: m_RootOrder

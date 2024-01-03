@@ -9,6 +9,8 @@ namespace Duo1JFramework
     /// </summary>
     public static class Root
     {
+        //TODO 单例化
+
         /// <summary>
         /// 单例物体根节点
         /// </summary>
@@ -42,11 +44,5 @@ namespace Duo1JFramework
             }
         }
         private static UIRoot uiRoot;
-
-        public static void StaticDispose()
-        {
-            singletonRoot = null;
-            uiRoot = null;
-        }
     }
 }

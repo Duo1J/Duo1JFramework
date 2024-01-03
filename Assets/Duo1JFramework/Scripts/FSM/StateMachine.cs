@@ -66,6 +66,9 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public bool SwitchState(string stateName)
         {
+            if (!curState.CanSwitchTo(stateName))
+                return false;
+
             if (stateDict.TryGetValue(stateName, out StateNode state))
             {
                 curState.StateExit();

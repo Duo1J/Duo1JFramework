@@ -13,7 +13,6 @@ namespace Duo1JFramework
 
         protected override void OnDispose()
         {
-            Root.StaticDispose();
         }
     }
 }

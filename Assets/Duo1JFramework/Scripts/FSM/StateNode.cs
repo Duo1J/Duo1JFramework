@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Duo1JFramework.FSM
 {
@@ -36,6 +37,16 @@ namespace Duo1JFramework.FSM
         {
             this.switchList = switchList;
             return this;
+        }
+
+        /// <summary>
+        /// 是否可切换状态至
+        /// </summary>
+        public bool CanSwitchTo(string tarStateName)
+        {
+            if (switchList == null || switchList.Length == 0)
+                return true;
+            return switchList.Contains(tarStateName);
         }
 
         /// <summary>

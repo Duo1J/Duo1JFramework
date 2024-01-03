@@ -70,12 +70,12 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 下落速度增加
         /// </summary>
-        public bool FallSpeedUp { get; set; }
+        public bool FallSpeedUp { get; set; } = false;
 
         /// <summary>
         /// 更新着地状态
         /// </summary>
-        public bool UpdateGrounded { get; set; }
+        public bool UpdateGrounded { get; set; } = true;
 
         #endregion Switch
 
@@ -88,7 +88,25 @@ namespace Duo1JFramework.Actor
 
         #endregion Callback
 
+        #region Field
+
+        /// <summary>
+        /// 与地面相交的法线向量
+        /// </summary>
+        private Vector3 normal = Vector3.up;
+
+        #endregion Field
+
         #region Public Method
+
+        #region Const
+
+        //触地检测射线Y轴偏移
+        private const float RayGroundOffsetY = 0.3f;
+        //触地检测射线长度
+        private const float RayGroundLen = 0.4f;
+
+        #endregion Const
 
         #region FSM
 
@@ -197,9 +215,18 @@ namespace Duo1JFramework.Actor
         public void SetMoveSpeedByAxis(float h, float v)
         {
             Vector3 axisByEye = GetAxisByEye(h, v);
-            Vector3 velocity = axisByEye * param.moveSpeed;
+            if (normal != Vector3.up)
+            {
+                axisByEye = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
+            }
 
+            Vector3 velocity = axisByEye * param.moveSpeed;
             SetVelocity(new Vector2(velocity.x, velocity.z));
+
+#if UNITY_EDITOR
+            if (h != 0 || v != 0)
+                editor_moveAxisByEye = axisByEye;
+#endif
         }
 
         /// <summary>
@@ -419,7 +446,15 @@ namespace Duo1JFramework.Actor
                 return;
 
             bool oldVal = Grounded;
-            Grounded = Physics.Raycast(point.root.position + Vector3.up * 5, Vector3.down, 5.1f, Layer.OnlyLayer(Layer.WORLD));
+            Grounded = Physics.Raycast(
+                point.root.position + Vector3.up * RayGroundOffsetY,
+                Vector3.down,
+                out RaycastHit hitInfo,
+                RayGroundLen,
+                Layer.OnlyLayer(Layer.WORLD));
+
+            normal = Grounded ? hitInfo.normal : Vector3.up;
+
             if (oldVal != Grounded)
             {
                 OnGroundedChange?.Invoke(Grounded);
@@ -442,9 +477,10 @@ namespace Duo1JFramework.Actor
 
         private void OnUpdate()
         {
-            UpdateFSM();
             UpdateFallSpeedUp();
             UpdateGroundedState();
+
+            UpdateFSM();
         }
 
         private void Awake()
@@ -455,8 +491,6 @@ namespace Duo1JFramework.Actor
             Register.RegisterUpdate(OnUpdate);
         }
 
-        #endregion Lifecycle
-
         /// <summary>
         /// 报错未持有组件
         /// </summary>
@@ -464,5 +498,44 @@ namespace Duo1JFramework.Actor
         {
             Log.ErrorForce($"该角色未持有{type.Name}组件，name: {gameObject.name}。", msg);
         }
+
+        #endregion Lifecycle
+
+        #region Gizmos
+
+#if UNITY_EDITOR
+
+        private Vector3 editor_moveAxisByEye = Vector3.zero;
+
+        private void OnDrawGizmos()
+        {
+            if (Application.isPlaying)
+            {
+                Vector3 rootPos = point.root.position;
+
+                //触地检测射线
+                if (UpdateGrounded)
+                {
+                    Gizmos.color = Color.red;
+                    Vector3 rayGroundStartPos = rootPos + Vector3.up * RayGroundOffsetY;
+                    Gizmos.DrawLine(
+                        rayGroundStartPos,
+                        rayGroundStartPos + Vector3.down * RayGroundLen
+                    );
+                }
+
+                //受轴控制的目视前方
+                Gizmos.color = Color.blue;
+                Vector3 rayEyeForwardStartPos = rootPos + Vector3.up * 0.5f;
+                Gizmos.DrawLine(
+                    rayEyeForwardStartPos,
+                    rayEyeForwardStartPos + editor_moveAxisByEye.normalized
+                );
+            }
+        }
+
+#endif
+
+        #endregion Gizmos
     }
 }
