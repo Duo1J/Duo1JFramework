@@ -59,6 +59,22 @@ namespace Duo1JFramework.GamerInput
         }
 
         /// <summary>
+        /// 获取右舵(鼠标)X轴
+        /// </summary>
+        public static float GetAxisMX()
+        {
+            return Input.GetAxis("Mouse X");
+        }
+
+        /// <summary>
+        /// 获取右舵(鼠标)Y轴
+        /// </summary>
+        public static float GetAxisMY()
+        {
+            return Input.GetAxis("Mouse Y");
+        }
+
+        /// <summary>
         /// 按键保持
         /// </summary>
         public static bool GetKey(KeyCode key)

@@ -17,6 +17,11 @@ namespace Duo1JFramework.FSM
         /// </summary>
         private StateNode curState;
 
+        /// <summary>
+        /// 忽略下次Tick
+        /// </summary>
+        private bool ignoreNextTick = false;
+
         public static StateMachine Create(string curStateName, params StateNode[] stateList)
         {
             StateMachine fsm = new StateMachine();
@@ -64,8 +69,10 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 切换状态
         /// </summary>
-        public bool SwitchState(string stateName)
+        public bool SwitchState(string stateName, bool ignoreNextTick = true)
         {
+            if (InState(stateName))
+                return false;
             if (!curState.CanSwitchTo(stateName))
                 return false;
 
@@ -74,6 +81,8 @@ namespace Duo1JFramework.FSM
                 curState.StateExit();
                 curState = state;
                 curState.StateEnter();
+                if (ignoreNextTick)
+                    this.ignoreNextTick = true;
                 return true;
             }
             else
@@ -98,6 +107,11 @@ namespace Duo1JFramework.FSM
         {
             if (curState == null)
                 return;
+            if (ignoreNextTick)
+            {
+                ignoreNextTick = false;
+                return;
+            }
             curState.StateTick();
         }
 

@@ -151,11 +151,20 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public virtual void BindCamera()
         {
-            Transform cameraPoint = Controller.GetActorPoint().cameraPoint;
-            Assert.NotNull(cameraPoint, $"{ToString()}相机挂点为空");
+            Transform cameraPoint = Controller.GetActorPoint().CameraPoint;
 
             CameraManager.Instance.LookAt(cameraPoint);
             CameraManager.Instance.Follow(cameraPoint);
+
+            Controller.BindCamera = true;
+        }
+
+        /// <summary>
+        /// 解绑相机
+        /// </summary>
+        public virtual void UnBindCamera()
+        {
+            Controller.BindCamera = false;
         }
 
         #region 子类override

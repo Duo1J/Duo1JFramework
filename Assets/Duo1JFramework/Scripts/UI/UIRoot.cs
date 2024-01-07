@@ -74,6 +74,7 @@ namespace Duo1JFramework.UI
             uiCamera.depth = Def.UI_CAMERA_DEPTH;
             uiCamera.cullingMask = Def.UI_CULLING_MASK;
             uiCamera.gameObject.layer = LayerDef.UI;
+            uiCamera.name = "[Render]UICamera";
         }
     }
 }

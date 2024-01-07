@@ -70,6 +70,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void SetMainActor(BaseActor actor, bool bindCamera = false)
         {
+            if (mainActor != null) mainActor.UnBindCamera();
             mainActor = actor;
             if (bindCamera) mainActor.BindCamera();
         }

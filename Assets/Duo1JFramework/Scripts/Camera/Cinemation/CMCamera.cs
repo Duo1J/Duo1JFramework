@@ -28,8 +28,7 @@ namespace Duo1JFramework.Camera3D
 
             if (param.Length == 0)
             {
-                //TODO hlj Assert抛出异常
-                Log.ErrorForce("CMCamera初始化参数错误");
+                Assert.Throw("CMCamera初始化参数错误");
                 return;
             }
             string prefabPath = param[0] as string;
@@ -38,6 +37,7 @@ namespace Duo1JFramework.Camera3D
             GameObject cameraGo = AssetManager.Instance.LoadSync<GameObject>(prefabPath);
             MainCamera = cameraGo.GetAndAssertComponent<Camera>("主虚拟相机预制体未包含Camera组件");
             MainCMCamera = cameraGo.GetAndAssertComponent<CinemachineVirtualCamera>("主虚拟相机预制体未包含CinemachineVirtualCamera组件");
+            CameraManager.Instance.SetMainCamera(MainCamera);
         }
 
         public CMCamera()

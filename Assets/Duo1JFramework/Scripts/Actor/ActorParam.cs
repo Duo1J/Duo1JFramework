@@ -13,6 +13,9 @@ namespace Duo1JFramework
         public float rotateSpeed = 5;
 
         [Space]
+        [Header("控制数值")]
+        public float mouseSpeedX = 300;
+        public float mouseSpeedY = 300;
         public float fallSpeedUp = 7;
 
         [Space]

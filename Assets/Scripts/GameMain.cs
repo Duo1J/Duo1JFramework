@@ -15,19 +15,13 @@ public class GameMain : MonoBehaviour
     private void Start()
     {
         Game.TriggerSingleton();
-        InitCamera();
+        CameraManager.Instance.InitCamera<CMCamera>("Camera/Camera3rdPerson.prefab");
 
         UIManager.Instance.OpenWindow(new InfoWindow());
 
         BaseActor mainActor = ActorManager.Instance.CreateActor(
             new ActorData(typeof(ControlableActor), "TestActor", "Actor/Actor-01.prefab"));
-
         ActorManager.Instance.SetMainActor(mainActor, true);
-    }
-
-    private void InitCamera()
-    {
-        CameraManager.Instance.InitCamera<CMCamera>();
     }
 
     private void Update()

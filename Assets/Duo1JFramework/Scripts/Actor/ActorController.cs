@@ -51,9 +51,14 @@ namespace Duo1JFramework.Actor
         public string CurState { get; private set; }
 
         /// <summary>
-        /// 角色是否着地
+        /// 是否着地
         /// </summary>
         public bool Grounded { get; private set; }
+
+        /// <summary>
+        /// 是否绑定了相机
+        /// </summary>
+        public bool BindCamera { get; set; }
 
         /// <summary>
         /// 当前播放的动画名
@@ -117,9 +122,9 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 切换状态
         /// </summary>
-        public void SwitchState(string stateName)
+        public void SwitchState(string stateName, bool ignoreNextTick = true)
         {
-            if (fsm.SwitchState(stateName))
+            if (fsm.SwitchState(stateName, ignoreNextTick))
             {
                 CurState = stateName;
             }
@@ -145,6 +150,10 @@ namespace Duo1JFramework.Actor
         {
             get
             {
+                if (BindCamera)
+                {
+                    return Vector3.Cross(point.CameraPoint.right, Vector3.up).normalized;
+                }
                 return Vector3.forward.normalized;
             }
         }
@@ -156,6 +165,10 @@ namespace Duo1JFramework.Actor
         {
             get
             {
+                if (BindCamera)
+                {
+                    return point.CameraPoint.right.normalized;
+                }
                 return Vector3.right.normalized;
             }
         }
@@ -257,6 +270,27 @@ namespace Duo1JFramework.Actor
         }
 
         #endregion Control
+
+        #region Camera
+
+        /// <summary>
+        /// 旋转相机挂点
+        /// </summary>
+        public void RotateCameraPoint(float mx, float my)
+        {
+            if (CheckAxisZero(mx, my))
+                return;
+            Transform cameraPoint = point.CameraPoint;
+
+            Vector3 angle = cameraPoint.eulerAngles;
+            cameraPoint.rotation = Quaternion.Euler(
+                    angle.x - my * param.mouseSpeedY * Time.deltaTime,
+                    angle.y + mx * param.mouseSpeedX * Time.deltaTime,
+                    angle.z
+                );
+        }
+
+        #endregion Camera
 
         #region Physic
 
@@ -456,7 +490,7 @@ namespace Duo1JFramework.Actor
 
             bool oldVal = Grounded;
             Grounded = Physics.Raycast(
-                point.root.position + Vector3.up * RayGroundOffsetY,
+                point.Root.position + Vector3.up * RayGroundOffsetY,
                 Vector3.down,
                 out RaycastHit hitInfo,
                 RayGroundLen,
@@ -540,7 +574,7 @@ namespace Duo1JFramework.Actor
         {
             if (Application.isPlaying)
             {
-                Vector3 rootPos = point.root.position;
+                Vector3 rootPos = point.Root.position;
 
                 //触地检测射线
                 if (UpdateGrounded)
@@ -599,6 +633,7 @@ namespace Duo1JFramework.Actor
                 item.Value.AppendLine($"状态机: {CurState}");
                 item.Value.AppendLine($"动画状态: {curAniName}");
                 item.Value.AppendLine($"是否触地: {Grounded}");
+                item.Value.AppendLine($"是否绑定相机: {BindCamera}");
 
                 return item.Value.ToString();
             }).ToString();

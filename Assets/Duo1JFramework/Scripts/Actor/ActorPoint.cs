@@ -10,12 +10,26 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 根位置
         /// </summary>
-        public Transform root;
+        public Transform Root
+        {
+            get => root;
+        }
+        [SerializeField]
+        private Transform root;
 
         /// <summary>
-        /// 相机注视点
+        /// 相机挂点
         /// </summary>
-        public Transform cameraPoint;
+        public Transform CameraPoint
+        {
+            get
+            {
+                Assert.NotNull(cameraPoint, "相机挂点为空");
+                return cameraPoint;
+            }
+        }
+        [SerializeField]
+        private Transform cameraPoint;
 
         /// <summary>
         /// 自动匹配节点
@@ -27,8 +41,7 @@ namespace Duo1JFramework.Actor
 
         private void Awake()
         {
-            if (root == null)
-                root = transform;
+            if (root == null) root = transform;
         }
     }
 }

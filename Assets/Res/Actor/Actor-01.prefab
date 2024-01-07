@@ -68,6 +68,8 @@ MonoBehaviour:
   moveSpeed: 3
   jumpForce: 250
   rotateSpeed: 10
+  mouseSpeedX: 300
+  mouseSpeedY: 300
   fallSpeedUp: 7
   idleAniName: Idle
   runAniName: Running

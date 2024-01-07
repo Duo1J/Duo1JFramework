@@ -56,25 +56,37 @@ namespace Duo1JFramework.Camera3D
         {
         }
 
+        public Camera MainCamera => UnityEngine.Camera.main;
+
         /// <summary>
         /// 获取或创建主相机
         /// </summary>
         /// <returns></returns>
-        public Camera GetMainCamera()
+        public Camera GetOrCreateMainCamera()
         {
-            Camera mainCamera = UnityEngine.Camera.main;
+            Camera mainCamera = MainCamera;
             if (mainCamera == null)
             {
-                GameObject cameraGo = new GameObject("[Render]Camera");
-                cameraGo.tag = "MainCamera";
+                GameObject cameraGo = new GameObject("Camera");
                 mainCamera = cameraGo.AddComponent<Camera>();
             }
-            else
-            {
-                mainCamera.name = $"[Render]{mainCamera.name}";
-            }
+            SetMainCamera(mainCamera);
 
             return mainCamera;
+        }
+
+        /// <summary>
+        /// 设置主相机
+        /// </summary>
+        public void SetMainCamera(Camera tarCamera)
+        {
+            if (MainCamera != null && MainCamera != tarCamera)
+            {
+                DestroyMainCamera();
+            }
+            tarCamera.tag = "MainCamera";
+            tarCamera.name = $"[Render]MainCamera";
+            DontDestroyOnLoad(tarCamera.gameObject);
         }
 
         /// <summary>
@@ -82,10 +94,9 @@ namespace Duo1JFramework.Camera3D
         /// </summary>
         public void DestroyMainCamera()
         {
-            Camera mainCamera = UnityEngine.Camera.main;
-            if (mainCamera != null)
+            if (MainCamera != null)
             {
-                mainCamera.gameObject.DestroyImmediate();
+                MainCamera.gameObject.DestroyImmediate();
             }
         }
     }

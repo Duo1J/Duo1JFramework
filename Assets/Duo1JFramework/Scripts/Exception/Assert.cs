@@ -13,11 +13,11 @@ namespace Duo1JFramework
             {
                 if (message == null)
                 {
-                    throw new CommonException("<空指针异常>");
+                    Throw("<空指针异常>");
                 }
                 else
                 {
-                    throw new CommonException($"<空指针异常>: {message}");
+                    Throw($"<空指针异常>: {message}");
                 }
             }
         }
@@ -31,11 +31,11 @@ namespace Duo1JFramework
             {
                 if (message == null)
                 {
-                    throw new CommonException("<字符串异常>");
+                    Throw("<字符串异常>");
                 }
                 else
                 {
-                    throw new CommonException($"<字符串异常>: {message}");
+                    Throw($"<字符串异常>: {message}");
                 }
             }
         }
@@ -51,11 +51,11 @@ namespace Duo1JFramework
             {
                 if (message == null)
                 {
-                    throw new CommonException("<Guard异常>");
+                    Throw("<Guard异常>");
                 }
                 else
                 {
-                    throw new CommonException($"<Guard异常>: {message}");
+                    Throw($"<Guard异常>: {message}");
                 }
             }
         }
@@ -66,6 +66,14 @@ namespace Duo1JFramework
         public static void ExceptHandle(Exception e, params object[] msg)
         {
             Log.Exception(e, msg);
+        }
+
+        /// <summary>
+        /// 抛出一般异常
+        /// </summary>
+        public static void Throw(string msg)
+        {
+            throw new CommonException(msg);
         }
     }
 }
