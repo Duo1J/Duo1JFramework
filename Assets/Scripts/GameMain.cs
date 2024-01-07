@@ -1,5 +1,7 @@
+using Cinemachine;
 using Duo1JFramework;
 using Duo1JFramework.Actor;
+using Duo1JFramework.Camera3D;
 using Duo1JFramework.UI;
 using UnityEngine;
 
@@ -12,10 +14,20 @@ public class GameMain : MonoBehaviour
 
     private void Start()
     {
+        Game.TriggerSingleton();
+        InitCamera();
+
         UIManager.Instance.OpenWindow(new InfoWindow());
 
-        ActorManager.Instance.CreateActor(
+        BaseActor mainActor = ActorManager.Instance.CreateActor(
             new ActorData(typeof(ControlableActor), "TestActor", "Actor/Actor-01.prefab"));
+
+        ActorManager.Instance.SetMainActor(mainActor, true);
+    }
+
+    private void InitCamera()
+    {
+        CameraManager.Instance.InitCamera<CMCamera>();
     }
 
     private void Update()

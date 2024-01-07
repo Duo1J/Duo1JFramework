@@ -39,7 +39,7 @@ namespace Duo1JFramework.Event
             eventDict.Clear();
         }
 
-        public void Dispatch(eEvent e, object args)
+        public void Dispatch(eEvent e, object args = null)
         {
             if (eventDict.TryGetValue(e, out List<Action<object>> list))
             {

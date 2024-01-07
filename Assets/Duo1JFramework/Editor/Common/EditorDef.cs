@@ -14,5 +14,15 @@ namespace Duo1JFramework
         /// UI工具栏路径前缀
         /// </summary>
         public const string TOOL_UI_PREFIX = TOOL_PREFIX + "UI/";
+
+        /// <summary>
+        /// Actor工具栏路径前缀
+        /// </summary>
+        public const string TOOL_ACTOR_PREFIX = TOOL_PREFIX + "Actor/";
+
+        /// <summary>
+        /// 路径、名称工具栏路径前缀
+        /// </summary>
+        public const string TOOL_PATH_PREFIX = TOOL_PREFIX + "Path/";
     }
 }

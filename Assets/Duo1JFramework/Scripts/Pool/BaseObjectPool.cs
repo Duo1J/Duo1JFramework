@@ -3,7 +3,7 @@ using System;
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// 对象池单例基类
+    /// 对象池实例基类
     /// </summary>
     public abstract class BaseObjectPool<T> where T : new()
     {
@@ -38,6 +38,17 @@ namespace Duo1JFramework.ObjectPool
                 item.Value = InitObject(item.Value);
                 action(item);
                 item.Using = true;
+            });
+        }
+
+        public object Using(Func<ObjectPoolItem<T>, object> action)
+        {
+            return pool.Using((item) =>
+            {
+                item.Value = InitObject(item.Value);
+                object ret = action(item);
+                item.Using = true;
+                return ret;
             });
         }
 

@@ -43,17 +43,6 @@ namespace Duo1JFramework.Actor
             );
         }
 
-        /// <summary>
-        /// 着地状态改变
-        /// </summary>
-        protected void OnGroundedChange(bool grounded)
-        {
-            if (grounded && Controller.InState("Jump"))
-            {
-                Controller.SwitchState("Move");
-            }
-        }
-
         protected override void OnCreated()
         {
             RegisterUpdate(OnUpdate);
@@ -61,7 +50,6 @@ namespace Duo1JFramework.Actor
 
             Controller.FallSpeedUp = true;
             Controller.UpdateGrounded = true;
-            Controller.OnGroundedChange = OnGroundedChange;
         }
 
         private void OnUpdate()
@@ -71,6 +59,11 @@ namespace Duo1JFramework.Actor
             if (InputManager.GetKeyDown(KeyCode.Space))
             {
                 Controller.SwitchState("Jump");
+            }
+
+            if (Controller.Grounded && Controller.InState("Jump"))
+            {
+                Controller.SwitchState("Move");
             }
         }
     }

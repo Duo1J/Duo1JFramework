@@ -13,6 +13,11 @@ namespace Duo1JFramework.Actor
         public Transform root;
 
         /// <summary>
+        /// 相机注视点
+        /// </summary>
+        public Transform cameraPoint;
+
+        /// <summary>
         /// 自动匹配节点
         /// </summary>
         public void AutoMatch()

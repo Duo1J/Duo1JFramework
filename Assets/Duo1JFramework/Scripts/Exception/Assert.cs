@@ -7,7 +7,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 断言不为空
         /// </summary>
-        public static void NotNull(object o, string message)
+        public static void NotNull(object o, string message = null)
         {
             if (o == null)
             {

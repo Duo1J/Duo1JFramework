@@ -2,6 +2,7 @@ using Duo1JFramework.Event;
 using Duo1JFramework.TimerUpdate;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace Duo1JFramework
 {
@@ -215,6 +216,8 @@ namespace Duo1JFramework
         /// </summary>
         public virtual void Dispose()
         {
+            if (Game.IsQuit)
+                return;
             if (Disposed)
             {
                 return;

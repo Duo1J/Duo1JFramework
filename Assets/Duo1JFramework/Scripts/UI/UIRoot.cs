@@ -9,13 +9,13 @@ namespace Duo1JFramework.UI
     [DisallowMultipleComponent]
     public class UIRoot : MonoBehaviour
     {
-        public static Transform BottomLayer => Root.UIRoot.bottomLayer;
-        public static Transform NormalLayer => Root.UIRoot.normalLayer;
-        public static Transform TopLayer => Root.UIRoot.topLayer;
-        public static Transform ConstLayer => Root.UIRoot.constLayer;
+        public static Transform BottomLayer => Root.Instance.UIRoot.bottomLayer;
+        public static Transform NormalLayer => Root.Instance.UIRoot.normalLayer;
+        public static Transform TopLayer => Root.Instance.UIRoot.topLayer;
+        public static Transform ConstLayer => Root.Instance.UIRoot.constLayer;
 
-        public static Canvas UICanvas => Root.UIRoot.uiCanvas;
-        public static Camera UICamera => Root.UIRoot.uiCamera;
+        public static Canvas UICanvas => Root.Instance.UIRoot.uiCanvas;
+        public static Camera UICamera => Root.Instance.UIRoot.uiCamera;
 
         [SerializeField] private Transform bottomLayer;
         [SerializeField] private Transform normalLayer;

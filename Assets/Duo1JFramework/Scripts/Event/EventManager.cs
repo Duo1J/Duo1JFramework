@@ -41,7 +41,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 发布事件
         /// </summary>
-        public void Dispatch(eEvent e, object args)
+        public void Dispatch(eEvent e, object args = null)
         {
             GetEventModel().Dispatch(e, args);
         }

@@ -7,14 +7,12 @@ namespace Duo1JFramework
     /// <summary>
     /// 节点管理
     /// </summary>
-    public static class Root
+    public class Root : MonoSingleton<Root>
     {
-        //TODO 单例化
-
         /// <summary>
         /// 单例物体根节点
         /// </summary>
-        public static GameObject SingletonRoot
+        public GameObject SingletonRoot
         {
             get
             {
@@ -26,12 +24,12 @@ namespace Duo1JFramework
                 return singletonRoot;
             }
         }
-        private static GameObject singletonRoot;
+        private GameObject singletonRoot;
 
         /// <summary>
         /// UI根节点
         /// </summary>
-        public static UIRoot UIRoot
+        public UIRoot UIRoot
         {
             get
             {
@@ -43,6 +41,14 @@ namespace Duo1JFramework
                 return uiRoot;
             }
         }
-        private static UIRoot uiRoot;
+        private UIRoot uiRoot;
+
+        protected override void OnInit()
+        {
+        }
+
+        protected override void OnDispose()
+        {
+        }
     }
 }

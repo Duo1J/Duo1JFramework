@@ -47,7 +47,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取或添加MB组件
         /// </summary>
-        public static T GetOrAddComponent<T>(this GameObject go) where T : MonoBehaviour
+        public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
             T com = go.GetComponent<T>();
             if (com == null) com = go.AddComponent<T>();

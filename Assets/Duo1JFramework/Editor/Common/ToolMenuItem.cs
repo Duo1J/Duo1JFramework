@@ -9,9 +9,9 @@ namespace Duo1JFramework
     /// </summary>
     public static class ToolMenuItem
     {
-        #region UI
+        #region Path
 
-        [MenuItem(EditorDef.TOOL_UI_PREFIX + "节点快速命名 &1")]
+        [MenuItem(EditorDef.TOOL_PATH_PREFIX + "UI节点快速命名 &1", priority = 10)]
         public static void UINodeFastName()
         {
             if (EditorUtil.GetActiveGo(out GameObject go))
@@ -23,6 +23,6 @@ namespace Duo1JFramework
             }
         }
 
-        #endregion UI
+        #endregion Path
     }
 }

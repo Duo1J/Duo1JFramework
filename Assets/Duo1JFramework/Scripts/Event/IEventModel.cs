@@ -27,6 +27,6 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 发布事件
         /// </summary>
-        void Dispatch(eEvent e, object args);
+        void Dispatch(eEvent e, object args = null);
     }
 }

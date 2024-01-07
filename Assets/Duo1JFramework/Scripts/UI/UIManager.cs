@@ -125,7 +125,7 @@ namespace Duo1JFramework.UI
         private void LoadWindowAssetPostProcess(Window wnd, GameObject uiGo)
         {
             wnd.Go = uiGo;
-            Root.UIRoot.AddToLayer(wnd);
+            Root.Instance.UIRoot.AddToLayer(wnd);
             AdjustWindowLayer(wnd);
             wnd.Init();
         }

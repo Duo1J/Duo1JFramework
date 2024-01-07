@@ -1,4 +1,5 @@
 using Duo1JFramework.Asset;
+using Duo1JFramework.Camera3D;
 using Duo1JFramework.World;
 using System;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// 角色基类
     /// </summary>
+    [Serializable]
     public abstract class BaseActor : BaseRegister
     {
         /// <summary>
@@ -137,6 +139,23 @@ namespace Duo1JFramework.Actor
 
             OnDispose();
             UnLoadAsset();
+        }
+
+        public override string ToString()
+        {
+            return $"<Actor-{ID}-{Data.Name}-{Data.LogicType}><Con-{Controller}>";
+        }
+
+        /// <summary>
+        /// 绑定相机
+        /// </summary>
+        public virtual void BindCamera()
+        {
+            Transform cameraPoint = Controller.GetActorPoint().cameraPoint;
+            Assert.NotNull(cameraPoint, $"{ToString()}相机挂点为空");
+
+            CameraManager.Instance.LookAt(cameraPoint);
+            CameraManager.Instance.Follow(cameraPoint);
         }
 
         #region 子类override

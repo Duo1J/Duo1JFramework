@@ -61,6 +61,13 @@ namespace Duo1JFramework
             EditorGUI.EndDisabledGroup();
         }
 
+        public static void SurrondSpace(float space, Action action)
+        {
+            GUILayout.Space(space);
+            action?.Invoke();
+            GUILayout.Space(space);
+        }
+
         protected LU()
         {
         }

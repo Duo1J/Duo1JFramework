@@ -1,3 +1,4 @@
+using Duo1JFramework.Camera3D;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +9,8 @@ namespace Duo1JFramework.Actor
     /// </summary>
     public class ActorManager : MonoSingleton<ActorManager>
     {
+        public BaseActor mainActor;
+
         private Dictionary<long, BaseActor> actorDict;
 
         private AutoIncID IncID = AutoIncID.Create();
@@ -60,6 +63,15 @@ namespace Duo1JFramework.Actor
                 actor.Dispose();
             }
             actorDict = new Dictionary<long, BaseActor>();
+        }
+
+        /// <summary>
+        /// 设置主角
+        /// </summary>
+        public void SetMainActor(BaseActor actor, bool bindCamera = false)
+        {
+            mainActor = actor;
+            if (bindCamera) mainActor.BindCamera();
         }
 
         protected override void OnDispose()

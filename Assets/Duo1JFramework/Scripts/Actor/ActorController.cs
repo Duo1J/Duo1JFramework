@@ -1,4 +1,5 @@
 using Duo1JFramework.FSM;
+using Duo1JFramework.ObjectPool;
 using System;
 using UnityEngine;
 
@@ -44,26 +45,20 @@ namespace Duo1JFramework.Actor
         /// </summary>
         private StateMachine fsm;
 
-        [Space]
-        [Header("状态")]
-        public string curState;
+        /// <summary>
+        /// 当前状态机状态
+        /// </summary>
+        public string CurState { get; private set; }
 
         /// <summary>
         /// 角色是否着地
         /// </summary>
-        public bool Grounded
-        {
-            get => grounded;
-            private set => grounded = value;
-        }
-        public bool grounded = false;
+        public bool Grounded { get; private set; }
 
         /// <summary>
         /// 当前播放的动画名
         /// </summary>
-        [Space]
-        [Header("动画")]
-        public string curAniName;
+        private string curAniName;
 
         #region Switch
 
@@ -116,7 +111,7 @@ namespace Duo1JFramework.Actor
         public void InitFSM(string curStateName, params StateNode[] stateList)
         {
             fsm = StateMachine.Create(curStateName, stateList);
-            curState = curStateName;
+            CurState = curStateName;
         }
 
         /// <summary>
@@ -126,7 +121,7 @@ namespace Duo1JFramework.Actor
         {
             if (fsm.SwitchState(stateName))
             {
-                curState = stateName;
+                CurState = stateName;
             }
         }
 
@@ -175,6 +170,11 @@ namespace Duo1JFramework.Actor
                 return Vector3.up.normalized;
             }
         }
+
+        /// <summary>
+        /// 旋转对象
+        /// </summary>
+        public GameObject RotateGo => model;
 
         #endregion Transform
 
@@ -237,10 +237,10 @@ namespace Duo1JFramework.Actor
             if (CheckAxisZero(h, v))
                 return;
 
-            Vector3 forward = transform.forward;
+            Vector3 forward = RotateGo.transform.forward;
             Vector3 axisByEye = GetAxisByEye(h, v);
 
-            transform.forward = Vector3.Slerp(
+            RotateGo.transform.forward = Vector3.Slerp(
                 forward,
                 axisByEye,
                 param.rotateSpeed * Time.deltaTime
@@ -367,6 +367,14 @@ namespace Duo1JFramework.Actor
             return param;
         }
 
+        /// <summary>
+        /// 获取ActorPoint
+        /// </summary>
+        public ActorPoint GetActorPoint()
+        {
+            return point;
+        }
+
         #endregion Misc
 
         #endregion Public Method
@@ -406,7 +414,8 @@ namespace Duo1JFramework.Actor
             {
                 rigidBody.isKinematic = false;
                 rigidBody.constraints = RigidbodyConstraints.FreezeRotationX |
-                                 RigidbodyConstraints.FreezeRotationZ;
+                                        RigidbodyConstraints.FreezeRotationY |
+                                        RigidbodyConstraints.FreezeRotationZ;
             }
 
             //Animator
@@ -496,7 +505,27 @@ namespace Duo1JFramework.Actor
         /// </summary>
         private void ErrNoComponent(Type type, string msg = "")
         {
-            Log.ErrorForce($"该角色未持有{type.Name}组件，name: {gameObject.name}。", msg);
+            Err($"该角色未持有{type.Name}组件，name: {gameObject.name}。{msg}", true);
+        }
+
+        /// <summary>
+        /// Actor报错
+        /// </summary>
+        private void Err(string msg, bool force = true)
+        {
+            if (force)
+            {
+                Log.ErrorForce(ToString(), msg);
+            }
+            else
+            {
+                Log.Error(ToString(), msg);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"<Actor: {gameObject.name}>";
         }
 
         #endregion Lifecycle
@@ -537,5 +566,44 @@ namespace Duo1JFramework.Actor
 #endif
 
         #endregion Gizmos
+
+        #region Editor
+
+        /// <summary>
+        /// 收集组件
+        /// </summary>
+        public void CollectComponent()
+        {
+            if (model == null)
+            {
+                Err("该角色未设置模型", true);
+                return;
+            }
+            if (animator == null)
+            {
+                animator = model.GetComponent<Animator>();
+            }
+            if (rigidBody == null)
+            {
+                rigidBody = GetComponent<Rigidbody>();
+            }
+        }
+
+        /// <summary>
+        /// 获取Hierarchy显示信息
+        /// </summary>
+        public string GetHierarchyInfo()
+        {
+            return Pool.StringBuilderPool.Using((item) =>
+            {
+                item.Value.AppendLine($"状态机: {CurState}");
+                item.Value.AppendLine($"动画状态: {curAniName}");
+                item.Value.AppendLine($"是否触地: {Grounded}");
+
+                return item.Value.ToString();
+            }).ToString();
+        }
+
+        #endregion Editor
     }
 }

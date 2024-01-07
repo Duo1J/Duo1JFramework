@@ -58,6 +58,18 @@ namespace Duo1JFramework.ObjectPool
             Push(item);
         }
 
+        public object Using(Func<ObjectPoolItem<T>, object> action)
+        {
+            if (action == null)
+            {
+                return null;
+            }
+            ObjectPoolItem<T> item = Pop();
+            object ret = action(item);
+            Push(item);
+            return ret;
+        }
+
         /// <summary>
         /// 创建一个新对象出池
         /// </summary>
