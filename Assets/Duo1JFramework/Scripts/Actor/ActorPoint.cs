@@ -32,6 +32,11 @@ namespace Duo1JFramework.Actor
         private Transform cameraPoint;
 
         /// <summary>
+        /// 相机挂点原始本地坐标
+        /// </summary>
+        public Vector3 OriCameraPointLocPos { get; private set; }
+
+        /// <summary>
         /// 自动匹配节点
         /// </summary>
         public void AutoMatch()
@@ -42,6 +47,11 @@ namespace Duo1JFramework.Actor
         private void Awake()
         {
             if (root == null) root = transform;
+
+            if (cameraPoint != null)
+            {
+                OriCameraPointLocPos = cameraPoint.localPosition;
+            }
         }
     }
 }

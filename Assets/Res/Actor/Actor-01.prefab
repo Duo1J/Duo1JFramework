@@ -71,6 +71,7 @@ MonoBehaviour:
   mouseSpeedX: 300
   mouseSpeedY: 300
   fallSpeedUp: 7
+  cameraToActorLen: 5
   idleAniName: Idle
   runAniName: Running
   jumpAniName: Jump

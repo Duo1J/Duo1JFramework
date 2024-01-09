@@ -2,8 +2,6 @@ using Duo1JFramework.FSM;
 using Duo1JFramework.GamerInput;
 using UnityEngine;
 
-//TODO hlj Y轴鼠标
-
 namespace Duo1JFramework.Actor
 {
     /// <summary>
@@ -88,6 +86,7 @@ namespace Duo1JFramework.Actor
             float mx = InputManager.GetAxisMX();
             float my = InputManager.GetAxisMY();
             Controller.RotateCameraPoint(mx, my);
+            Controller.UpdateCameraPointPos();
         }
     }
 }

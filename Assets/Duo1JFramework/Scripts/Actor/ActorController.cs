@@ -3,6 +3,10 @@ using Duo1JFramework.ObjectPool;
 using System;
 using UnityEngine;
 
+//TODO hlj 虚拟相机根节点
+//相机旋转Y限制
+//相机切换
+
 namespace Duo1JFramework.Actor
 {
     /// <summary>
@@ -288,6 +292,15 @@ namespace Duo1JFramework.Actor
                     angle.y + mx * param.mouseSpeedX * Time.deltaTime,
                     angle.z
                 );
+        }
+
+        /// <summary>
+        /// 更新相机坐标 (旋转后更新)
+        /// </summary>
+        public void UpdateCameraPointPos()
+        {
+            point.CameraPoint.localPosition = point.OriCameraPointLocPos -
+                point.CameraPoint.forward * param.cameraToActorLen;
         }
 
         #endregion Camera
@@ -594,6 +607,13 @@ namespace Duo1JFramework.Actor
                     rayEyeForwardStartPos,
                     rayEyeForwardStartPos + editor_moveAxisByEye.normalized
                 );
+
+                //相机挂点
+                if (point.CameraPoint != null)
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawWireSphere(point.CameraPoint.position, 0.15f);
+                }
             }
         }
 

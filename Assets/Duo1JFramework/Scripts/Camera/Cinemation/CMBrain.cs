@@ -1,4 +1,5 @@
 using Cinemachine;
+using UnityEngine;
 
 namespace Duo1JFramework.Camera3D
 {
@@ -15,7 +16,8 @@ namespace Duo1JFramework.Camera3D
 
         protected override void OnInit()
         {
-            Brain = gameObject.GetOrAddComponent<CinemachineBrain>();
+            Camera mainCamera = CameraManager.Instance.GetOrCreateMainCamera();
+            Brain = mainCamera.gameObject.GetOrAddComponent<CinemachineBrain>();
         }
     }
 }

@@ -19,6 +19,10 @@ namespace Duo1JFramework
         public float fallSpeedUp = 7;
 
         [Space]
+        [Header("相机数值")]
+        public float cameraToActorLen = 5;
+
+        [Space]
         [Header("动画")]
         public string idleAniName = "Idle";
         public string runAniName = "Running";
