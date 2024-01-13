@@ -31,8 +31,11 @@ namespace Duo1JFramework.Camera3D
             string prefabPath = param[0] as string;
             Assert.NotNullOrEmpty(prefabPath, "主虚拟相机路径不可为空");
 
-            GameObject cameraGo = AssetManager.Instance.LoadSync<GameObject>(prefabPath);
-            MainCMCamera = cameraGo.GetAndAssertComponent<CinemachineVirtualCamera>("主虚拟相机预制体未包含CinemachineVirtualCamera组件");
+            MainCMCamera = CMBrain.Instance.LoadVirtualCamera(prefabPath);
+            if (MainCMCamera == null)
+            {
+                Assert.Throw("主虚拟相机预制体未包含CinemachineVirtualCamera组件");
+            }
         }
 
         public CMCamera()

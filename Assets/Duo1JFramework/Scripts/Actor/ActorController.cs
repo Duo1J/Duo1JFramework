@@ -1,53 +1,44 @@
 using Duo1JFramework.FSM;
 using Duo1JFramework.ObjectPool;
 using System;
+using System.Text;
 using UnityEngine;
-
-//TODO hlj 虚拟相机根节点
-//相机旋转Y限制
-//相机切换
 
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 角色控制器
+    /// Actor控制器
     /// </summary>
     [RequireComponent(typeof(ActorParam), typeof(ActorPoint))]
-    public class ActorController : MonoRegister
+    public abstract class ActorController : MonoRegister
     {
         /// <summary>
         /// 角色模型
         /// </summary>
         [Header("组件")]
         [SerializeField]
-        private GameObject model;
+        protected GameObject model;
 
         /// <summary>
         /// 角色动画控制器
         /// </summary>
         [SerializeField]
-        private Animator animator;
-
-        /// <summary>
-        /// 角色刚体
-        /// </summary>
-        [SerializeField]
-        private Rigidbody rigidBody;
+        protected Animator animator;
 
         /// <summary>
         /// 角色参数
         /// </summary>
-        private ActorParam param;
+        protected ActorParam param;
 
         /// <summary>
         /// 角色挂点
         /// </summary>
-        private ActorPoint point;
+        protected ActorPoint point;
 
         /// <summary>
         /// 有限状态机
         /// </summary>
-        private StateMachine fsm;
+        protected StateMachine fsm;
 
         /// <summary>
         /// 当前状态机状态
@@ -67,7 +58,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 当前播放的动画名
         /// </summary>
-        private string curAniName;
+        protected string curAniName;
 
         #region Switch
 
@@ -97,18 +88,13 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 与地面相交的法线向量
         /// </summary>
-        private Vector3 normal = Vector3.up;
+        protected Vector3 normal = Vector3.up;
 
         #endregion Field
 
         #region Public Method
 
         #region Const
-
-        //触地检测射线Y轴偏移
-        private const float RayGroundOffsetY = 0.3f;
-        //触地检测射线长度
-        private const float RayGroundLen = 0.4f;
 
         #endregion Const
 
@@ -224,57 +210,6 @@ namespace Duo1JFramework.Actor
 
         #endregion Helper
 
-        #region Control
-
-        /// <summary>
-        /// 通过轴设置速度 (以目视Forward为参考系)
-        /// </summary>
-        public void SetMoveSpeedByAxis(float h, float v)
-        {
-            Vector3 axisByEye = GetAxisByEye(h, v);
-            if (normal != Vector3.up)
-            {
-                axisByEye = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
-            }
-
-            Vector3 velocity = axisByEye * param.moveSpeed;
-            SetVelocity(new Vector2(velocity.x, velocity.z));
-
-#if UNITY_EDITOR
-            if (h != 0 || v != 0)
-                editor_moveAxisByEye = axisByEye;
-#endif
-        }
-
-        /// <summary>
-        /// 通过轴设置旋转 (以目视Forward为参考系旋转朝前)
-        /// </summary>
-        public void RotateByAxis(float h, float v)
-        {
-            if (CheckAxisZero(h, v))
-                return;
-
-            Vector3 forward = RotateGo.transform.forward;
-            Vector3 axisByEye = GetAxisByEye(h, v);
-
-            RotateGo.transform.forward = Vector3.Slerp(
-                forward,
-                axisByEye,
-                param.rotateSpeed * Time.deltaTime
-            );
-        }
-
-        /// <summary>
-        /// 跳跃
-        /// </summary>
-        public void Jump(float h, float v)
-        {
-            Vector3 jumpDir = Vector3.up + GetAxisByEye(h, v);
-            AddForce(jumpDir * param.jumpForce);
-        }
-
-        #endregion Control
-
         #region Camera
 
         /// <summary>
@@ -287,8 +222,12 @@ namespace Duo1JFramework.Actor
             Transform cameraPoint = point.CameraPoint;
 
             Vector3 angle = cameraPoint.eulerAngles;
-            cameraPoint.rotation = Quaternion.Euler(
-                    angle.x - my * param.mouseSpeedY * Time.deltaTime,
+            float x = angle.x - my * param.mouseSpeedY * Time.deltaTime;
+            if (x > 180) x -= 360;
+            x = Mathf.Clamp(x, param.cameraMinRotate, param.cameraMaxRotate);
+
+            cameraPoint.localRotation = Quaternion.Euler(
+                    x,
                     angle.y + mx * param.mouseSpeedX * Time.deltaTime,
                     angle.z
                 );
@@ -305,78 +244,13 @@ namespace Duo1JFramework.Actor
 
         #endregion Camera
 
-        #region Physic
-
-        /// <summary>
-        /// 获取刚体组件
-        /// </summary>
-        public Rigidbody GetRb()
-        {
-            if (rigidBody == null) ErrNoComponent(typeof(Rigidbody));
-            return rigidBody;
-        }
-
-        /// <summary>
-        /// 获取当前速度
-        /// </summary>
-        public Vector3 GetVelocity()
-        {
-            Rigidbody rb = GetRb();
-            if (rb)
-            {
-                return rb.velocity;
-            }
-            return Vector3.zero;
-        }
-
-        /// <summary>
-        /// 设置当前速度
-        /// </summary>
-        /// <param name="velocity"></param>
-        public void SetVelocity(Vector3 velocity)
-        {
-            Rigidbody rb = GetRb();
-            if (rb)
-            {
-                rb.velocity = velocity;
-            }
-        }
-
-        /// <summary>
-        /// 设置当前平面速度
-        /// </summary>
-        /// <param name="velocityPlane"></param>
-        public void SetVelocity(Vector2 velocityPlane)
-        {
-            Rigidbody rb = GetRb();
-            if (rb)
-            {
-                Vector3 v = GetVelocity();
-                SetVelocity(new Vector3(velocityPlane.x, v.y, velocityPlane.y));
-            }
-        }
-
-        /// <summary>
-        /// 添加力
-        /// </summary>
-        public void AddForce(Vector3 force, ForceMode forceMode = ForceMode.Force)
-        {
-            Rigidbody rb = GetRb();
-            if (rb)
-            {
-                rb.AddForce(force, forceMode);
-            }
-        }
-
-        #endregion Physic
-
         #region Animation
 
         /// <summary>
         /// 获取Animator
         /// </summary>
         /// <returns></returns>
-        private Animator GetAni()
+        protected Animator GetAni()
         {
             if (animator == null) ErrNoComponent(typeof(Animator));
             return animator;
@@ -456,42 +330,20 @@ namespace Duo1JFramework.Actor
         /// </summary>
         private void InitComponent()
         {
-            //Rigidbody
-            if (rigidBody != null)
-            {
-                rigidBody.isKinematic = false;
-                rigidBody.constraints = RigidbodyConstraints.FreezeRotationX |
-                                        RigidbodyConstraints.FreezeRotationY |
-                                        RigidbodyConstraints.FreezeRotationZ;
-            }
-
             //Animator
             if (animator != null)
             {
                 animator.applyRootMotion = false;
             }
+            OnInitComponent();
         }
+
+        protected abstract void OnInitComponent();
 
         /// <summary>
         /// 下落加速
         /// </summary>
-        private void UpdateFallSpeedUp()
-        {
-            if (!FallSpeedUp)
-                return;
-            if (rigidBody == null)
-                return;
-
-            Vector3 veloticy = rigidBody.velocity;
-            if (veloticy.y != 0)
-            {
-                rigidBody.velocity = new Vector3(
-                    veloticy.x,
-                    veloticy.y - param.fallSpeedUp * Time.deltaTime,
-                    veloticy.z
-                );
-            }
-        }
+        protected abstract void UpdateFallSpeedUp();
 
         /// <summary>
         /// 更新是否着地状态
@@ -502,12 +354,15 @@ namespace Duo1JFramework.Actor
                 return;
 
             bool oldVal = Grounded;
-            Grounded = Physics.Raycast(
-                point.Root.position + Vector3.up * RayGroundOffsetY,
+            float rayGroundRadius = param.rayGroundRadius;
+            Grounded = Physics.SphereCast(
+                point.Root.position + Vector3.up * (rayGroundRadius + param.rayGroundOffsetY),
+                rayGroundRadius,
                 Vector3.down,
                 out RaycastHit hitInfo,
-                RayGroundLen,
-                Layer.OnlyLayer(Layer.WORLD));
+                param.rayGroundLen,
+                Layer.OnlyLayer(Layer.WORLD)
+            );
 
             normal = Grounded ? hitInfo.normal : Vector3.up;
 
@@ -533,13 +388,19 @@ namespace Duo1JFramework.Actor
 
         private void OnUpdate()
         {
-            UpdateFallSpeedUp();
+            if (FallSpeedUp) UpdateFallSpeedUp();
             UpdateGroundedState();
+
+            OnUpdateSub();
 
             UpdateFSM();
         }
 
-        private void Awake()
+        protected virtual void OnUpdateSub()
+        {
+        }
+
+        protected virtual void Awake()
         {
             InitActorMonoData();
             InitComponent();
@@ -550,7 +411,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 报错未持有组件
         /// </summary>
-        private void ErrNoComponent(Type type, string msg = "")
+        protected void ErrNoComponent(Type type, string msg = "")
         {
             Err($"该角色未持有{type.Name}组件，name: {gameObject.name}。{msg}", true);
         }
@@ -558,7 +419,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// Actor报错
         /// </summary>
-        private void Err(string msg, bool force = true)
+        protected void Err(string msg, bool force = true)
         {
             if (force)
             {
@@ -581,9 +442,7 @@ namespace Duo1JFramework.Actor
 
 #if UNITY_EDITOR
 
-        private Vector3 editor_moveAxisByEye = Vector3.zero;
-
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             if (Application.isPlaying)
             {
@@ -592,21 +451,19 @@ namespace Duo1JFramework.Actor
                 //触地检测射线
                 if (UpdateGrounded)
                 {
+                    float rayGroundOffsetY = param.rayGroundOffsetY;
+                    float rayGroundRadius = param.rayGroundRadius;
                     Gizmos.color = Color.red;
-                    Vector3 rayGroundStartPos = rootPos + Vector3.up * RayGroundOffsetY;
+                    Gizmos.DrawWireSphere(
+                        rootPos + Vector3.up * (rayGroundRadius + rayGroundOffsetY),
+                        rayGroundRadius
+                    );
+                    Gizmos.color = Color.blue;
                     Gizmos.DrawLine(
-                        rayGroundStartPos,
-                        rayGroundStartPos + Vector3.down * RayGroundLen
+                        rootPos + Vector3.up * rayGroundOffsetY,
+                        rootPos + Vector3.up * (rayGroundOffsetY - param.rayGroundLen)
                     );
                 }
-
-                //受轴控制的目视前方
-                Gizmos.color = Color.blue;
-                Vector3 rayEyeForwardStartPos = rootPos + Vector3.up * 0.5f;
-                Gizmos.DrawLine(
-                    rayEyeForwardStartPos,
-                    rayEyeForwardStartPos + editor_moveAxisByEye.normalized
-                );
 
                 //相机挂点
                 if (point.CameraPoint != null)
@@ -637,11 +494,17 @@ namespace Duo1JFramework.Actor
             {
                 animator = model.GetComponent<Animator>();
             }
-            if (rigidBody == null)
+            try
             {
-                rigidBody = GetComponent<Rigidbody>();
+                OnCollectComponent();
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "收集组件时发生异常");
             }
         }
+
+        protected abstract void OnCollectComponent();
 
         /// <summary>
         /// 获取Hierarchy显示信息
@@ -650,13 +513,19 @@ namespace Duo1JFramework.Actor
         {
             return Pool.StringBuilderPool.Using((item) =>
             {
-                item.Value.AppendLine($"状态机: {CurState}");
-                item.Value.AppendLine($"动画状态: {curAniName}");
-                item.Value.AppendLine($"是否触地: {Grounded}");
-                item.Value.AppendLine($"是否绑定相机: {BindCamera}");
+                StringBuilder sb = item.Value;
+                sb.AppendLine($"状态机: {CurState}");
+                sb.AppendLine($"动画状态: {curAniName}");
+                sb.AppendLine($"是否触地: {Grounded}");
+                sb.AppendLine($"是否绑定相机: {BindCamera}");
 
+                OnGetHierarchyInfo(sb);
                 return item.Value.ToString();
             }).ToString();
+        }
+
+        protected virtual void OnGetHierarchyInfo(StringBuilder sb)
+        {
         }
 
         #endregion Editor

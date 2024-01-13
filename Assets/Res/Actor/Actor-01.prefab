@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6358843010101729558}
-  - component: {fileID: 9071800630339863101}
+  - component: {fileID: 4241931583926691974}
   - component: {fileID: 7064342187519431148}
   - component: {fileID: 6810609857197229036}
   - component: {fileID: 2413385081723941375}
@@ -38,7 +38,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9071800630339863101
+--- !u!114 &4241931583926691974
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4244348073343179333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebc6da0d3011d5047944d6f812d03c45, type: 3}
+  m_Script: {fileID: 11500000, guid: aed521f494f8f374ab6ccdbb696bf178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 3870905162506871156}
@@ -68,6 +68,7 @@ MonoBehaviour:
   moveSpeed: 3
   jumpForce: 250
   rotateSpeed: 10
+  jumpHeight: 2
   mouseSpeedX: 300
   mouseSpeedY: 300
   fallSpeedUp: 7
@@ -75,6 +76,9 @@ MonoBehaviour:
   idleAniName: Idle
   runAniName: Running
   jumpAniName: Jump
+  rayGroundLen: 0.1
+  rayGroundRadius: 0.3
+  rayGroundOffsetY: 0.05
 --- !u!54 &6810609857197229036
 Rigidbody:
   m_ObjectHideFlags: 0

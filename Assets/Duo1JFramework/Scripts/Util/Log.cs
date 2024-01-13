@@ -48,7 +48,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void Exception(Exception e, params object[] msg)
         {
-            Debug.LogError(Concat("[Exception] ", msg) + $"\n{e.Message}\n{e.StackTrace}");
+            Debug.LogError(Concat("[Exception] ", msg) + $"\n\t{e.Message}\n{e.StackTrace}");
         }
 
         /// <summary>

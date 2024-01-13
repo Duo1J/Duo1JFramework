@@ -43,6 +43,22 @@ namespace Duo1JFramework
         }
         private UIRoot uiRoot;
 
+        /// <summary>
+        /// 虚拟相机根节点
+        /// </summary>
+        public GameObject VirtualCameraRoot
+        {
+            get
+            {
+                if (virtualCameraRoot == null)
+                {
+                    virtualCameraRoot = new GameObject("VirtualCameraRoot");
+                }
+                return virtualCameraRoot;
+            }
+        }
+        private GameObject virtualCameraRoot;
+
         protected override void OnInit()
         {
         }

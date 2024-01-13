@@ -7,7 +7,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// 可控制角色
     /// </summary>
-    public class ControlableActor : CommonActor
+    public class RbControlableActor : GenericActor<RbActorController>
     {
         private int jumpFrameCount = 0;
         private const int MinJumpFrame = 30;
@@ -17,19 +17,19 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected void InitFSM()
         {
-            Controller.InitFSM("Move",
+            Con.InitFSM("Move",
                 StateNode.Create("Move",
                     null,
                     () =>
                     {
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Controller.SetMoveSpeedByAxis(h, v);
-                        Controller.RotateByAxis(h, v);
+                        Con.SetMoveSpeedByAxis(h, v);
+                        Con.RotateByAxis(h, v);
 
-                        if (Controller.CheckAxisZero(h, v))
-                            Controller.AniCrossFade(Param.idleAniName);
+                        if (Con.CheckAxisZero(h, v))
+                            Con.AniCrossFade(Param.idleAniName);
                         else
-                            Controller.AniCrossFade(Param.runAniName);
+                            Con.AniCrossFade(Param.runAniName);
 
                         UpdateCamera();
                     },
@@ -37,21 +37,21 @@ namespace Duo1JFramework.Actor
                 StateNode.Create("Jump",
                     () =>
                     {
-                        if (!Controller.Grounded)
+                        if (!Con.Grounded)
                         {
-                            Controller.SwitchState("Move");
+                            Con.SwitchState("Move");
                             return;
                         }
                         jumpFrameCount = 0;
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Controller.Jump(h, v);
-                        Controller.AniCrossFade(Param.jumpAniName);
+                        Con.JumpByHeight();
+                        Con.AniCrossFade(Param.jumpAniName);
                     },
                     () =>
                     {
-                        if (++jumpFrameCount >= MinJumpFrame && Controller.Grounded)
+                        if (++jumpFrameCount >= MinJumpFrame && Con.Grounded)
                         {
-                            Controller.SwitchState("Move");
+                            Con.SwitchState("Move");
                         }
 
                         UpdateCamera();
@@ -62,22 +62,22 @@ namespace Duo1JFramework.Actor
 
         protected override void OnCreated()
         {
+            Con.FallSpeedUp = true;
+            Con.UpdateGrounded = true;
+
             RegisterUpdate(OnUpdate);
             InitFSM();
-
-            Controller.FallSpeedUp = true;
-            Controller.UpdateGrounded = true;
         }
 
         private void OnUpdate()
         {
-            if (Controller == null) return;
+            if (Con == null) return;
 
-            if (Controller.Grounded &&
-                !Controller.InState("Jump") &&
+            if (Con.Grounded &&
+                !Con.InState("Jump") &&
                 InputManager.GetKeyDown(KeyCode.Space))
             {
-                Controller.SwitchState("Jump");
+                Con.SwitchState("Jump");
             }
         }
 
@@ -85,8 +85,8 @@ namespace Duo1JFramework.Actor
         {
             float mx = InputManager.GetAxisMX();
             float my = InputManager.GetAxisMY();
-            Controller.RotateCameraPoint(mx, my);
-            Controller.UpdateCameraPointPos();
+            Con.RotateCameraPoint(mx, my);
+            Con.UpdateCameraPointPos();
         }
     }
 }
