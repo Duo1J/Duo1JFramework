@@ -210,6 +210,28 @@ namespace Duo1JFramework.Actor
 
         #endregion Helper
 
+        #region Control
+
+        /// <summary>
+        /// 通过轴设置旋转 (以目视Forward为参考系旋转朝前)
+        /// </summary>
+        public void RotateByAxis(float h, float v)
+        {
+            if (CheckAxisZero(h, v))
+                return;
+
+            Vector3 forward = RotateGo.transform.forward;
+            Vector3 axisByEye = GetAxisByEye(h, v);
+
+            RotateGo.transform.forward = Vector3.Slerp(
+                forward,
+                axisByEye,
+                param.rotateSpeed * Time.deltaTime
+            );
+        }
+
+        #endregion Control
+
         #region Camera
 
         /// <summary>

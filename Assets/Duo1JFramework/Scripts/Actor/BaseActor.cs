@@ -1,5 +1,6 @@
 using Duo1JFramework.Asset;
 using Duo1JFramework.Camera3D;
+using Duo1JFramework.GamerInput;
 using Duo1JFramework.World;
 using System;
 using UnityEngine;
@@ -144,6 +145,17 @@ namespace Duo1JFramework.Actor
         public override string ToString()
         {
             return $"<Actor-{ID}-{Data.Name}-{Data.LogicType}><Con-{Controller}>";
+        }
+
+        /// <summary>
+        /// 更新相机
+        /// </summary>
+        protected virtual void UpdateCamera()
+        {
+            float mx = InputManager.GetAxisMX();
+            float my = InputManager.GetAxisMY();
+            Controller.RotateCameraPoint(mx, my);
+            Controller.UpdateCameraPointPos();
         }
 
         /// <summary>

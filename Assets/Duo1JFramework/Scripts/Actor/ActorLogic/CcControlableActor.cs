@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 可控制Rigidbody角色
+    /// 可控制CharacterController角色
     /// </summary>
-    public class RbControlableActor : GenericActor<RbActorController>
+    public class CcControlableActor : GenericActor<CcActorController>
     {
         private int jumpFrameCount = 0;
         private const int MinJumpFrameCount = 30;
@@ -23,7 +23,7 @@ namespace Duo1JFramework.Actor
                     () =>
                     {
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Con.SetMoveSpeedByAxis(h, v);
+                        Con.MoveByAxis(h, v);
                         Con.RotateByAxis(h, v);
 
                         if (Con.CheckAxisZero(h, v))

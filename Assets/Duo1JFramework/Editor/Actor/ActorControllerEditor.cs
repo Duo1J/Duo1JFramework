@@ -9,10 +9,14 @@ namespace Duo1JFramework
     {
         private ActorController actorController;
 
+        //组件
         private SerializedProperty model;
         private SerializedProperty animator;
         private SerializedProperty rigidbody;
         private SerializedProperty cc;
+
+        //参数
+        private SerializedProperty gravity;
 
         private void OnEnable()
         {
@@ -22,6 +26,8 @@ namespace Duo1JFramework
             animator = serializedObject.FindProperty("animator");
             rigidbody = serializedObject.FindProperty("rigidBody");
             cc = serializedObject.FindProperty("cc");
+
+            gravity = serializedObject.FindProperty("gravity");
         }
 
         public override void OnInspectorGUI()
@@ -51,6 +57,18 @@ namespace Duo1JFramework
                     actorController.CollectComponent();
                     EditorUtility.SetDirty(actorController);
                 }
+
+                GUILayout.Space(5);
+                GUILayout.Label("参数列表");
+
+                LU.Vertical(() =>
+                {
+                    LU.SurrondSpace(3, () =>
+                    {
+                        if (gravity != null)
+                            gravity.floatValue = EditorGUILayout.FloatField("CC重力", gravity.floatValue);
+                    });
+                }, "box");
             });
 
             GUILayout.Space(5);

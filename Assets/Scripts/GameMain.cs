@@ -20,7 +20,7 @@ public class GameMain : MonoBehaviour
         UIManager.Instance.OpenWindow(new InfoWindow());
 
         BaseActor mainActor = ActorManager.Instance.CreateActor(
-            new ActorData(typeof(RbControlableActor), "TestActor", "Actor/Actor-01.prefab"));
+            new ActorData(typeof(CcControlableActor), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
     }
 
