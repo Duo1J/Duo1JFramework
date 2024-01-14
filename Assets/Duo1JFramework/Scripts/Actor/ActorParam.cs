@@ -9,9 +9,10 @@ namespace Duo1JFramework
     {
         [Header("运动数值")]
         public float moveSpeed = 3;
-        public float jumpForce = 250;
         public float rotateSpeed = 5;
+        public float jumpForce = 250;
         public float jumpHeight = 2;
+        public float maxSlopeAngle = 50;
 
         [Space]
         [Header("控制数值")]

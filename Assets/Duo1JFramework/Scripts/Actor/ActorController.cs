@@ -468,7 +468,7 @@ namespace Duo1JFramework.Actor
                 //相机挂点
                 if (point.CameraPoint != null)
                 {
-                    Gizmos.color = Color.blue;
+                    Gizmos.color = Color.green;
                     Gizmos.DrawWireSphere(point.CameraPoint.position, 0.15f);
                 }
             }

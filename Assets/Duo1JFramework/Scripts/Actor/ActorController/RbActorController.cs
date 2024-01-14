@@ -25,16 +25,21 @@ namespace Duo1JFramework.Actor
             if (normal != Vector3.up)
             {
                 Vector3 projectVec = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
+                if ((projectVec.y - axisByEye.y) > 0 && Vector3.Angle(Vector3.up, normal) > param.maxSlopeAngle)
+                {
+                    SetVelocity(new Vector2(0, 0));
+                    return;
+                }
                 axisByEye = projectVec;
             }
-
-            Vector3 velocity = axisByEye * param.moveSpeed;
-            SetVelocity(new Vector2(velocity.x, velocity.z));
 
 #if UNITY_EDITOR
             if (h != 0 || v != 0)
                 editor_moveAxisByEye = axisByEye;
 #endif
+
+            Vector3 velocity = axisByEye * param.moveSpeed;
+            SetVelocity(new Vector2(velocity.x, velocity.z));
         }
 
         /// <summary>
@@ -69,9 +74,8 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void JumpByHeight()
         {
-            float y = Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * Physics.gravity.y));
-            Vector3 velocity = GetVelocity();
-            SetVelocity(new Vector3(velocity.x, y, velocity.z));
+            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * Physics.gravity.y));
+            SetVelocityY(velocityY);
         }
 
         #endregion Control
@@ -125,6 +129,15 @@ namespace Duo1JFramework.Actor
                 Vector3 v = GetVelocity();
                 SetVelocity(new Vector3(velocityPlane.x, v.y, velocityPlane.y));
             }
+        }
+
+        /// <summary>
+        /// 设置当前Y轴速度
+        /// </summary>
+        public void SetVelocityY(float velocityY)
+        {
+            Vector3 velocity = GetVelocity();
+            SetVelocity(new Vector3(velocity.x, velocityY, velocity.z));
         }
 
         /// <summary>
