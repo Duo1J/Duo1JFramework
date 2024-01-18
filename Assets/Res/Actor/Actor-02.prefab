@@ -52,7 +52,7 @@ MonoBehaviour:
   model: {fileID: 3870905162506871156}
   animator: {fileID: 3870905162514289470}
   cc: {fileID: 5815481064931470439}
-  gravity: -9.81
+  gravityRate: 1
 --- !u!143 &5815481064931470439
 CharacterController:
   m_ObjectHideFlags: 0
@@ -91,10 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0d8271b2e579945a88a9c82298b8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.03
+  moveSpeed: 5
   rotateSpeed: 10
   jumpForce: 250
-  jumpHeight: 2
+  jumpHeight: 20
   maxSlopeAngle: 50
   mouseSpeedX: 300
   mouseSpeedY: 300

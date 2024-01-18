@@ -23,7 +23,8 @@ namespace Duo1JFramework.Actor
                     () =>
                     {
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Con.MoveByAxis(h, v);
+                        Vector3 velocity = Con.GetMoveVeloByAxis(h, v);
+                        Con.SetVelocity(velocity);
                         Con.RotateByAxis(h, v);
 
                         if (Con.CheckAxisZero(h, v))
@@ -43,7 +44,9 @@ namespace Duo1JFramework.Actor
                             return;
                         }
                         jumpFrameCount = 0;
-                        Con.JumpByHeight();
+                        Vector3 velocity = Con.GetVelocity();
+                        velocity.y = Con.GetJumpVeloByHeight();
+                        Con.SetVelocity(velocity);
                         Con.AniCrossFade(Param.jumpAniName);
                     },
                     () =>

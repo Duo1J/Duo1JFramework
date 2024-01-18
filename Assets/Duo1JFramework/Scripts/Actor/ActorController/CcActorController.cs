@@ -14,28 +14,46 @@ namespace Duo1JFramework.Actor
         [SerializeField]
         private CharacterController cc;
 
+        /// <summary>
+        /// 重力比率
+        /// </summary>
         [SerializeField]
-        protected float gravity = -9.81f;
+        protected float gravityRate = 1;
+
+        /// <summary>
+        /// CC组件重力
+        /// </summary>
+        public static float Gravity { get; set; } = -9.81f;
+
+        /// <summary>
+        /// 乘以比率后的重力
+        /// </summary>
+        public float RateGravity => Gravity * gravityRate;
+
+        /// <summary>
+        /// 当前重力速度
+        /// </summary>
+        private float gravityVelocity;
 
         #region Control
 
         /// <summary>
-        /// 通过轴移动 (以目视Forward为参考系)
+        /// 获取通过轴移动的速度 (以目视Forward为参考系)
         /// </summary>
-        public void MoveByAxis(float h, float v)
+        public Vector3 GetMoveVeloByAxis(float h, float v)
         {
             Vector3 axisByEye = GetAxisByEye(h, v);
-            Vector3 velocity = axisByEye * param.moveSpeed;
-            Move(velocity);
+            axisByEye = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
+            return axisByEye * param.moveSpeed;
         }
 
         /// <summary>
-        /// 通过高度数值跳跃
+        /// 获取通过高度数值跳跃的速度
         /// </summary>
-        public void JumpByHeight()
+        public float GetJumpVeloByHeight()
         {
-            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * gravity));
-            Move(new Vector3(0, velocityY, 0));
+            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * RateGravity));
+            return velocityY;
         }
 
         #endregion Control
@@ -49,16 +67,29 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// 移动
+        /// 设置速度
         /// </summary>
-        public CollisionFlags Move(Vector3 motion)
+        public CollisionFlags SetVelocity(Vector3 velocity)
         {
             CharacterController cc = GetCc();
             if (cc)
             {
-                return cc.Move(motion);
+                return cc.Move(velocity * Time.deltaTime);
             }
             return CollisionFlags.None;
+        }
+
+        /// <summary>
+        /// 获取当前速度
+        /// </summary>
+        public Vector3 GetVelocity()
+        {
+            CharacterController cc = GetCc();
+            if (cc)
+            {
+                return cc.velocity;
+            }
+            return Vector3.zero;
         }
 
         #endregion CharacterController
@@ -68,7 +99,23 @@ namespace Duo1JFramework.Actor
         protected override void OnUpdateSub()
         {
             base.OnUpdateSub();
-            //TODO hlj 重力下坠
+
+            //todo hlj 抽出Veclocity在LateUpdate结算
+
+            Vector3 velocity = GetVelocity();
+
+            //重力速度
+            if (Grounded)
+            {
+                gravityVelocity = 0;
+            }
+            else
+            {
+                gravityVelocity += RateGravity * Time.deltaTime;
+                SetVelocity(GetVelocity() + Vector3.up * gravityVelocity);
+            }
+
+            SetVelocity(velocity);
         }
 
         protected override void OnCollectComponent()

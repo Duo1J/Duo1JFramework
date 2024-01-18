@@ -16,7 +16,7 @@ namespace Duo1JFramework
         private SerializedProperty cc;
 
         //参数
-        private SerializedProperty gravity;
+        private SerializedProperty gravityRate;
 
         private void OnEnable()
         {
@@ -27,7 +27,7 @@ namespace Duo1JFramework
             rigidbody = serializedObject.FindProperty("rigidBody");
             cc = serializedObject.FindProperty("cc");
 
-            gravity = serializedObject.FindProperty("gravity");
+            gravityRate = serializedObject.FindProperty("gravityRate");
         }
 
         public override void OnInspectorGUI()
@@ -65,8 +65,8 @@ namespace Duo1JFramework
                 {
                     LU.SurrondSpace(3, () =>
                     {
-                        if (gravity != null)
-                            gravity.floatValue = EditorGUILayout.FloatField("CC重力", gravity.floatValue);
+                        if (gravityRate != null)
+                            gravityRate.floatValue = EditorGUILayout.FloatField("重力比率", gravityRate.floatValue);
                     });
                 }, "box");
             });
