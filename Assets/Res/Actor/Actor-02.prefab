@@ -91,10 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0d8271b2e579945a88a9c82298b8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 4
   rotateSpeed: 10
   jumpForce: 250
-  jumpHeight: 20
+  jumpHeight: 0.7
   maxSlopeAngle: 50
   mouseSpeedX: 300
   mouseSpeedY: 300

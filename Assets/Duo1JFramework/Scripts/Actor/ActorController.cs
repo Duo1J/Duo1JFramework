@@ -410,12 +410,19 @@ namespace Duo1JFramework.Actor
 
         private void OnUpdate()
         {
-            if (FallSpeedUp) UpdateFallSpeedUp();
-            UpdateGroundedState();
+            try
+            {
+                if (FallSpeedUp) UpdateFallSpeedUp();
+                UpdateGroundedState();
 
-            OnUpdateSub();
+                OnUpdateSub();
 
-            UpdateFSM();
+                UpdateFSM();
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e);
+            }
         }
 
         protected virtual void OnUpdateSub()

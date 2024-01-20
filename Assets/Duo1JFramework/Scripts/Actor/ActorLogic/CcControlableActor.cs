@@ -12,6 +12,9 @@ namespace Duo1JFramework.Actor
         private int jumpFrameCount = 0;
         private const int MinJumpFrameCount = 30;
 
+        private Vector3 moveVelocity;
+        private Vector3 jumpVelocity;
+
         /// <summary>
         /// 初始化状态机
         /// </summary>
@@ -23,8 +26,7 @@ namespace Duo1JFramework.Actor
                     () =>
                     {
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Vector3 velocity = Con.GetMoveVeloByAxis(h, v);
-                        Con.SetVelocity(velocity);
+                        moveVelocity = Con.GetMoveVeloByAxis(h, v);
                         Con.RotateByAxis(h, v);
 
                         if (Con.CheckAxisZero(h, v))
@@ -34,7 +36,10 @@ namespace Duo1JFramework.Actor
 
                         UpdateCamera();
                     },
-                    null),
+                    () =>
+                    {
+                        moveVelocity = Vector3.zero;
+                    }),
                 StateNode.Create("Jump",
                     () =>
                     {
@@ -44,9 +49,9 @@ namespace Duo1JFramework.Actor
                             return;
                         }
                         jumpFrameCount = 0;
-                        Vector3 velocity = Con.GetVelocity();
-                        velocity.y = Con.GetJumpVeloByHeight();
-                        Con.SetVelocity(velocity);
+                        InputManager.GetCircleMapAxisRaw(out float h, out float v);
+                        jumpVelocity = Con.GetMoveVeloByAxis(h, v);
+                        jumpVelocity.y = Con.GetJumpVeloByHeight();
                         Con.AniCrossFade(Param.jumpAniName);
                     },
                     () =>
@@ -58,8 +63,19 @@ namespace Duo1JFramework.Actor
 
                         UpdateCamera();
                     },
-                    null).SetSwitchList("Move")
+                    () =>
+                    {
+                        jumpVelocity = Vector3.zero;
+                    }).SetSwitchList("Move")
             );
+        }
+
+        protected virtual Vector3 OnUpdateVelocity(Vector3 input)
+        {
+            input += moveVelocity;
+            input += jumpVelocity;
+
+            return input;
         }
 
         protected override void OnCreated()
@@ -69,6 +85,7 @@ namespace Duo1JFramework.Actor
 
             RegisterUpdate(OnUpdate);
             InitFSM();
+            Con.RegisterOnUpdateVelocity(OnUpdateVelocity);
         }
 
         private void OnUpdate()

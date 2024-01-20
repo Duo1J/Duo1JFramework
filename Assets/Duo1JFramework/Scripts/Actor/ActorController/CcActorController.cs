@@ -38,6 +38,19 @@ namespace Duo1JFramework.Actor
         #region Control
 
         /// <summary>
+        /// 更新速度委托
+        /// </summary>
+        private Func<Vector3, Vector3> OnUpdateVelocity;
+
+        /// <summary>
+        /// 注册更新速度委托
+        /// </summary>
+        public void RegisterOnUpdateVelocity(Func<Vector3, Vector3> handle)
+        {
+            OnUpdateVelocity = handle;
+        }
+
+        /// <summary>
         /// 获取通过轴移动的速度 (以目视Forward为参考系)
         /// </summary>
         public Vector3 GetMoveVeloByAxis(float h, float v)
@@ -52,8 +65,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public float GetJumpVeloByHeight()
         {
-            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * RateGravity));
-            return velocityY;
+            return Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * RateGravity));
         }
 
         #endregion Control
@@ -96,13 +108,9 @@ namespace Duo1JFramework.Actor
 
         #region Override
 
-        protected override void OnUpdateSub()
+        protected void UpdateVelocity()
         {
-            base.OnUpdateSub();
-
-            //todo hlj 抽出Veclocity在LateUpdate结算
-
-            Vector3 velocity = GetVelocity();
+            Vector3 velocity = Vector3.zero;
 
             //重力速度
             if (Grounded)
@@ -112,10 +120,26 @@ namespace Duo1JFramework.Actor
             else
             {
                 gravityVelocity += RateGravity * Time.deltaTime;
-                SetVelocity(GetVelocity() + Vector3.up * gravityVelocity);
+                velocity.y += gravityVelocity;
+            }
+
+            if (velocity.y != 0)
+            {
+                velocity.y -= param.fallSpeedUp * Time.deltaTime;
+            }
+
+            if (OnUpdateVelocity != null)
+            {
+                velocity = OnUpdateVelocity.Invoke(velocity);
             }
 
             SetVelocity(velocity);
+        }
+
+        protected override void OnUpdateSub()
+        {
+            base.OnUpdateSub();
+            UpdateVelocity();
         }
 
         protected override void OnCollectComponent()
