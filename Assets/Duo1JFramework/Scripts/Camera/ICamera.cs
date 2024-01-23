@@ -10,6 +10,11 @@ namespace Duo1JFramework.Camera3D
         void InitCamera(params object[] param);
 
         /// <summary>
+        /// 销毁
+        /// </summary>
+        void DestroyCamera();
+
+        /// <summary>
         /// 跟随
         /// </summary>
         void Follow(Transform t);

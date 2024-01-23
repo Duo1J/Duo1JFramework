@@ -32,6 +32,14 @@ namespace Duo1JFramework.Camera3D
             return ret;
         }
 
+        /// <summary>
+        /// 创建相机
+        /// </summary>
+        public static ICamera CreateCamera(string prefabPath)
+        {
+            return CMCamera.CreateCamera(prefabPath);
+        }
+
         protected override void OnDispose()
         {
         }

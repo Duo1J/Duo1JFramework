@@ -7,10 +7,13 @@ namespace Duo1JFramework.Camera3D
     /// </summary>
     public class CameraManager : MonoSingleton<CameraManager>
     {
+        /// <summary>
+        /// 当前相机
+        /// </summary>
         public ICamera Camera { get; private set; }
 
         /// <summary>
-        /// 跟随
+        /// 当前相机跟随
         /// </summary>
         public void Follow(Transform t)
         {
@@ -19,7 +22,7 @@ namespace Duo1JFramework.Camera3D
         }
 
         /// <summary>
-        /// 注视
+        /// 当前相机注视
         /// </summary>
         public void LookAt(Transform t)
         {
@@ -28,7 +31,7 @@ namespace Duo1JFramework.Camera3D
         }
 
         /// <summary>
-        /// 初始化相机
+        /// 初始化当前相机
         /// </summary>
         public ICamera InitCamera<T>(params object[] param) where T : ICamera, new()
         {
@@ -37,15 +40,38 @@ namespace Duo1JFramework.Camera3D
                 Log.ErrorForce($"相机已初始化为`{Camera.GetType()}`，不可重复初始化");
                 return Camera;
             }
-            Camera = new T();
-            Camera.InitCamera(param);
-
+            Camera = CreateCamera<T>(param);
             return Camera;
         }
 
+        /// <summary>
+        /// 销毁当前相机
+        /// </summary>
+        public void DestroyCamera()
+        {
+            if (Camera != null)
+            {
+                Camera.DestroyCamera();
+                Camera = null;
+            }
+        }
+
+        /// <summary>
+        /// 检查当前相机
+        /// </summary>
         private void CheckCamera()
         {
             Assert.NotNull(Camera, "相机未初始化");
+        }
+
+        /// <summary>
+        /// 创建相机
+        /// </summary>
+        public ICamera CreateCamera<T>(params object[] param) where T : ICamera, new()
+        {
+            ICamera camera = new T();
+            camera.InitCamera(param);
+            return camera;
         }
 
         protected override void OnDispose()
@@ -61,7 +87,6 @@ namespace Duo1JFramework.Camera3D
         /// <summary>
         /// 获取或创建主相机
         /// </summary>
-        /// <returns></returns>
         public Camera GetOrCreateMainCamera()
         {
             Camera mainCamera = MainCamera;

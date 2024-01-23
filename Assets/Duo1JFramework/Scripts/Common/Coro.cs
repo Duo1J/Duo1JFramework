@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Duo1JFramework
 {
+    /// <summary>
+    /// 协程管理器
+    /// </summary>
     public class Coro : MonoSingleton<Coro>
     {
         public Coroutine StartCoro(IEnumerator e)

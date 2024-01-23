@@ -1,5 +1,4 @@
 using Cinemachine;
-using Duo1JFramework.Asset;
 using UnityEngine;
 
 namespace Duo1JFramework.Camera3D
@@ -9,20 +8,22 @@ namespace Duo1JFramework.Camera3D
     /// </summary>
     public class CMCamera : ICamera
     {
-        public CinemachineVirtualCamera MainCMCamera { get; private set; }
+        public CinemachineVirtualCamera CM { get; private set; }
 
         public void Follow(Transform t)
         {
-            MainCMCamera.Follow = t;
+            CM.Follow = t;
         }
 
         public void LookAt(Transform t)
         {
-            MainCMCamera.LookAt = t;
+            CM.LookAt = t;
         }
 
         public void InitCamera(params object[] param)
         {
+            DestroyCamera();
+
             if (param.Length == 0)
             {
                 Assert.Throw("CMCamera初始化参数错误");
@@ -31,10 +32,24 @@ namespace Duo1JFramework.Camera3D
             string prefabPath = param[0] as string;
             Assert.NotNullOrEmpty(prefabPath, "主虚拟相机路径不可为空");
 
-            MainCMCamera = CMBrain.Instance.LoadVirtualCamera(prefabPath);
-            if (MainCMCamera == null)
+            CM = CMBrain.Instance.LoadVirtualCamera(prefabPath);
+        }
+
+        /// <summary>
+        /// 创建相机
+        /// </summary>
+        public static ICamera CreateCamera(string prefabPath)
+        {
+            ICamera camera = new CMCamera();
+            camera.InitCamera(prefabPath);
+            return camera;
+        }
+
+        public void DestroyCamera()
+        {
+            if (CM != null)
             {
-                Assert.Throw("主虚拟相机预制体未包含CinemachineVirtualCamera组件");
+                CM.gameObject.DestroyImmediate();
             }
         }
 

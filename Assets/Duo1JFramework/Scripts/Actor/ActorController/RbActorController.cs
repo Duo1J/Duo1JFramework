@@ -89,7 +89,6 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 设置当前速度
         /// </summary>
-        /// <param name="velocity"></param>
         public void SetVelocity(Vector3 velocity)
         {
             Rigidbody rb = GetRb();
@@ -146,13 +145,13 @@ namespace Duo1JFramework.Actor
             if (rigidBody == null)
                 return;
 
-            Vector3 veloticy = rigidBody.velocity;
-            if (veloticy.y != 0)
+            Vector3 velocity = rigidBody.velocity;
+            if (velocity.y != 0)
             {
                 rigidBody.velocity = new Vector3(
-                    veloticy.x,
-                    veloticy.y - param.fallSpeedUp * Time.deltaTime,
-                    veloticy.z
+                    velocity.x,
+                    velocity.y - param.fallSpeedUp * Time.deltaTime,
+                    velocity.z
                 );
             }
         }
