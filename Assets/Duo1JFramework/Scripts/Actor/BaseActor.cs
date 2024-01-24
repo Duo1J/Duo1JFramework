@@ -159,11 +159,19 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
+        /// 获取相机绑定点
+        /// </summary>
+        public Transform GetCameraPoint()
+        {
+            return Controller.GetActorPoint().CameraPoint;
+        }
+
+        /// <summary>
         /// 绑定相机
         /// </summary>
         public virtual void BindCamera()
         {
-            Transform cameraPoint = Controller.GetActorPoint().CameraPoint;
+            Transform cameraPoint = GetCameraPoint();
 
             CameraManager.Instance.LookAt(cameraPoint);
             CameraManager.Instance.Follow(cameraPoint);

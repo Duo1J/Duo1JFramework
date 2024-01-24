@@ -20,6 +20,11 @@ namespace Duo1JFramework.Camera3D
             CM.LookAt = t;
         }
 
+        public void SetPriority(int priority)
+        {
+            CM.Priority = priority;
+        }
+
         public void InitCamera(params object[] param)
         {
             DestroyCamera();
@@ -38,11 +43,9 @@ namespace Duo1JFramework.Camera3D
         /// <summary>
         /// 创建相机
         /// </summary>
-        public static ICamera CreateCamera(string prefabPath)
+        public static CMCamera CreateCamera(string prefabPath)
         {
-            ICamera camera = new CMCamera();
-            camera.InitCamera(prefabPath);
-            return camera;
+            return CMBrain.CreateCamera(prefabPath);
         }
 
         public void DestroyCamera()
