@@ -25,7 +25,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 判断字符串是否不为null以及""，否则抛出异常
         /// </summary>
-        public static void NotNullOrEmpty(string str, string message)
+        public static void NotNullOrEmpty(string str, string message = "")
         {
             if (string.IsNullOrEmpty(str))
             {

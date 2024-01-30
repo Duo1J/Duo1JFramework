@@ -26,5 +26,7 @@ namespace Duo1JFramework
         }
 
         protected abstract void OnInit();
+
+        protected abstract void OnDispose();
     }
 }
