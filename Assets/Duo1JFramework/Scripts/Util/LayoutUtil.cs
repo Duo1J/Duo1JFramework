@@ -69,6 +69,20 @@ namespace Duo1JFramework
             GUILayout.EndScrollView();
         }
 
+        public static void Area(Rect rect, Action action)
+        {
+            GUILayout.BeginArea(rect);
+            action?.Invoke();
+            GUILayout.EndArea();
+        }
+
+        public static void Area(Rect rect, Action action, GUIStyle style)
+        {
+            GUILayout.BeginArea(rect, style);
+            action?.Invoke();
+            GUILayout.EndArea();
+        }
+
         public static void DisableGroup(Action action, bool disabled = true)
         {
             EditorGUI.BeginDisabledGroup(disabled);

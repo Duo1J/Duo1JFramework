@@ -9,5 +9,10 @@ namespace Duo1JFramework.ObjectPool
         /// StringBuilder池
         /// </summary>
         public static StringBuilderPool StringBuilderPool = new StringBuilderPool();
+
+        /// <summary>
+        /// Timer池
+        /// </summary>
+        public static TimerPool TimerPool = new TimerPool();
     }
 }

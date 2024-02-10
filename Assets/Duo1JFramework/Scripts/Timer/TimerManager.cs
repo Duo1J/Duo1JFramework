@@ -1,3 +1,4 @@
+using Duo1JFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
 
@@ -30,7 +31,37 @@ namespace Duo1JFramework.TimerUpdate
 
         private Timer _GetTimer(float interval, bool isFrameTimer, Action callback, int repeat)
         {
+            Assert.NotNull(callback, "计时器回调不可为空");
             return new Timer(interval, isFrameTimer, callback, repeat);
+        }
+
+        /// <summary>
+        /// 从池中启动一个一次性计时器
+        /// </summary>
+        /// <param name="interval">秒数</param>
+        public void GetTimerFromPool(float interval, Action callback)
+        {
+            Assert.NotNull(callback, "计时器回调不可为空");
+            ObjectPoolItem<Timer> item = Pool.TimerPool.Pop();
+            item.Value.Init(interval, false, () =>
+            {
+                callback.Invoke();
+                Pool.TimerPool.Push(item);
+            }, 1);
+        }
+
+        /// <summary>
+        /// 从池中启动一个一次性帧计时器
+        /// </summary>
+        public void GetFrameTimerFromPool(int frame, Action callback)
+        {
+            Assert.NotNull(callback, "计时器回调不可为空");
+            ObjectPoolItem<Timer> item = Pool.TimerPool.Pop();
+            item.Value.Init(frame, true, () =>
+            {
+                callback.Invoke();
+                Pool.TimerPool.Push(item);
+            }, 1);
         }
 
         public void RegisterTimer(Timer timer)

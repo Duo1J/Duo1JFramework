@@ -50,10 +50,16 @@ namespace Duo1JFramework.TimerUpdate
         private float startTime;
 
         /// <summary>
+        /// 初始化
+        /// </summary>
+        private bool init;
+
+        /// <summary>
         /// 开启计时器
         /// </summary>
         public Timer Start()
         {
+            Assert.Guard(init, "Timer尚未初始化，请调用Init初始化");
             if (isRunning) return this;
             isRunning = true;
             startTime = Time.unscaledTime;
@@ -80,6 +86,15 @@ namespace Duo1JFramework.TimerUpdate
             curInterval = 0;
             curRepeat = 0;
             return this;
+        }
+
+        /// <summary>
+        /// 销毁计时器，再次使用需要重新初始化
+        /// </summary>
+        public void Dispose()
+        {
+            init = false;
+            Stop();
         }
 
         /// <summary>
@@ -131,8 +146,12 @@ namespace Duo1JFramework.TimerUpdate
             curRepeat++;
         }
 
-        /// <see cref="TimerManager._GetTimer"/>
         public Timer(float interval, bool isFrameTimer, Action callback, int repeat)
+        {
+            Init(interval, isFrameTimer, callback, repeat);
+        }
+
+        public Timer Init(float interval, bool isFrameTimer, Action callback, int repeat)
         {
             if (repeat == 0)
             {
@@ -150,6 +169,12 @@ namespace Duo1JFramework.TimerUpdate
             this.repeat = repeat;
 
             Reset();
+            init = true;
+            return this;
+        }
+
+        public Timer()
+        {
         }
     }
 }

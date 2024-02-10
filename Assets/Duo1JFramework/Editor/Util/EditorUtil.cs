@@ -44,5 +44,29 @@ namespace Duo1JFramework
         }
 
         #endregion 选中
+
+        #region 杂项
+
+        /// <summary>
+        /// 打开资源管理器
+        /// </summary>
+        public static void OpenExplore(string path)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", path);
+        }
+
+        /// <summary>
+        /// 复制
+        /// </summary>
+        public static void CopyText(string text)
+        {
+            TextEditor editor = new TextEditor();
+            editor.text = text;
+            editor.SelectAll();
+            editor.Copy();
+            Log.EditorInfo($"已拷贝`{text}`到粘贴板");
+        }
+
+        #endregion 杂项 
     }
 }
