@@ -33,5 +33,10 @@ namespace Duo1JFramework
         public const string TOOL_EDITOR_STYLE_PREFIX = TOOL_PREFIX + "EditorStyle/";
 
         #endregion 工具路径定义
+
+        /// <summary>
+        /// 编辑器配置路径
+        /// </summary>
+        public const string EDITOR_CONFIG_PATH = "Assets/" + Def.FRAME_WORK_NAME + "/EditorConfig/";
     }
 }

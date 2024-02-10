@@ -25,6 +25,20 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 获取选中的Obj
+        /// </summary>
+        public static bool GetActiveObj(out UnityEngine.Object obj, bool nullWarn = true)
+        {
+            obj = Selection.activeObject;
+            if (obj == null)
+            {
+                if (nullWarn) Log.Error("未选中任何Object");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 设置选中Go为父节点
         /// </summary>
         public static void SetParentToActiveGo(GameObject go, bool worldPositionStays = false)
@@ -52,7 +66,8 @@ namespace Duo1JFramework
         /// </summary>
         public static void OpenExplore(string path)
         {
-            System.Diagnostics.Process.Start("explorer.exe", path);
+            Log.EditorInfo($"打开文件夹: {path}");
+            System.Diagnostics.Process.Start("explorer.exe", path.Replace("/", "\\"));
         }
 
         /// <summary>

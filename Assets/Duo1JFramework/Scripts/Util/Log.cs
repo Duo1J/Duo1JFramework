@@ -54,7 +54,6 @@ namespace Duo1JFramework
         /// <summary>
         /// 编辑器log
         /// </summary>
-        /// <param name="msg"></param>
         public static void EditorInfo(params object[] msg)
         {
             if (Game.IsEditor)
@@ -66,12 +65,22 @@ namespace Duo1JFramework
         /// <summary>
         /// 编辑器警告
         /// </summary>
-        /// <param name="msg"></param>
         public static void EditorWarn(params object[] msg)
         {
             if (Game.IsEditor)
             {
                 Warn(msg);
+            }
+        }
+
+        /// <summary>
+        /// 编辑器错误
+        /// </summary>
+        public static void EditorError(params object[] msg)
+        {
+            if (Game.IsEditor)
+            {
+                Error(msg);
             }
         }
 

@@ -10,14 +10,6 @@ namespace Duo1JFramework
     /// </summary>
     public class GUIStyleViewer : EditorWindowBase
     {
-        [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "内置样式列表")]
-        public static GUIStyleViewer Open()
-        {
-            GUIStyleViewer wnd = GetWindow<GUIStyleViewer>("内置样式列表");
-            wnd.Show();
-            return wnd;
-        }
-
         private struct DrawItem
         {
             public Rect rect;

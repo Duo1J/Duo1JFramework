@@ -1,3 +1,6 @@
+using ParadoxNotion.Design;
+using UnityEditor;
+
 namespace Duo1JFramework.Asset
 {
     /// <summary>
@@ -19,5 +22,14 @@ namespace Duo1JFramework.Asset
         /// Resources-UI资源路径前缀
         /// </summary>
         public const string RES_PATH_UI_PREFIX = RES_PATH_PREFIX + "UI/";
+
+        /// <summary>
+        /// 移除文件类型
+        /// </summary>
+        public static string RemoveFileType(string path)
+        {
+            int idx = path.LastIndexOf('.');
+            return path.Substring(0, idx);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Duo1JFramework
         {
             new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_FolderEmpty Icon"), () =>
             {
-                //todo hlj
+                EditorUtil.OpenExplore(Application.dataPath);
             })
         };
 
