@@ -34,7 +34,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void DestroyImmediate(this GameObject go)
         {
-            DestroyImmediate(go);
+            Object.DestroyImmediate(go);
         }
 
         public static T GetAndAssertComponent<T>(this GameObject go, string msg = "无法获取到组件")

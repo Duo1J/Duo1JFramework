@@ -59,6 +59,22 @@ namespace Duo1JFramework
         }
         private GameObject virtualCameraRoot;
 
+        /// <summary>
+        /// Timeline根节点
+        /// </summary>
+        public GameObject TimelineRoot
+        {
+            get
+            {
+                if (timelineRoot == null)
+                {
+                    timelineRoot = new GameObject("TimelineRoot");
+                }
+                return timelineRoot;
+            }
+        }
+        private GameObject timelineRoot;
+
         protected override void OnInit()
         {
         }

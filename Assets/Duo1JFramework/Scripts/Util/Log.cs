@@ -48,7 +48,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void Exception(Exception e, params object[] msg)
         {
-            Debug.LogError(Concat("[Exception] ", msg) + $"\n\t{e.Message}\n{e.StackTrace}");
+            Debug.LogError(Concat("<color=red>[Exception]</color> ", msg) + $"{e.Message}\n{e.StackTrace}");
         }
 
         /// <summary>
@@ -185,10 +185,34 @@ namespace Duo1JFramework
     /// </summary>
     public enum LogLevel
     {
+        /// <summary>
+        /// 无
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// 通知
+        /// </summary>
         Info = 1,
+
+        /// <summary>
+        /// 警告
+        /// </summary>
         Warn = 1 << 1,
+
+        /// <summary>
+        /// 错误
+        /// </summary>
         Error = 1 << 2,
+
+        /// <summary>
+        /// Timeline
+        /// </summary>
+        Timeline = 1 << 3,
+
+        /// <summary>
+        /// 全部
+        /// </summary>
         All = 1 << 30
     }
 }

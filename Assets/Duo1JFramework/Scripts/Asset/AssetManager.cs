@@ -11,6 +11,9 @@ namespace Duo1JFramework.Asset
     /// </summary>
     public class AssetManager : MonoSingleton<AssetManager>
     {
+        /// <summary>
+        /// 异步加载
+        /// </summary>
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject
         {
             Assert.NotNull(callback, "回调不可为空");
@@ -26,6 +29,9 @@ namespace Duo1JFramework.Asset
             }
         }
 
+        /// <summary>
+        /// 同步加载
+        /// </summary>
         public T LoadSync<T>(string assetPath) where T : UObject
         {
             Assert.NotNull(assetPath, "资源路径为空");

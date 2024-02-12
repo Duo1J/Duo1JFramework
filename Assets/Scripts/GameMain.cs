@@ -1,6 +1,8 @@
 using Duo1JFramework;
 using Duo1JFramework.Actor;
 using Duo1JFramework.Camera3D;
+using Duo1JFramework.GamerInput;
+using Duo1JFramework.Timeline;
 using Duo1JFramework.UI;
 using UnityEngine;
 
@@ -26,5 +28,12 @@ public class GameMain : MonoBehaviour
 
     private void Update()
     {
+        if (InputManager.GetKeyDown(KeyCode.E))
+        {
+            TimelineManager.Instance.LoadTimeline("Timeline/Timeline-01.prefab", (td) =>
+            {
+                td.Play();
+            });
+        }
     }
 }
