@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using UnityEditor;
 
@@ -33,6 +34,10 @@ namespace Duo1JFramework
             {
                 EditorGUIUtility.PingObject(obj);
                 Selection.activeObject = obj;
+            }
+            else
+            {
+                Log.EditorError($"未找到路径`{path}`的资源");
             }
         }
 

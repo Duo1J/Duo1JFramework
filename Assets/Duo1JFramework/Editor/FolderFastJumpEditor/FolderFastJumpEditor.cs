@@ -16,8 +16,6 @@ namespace Duo1JFramework
         private Vector2 scrollPos;
         private Color oriColor;
 
-        private const string SoPath = EditorDef.EDITOR_CONFIG_PATH + "FolderFastJumpDataSO.asset";
-
         private void OnGUI()
         {
             oriColor = GUI.color;
@@ -61,7 +59,7 @@ namespace Duo1JFramework
 
                 if (GUILayout.Button("选中配置文件"))
                 {
-                    ProjectViewUtil.SelectProjectAsset(SoPath);
+                    ProjectViewUtil.SelectProjectAsset(EditorUtil.GetEditorCfgSOPath<FolderFastJumpDataSo>());
                 }
             });
 
@@ -290,12 +288,7 @@ namespace Duo1JFramework
             {
                 if (so == null)
                 {
-                    so = AssetDatabase.LoadAssetAtPath<FolderFastJumpDataSo>(SoPath);
-                    if (so == null)
-                    {
-                        so = CreateInstance<FolderFastJumpDataSo>();
-                        AssetDatabase.CreateAsset(so, SoPath);
-                    }
+                    so = EditorUtil.GetOrCreateEditorCfgSO<FolderFastJumpDataSo>();
                 }
 
                 return so;

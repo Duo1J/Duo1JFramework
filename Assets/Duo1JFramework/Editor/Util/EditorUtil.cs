@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -83,5 +84,40 @@ namespace Duo1JFramework
         }
 
         #endregion 杂项 
+
+        #region ScriptableObject
+
+        /// <summary>
+        /// 获取或创建ScriptableObject
+        /// </summary>
+        public static T GetOrCreateSO<T>(string path) where T : ScriptableObject
+        {
+            T so = AssetDatabase.LoadAssetAtPath<T>(path);
+            if (so == null)
+            {
+                so = ScriptableObject.CreateInstance<T>();
+                AssetDatabase.CreateAsset(so, path);
+            }
+            return so;
+        }
+
+        /// <summary>
+        /// 获取或创建编辑器配置ScriptableObject
+        /// </summary>
+        public static T GetOrCreateEditorCfgSO<T>() where T : ScriptableObject
+        {
+            string path = GetEditorCfgSOPath<T>();
+            return GetOrCreateSO<T>(path);
+        }
+
+        /// <summary>
+        /// 获取编辑器配置ScriptableObject默认路径
+        /// </summary>
+        public static string GetEditorCfgSOPath<T>()
+        {
+            return $"{EditorDef.EDITOR_CONFIG_PATH}/{typeof(T).Name}.asset";
+        }
+
+        #endregion ScriptableObject
     }
 }

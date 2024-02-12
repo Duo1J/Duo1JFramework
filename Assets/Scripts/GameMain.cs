@@ -11,13 +11,12 @@ public class GameMain : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        Framework.Init();
     }
 
     private void Start()
     {
-        Game.TriggerSingleton();
         CameraManager.Instance.InitCamera<CMCamera>("Camera/Camera3rdPerson.prefab");
-
         UIManager.Instance.OpenWindow(new InfoWindow());
 
         mainActor = ActorManager.Instance.CreateActor(
