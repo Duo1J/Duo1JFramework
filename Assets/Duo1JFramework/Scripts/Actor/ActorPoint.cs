@@ -15,6 +15,7 @@ namespace Duo1JFramework.Actor
             get => root;
         }
         [SerializeField]
+        [Label("根节点 (可空)")]
         private Transform root;
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace Duo1JFramework.Actor
             }
         }
         [SerializeField]
+        [Label("相机挂点")]
         private Transform cameraPoint;
 
         /// <summary>

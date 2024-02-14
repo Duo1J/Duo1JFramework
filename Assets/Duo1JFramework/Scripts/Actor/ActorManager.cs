@@ -9,7 +9,7 @@ namespace Duo1JFramework.Actor
     /// </summary>
     public class ActorManager : MonoSingleton<ActorManager>
     {
-        public BaseActor mainActor;
+        public BaseActor MainActor { get; private set; }
 
         private Dictionary<long, BaseActor> actorDict;
 
@@ -70,9 +70,9 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void SetMainActor(BaseActor actor, bool bindCamera = false)
         {
-            if (mainActor != null) mainActor.UnBindCamera();
-            mainActor = actor;
-            if (bindCamera) mainActor.BindCamera();
+            if (MainActor != null) MainActor.UnBindCamera();
+            MainActor = actor;
+            if (bindCamera) MainActor.BindCamera();
         }
 
         protected override void OnDispose()

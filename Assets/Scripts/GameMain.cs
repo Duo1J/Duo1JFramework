@@ -5,6 +5,7 @@ using Duo1JFramework.GamerInput;
 using Duo1JFramework.Timeline;
 using Duo1JFramework.UI;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class GameMain : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class GameMain : MonoBehaviour
         {
             TimelineManager.Instance.LoadTimeline("Timeline/Timeline-01.prefab", (td) =>
             {
+                td.SetGenericBinding("MainActorRun", ActorManager.Instance.MainActor.GetAnimator());
+                td.SetGenericBinding("CinemachineBrain", CMBrain.Instance.Brain);
                 td.Play();
             });
         }

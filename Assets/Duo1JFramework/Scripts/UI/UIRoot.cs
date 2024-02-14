@@ -17,13 +17,21 @@ namespace Duo1JFramework.UI
         public static Canvas UICanvas => Root.Instance.UIRoot.uiCanvas;
         public static Camera UICamera => Root.Instance.UIRoot.uiCamera;
 
-        [SerializeField] private Transform bottomLayer;
-        [SerializeField] private Transform normalLayer;
-        [SerializeField] private Transform topLayer;
-        [SerializeField] private Transform constLayer;
+        [SerializeField]
+        private Transform bottomLayer;
+        [SerializeField]
+        private Transform normalLayer;
+        [SerializeField]
+        private Transform topLayer;
+        [SerializeField]
+        private Transform constLayer;
 
-        [SerializeField] private Camera uiCamera;
-        [SerializeField] private Canvas uiCanvas;
+        [SerializeField]
+        [Label("UI相机")]
+        private Camera uiCamera;
+        [SerializeField]
+        [Label("UI画布")]
+        private Canvas uiCanvas;
 
         public void AddToLayer(Window wnd)
         {

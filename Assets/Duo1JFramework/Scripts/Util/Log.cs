@@ -52,7 +52,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 编辑器log
+        /// 编辑器消息
         /// </summary>
         public static void EditorInfo(params object[] msg)
         {
@@ -85,13 +85,35 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 直接按等级打印
+        /// 直接按等级打印消息
         /// </summary>
         public static void Level(LogLevel _logLevel, params object[] msg)
         {
             if (CheckLogLevelOpen(_logLevel))
             {
-                Debug.Log(Concat($"[{_logLevel}] ", msg));
+                Debug.Log(Concat($"<color=green>[{_logLevel}]</color> ", msg));
+            }
+        }
+
+        /// <summary>
+        /// 直接按等级打印警告
+        /// </summary>
+        public static void LevelWarn(LogLevel _logLevel, params object[] msg)
+        {
+            if (CheckLogLevelOpen(_logLevel))
+            {
+                Debug.LogWarning(Concat($"<color=green>[{_logLevel}]</color> ", msg));
+            }
+        }
+
+        /// <summary>
+        /// 直接按等级打印错误
+        /// </summary>
+        public static void LevelError(LogLevel _logLevel, params object[] msg)
+        {
+            if (CheckLogLevelOpen(_logLevel))
+            {
+                Debug.LogError(Concat($"<color=green>[{_logLevel}]</color> ", msg));
             }
         }
 

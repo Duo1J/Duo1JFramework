@@ -67,7 +67,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 获取刚体组件
         /// </summary>
-        public Rigidbody GetRb()
+        public Rigidbody GetRigidBody()
         {
             if (rigidBody == null) ErrNoComponent(typeof(Rigidbody));
             return rigidBody;
@@ -78,7 +78,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public Vector3 GetVelocity()
         {
-            Rigidbody rb = GetRb();
+            Rigidbody rb = GetRigidBody();
             if (rb)
             {
                 return rb.velocity;
@@ -91,7 +91,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void SetVelocity(Vector3 velocity)
         {
-            Rigidbody rb = GetRb();
+            Rigidbody rb = GetRigidBody();
             if (rb)
             {
                 rb.velocity = velocity;
@@ -104,7 +104,7 @@ namespace Duo1JFramework.Actor
         /// <param name="velocityPlane"></param>
         public void SetVelocity(Vector2 velocityPlane)
         {
-            Rigidbody rb = GetRb();
+            Rigidbody rb = GetRigidBody();
             if (rb)
             {
                 Vector3 v = GetVelocity();
@@ -126,7 +126,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void AddForce(Vector3 force, ForceMode forceMode = ForceMode.Force)
         {
-            Rigidbody rb = GetRb();
+            Rigidbody rb = GetRigidBody();
             if (rb)
             {
                 rb.AddForce(force, forceMode);

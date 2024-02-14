@@ -51,13 +51,13 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// 获取通过轴移动的速度 (以目视Forward为参考系)
+        /// 获取通过轴移动的方向 (以目视Forward为参考系)
         /// </summary>
-        public Vector3 GetMoveVeloByAxis(float h, float v)
+        public Vector3 GetMoveDirByAxis(float h, float v)
         {
             Vector3 axisByEye = GetAxisByEye(h, v);
             axisByEye = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
-            return axisByEye * param.moveSpeed;
+            return axisByEye;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Duo1JFramework.Actor
 
         #region CharacterController
 
-        protected CharacterController GetCc()
+        public CharacterController GetCC()
         {
             if (cc == null) ErrNoComponent(typeof(CharacterController));
             return cc;
@@ -83,7 +83,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public CollisionFlags SetVelocity(Vector3 velocity)
         {
-            CharacterController cc = GetCc();
+            CharacterController cc = GetCC();
             if (cc)
             {
                 return cc.Move(velocity * Time.deltaTime);
@@ -96,7 +96,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public Vector3 GetVelocity()
         {
-            CharacterController cc = GetCc();
+            CharacterController cc = GetCC();
             if (cc)
             {
                 return cc.velocity;

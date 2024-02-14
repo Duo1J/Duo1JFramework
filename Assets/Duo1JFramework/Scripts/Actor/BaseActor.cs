@@ -231,5 +231,13 @@ namespace Duo1JFramework.Actor
         }
 
         #endregion 子类override
+
+        #region ActorController接口
+
+        public GameObject GetRootGo() => Controller.RootGo;
+
+        public Animator GetAnimator() => Controller.GetAnimator();
+
+        #endregion ActorController接口
     }
 }

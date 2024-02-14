@@ -17,6 +17,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected void InitFSM()
         {
+            //todo hlj walk
             Con.InitFSM("Move",
                 StateNode.Create("Move",
                     null,

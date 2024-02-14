@@ -29,14 +29,6 @@ namespace Duo1JFramework
             go.SetParent(parent.transform);
         }
 
-        /// <summary>
-        /// 立即销毁
-        /// </summary>
-        public static void DestroyImmediate(this GameObject go)
-        {
-            Object.DestroyImmediate(go);
-        }
-
         public static T GetAndAssertComponent<T>(this GameObject go, string msg = "无法获取到组件")
         {
             T ret = go.GetComponent<T>();

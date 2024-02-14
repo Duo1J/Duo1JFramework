@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -10,6 +11,7 @@ namespace Duo1JFramework.Timeline
     {
         private GameObject go;
         private PlayableDirector pd;
+        private Dictionary<string, PlayableBinding> bindingDict;
 
         public void Play()
         {
@@ -67,6 +69,43 @@ namespace Duo1JFramework.Timeline
             Log.Level(LogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
         }
 
+        public void SetGenericBinding(string key, Object tarObj)
+        {
+            if (bindingDict.TryGetValue(key, out PlayableBinding binding))
+            {
+                Object preObj = pd.GetGenericBinding(binding.sourceObject);
+                if (preObj != null)
+                {
+                    Log.LevelWarn(LogLevel.Timeline, $"{ToString()}上绑定{key}时，原绑定不为空");
+
+                    if (preObj is Component comp)
+                    {
+                        comp.gameObject.SetActive(false);
+                    }
+                }
+
+                pd.SetGenericBinding(binding.sourceObject, tarObj);
+                Log.Level(LogLevel.Timeline, $"{ToString()} -> 绑定{tarObj.name}到{key}");
+            }
+            else
+            {
+                Log.LevelError(LogLevel.Timeline, $"{ToString()}上未找到Key: {key}，无法执行绑定");
+            }
+        }
+
+        public void InitBindingDict(bool force = false)
+        {
+            if (!force && bindingDict != null)
+            {
+                return;
+            }
+            bindingDict = new Dictionary<string, PlayableBinding>();
+            foreach (PlayableBinding binding in pd.playableAsset.outputs)
+            {
+                bindingDict.Add(binding.streamName, binding);
+            }
+        }
+
         public override string ToString()
         {
             return $"<Timeline-{go.name}-{go.GetInstanceID()}>";
@@ -83,6 +122,8 @@ namespace Duo1JFramework.Timeline
 
             this.go.SetParent(Root.Instance.TimelineRoot);
             this.pd.playOnAwake = false;
+
+            InitBindingDict();
         }
     }
 }

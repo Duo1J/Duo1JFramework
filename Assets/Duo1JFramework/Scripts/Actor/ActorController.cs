@@ -90,6 +90,11 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected Vector3 normal = Vector3.up;
 
+        /// <summary>
+        /// 根节点Go
+        /// </summary>
+        public GameObject RootGo => gameObject;
+
         #endregion Field
 
         #region Public Method
@@ -272,7 +277,7 @@ namespace Duo1JFramework.Actor
         /// 获取Animator
         /// </summary>
         /// <returns></returns>
-        protected Animator GetAni()
+        public Animator GetAnimator()
         {
             if (animator == null) ErrNoComponent(typeof(Animator));
             return animator;
@@ -286,7 +291,7 @@ namespace Duo1JFramework.Actor
             if (!AniCanStateChange(stateName))
                 return;
             curAniName = stateName;
-            GetAni()?.CrossFade(stateName, transitionRate, layer);
+            GetAnimator()?.CrossFade(stateName, transitionRate, layer);
         }
 
         /// <summary>
