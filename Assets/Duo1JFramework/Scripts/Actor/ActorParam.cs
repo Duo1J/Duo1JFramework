@@ -11,7 +11,7 @@ namespace Duo1JFramework
         [Label("跑动速度")]
         public float moveSpeed = 3;
         [Label("步行速度")]
-        public float walkSpeed = 1;
+        public float walkSpeed = 1.5f;
         [Label("旋转速度")]
         public float rotateSpeed = 5;
         [Label("跳跃力度")]

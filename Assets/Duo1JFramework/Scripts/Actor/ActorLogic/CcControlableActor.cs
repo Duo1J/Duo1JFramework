@@ -27,29 +27,14 @@ namespace Duo1JFramework.Actor
                     {
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
                         Vector3 moveDir = Con.GetMoveDirByAxis(h, v);
-                        if (InWalk())
-                        {
-                            moveVelocity = moveDir * Param.walkSpeed;
-                        }
-                        else
-                        {
-                            moveVelocity = moveDir * Param.moveSpeed;
-                        }
+                        moveVelocity = moveDir * (InWalk() ? Param.walkSpeed : Param.moveSpeed);
                         Con.RotateByAxis(h, v);
 
                         if (Con.CheckAxisZero(h, v))
                             Con.AniCrossFade(Param.idleAniName);
                         else
                         {
-                            if (InWalk())
-                            {
-                                Con.AniCrossFade(Param.walkAniName);
-                            }
-                            else
-                            {
-
-                                Con.AniCrossFade(Param.runAniName);
-                            }
+                            Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
                         }
 
                         UpdateCamera();
@@ -69,14 +54,7 @@ namespace Duo1JFramework.Actor
                         jumpFrameCount = 0;
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
                         Vector3 moveDir = Con.GetMoveDirByAxis(h, v);
-                        if (InWalk())
-                        {
-                            jumpVelocity = moveDir * Param.walkSpeed;
-                        }
-                        else
-                        {
-                            jumpVelocity = moveDir * Param.moveSpeed;
-                        }
+                        jumpVelocity = moveDir * (InWalk() ? Param.walkSpeed : Param.moveSpeed);
                         jumpVelocity.y = Con.GetJumpVeloByHeight();
                         Con.AniCrossFade(Param.jumpAniName);
                     },

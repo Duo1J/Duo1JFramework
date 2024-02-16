@@ -13,6 +13,9 @@ namespace Duo1JFramework.Timeline
         private PlayableDirector pd;
         private Dictionary<string, PlayableBinding> bindingDict;
 
+        public GameObject GO => go;
+        public PlayableDirector PD => pd;
+
         public void Play()
         {
             pd.Play();

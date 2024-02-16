@@ -17,20 +17,21 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected void InitFSM()
         {
-            //todo hlj walk
             Con.InitFSM("Move",
                 StateNode.Create("Move",
                     null,
                     () =>
                     {
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Con.SetMoveSpeedByAxis(h, v);
+                        Con.SetMoveSpeedByAxis(h, v, InWalk() ? Param.walkSpeed : Param.moveSpeed);
                         Con.RotateByAxis(h, v);
 
                         if (Con.CheckAxisZero(h, v))
                             Con.AniCrossFade(Param.idleAniName);
                         else
-                            Con.AniCrossFade(Param.runAniName);
+                        {
+                            Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
+                        }
 
                         UpdateCamera();
                     },
@@ -44,7 +45,7 @@ namespace Duo1JFramework.Actor
                             return;
                         }
                         jumpFrameCount = 0;
-                        Con.JumpByHeight();
+                        Con.JumpByHeight(Param.jumpHeight);
                         Con.AniCrossFade(Param.jumpAniName);
                     },
                     () =>
@@ -67,6 +68,11 @@ namespace Duo1JFramework.Actor
 
             RegisterUpdate(OnUpdate);
             InitFSM();
+        }
+
+        public bool InWalk()
+        {
+            return InputManager.GetKey(KeyCode.LeftControl);
         }
 
         private void OnUpdate()

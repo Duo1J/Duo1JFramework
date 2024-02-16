@@ -66,14 +66,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  jumpForce: 250
+  walkSpeed: 1.5
   rotateSpeed: 10
+  jumpForce: 250
   jumpHeight: 2
+  maxSlopeAngle: 50
   mouseSpeedX: 300
   mouseSpeedY: 300
   fallSpeedUp: 7
   cameraToActorLen: 5
+  cameraMaxRotate: 70
+  cameraMinRotate: -50
   idleAniName: Idle
+  walkAniName: Walking
   runAniName: Running
   jumpAniName: Jump
   rayGroundLen: 0.1

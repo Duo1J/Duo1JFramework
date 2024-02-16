@@ -19,7 +19,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 通过轴设置速度 (以目视Forward为参考系)
         /// </summary>
-        public void SetMoveSpeedByAxis(float h, float v)
+        public void SetMoveSpeedByAxis(float h, float v, float speed)
         {
             Vector3 axisByEye = GetAxisByEye(h, v);
             if (normal != Vector3.up)
@@ -38,25 +38,25 @@ namespace Duo1JFramework.Actor
                 editor_moveAxisByEye = axisByEye;
 #endif
 
-            Vector3 velocity = axisByEye * param.moveSpeed;
+            Vector3 velocity = axisByEye * speed;
             SetVelocity(new Vector2(velocity.x, velocity.z));
         }
 
         /// <summary>
         /// 通过力数值跳跃
         /// </summary>
-        public void JumpByForce(float h, float v)
+        public void JumpByForce(float h, float v, float jumpForce)
         {
             Vector3 jumpDir = Vector3.up + GetAxisByEye(h, v);
-            AddForce(jumpDir * param.jumpForce);
+            AddForce(jumpDir * jumpForce);
         }
 
         /// <summary>
         /// 通过高度数值跳跃
         /// </summary>
-        public void JumpByHeight()
+        public void JumpByHeight(float jumpHeight)
         {
-            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * Physics.gravity.y));
+            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * jumpHeight * Physics.gravity.y));
             SetVelocityY(velocityY);
         }
 
