@@ -24,7 +24,7 @@ namespace Duo1JFramework.Event
         {
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
-                throw new CommonException($"事件`{e.GetName()}`未找到任何订阅，无法取消订阅");
+                throw CommonException.Create($"事件`{e.GetName()}`未找到任何订阅，无法取消订阅");
             }
             return list.Remove(callback);
         }

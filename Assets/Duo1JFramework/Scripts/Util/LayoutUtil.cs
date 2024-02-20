@@ -1,8 +1,6 @@
 using System;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 namespace Duo1JFramework
 {
@@ -115,6 +113,48 @@ namespace Duo1JFramework
             {
                 action?.Invoke();
             }
+        }
+
+        /// <summary>
+        /// 为上一个Rect下画分界线
+        /// </summary>
+        public static void LastSeparator()
+        {
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            GUILayout.Space(7);
+            SurrondColor(new Color(0, 0, 0, 0.3f), () =>
+            {
+                GUI.DrawTexture(Rect.MinMaxRect(lastRect.xMin, lastRect.yMax + 4, lastRect.xMax, lastRect.yMax + 6), Texture2D.whiteTexture);
+            });
+        }
+
+        /// <summary>
+        /// 为上一个Rect下画粗分界线
+        /// </summary>
+        public static void LastBoldSeparator()
+        {
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            GUILayout.Space(14);
+            SurrondColor(new Color(0, 0, 0, 0.3f), () =>
+            {
+                GUI.DrawTexture(new Rect(0, lastRect.yMax + 6, Screen.width, 4), Texture2D.whiteTexture);
+                GUI.DrawTexture(new Rect(0, lastRect.yMax + 6, Screen.width, 1), Texture2D.whiteTexture);
+                GUI.DrawTexture(new Rect(0, lastRect.yMax + 9, Screen.width, 1), Texture2D.whiteTexture);
+            });
+        }
+
+        /// <summary>
+        /// 为上一个TextField添加comment
+        /// </summary>
+        public static void LastCommentTextField(string checkContent, string comment = "Comments...")
+        {
+            if (!string.IsNullOrEmpty(checkContent))
+            {
+                return;
+            }
+
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            GUI.Label(lastRect, " <i>" + comment + "</i>");
         }
 
         protected LU()

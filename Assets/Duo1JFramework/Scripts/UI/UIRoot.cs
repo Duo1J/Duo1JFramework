@@ -77,7 +77,7 @@ namespace Duo1JFramework.UI
         {
             if (uiCamera == null)
             {
-                throw new CommonException("UICamera为空");
+                throw CommonException.Create("UICamera为空");
             }
             uiCamera.depth = Def.UI_CAMERA_DEPTH;
             uiCamera.cullingMask = Def.UI_CULLING_MASK;

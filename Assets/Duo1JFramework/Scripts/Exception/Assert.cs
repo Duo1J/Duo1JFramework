@@ -71,9 +71,9 @@ namespace Duo1JFramework
         /// <summary>
         /// 抛出一般异常
         /// </summary>
-        public static void Throw(string msg)
+        private static void Throw(string msg)
         {
-            throw new CommonException(msg);
+            throw CommonException.Create(msg);
         }
     }
 }
