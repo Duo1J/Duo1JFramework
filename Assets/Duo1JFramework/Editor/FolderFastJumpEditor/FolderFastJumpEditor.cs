@@ -49,7 +49,7 @@ namespace Duo1JFramework
                     ReadSoData();
                 }
 
-                LU.SurrondColor(Color.yellow, () =>
+                LU.SurrondColor(EditorStyle.NormalBtnColor1, () =>
                 {
                     if (GUILayout.Button("保存数据"))
                     {
@@ -65,7 +65,7 @@ namespace Duo1JFramework
 
             LU.Horizontal(() =>
             {
-                LU.SurrondColor(Color.green, () =>
+                LU.SurrondColor(EditorStyle.NormalBtnColor1, () =>
                 {
                     if (GUILayout.Button("添加数据"))
                     {

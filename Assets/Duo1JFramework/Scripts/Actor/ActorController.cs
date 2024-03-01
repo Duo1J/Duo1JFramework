@@ -93,7 +93,12 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 根节点Go
         /// </summary>
-        public GameObject RootGo => gameObject;
+        public GameObject Root => gameObject;
+
+        /// <summary>
+        /// 模型Go
+        /// </summary>
+        public GameObject Model => model;
 
         #endregion Field
 

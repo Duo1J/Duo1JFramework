@@ -1,6 +1,10 @@
+using Duo1JFramework.Actor;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+
+using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.Timeline
 {
@@ -13,70 +17,24 @@ namespace Duo1JFramework.Timeline
         private PlayableDirector pd;
         private Dictionary<string, PlayableBinding> bindingDict;
 
-        public GameObject GO => go;
-        public PlayableDirector PD => pd;
+        public GameObject Go => go;
+        public Transform Tf => Go.transform;
+        public PlayableDirector Pd => pd;
 
-        public void Play()
-        {
-            pd.Play();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Play()");
-        }
+        public Action<TimelineData> OnPlayed;
+        public Action<TimelineData> OnPaused;
+        public Action<TimelineData> OnStopped;
 
-        public void Stop()
-        {
-            pd.Stop();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Stop()");
-        }
-
-        public void Pause()
-        {
-            pd.Pause();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Pause()");
-        }
-
-        public void Resume()
-        {
-            pd.Resume();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Resume()");
-        }
-
-        public void Restart()
-        {
-            Pause();
-            SetTime(0);
-            Play();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Restart()");
-        }
-
-        public void SetTime(float time)
-        {
-            pd.time = time;
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetTime({time})");
-        }
-
-        public void SetInitialTime(float time)
-        {
-            pd.initialTime = time;
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetInitialTime({time})");
-        }
-
-        public void SetWrapMode(DirectorWrapMode wrapMode)
-        {
-            pd.extrapolationMode = wrapMode;
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetWrapMode({wrapMode})");
-        }
-
-        public void RebuildGraph()
-        {
-            pd.RebuildGraph();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
-        }
-
-        public void SetGenericBinding(string key, Object tarObj)
+        /// <summary>
+        /// 动态绑定
+        /// </summary>
+        /// <param name="key">轨道Key值</param>
+        /// <param name="tarObj">绑定目标</param>
+        public TimelineData SetGenericBinding(string key, UObject tarObj)
         {
             if (bindingDict.TryGetValue(key, out PlayableBinding binding))
             {
-                Object preObj = pd.GetGenericBinding(binding.sourceObject);
+                UObject preObj = pd.GetGenericBinding(binding.sourceObject);
                 if (preObj != null)
                 {
                     Log.LevelWarn(LogLevel.Timeline, $"{ToString()}上绑定{key}时，原绑定不为空");
@@ -94,19 +52,111 @@ namespace Duo1JFramework.Timeline
             {
                 Log.LevelError(LogLevel.Timeline, $"{ToString()}上未找到Key: {key}，无法执行绑定");
             }
+            return this;
         }
 
-        public void InitBindingDict(bool force = false)
+        /// <summary>
+        /// 和目标同步旋转和位移
+        /// </summary>
+        public TimelineData SyncTransform(Transform target)
+        {
+            Tf.rotation = Quaternion.LookRotation(target.forward, Vector3.up);
+            Tf.position = target.position;
+            return this;
+        }
+
+        public TimelineData SyncTransform(BaseActor baseActor)
+        {
+            return SyncTransform(baseActor.ModelTf);
+        }
+
+        public TimelineData Play()
+        {
+            pd.Play();
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> Play()");
+            return this;
+        }
+
+        public TimelineData Stop()
+        {
+            pd.Stop();
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> Stop()");
+            return this;
+        }
+
+        public TimelineData Pause()
+        {
+            pd.Pause();
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> Pause()");
+            return this;
+        }
+
+        public TimelineData Resume()
+        {
+            pd.Resume();
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> Resume()");
+            return this;
+        }
+
+        public TimelineData Restart()
+        {
+            Pause();
+            SetTime(0);
+            Play();
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> Restart()");
+            return this;
+        }
+
+        public TimelineData SetTime(float time)
+        {
+            pd.time = time;
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetTime({time})");
+            return this;
+        }
+
+        public TimelineData SetInitialTime(float time)
+        {
+            pd.initialTime = time;
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetInitialTime({time})");
+            return this;
+        }
+
+        public TimelineData SetWrapMode(DirectorWrapMode wrapMode)
+        {
+            pd.extrapolationMode = wrapMode;
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetWrapMode({wrapMode})");
+            return this;
+        }
+
+        public TimelineData RebuildGraph()
+        {
+            pd.RebuildGraph();
+            Log.Level(LogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
+            return this;
+        }
+
+        public TimelineData DestroyOnStop()
+        {
+            //todo hlj 停止回调注册销毁事件
+            return this;
+        }
+
+        /// <summary>
+        /// 初始化绑定映射字典
+        /// </summary>
+        /// <param name="force">是否强制刷新</param>
+        public TimelineData InitBindingDict(bool force = false)
         {
             if (!force && bindingDict != null)
             {
-                return;
+                return this;
             }
             bindingDict = new Dictionary<string, PlayableBinding>();
             foreach (PlayableBinding binding in pd.playableAsset.outputs)
             {
                 bindingDict.Add(binding.streamName, binding);
             }
+            return this;
         }
 
         public override string ToString()
@@ -127,6 +177,30 @@ namespace Duo1JFramework.Timeline
             this.pd.playOnAwake = false;
 
             InitBindingDict();
+            RegisterCallback();
+        }
+
+        private void RegisterCallback()
+        {
+            if (pd == null)
+            {
+                return;
+            }
+
+            pd.played += (pd) =>
+            {
+                OnPlayed?.Invoke(this);
+            };
+
+            pd.paused += (pd) =>
+            {
+                OnPaused?.Invoke(this);
+            };
+
+            pd.stopped += (pd) =>
+            {
+                OnStopped?.Invoke(this);
+            };
         }
     }
 }

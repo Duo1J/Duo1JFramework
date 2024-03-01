@@ -29,9 +29,24 @@ namespace Duo1JFramework.Actor
         public bool Sync { get; set; } = false;
 
         /// <summary>
-        /// 角色物体
+        /// 角色预制体Go
         /// </summary>
         public GameObject Asset { get; private set; }
+
+        /// <summary>
+        /// 角色预制体Tf
+        /// </summary>
+        public Transform AssetTf => Asset.transform;
+
+        /// <summary>
+        /// 角色模型Go
+        /// </summary>
+        public GameObject Model => Controller.Model;
+
+        /// <summary>
+        /// 角色模型Tf
+        /// </summary>
+        public Transform ModelTf => Model.transform;
 
         /// <summary>
         /// 角色控制器
@@ -234,7 +249,7 @@ namespace Duo1JFramework.Actor
 
         #region ActorController接口
 
-        public GameObject GetRootGo() => Controller.RootGo;
+        public GameObject GetRootGo() => Controller.Root;
 
         public Animator GetAnimator() => Controller.GetAnimator();
 
