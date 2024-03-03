@@ -6,7 +6,7 @@ namespace Duo1JFramework.TimerUpdate
     /// <summary>
     /// 计时器结构
     /// </summary>
-    public class Timer
+    public class Timer : IEditorDrawer
     {
         /// <summary>
         /// 周期 (毫秒数/帧数)
@@ -173,13 +173,13 @@ namespace Duo1JFramework.TimerUpdate
             return this;
         }
 
-        public Timer()
+        public void Draw()
         {
+
         }
 
-        public void GetTimerMonitorInfo()
+        public Timer()
         {
-
         }
     }
 }

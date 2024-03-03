@@ -28,23 +28,29 @@ namespace NodeCanvas.StateMachines
         public override int maxInConnections => -1;
         public override int maxOutConnections => -1;
 
-        public TransitionEvaluationMode transitionEvaluation {
+        public TransitionEvaluationMode transitionEvaluation
+        {
             get { return _transitionEvaluation; }
             set { _transitionEvaluation = value; }
         }
 
         ///<summary>Returns all transitions of the state</summary>
-        public FSMConnection[] GetTransitions() {
+        public FSMConnection[] GetTransitions()
+        {
             var result = new FSMConnection[outConnections.Count];
-            for ( var i = 0; i < outConnections.Count; i++ ) {
+            for (var i = 0; i < outConnections.Count; i++)
+            {
                 result[i] = (FSMConnection)outConnections[i];
             }
             return result;
         }
 
         //just a default orange color
-        public override void OnCreate(Graph assignedGraph) {
+        public override void OnCreate(Graph assignedGraph)
+        {
+#if UNITY_EDITOR
             base.customColor = new Color(1, 0.42f, 0.32f);
+#endif
         }
 
         ///<summary>Declares that the state has finished</summary>
@@ -54,13 +60,15 @@ namespace NodeCanvas.StateMachines
 
         ///----------------------------------------------------------------------------------------------
 
-        public override void OnGraphPaused() { if ( status == Status.Running ) { OnPause(); } }
+        public override void OnGraphPaused() { if (status == Status.Running) { OnPause(); } }
 
         ///----------------------------------------------------------------------------------------------
 
         //avoid connecting from same source
-        protected override bool CanConnectFromSource(Node sourceNode) {
-            if ( this.IsChildOf(sourceNode) ) {
+        protected override bool CanConnectFromSource(Node sourceNode)
+        {
+            if (this.IsChildOf(sourceNode))
+            {
                 Logger.LogWarning("States are already connected together. Consider using multiple conditions on an existing transition instead", LogTag.EDITOR, this);
                 return false;
             }
@@ -68,8 +76,10 @@ namespace NodeCanvas.StateMachines
         }
 
         //avoid connecting to same target
-        protected override bool CanConnectToTarget(Node targetNode) {
-            if ( this.IsParentOf(targetNode) ) {
+        protected override bool CanConnectToTarget(Node targetNode)
+        {
+            if (this.IsParentOf(targetNode))
+            {
                 Logger.LogWarning("States are already connected together. Consider using multiple conditions on an existing transition instead", LogTag.EDITOR, this);
                 return false;
             }
@@ -77,31 +87,39 @@ namespace NodeCanvas.StateMachines
         }
 
         //OnEnter...
-        sealed protected override Status OnExecute(Component agent, IBlackboard bb) {
+        sealed protected override Status OnExecute(Component agent, IBlackboard bb)
+        {
 
-            if ( !_hasInit ) {
+            if (!_hasInit)
+            {
                 _hasInit = true;
                 OnInit();
             }
 
-            if ( status == Status.Resting ) {
+            if (status == Status.Resting)
+            {
                 status = Status.Running;
 
-                for ( int i = 0; i < outConnections.Count; i++ ) {
-                    ( (FSMConnection)outConnections[i] ).EnableCondition(agent, bb);
+                for (int i = 0; i < outConnections.Count; i++)
+                {
+                    ((FSMConnection)outConnections[i]).EnableCondition(agent, bb);
                 }
 
                 OnEnter();
 
-            } else {
+            }
+            else
+            {
 
                 var case1 = transitionEvaluation == TransitionEvaluationMode.CheckContinuously;
                 var case2 = transitionEvaluation == TransitionEvaluationMode.CheckAfterStateFinished && status != Status.Running;
-                if ( case1 || case2 ) {
+                if (case1 || case2)
+                {
                     CheckTransitions();
                 }
 
-                if ( status == Status.Running ) {
+                if (status == Status.Running)
+                {
                     OnUpdate();
                 }
             }
@@ -110,18 +128,22 @@ namespace NodeCanvas.StateMachines
         }
 
         ///<summary>Checks and performs possible transition. Returns true if a transition was performed.</summary>
-        public bool CheckTransitions() {
+        public bool CheckTransitions()
+        {
 
-            for ( var i = 0; i < outConnections.Count; i++ ) {
+            for (var i = 0; i < outConnections.Count; i++)
+            {
 
                 var connection = (FSMConnection)outConnections[i];
                 var condition = connection.condition;
 
-                if ( !connection.isActive ) {
+                if (!connection.isActive)
+                {
                     continue;
                 }
 
-                if ( ( condition != null && condition.Check(graphAgent, graphBlackboard) ) || ( condition == null && status != Status.Running ) ) {
+                if ((condition != null && condition.Check(graphAgent, graphBlackboard)) || (condition == null && status != Status.Running))
+                {
                     FSM.EnterState((FSMState)connection.targetNode, connection.transitionCallMode);
                     connection.status = Status.Success; //editor vis
                     return true;
@@ -134,14 +156,17 @@ namespace NodeCanvas.StateMachines
         }
 
         //OnExit...
-        sealed protected override void OnReset() {
-            for ( int i = 0; i < outConnections.Count; i++ ) {
-                ( (FSMConnection)outConnections[i] ).DisableCondition();
+        sealed protected override void OnReset()
+        {
+            for (int i = 0; i < outConnections.Count; i++)
+            {
+                ((FSMConnection)outConnections[i]).DisableCondition();
             }
 
 #if UNITY_EDITOR
             //Done for visualizing in editor
-            for ( var i = 0; i < inConnections.Count; i++ ) {
+            for (var i = 0; i < inConnections.Count; i++)
+            {
                 inConnections[i].status = Status.Resting;
             }
 #endif
@@ -164,14 +189,17 @@ namespace NodeCanvas.StateMachines
 #if UNITY_EDITOR
 
         //...
-        protected override void OnNodeInspectorGUI() {
+        protected override void OnNodeInspectorGUI()
+        {
             ShowTransitionsInspector();
             DrawDefaultInspector();
         }
 
-        protected override void OnNodeExternalGUI() {
+        protected override void OnNodeExternalGUI()
+        {
             var peek = FSM.PeekStack();
-            if ( peek != null && FSM.currentState == this ) {
+            if (peek != null && FSM.currentState == this)
+            {
                 UnityEditor.Handles.color = Color.grey;
                 UnityEditor.Handles.DrawAAPolyLine(rect.center, peek.rect.center);
                 UnityEditor.Handles.color = Color.white;
@@ -179,20 +207,25 @@ namespace NodeCanvas.StateMachines
         }
 
         //...
-        protected override UnityEditor.GenericMenu OnContextMenu(UnityEditor.GenericMenu menu) {
-            if ( Application.isPlaying ) {
+        protected override UnityEditor.GenericMenu OnContextMenu(UnityEditor.GenericMenu menu)
+        {
+            if (Application.isPlaying)
+            {
                 menu.AddItem(new GUIContent("Enter State"), false, () => { FSM.EnterState(this, FSM.TransitionCallMode.Normal); });
-            } else { menu.AddDisabledItem(new GUIContent("Enter State")); }
+            }
+            else { menu.AddDisabledItem(new GUIContent("Enter State")); }
             menu.AddItem(new GUIContent("Breakpoint"), isBreakpoint, () => { isBreakpoint = !isBreakpoint; });
             return menu;
         }
 
         //...
-        protected void ShowTransitionsInspector() {
+        protected void ShowTransitionsInspector()
+        {
 
             EditorUtils.CoolLabel("Transitions");
 
-            if ( outConnections.Count == 0 ) {
+            if (outConnections.Count == 0)
+            {
                 UnityEditor.EditorGUILayout.HelpBox("No Transition", UnityEditor.MessageType.None);
             }
 
@@ -201,10 +234,13 @@ namespace NodeCanvas.StateMachines
             {
                 var connection = (FSMConnection)outConnections[i];
                 GUILayout.BeginHorizontal("box");
-                if ( connection.condition != null ) {
+                if (connection.condition != null)
+                {
                     GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
-                } else {
-                    GUILayout.Label("OnFinish" + ( onFinishExists ? " (exists)" : string.Empty ), GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
+                }
+                else
+                {
+                    GUILayout.Label("OnFinish" + (onFinishExists ? " (exists)" : string.Empty), GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
                     onFinishExists = true;
                 }
 

@@ -21,6 +21,8 @@ public class InfoWindow : Window
 
     protected override void OnInit()
     {
+#if UNITY_EDITOR
+
         buttomInfoText = GetCom<TextExtend>("BottomInfo");
 
         RegisterUpdate(() =>
@@ -34,5 +36,7 @@ public class InfoWindow : Window
                 buttomInfoText.text = item.Value.ToString();
             });
         });
+
+#endif
     }
 }

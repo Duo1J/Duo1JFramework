@@ -153,13 +153,15 @@ namespace Duo1JFramework
             GUI.Label(lastRect, " <i>" + comment + "</i>");
         }
 
-#if UNITY_EDITOR
-
         public static void DisableGroup(Action action, bool disabled = true)
         {
+#if UNITY_EDITOR
             EditorGUI.BeginDisabledGroup(disabled);
             action?.Invoke();
             EditorGUI.EndDisabledGroup();
+#else
+            action?.Invoke();
+#endif
         }
 
         public static bool IsPlayingTip()
@@ -171,12 +173,14 @@ namespace Duo1JFramework
         {
             if (!con)
             {
+#if UNITY_EDITOR
                 EditorGUILayout.HelpBox(new GUIContent(msg));
+#else
+                GUILayout.Label(msg);
+#endif
             }
             return con;
         }
-
-#endif
 
         protected LU()
         {

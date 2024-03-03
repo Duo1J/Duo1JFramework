@@ -479,8 +479,6 @@ namespace Duo1JFramework.Actor
 
         #region Gizmos
 
-#if UNITY_EDITOR
-
         protected virtual void OnDrawGizmos()
         {
             if (Application.isPlaying)
@@ -512,8 +510,6 @@ namespace Duo1JFramework.Actor
                 }
             }
         }
-
-#endif
 
         #endregion Gizmos
 

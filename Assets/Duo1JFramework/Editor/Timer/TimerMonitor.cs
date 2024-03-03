@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ¼ÆÊ±Æ÷¼àÊÓ
+    /// è®¡æ—¶å™¨ç›‘è§†
     /// </summary>
     public class TimerMonitor : EditorWindowBase<TimerMonitor>
     {
@@ -27,16 +27,11 @@ namespace Duo1JFramework
         {
             LU.Vertical(() =>
             {
-                foreach (Timer timer in TimerManager.Instance.TimerSet)
+                foreach (IEditorDrawer drawer in TimerManager.Instance.TimerSet)
                 {
-                    ShowTimerInfo(timer);
+                    drawer.Draw();
                 }
             });
-        }
-
-        private void ShowTimerInfo(Timer timer)
-        {
-            timer.GetTimerMonitorInfo();
         }
     }
 }
