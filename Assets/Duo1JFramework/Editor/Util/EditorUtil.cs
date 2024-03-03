@@ -85,6 +85,27 @@ namespace Duo1JFramework
 
         #endregion 杂项 
 
+        #region 窗口
+
+        /// <summary>
+        /// 打开编辑器窗口
+        /// </summary>
+        /// <param name="wndName">窗口名，不填则使用配置的名称</param>
+        public static T OpenEditorWnd<T>(string _wndName = null) where T : EditorWindow
+        {
+            string wndName = string.IsNullOrEmpty(_wndName) ? EditorDef.GetEditorWndName(typeof(T)) : _wndName;
+
+            T wnd = EditorWindow.GetWindow<T>();
+            if (!string.IsNullOrEmpty(wndName))
+            {
+                wnd.titleContent = new GUIContent(wndName);
+            }
+            wnd.Show();
+            return wnd;
+        }
+
+        #endregion
+
         #region ScriptableObject
 
         /// <summary>

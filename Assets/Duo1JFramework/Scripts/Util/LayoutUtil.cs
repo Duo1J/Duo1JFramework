@@ -1,6 +1,9 @@
 using System;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Duo1JFramework
 {
@@ -81,13 +84,6 @@ namespace Duo1JFramework
             GUILayout.EndArea();
         }
 
-        public static void DisableGroup(Action action, bool disabled = true)
-        {
-            EditorGUI.BeginDisabledGroup(disabled);
-            action?.Invoke();
-            EditorGUI.EndDisabledGroup();
-        }
-
         public static void SurrondSpace(float space, Action action)
         {
             GUILayout.Space(space);
@@ -156,6 +152,31 @@ namespace Duo1JFramework
             Rect lastRect = GUILayoutUtility.GetLastRect();
             GUI.Label(lastRect, " <i>" + comment + "</i>");
         }
+
+#if UNITY_EDITOR
+
+        public static void DisableGroup(Action action, bool disabled = true)
+        {
+            EditorGUI.BeginDisabledGroup(disabled);
+            action?.Invoke();
+            EditorGUI.EndDisabledGroup();
+        }
+
+        public static bool IsPlayingTip()
+        {
+            return ConditionTip(Game.IsPlaying, "请在运行后使用");
+        }
+
+        public static bool ConditionTip(bool con, string msg)
+        {
+            if (!con)
+            {
+                EditorGUILayout.HelpBox(new GUIContent(msg));
+            }
+            return con;
+        }
+
+#endif
 
         protected LU()
         {

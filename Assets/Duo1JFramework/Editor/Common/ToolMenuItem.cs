@@ -1,11 +1,9 @@
 using Duo1JFramework.UI;
-using System.Collections.Generic;
-using System;
 using UnityEditor;
 using UnityEngine;
+using Duo1JFramework.Asset;
 
 using UObject = UnityEngine.Object;
-using Duo1JFramework.Asset;
 
 namespace Duo1JFramework
 {
@@ -51,10 +49,7 @@ namespace Duo1JFramework
         [MenuItem(EditorDef.TOOL_PATH_PREFIX + "文件夹快速选中", priority = 13)]
         public static FolderFastJumpEditor OpenFolderFastJumpEditor()
         {
-            FolderFastJumpEditor wnd = EditorWindow.GetWindow<FolderFastJumpEditor>();
-            wnd.titleContent = new GUIContent("文件夹快速选中");
-            wnd.Show();
-            return wnd;
+            return FolderFastJumpEditor.Open();
         }
 
         #endregion Path
@@ -64,19 +59,25 @@ namespace Duo1JFramework
         [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "内置图标列表", priority = 20)]
         private static GUIIconViewer OpenGUIIconViewer()
         {
-            GUIIconViewer wnd = EditorWindow.GetWindow<GUIIconViewer>("内置图标列表");
-            wnd.Show();
-            return wnd;
+            return GUIIconViewer.Open();
         }
 
         [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "内置样式列表", priority = 21)]
         public static GUIStyleViewer OpenGUIStyleViewer()
         {
-            GUIStyleViewer wnd = EditorWindow.GetWindow<GUIStyleViewer>("内置样式列表");
-            wnd.Show();
-            return wnd;
+            return GUIStyleViewer.Open();
         }
 
         #endregion EditorStyle
+
+        #region Monitor 30
+
+        [MenuItem(EditorDef.TOOL_EDITOR_MONITOR_PREFIX + "计时器监视", priority = 30)]
+        public static TimerMonitor OpenTimerMonitor()
+        {
+            return TimerMonitor.Open();
+        }
+
+        #endregion Monitor
     }
 }

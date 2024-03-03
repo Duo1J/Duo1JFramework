@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -7,13 +8,18 @@ namespace Duo1JFramework
     /// </summary>
     public static class EditorStyle
     {
+        public static bool IsProSkin => EditorGUIUtility.isProSkin;
+
         #region Color
 
         public static Color NormalBtnColor1
         {
             get
             {
-                return Color.green;
+                if (IsProSkin)
+                    return Color.green;
+                else
+                    return ColorUtil.Create(152, 198, 164);
             }
         }
 
@@ -21,7 +27,10 @@ namespace Duo1JFramework
         {
             get
             {
-                return Color.red;
+                if (IsProSkin)
+                    return Color.red;
+                else
+                    return Color.red;
             }
         }
 
@@ -29,7 +38,10 @@ namespace Duo1JFramework
         {
             get
             {
-                return Color.yellow;
+                if (IsProSkin)
+                    return Color.yellow;
+                else
+                    return Color.yellow;
             }
         }
 

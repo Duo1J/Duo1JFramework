@@ -21,9 +21,16 @@ namespace Duo1JFramework.Timeline
         public Transform Tf => Go.transform;
         public PlayableDirector Pd => pd;
 
+        public bool IsDestroyed { get; private set; }
+
         public Action<TimelineData> OnPlayed;
         public Action<TimelineData> OnPaused;
         public Action<TimelineData> OnStopped;
+
+        private Action<TimelineData> OnDestroyed;
+        protected Action<TimelineData> InnerOnPlayed;
+        protected Action<TimelineData> InnerOnPaused;
+        protected Action<TimelineData> InnerOnStopped;
 
         /// <summary>
         /// 动态绑定
@@ -135,9 +142,41 @@ namespace Duo1JFramework.Timeline
             return this;
         }
 
+        public void Destroy()
+        {
+            if (IsDestroyed)
+            {
+                return;
+            }
+            IsDestroyed = true;
+            OnDestroyed?.Invoke(this);
+
+            Go?.DestroyImmediate();
+        }
+
         public TimelineData DestroyOnStop()
         {
-            //todo hlj 停止回调注册销毁事件
+            if (IsDestroyed)
+            {
+                return this;
+            }
+
+            InnerOnStopped = (td) =>
+            {
+                Destroy();
+            };
+            return this;
+        }
+
+        public TimelineData SetDestroyCallback(Action<TimelineData> onDestroyed)
+        {
+            if (IsDestroyed)
+            {
+                onDestroyed?.Invoke(this);
+                return this;
+            }
+
+            OnDestroyed = onDestroyed;
             return this;
         }
 
@@ -189,16 +228,19 @@ namespace Duo1JFramework.Timeline
 
             pd.played += (pd) =>
             {
+                InnerOnPlayed?.Invoke(this);
                 OnPlayed?.Invoke(this);
             };
 
             pd.paused += (pd) =>
             {
+                InnerOnPaused?.Invoke(this);
                 OnPaused?.Invoke(this);
             };
 
             pd.stopped += (pd) =>
             {
+                InnerOnStopped?.Invoke(this);
                 OnStopped?.Invoke(this);
             };
         }

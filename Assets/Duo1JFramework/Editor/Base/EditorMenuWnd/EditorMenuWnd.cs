@@ -8,7 +8,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 左侧菜单右侧面板的编辑器窗口基类
     /// </summary>
-    public abstract class EditorMenuWnd : EditorWindowBase
+    public abstract class EditorMenuWnd : EditorWindowBase<EditorMenuWnd>
     {
         protected List<EditorMenuSubWnd> subWndList;
         protected int subWndIdx;
@@ -168,8 +168,9 @@ namespace Duo1JFramework
         {
         }
 
-        private void OnEnable()
+        protected override void LoadData()
         {
+            base.LoadData();
             _ReloadData();
         }
     }

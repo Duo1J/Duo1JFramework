@@ -4,15 +4,17 @@ using UnityEngine;
 
 namespace Duo1JFramework
 {
+    /// <summary>
+    /// 日志
+    /// </summary>
     public static class Log
     {
         private static LogLevel logLevel = LogLevel.All;
         public static StringBuilder sb = new StringBuilder();
 
         /// <summary>
-        /// log
+        /// 消息
         /// </summary>
-        /// <param name="msg"></param>
         public static void Info(params object[] msg)
         {
             if (CheckLogLevelOpen(LogLevel.Info))
@@ -139,16 +141,22 @@ namespace Duo1JFramework
         /// </summary>
         public static void SetLogLevel(LogLevel _logLevel, bool isOpen)
         {
-            if (isOpen)
+            if (_logLevel == LogLevel.None)
             {
-                if (_logLevel == LogLevel.None)
+                if (isOpen)
                 {
                     logLevel = LogLevel.None;
                 }
                 else
                 {
-                    logLevel |= _logLevel;
+                    logLevel = LogLevel.All;
                 }
+                return;
+            }
+
+            if (isOpen)
+            {
+                logLevel |= _logLevel;
             }
             else
             {
@@ -200,41 +208,5 @@ namespace Duo1JFramework
         {
             return Concat(null, msg);
         }
-    }
-
-    /// <summary>
-    /// 日志打印等级
-    /// </summary>
-    public enum LogLevel
-    {
-        /// <summary>
-        /// 无
-        /// </summary>
-        None = 0,
-
-        /// <summary>
-        /// 通知
-        /// </summary>
-        Info = 1,
-
-        /// <summary>
-        /// 警告
-        /// </summary>
-        Warn = 1 << 1,
-
-        /// <summary>
-        /// 错误
-        /// </summary>
-        Error = 1 << 2,
-
-        /// <summary>
-        /// Timeline
-        /// </summary>
-        Timeline = 1 << 3,
-
-        /// <summary>
-        /// 全部
-        /// </summary>
-        All = 1 << 30
     }
 }

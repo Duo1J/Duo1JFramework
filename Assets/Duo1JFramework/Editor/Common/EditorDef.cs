@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Duo1JFramework
 {
     /// <summary>
@@ -32,11 +35,49 @@ namespace Duo1JFramework
         /// </summary>
         public const string TOOL_EDITOR_STYLE_PREFIX = TOOL_PREFIX + "EditorStyle/";
 
+        /// <summary>
+        /// 数据监视器
+        /// </summary>
+        public const string TOOL_EDITOR_MONITOR_PREFIX = TOOL_PREFIX + "Monitor/";
+
         #endregion 工具路径定义
 
         /// <summary>
         /// 编辑器配置路径
         /// </summary>
         public const string EDITOR_CONFIG_PATH = "Assets/" + Def.FRAME_WORK_NAME + "/EditorConfig/";
+
+        #region 编辑器窗口
+
+        /// <summary>
+        /// 获取编辑器窗口名称
+        /// </summary>
+        public static string GetEditorWndName(Type t)
+        {
+            if (editorWndNameMap == null)
+            {
+                Log.EditorError("`EditorDef.editorWndNameMap`为空");
+                return t.Name;
+            }
+            if (editorWndNameMap.TryGetValue(t, out string ret))
+            {
+                return ret;
+            }
+            Log.EditorWarn($"无法在`EditorDef.editorWndNameMap`中找到`{t.Name}`的标题配置，显示其类型名");
+            return t.Name;
+        }
+
+        /// <summary>
+        /// 编辑器窗口名称映射配置
+        /// </summary>
+        private static readonly Dictionary<Type, string> editorWndNameMap = new Dictionary<Type, string>()
+        {
+            [typeof(FolderFastJumpEditor)] = "文件夹快速选中",
+            [typeof(GUIIconViewer)] = "内置图标列表",
+            [typeof(GUIStyleViewer)] = "内置样式列表",
+            [typeof(TimerMonitor)] = "计时器监视",
+        };
+
+        #endregion 编辑器窗口
     }
 }

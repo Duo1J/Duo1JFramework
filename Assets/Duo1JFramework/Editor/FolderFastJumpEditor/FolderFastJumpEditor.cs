@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
+
+using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework
 {
     /// <summary>
     /// 文件夹快速选中工具
     /// </summary>
-    public class FolderFastJumpEditor : EditorWindowBase
+    public class FolderFastJumpEditor : EditorWindowBase<FolderFastJumpEditor>
     {
         private List<FolderFastJumpData> defaultDataList;
         private List<FolderFastJumpData> dataList;
@@ -59,7 +60,7 @@ namespace Duo1JFramework
 
                 if (GUILayout.Button("选中配置文件"))
                 {
-                    ProjectViewUtil.SelectProjectAsset(EditorUtil.GetEditorCfgSOPath<FolderFastJumpDataSo>());
+                    FolderFastJumpDataSo.SelectAsset();
                 }
             });
 
@@ -74,7 +75,7 @@ namespace Duo1JFramework
 
                     if (GUILayout.Button("添加当前选中目标"))
                     {
-                        Object target = Selection.activeObject;
+                        UObject target = Selection.activeObject;
                         if (target != null)
                         {
                             FolderFastJumpData data = AddData();
@@ -169,7 +170,7 @@ namespace Duo1JFramework
                         {
                             if (GUILayout.Button("设置为当前选中", GUILayout.Width(100)))
                             {
-                                Object target = Selection.activeObject;
+                                UObject target = Selection.activeObject;
                                 if (target != null)
                                 {
                                     string p = AssetDatabase.GetAssetPath(target);
@@ -286,16 +287,9 @@ namespace Duo1JFramework
         {
             get
             {
-                if (so == null)
-                {
-                    so = EditorUtil.GetOrCreateEditorCfgSO<FolderFastJumpDataSo>();
-                }
-
-                return so;
+                return FolderFastJumpDataSo.Instance;
             }
         }
-
-        private FolderFastJumpDataSo so;
 
         private void InitDefaultDataList()
         {
@@ -306,13 +300,15 @@ namespace Duo1JFramework
             };
         }
 
-        private void OnEnable()
+        protected override void LoadData()
         {
+            base.LoadData();
             ReadSoData();
         }
 
-        private void OnDisable()
+        protected override void SaveData()
         {
+            base.SaveData();
             if (CheckChange())
             {
                 if (EditorUtility.DisplayDialog("提示", "文件夹快速选中工具数据发现更改，是否保存?", "是", "否"))

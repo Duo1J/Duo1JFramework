@@ -176,5 +176,10 @@ namespace Duo1JFramework.TimerUpdate
         public Timer()
         {
         }
+
+        public void GetTimerMonitorInfo()
+        {
+
+        }
     }
 }

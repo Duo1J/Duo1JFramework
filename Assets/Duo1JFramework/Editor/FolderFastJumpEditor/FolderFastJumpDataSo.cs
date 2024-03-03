@@ -1,30 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class FolderFastJumpDataSo : ScriptableObject
+namespace Duo1JFramework
 {
-    public List<FolderFastJumpData> list;
-}
-
-[Serializable]
-public class FolderFastJumpData
-{
-    public string name = "";
-    public string path = "";
-
-    public FolderFastJumpData()
+    /// <summary>
+    /// 文件夹快速选中工具配置
+    /// </summary>
+    public class FolderFastJumpDataSo : EditorConfigSO<FolderFastJumpDataSo>
     {
+        public List<FolderFastJumpData> list;
     }
 
-    public FolderFastJumpData(string name, string path)
+    [Serializable]
+    public class FolderFastJumpData
     {
-        this.name = name;
-        this.path = path;
-    }
+        public string name = "";
+        public string path = "";
 
-    public FolderFastJumpData Clone()
-    {
-        return new FolderFastJumpData(name, path);
+        public FolderFastJumpData()
+        {
+        }
+
+        public FolderFastJumpData(string name, string path)
+        {
+            this.name = name;
+            this.path = path;
+        }
+
+        public FolderFastJumpData Clone()
+        {
+            return new FolderFastJumpData(name, path);
+        }
     }
 }

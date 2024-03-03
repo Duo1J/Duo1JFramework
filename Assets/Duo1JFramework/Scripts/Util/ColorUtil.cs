@@ -20,7 +20,7 @@ namespace Duo1JFramework
             }
             if (hex.Length != 6)
             {
-                throw CommonException.Create($"Hex color长度错误: {hex.Length}");
+                throw CommonException.Create($"Hex color length error: {hex.Length}");
             }
             byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
             byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
@@ -37,6 +37,22 @@ namespace Duo1JFramework
             }
             ret = ("#" + color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2")).ToUpper();
             return colorHexCache[color] = ret;
+        }
+
+        /// <summary>
+        /// 以255数值创建颜色
+        /// </summary>
+        public static Color Create(int r, int g, int b, int a = 255)
+        {
+            return new Color(r / 255f, g / 255f, b / 255f, a / 255f);
+        }
+
+        /// <summary>
+        /// 以16进制色值创建颜色
+        /// </summary>
+        public static Color Create(string hexColor)
+        {
+            return HexToColor(hexColor);
         }
     }
 }

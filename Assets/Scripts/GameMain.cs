@@ -32,6 +32,11 @@ public class GameMain : MonoBehaviour
         {
             TimelineManager.Instance.LoadTimeline("Timeline/Timeline-01.prefab", (td) =>
             {
+                InputManager.SetLimit(InputLimit.All, false);
+                td.SetDestroyCallback((td) =>
+                {
+                    InputManager.SetLimit(InputLimit.All, true);
+                });
                 td.SyncTransform(ActorManager.Instance.MainActor);
                 td.SetGenericBinding("CinemachineBrain", CMBrain.Instance.Brain);
                 td.DestroyOnStop();

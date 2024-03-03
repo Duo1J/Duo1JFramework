@@ -115,5 +115,12 @@ namespace Duo1JFramework.TimerUpdate
             timerSet = new HashSet<Timer>();
             removeSet = new HashSet<Timer>();
         }
+
+#if UNITY_EDITOR
+
+        public HashSet<Timer> TimerSet => timerSet;
+        public HashSet<Timer> RemoveSet => removeSet;
+
+#endif
     }
 }

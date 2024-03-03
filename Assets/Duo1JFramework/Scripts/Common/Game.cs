@@ -18,6 +18,11 @@ namespace Duo1JFramework
         public static bool IsQuit { get; set; }
 
         /// <summary>
+        /// 游戏运行中
+        /// </summary>
+        public static bool IsPlaying => Application.isPlaying;
+
+        /// <summary>
         /// 触发单例类
         /// </summary>
         public static void TriggerSingleton()
