@@ -3,6 +3,7 @@ using Duo1JFramework.Actor;
 using Duo1JFramework.Camera3D;
 using Duo1JFramework.GamerInput;
 using Duo1JFramework.Timeline;
+using Duo1JFramework.TimerUpdate;
 using Duo1JFramework.UI;
 using UnityEngine;
 
@@ -24,6 +25,15 @@ public class GameMain : MonoBehaviour
         mainActor = ActorManager.Instance.CreateActor(
             new ActorData(typeof(CcControlableActor), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
+
+        TimerManager.Instance.GetTimer(1, () =>
+        {
+            Log.Error(1);
+        }, Def.TIMER_REPEAT_FOREVER).Start();
+        TimerManager.Instance.GetTimer(2, () =>
+        {
+            Log.Error(2);
+        }, Def.TIMER_REPEAT_FOREVER).Start();
     }
 
     private void Update()

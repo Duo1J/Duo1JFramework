@@ -35,7 +35,7 @@ namespace Duo1JFramework.UI
             {
                 LU.Vertical(() =>
                 {
-                    LU.DisableGroup(() =>
+                    LU.DisableGroup_Editor(() =>
                     {
                         for (int i = 0, len = nodeList.Count; i < len; i++)
                         {

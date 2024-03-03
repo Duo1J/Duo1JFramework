@@ -12,26 +12,43 @@ namespace Duo1JFramework
 
         private void OnGUI()
         {
-            if (!LU.IsPlayingTip())
+            if (!LU.IsPlayingTip_Editor())
             {
                 return;
             }
 
             LU.Scroll(ref scrollPos, () =>
             {
-                ShowActiveTimer();
+                DrawActiveTimer();
+                GUILayout.Space(10);
+                DrawRemoveTimer();
             });
         }
 
-        private void ShowActiveTimer()
+        private void DrawActiveTimer()
         {
-            LU.Vertical(() =>
+            GUILayout.Label("计时器列表");
+
+            foreach (Timer timer in TimerManager.Instance.TimerSet)
             {
-                foreach (IEditorDrawer drawer in TimerManager.Instance.TimerSet)
+                LU.Vertical(() =>
                 {
-                    drawer.Draw();
-                }
-            });
+                    timer.Draw();
+                }, "box");
+            }
+        }
+
+        private void DrawRemoveTimer()
+        {
+            GUILayout.Label("待移除计时器列表");
+
+            foreach (Timer timer in TimerManager.Instance.RemoveSet)
+            {
+                LU.Vertical(() =>
+                {
+                    timer.Draw();
+                }, "box");
+            }
         }
     }
 }

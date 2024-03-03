@@ -23,6 +23,11 @@ namespace Duo1JFramework
         public static bool IsPlaying => Application.isPlaying;
 
         /// <summary>
+        /// 是否处于调试模式
+        /// </summary>
+        public static bool IsDebug => IsEditor;
+
+        /// <summary>
         /// 触发单例类
         /// </summary>
         public static void TriggerSingleton()

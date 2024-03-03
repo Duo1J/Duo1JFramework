@@ -55,15 +55,27 @@ namespace Duo1JFramework.TimerUpdate
         private bool init;
 
         /// <summary>
+        /// 调试的栈信息
+        /// </summary>
+        private string stackTrace_Debug;
+
+        /// <summary>
         /// 开启计时器
         /// </summary>
         public Timer Start()
         {
             Assert.Guard(init, "Timer尚未初始化，请调用Init初始化");
             if (isRunning) return this;
+
             isRunning = true;
             startTime = Time.unscaledTime;
             TimerManager.Instance.RegisterTimer(this);
+
+            if (Game.IsDebug)
+            {
+                stackTrace_Debug = Log.GetStackTrace();
+            }
+
             return this;
         }
 
@@ -105,7 +117,7 @@ namespace Duo1JFramework.TimerUpdate
         {
             if (!isRunning) return;
 
-            if (curRepeat != Def.TIMER_REPEAT_FOREVER && curRepeat >= repeat)
+            if (repeat != Def.TIMER_REPEAT_FOREVER && curRepeat >= repeat)
             {
                 Stop();
             }
@@ -173,9 +185,36 @@ namespace Duo1JFramework.TimerUpdate
             return this;
         }
 
+        private Vector2 scrollPos;
+
         public void Draw()
         {
+            LU.Vertical(() =>
+            {
+                LU.Horizontal(() =>
+                {
+                    GUILayout.Label($"是否初始化: {init}");
+                    GUILayout.Label($"帧计时器: {isFrameTimer}");
+                    GUILayout.Label($"周期: {interval}");
+                    GUILayout.Label($"重复次数: {curRepeat}/{repeat}");
+                });
 
+                LU.Horizontal(() =>
+                {
+                    GUILayout.Label($"运行中: {isRunning}");
+                    GUILayout.Label($"启动时间: {startTime}");
+                    GUILayout.Label($"当前运行时间: {curInterval}");
+                });
+
+                if (Game.IsDebug)
+                {
+                    GUILayout.Label("Start()调用栈");
+                    LU.Scroll(ref scrollPos, () =>
+                    {
+                        GUILayout.Label(stackTrace_Debug);
+                    }, "box", GUILayout.MaxHeight(70));
+                }
+            });
         }
 
         public Timer()

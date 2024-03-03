@@ -1,6 +1,10 @@
+using Duo1JFramework.ObjectPool;
 using System;
+using System.Diagnostics;
 using System.Text;
 using UnityEngine;
+
+using Debug = UnityEngine.Debug;
 
 namespace Duo1JFramework
 {
@@ -207,6 +211,26 @@ namespace Duo1JFramework
         public static string Concat(params string[] msg)
         {
             return Concat(null, msg);
+        }
+
+        /// <summary>
+        /// 获取当前调用栈
+        /// </summary>
+        public static string GetStackTrace()
+        {
+            string ret = null;
+
+            StackTrace strackTrace = new StackTrace();
+            Pool.StringBuilderPool.Using((item) =>
+            {
+                foreach (StackFrame frame in strackTrace.GetFrames())
+                {
+                    item.Value.AppendLine($"{frame.GetMethod()} - {frame.GetFileColumnNumber()}");
+                }
+                ret = item.Value.ToString();
+            });
+
+            return ret ?? string.Empty;
         }
     }
 }

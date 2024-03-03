@@ -153,7 +153,7 @@ namespace Duo1JFramework
             GUI.Label(lastRect, " <i>" + comment + "</i>");
         }
 
-        public static void DisableGroup(Action action, bool disabled = true)
+        public static void DisableGroup_Editor(Action action, bool disabled = true)
         {
 #if UNITY_EDITOR
             EditorGUI.BeginDisabledGroup(disabled);
@@ -164,12 +164,12 @@ namespace Duo1JFramework
 #endif
         }
 
-        public static bool IsPlayingTip()
+        public static bool IsPlayingTip_Editor()
         {
-            return ConditionTip(Game.IsPlaying, "请在运行后使用");
+            return ConditionTip_Editor(Game.IsPlaying, "请在运行后使用");
         }
 
-        public static bool ConditionTip(bool con, string msg)
+        public static bool ConditionTip_Editor(bool con, string msg)
         {
             if (!con)
             {
