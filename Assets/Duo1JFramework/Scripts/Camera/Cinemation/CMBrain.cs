@@ -16,7 +16,7 @@ namespace Duo1JFramework.Camera3D
         /// </summary>
         public CinemachineVirtualCamera LoadVirtualCamera(string prefabPath)
         {
-            GameObject cameraGo = AssetManager.Instance.LoadSync<GameObject>(prefabPath);
+            GameObject cameraGo = AssetManager.Instance.LoadInsSync<GameObject>(prefabPath);
             if (cameraGo == null)
             {
                 return null;

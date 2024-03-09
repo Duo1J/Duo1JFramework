@@ -46,7 +46,7 @@ namespace Duo1JFramework
             {
                 if (subWnd.GetType() == t)
                 {
-                    return subWnd as T;
+                    return subWnd.Convert<T>();
                 }
             }
 

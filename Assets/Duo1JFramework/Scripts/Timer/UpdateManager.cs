@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Duo1JFramework.TimerUpdate
 {
@@ -62,6 +63,32 @@ namespace Duo1JFramework.TimerUpdate
                     {
                         Assert.ExceptHandle(e);
                         UnRegisterUpdate(action);
+                    }
+                }
+            }
+
+            //异步操作注册回调
+            if (asyncOpeWrapList != null)
+            {
+                List<AsyncOperationWrap> removeList = null;
+                foreach (AsyncOperationWrap wrap in asyncOpeWrapList)
+                {
+                    if (wrap.IsDone)
+                    {
+                        wrap.Call();
+
+                        if (removeList == null)
+                        {
+                            removeList = new List<AsyncOperationWrap>();
+                        }
+                        removeList.Add(wrap);
+                    }
+                }
+                if (removeList != null)
+                {
+                    foreach (AsyncOperationWrap wrap in removeList)
+                    {
+                        asyncOpeWrapList.Remove(wrap);
                     }
                 }
             }
@@ -191,6 +218,25 @@ namespace Duo1JFramework.TimerUpdate
 
         #endregion FixedUpdate
 
+        #region Yield Request
+
+        private List<AsyncOperationWrap> asyncOpeWrapList = new List<AsyncOperationWrap>();
+
+        public void RegisterAsyncRequest(AsyncOperation operation, Action<AsyncOperation> callback)
+        {
+            Assert.NotNull(operation, "AsyncOperation不可为空");
+            Assert.NotNull(callback, "回调不可为空");
+
+            operation.completed += (req) =>
+            {
+                callback?.Invoke(req);
+            };
+
+            //asyncOpeWrapList.Add(new AsyncOperationWrap(operation, callback));
+        }
+
+        #endregion Yield Request
+
         protected override void OnInit()
         {
             updateSet = new HashSet<Action>();
@@ -209,6 +255,29 @@ namespace Duo1JFramework.TimerUpdate
             fixedUpdateDeleteList = null;
             lateUpdateSet = null;
             lateUpdateDeleteList = null;
+        }
+
+        /// <summary>
+        /// 异步操作回调包装
+        /// </summary>
+        private struct AsyncOperationWrap
+        {
+            private AsyncOperation operation;
+            private Action<AsyncOperation> callback;
+
+            public AsyncOperationWrap(AsyncOperation operation, Action<AsyncOperation> callback)
+            {
+                this.operation = operation;
+                this.callback = callback;
+            }
+
+            public bool IsDone => operation.isDone;
+
+            public void Call()
+            {
+                callback?.Invoke(operation);
+                callback = null;
+            }
         }
     }
 }

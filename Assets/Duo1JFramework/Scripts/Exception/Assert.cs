@@ -1,5 +1,7 @@
 using System;
 
+using UObject = UnityEngine.Object;
+
 namespace Duo1JFramework
 {
     public static class Assert
@@ -74,6 +76,110 @@ namespace Duo1JFramework
         private static void Throw(string msg)
         {
             throw CommonException.Create(msg);
+        }
+
+        /// <summary>
+        /// 断言Editor下
+        /// </summary>
+        public static void GuardEditor(string msg = null)
+        {
+            if (!Game.IsEditor)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Throw("非Editor下不可调用");
+                }
+                else
+                {
+                    Throw($"非Editor下不可调用\n{msg}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 断言Runtime下
+        /// </summary>
+        public static void GuardRuntime(string msg = null)
+        {
+            if (Game.IsEditor)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Throw("非Runtime下不可调用");
+                }
+                else
+                {
+                    Throw($"非Runtime下不可调用\n{msg}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// UObject类型转换，转换失败打印错误
+        /// </summary>
+        public static T Convert<T>(UObject target, string msg = null) where T : UObject
+        {
+            if (target == null)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}");
+                }
+                else
+                {
+                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}\n{msg}");
+                }
+                return null;
+            }
+
+            T ret = target as T;
+            if (ret == null)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}");
+                }
+                else
+                {
+                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// object类型转换，转换失败打印错误
+        /// </summary>
+        public static T Convert<T>(object target, string msg = null) where T : class
+        {
+            if (target == null)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}");
+                }
+                else
+                {
+                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}\n{msg}");
+                }
+                return null;
+            }
+
+            T ret = target as T;
+            if (ret == null)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}");
+                }
+                else
+                {
+                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
+                }
+            }
+
+            return ret;
         }
     }
 }

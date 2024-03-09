@@ -12,7 +12,7 @@ namespace Duo1JFramework.Actor
         {
             get
             {
-                if (con == null) con = Controller as T;
+                if (con == null) con = Controller.Convert<T>();
                 return con;
             }
         }

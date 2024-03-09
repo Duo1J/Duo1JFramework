@@ -31,5 +31,13 @@ namespace Duo1JFramework.Asset
             int idx = path.LastIndexOf('.');
             return path.Substring(0, idx);
         }
+
+        /// <summary>
+        /// 获取AssetBundle的文件路径
+        /// </summary>
+        public static string GetAssetBundlePath(string assetBundleName)
+        {
+            return assetBundleName;
+        }
     }
 }

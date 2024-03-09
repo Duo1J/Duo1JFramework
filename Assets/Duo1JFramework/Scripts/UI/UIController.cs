@@ -57,7 +57,7 @@ namespace Duo1JFramework.UI
             string comDictKey = goName + typeof(T).Name;
             if (comDict.TryGetValue(comDictKey, out MonoBehaviour mb))
             {
-                return mb as T;
+                return mb.Convert<T>();
             }
 
             GameObject go = GetGo(goName);

@@ -14,7 +14,7 @@ namespace Duo1JFramework.Timeline
         /// </summary>
         public void LoadTimeline(string timelinePath, Action<TimelineData> callback = null)
         {
-            AssetManager.Instance.Load<GameObject>(timelinePath, (go) =>
+            AssetManager.Instance.LoadIns<GameObject>(timelinePath, (go) =>
             {
                 TimelineData td = WrapTimelinePrefab(go);
                 callback?.Invoke(td);
@@ -26,7 +26,7 @@ namespace Duo1JFramework.Timeline
         /// </summary>
         public TimelineData LoadTimelineSync(string timelinePath)
         {
-            GameObject go = AssetManager.Instance.LoadSync<GameObject>(timelinePath);
+            GameObject go = AssetManager.Instance.LoadInsSync<GameObject>(timelinePath);
             return WrapTimelinePrefab(go);
         }
 
