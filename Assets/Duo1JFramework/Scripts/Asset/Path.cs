@@ -1,5 +1,6 @@
 using ParadoxNotion.Design;
 using UnityEditor;
+using UnityEngine;
 
 namespace Duo1JFramework.Asset
 {
@@ -37,7 +38,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public static string GetAssetBundlePath(string assetBundleName)
         {
-            return assetBundleName;
+            return $"{Application.streamingAssetsPath}/{assetBundleName}.assetbundle";
         }
     }
 }

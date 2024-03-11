@@ -1,4 +1,3 @@
-using Duo1JFramework.TimerUpdate;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +16,6 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 获取依赖引用的ABData列表
         /// </summary>
-        /// <returns></returns>
         public List<ABData> GetRefABDataList(string assetBundleName)
         {
             List<ABData> abDataList = new List<ABData>();
@@ -31,7 +29,10 @@ namespace Duo1JFramework.Asset
             return abDataList;
         }
 
-        public ABData GetABData(string assetBundleName)
+        /// <summary>
+        /// 通过AssetBundle名获取数据类
+        /// </summary>
+        private ABData GetABData(string assetBundleName)
         {
             if (!abDataDict.TryGetValue(assetBundleName, out ABData abData))
             {

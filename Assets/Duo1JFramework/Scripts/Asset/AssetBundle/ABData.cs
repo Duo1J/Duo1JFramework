@@ -1,6 +1,5 @@
 using Duo1JFramework.TimerUpdate;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,14 +12,29 @@ namespace Duo1JFramework.Asset
     /// </summary>
     public class ABData
     {
+        /// <summary>
+        /// 加载出来的AssetBundle包
+        /// </summary>
         private AssetBundle assetBundle;
 
+        /// <summary>
+        /// 待加载的AssetBundle包名
+        /// </summary>
         private string assetBundleName;
 
+        /// <summary>
+        /// 待加载的AssetBundle文件路径
+        /// </summary>
         private string assetBundlePath;
 
+        /// <summary>
+        /// 是否异步加载中
+        /// </summary>
         private bool loading = false;
 
+        /// <summary>
+        /// 异步加载完成回调
+        /// </summary>
         private Action asyncLoadedCallback;
 
         /// <summary>
@@ -73,6 +87,52 @@ namespace Duo1JFramework.Asset
             CheckABLoaded(true);
             ABAssetData abAssetData = GetABAssetData(assetPath);
             return abAssetData.LoadSync<T>();
+        }
+
+        /// <summary>
+        /// 卸载资源
+        /// </summary>
+        public void UnloadAsset(string assetPath)
+        {
+            if (!abAssetDataDict.TryGetValue(assetPath, out ABAssetData abAssetData))
+            {
+                Log.ErrorForce($"{ToString()} 未加载{assetPath}，无法卸载");
+                return;
+            }
+
+            abAssetData.RemoveRef();
+        }
+
+        /// <summary>
+        /// 是否可以卸载
+        /// </summary>
+        public bool CanUnload()
+        {
+            if (refThisABSet.Count > 0)
+            {
+                return false;
+            }
+
+            foreach (KeyValuePair<string, ABAssetData> kv in abAssetDataDict)
+            {
+                if (!kv.Value.CanUnload())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 尝试卸载
+        /// </summary>
+        public void TryUnload()
+        {
+            if (CanUnload())
+            {
+                //todo hlj
+            }
         }
 
         private ABAssetData GetABAssetData(string assetPath)
@@ -261,6 +321,18 @@ namespace Duo1JFramework.Asset
             {
                 callback?.Invoke();
                 callback = null;
+            }
+        }
+
+        public override string ToString()
+        {
+            if (loading)
+            {
+                return $"<{assetBundleName}-Loading>";
+            }
+            else
+            {
+                return $"<{assetBundleName}>";
             }
         }
     }
