@@ -7,49 +7,85 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// AssetBundle×ÊÔ´Êı¾İ
+    /// AssetBundleèµ„æºæ•°æ®
     /// </summary>
     public class ABAssetData
     {
         /// <summary>
-        /// ×ÊÔ´Â·¾¶
+        /// èµ„æºè·¯å¾„
         /// </summary>
         private string assetPath;
 
         /// <summary>
-        /// ÒıÓÃµÄAssetBundle
+        /// å¼•ç”¨çš„ABData
         /// </summary>
-        private AssetBundle assetBundle;
+        private ABData abData;
 
         /// <summary>
-        /// ¼ÓÔØ³öÀ´µÄ×ÊÔ´
+        /// åŠ è½½å‡ºæ¥çš„èµ„æº
         /// </summary>
         private UObject asset;
 
         /// <summary>
-        /// ÒıÓÃ¼ÆÊı
+        /// å¼•ç”¨è®¡æ•°
         /// </summary>
         private int refCnt;
 
         /// <summary>
-        /// Òì²½¼ÓÔØ×ÊÔ´
+        /// æ˜¯å¦å¼‚æ­¥åŠ è½½ä¸­
+        /// </summary>
+        private bool loading = false;
+
+        /// <summary>
+        /// å¼‚æ­¥åŠ è½½å®Œæˆå›è°ƒ
+        /// </summary>
+        private Action asyncLoadedCallback;
+
+        /// <summary>
+        /// å¼•ç”¨çš„AssetBundle
+        /// </summary>
+        private AssetBundle assetBundle
+        {
+            get
+            {
+                AssetBundle assetBundle = abData.AB;
+                Assert.NotNull(assetBundle, "è®¿é—®AssetBundleæ—¶ï¼Œå…¶å€¼ä¸ºç©º");
+                return assetBundle;
+            }
+        }
+
+        /// <summary>
+        /// å¼‚æ­¥åŠ è½½èµ„æº
         /// </summary>
         public void Load<T>(Action<T> callback) where T : UObject
         {
+            Assert.NotNull(callback, "å›è°ƒä¸å¯ä¸ºç©º");
+
             if (asset != null)
             {
-                callback?.Invoke(asset.Convert<T>());
-                AddRef();
+                callback(Alloc<T>());
                 return;
             }
 
+            asyncLoadedCallback += () =>
+            {
+                callback(Alloc<T>());
+            };
+
+            if (loading)
+            {
+                return;
+            }
+
+            loading = true;
             AssetBundleRequest request = assetBundle.LoadAssetAsync(assetPath);
             UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
             {
+                loading = false;
                 AssetBundleRequest _request = req as AssetBundleRequest;
                 if (asset != null)
                 {
-                    Log.Warn($"{ToString()} ×ÊÔ´ÒÑ¼ÓÔØ£¬Å×Æú±¾´ÎÒì²½½á¹û");
+                    Log.Warn($"{ToString()} èµ„æºå·²åŠ è½½ï¼ŒæŠ›å¼ƒæœ¬æ¬¡å¼‚æ­¥ç»“æœ");
                     _request.asset.DestroyImmediate();
                 }
                 else
@@ -59,22 +95,35 @@ namespace Duo1JFramework.Asset
 
                 if (asset == null)
                 {
-                    Log.ErrorForce($"{ToString()} ×ÊÔ´¼ÓÔØÊ§°Ü");
+                    Log.ErrorForce($"{ToString()} èµ„æºåŠ è½½å¤±è´¥");
                 }
 
-                AddRef();
-                callback(asset.Convert<T>());
+                asyncLoadedCallback?.Invoke();
+                asyncLoadedCallback = null;
             });
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ×ÊÔ´
+        /// åŒæ­¥åŠ è½½èµ„æº
         /// </summary>
         public T LoadSync<T>() where T : UObject
         {
             if (asset == null)
             {
                 asset = assetBundle.LoadAsset(assetPath);
+                asyncLoadedCallback?.Invoke();
+                asyncLoadedCallback = null;
+            }
+
+            return Alloc<T>();
+        }
+
+        private T Alloc<T>() where T : UObject
+        {
+            if (asset == null)
+            {
+                Log.ErrorForce($"{ToString()} èµ„æºä¸ºç©ºï¼Œæ— æ³•åˆ†é…");
+                return null;
             }
 
             AddRef();
@@ -82,34 +131,58 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Ìí¼ÓÒıÓÃ¼ÆÊı
+        /// æ·»åŠ å¼•ç”¨è®¡æ•°
         /// </summary>
         private void AddRef() => ++refCnt;
 
         /// <summary>
-        /// ¼õÉÙÒıÓÃ¼ÆÊı
+        /// å‡å°‘å¼•ç”¨è®¡æ•°
         /// </summary>
         public void RemoveRef()
         {
             --refCnt;
             if (refCnt < 0)
             {
-                Log.ErrorForce($"{ToString()} ×ÊÔ´ÒıÓÃ¼ÆÊıÒì³£Ğ¡ÓÚ0");
+                Log.ErrorForce($"{ToString()} èµ„æºå¼•ç”¨è®¡æ•°å¼‚å¸¸å°äº0");
             }
         }
 
         /// <summary>
-        /// ÊÇ·ñ¿ÉĞ¶ÔØ
+        /// æ˜¯å¦å¯å¸è½½
         /// </summary>
         public bool CanUnload()
         {
+            if (loading)
+            {
+                return false;
+            }
+
             return refCnt <= 0;
         }
 
-        public ABAssetData(string assetPath, AssetBundle assetBundle)
+        /// <summary>
+        /// å¸è½½èµ„æº
+        /// </summary>
+        public bool Unload(bool force = true)
         {
+            if (force || CanUnload())
+            {
+                refCnt = 0;
+                loading = false;
+                asyncLoadedCallback = null;
+
+                Resources.UnloadAsset(asset);
+                asset = null;
+                return true;
+            }
+
+            return false;
+        }
+
+        public ABAssetData(ABData abData, string assetPath)
+        {
+            this.abData = abData;
             this.assetPath = assetPath;
-            this.assetBundle = assetBundle;
         }
 
         public override string ToString()

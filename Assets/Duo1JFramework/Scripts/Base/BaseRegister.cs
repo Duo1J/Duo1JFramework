@@ -12,6 +12,11 @@ namespace Duo1JFramework
     public abstract class BaseRegister : IDispose
     {
         /// <summary>
+        /// PreUpdate注册的更新回调
+        /// </summary>
+        private Action preUpdater;
+
+        /// <summary>
         /// Update注册的更新回调
         /// </summary>
         private Action updater;
@@ -42,6 +47,25 @@ namespace Duo1JFramework
         public bool Disposed { get; protected set; }
 
         #region Update
+
+        /// <summary>
+        /// 注册PreUpdate回调
+        /// </summary>
+        public void RegisterPreUpdate(Action _preUpdater)
+        {
+            UpdateManager.Instance.RegisterPreUpdate(_preUpdater);
+            preUpdater = _preUpdater;
+        }
+
+        /// <summary>
+        /// 取消注册PreUpdate回调
+        /// </summary>
+        public void UnRegisterPreUpdate()
+        {
+            if (preUpdater == null) return;
+            UpdateManager.Instance.UnRegisterPreUpdate(preUpdater);
+            preUpdater = null;
+        }
 
         /// <summary>
         /// 注册Update回调
@@ -175,7 +199,7 @@ namespace Duo1JFramework
             }
             list.Add(callback);
 
-            EventManager.Instance.Register(e, callback);
+            EventManager.Instance.AddEvent(e, callback);
         }
 
         /// <summary>
@@ -191,7 +215,7 @@ namespace Duo1JFramework
                 }
             }
 
-            EventManager.Instance.UnRegister(e, callback);
+            EventManager.Instance.RemoveEvent(e, callback);
         }
 
         /// <summary>
@@ -204,7 +228,7 @@ namespace Duo1JFramework
             {
                 foreach (Action<object> callback in kv.Value)
                 {
-                    EventManager.Instance.UnRegister(kv.Key, callback);
+                    EventManager.Instance.RemoveEvent(kv.Key, callback);
                 }
             }
         }
@@ -224,6 +248,7 @@ namespace Duo1JFramework
             }
             Disposed = true;
 
+            UnRegisterPreUpdate();
             UnRegisterUpdate();
             UnRegisterLateUpdate();
             UnRegisterFixedUpdate();

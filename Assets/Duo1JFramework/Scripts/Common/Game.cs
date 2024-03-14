@@ -1,3 +1,4 @@
+using Duo1JFramework.Asset;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -33,6 +34,12 @@ namespace Duo1JFramework
         public static void TriggerSingleton()
         {
             GameManager.Instance.Trigger();
+        }
+
+        public static void GC()
+        {
+            AssetManager.Instance.GC();
+            System.GC.Collect();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Duo1JFramework.Event
     {
         private Dictionary<eEvent, List<Action<object>>> eventDict;
 
-        public void Register(eEvent e, Action<object> callback)
+        public void AddEvent(eEvent e, Action<object> callback)
         {
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
@@ -20,7 +20,7 @@ namespace Duo1JFramework.Event
             list.Add(callback);
         }
 
-        public bool UnRegister(eEvent e, Action<object> callback)
+        public bool RemoveEvent(eEvent e, Action<object> callback)
         {
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
@@ -29,17 +29,17 @@ namespace Duo1JFramework.Event
             return list.Remove(callback);
         }
 
-        public bool UnRegister(eEvent e)
+        public bool RemoveEvent(eEvent e)
         {
             return eventDict.Remove(e);
         }
 
-        public void UnRegisterAll()
+        public void RemoveAllEvent()
         {
             eventDict.Clear();
         }
 
-        public void Dispatch(eEvent e, object args = null)
+        public void Broadcast(eEvent e, object args = null)
         {
             if (eventDict.TryGetValue(e, out List<Action<object>> list))
             {

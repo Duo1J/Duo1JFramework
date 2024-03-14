@@ -5,31 +5,48 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// ÔËĞĞÊ±AssetBundle¼ÓÔØÆ÷
+    /// è¿è¡Œæ—¶AssetBundleåŠ è½½å™¨
     /// </summary>
     public class ABAssetLoader : BaseAssetLoader
     {
         /// <summary>
-        /// Òì²½¼ÓÔØ
+        /// å¼‚æ­¥åŠ è½½
         /// </summary>
         public override void Load<T>(string assetPath, Action<T> callback)
         {
-            Assert.NotNullOrEmpty(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
-            Assert.NotNull(callback, "»Øµ÷²»¿ÉÎª¿Õ");
-            throw new NotImplementedException();
+            Assert.NotNullOrEmpty(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
+            Assert.NotNull(callback, "å›è°ƒä¸å¯ä¸ºç©º");
+
+            ABData abData = ABManager.Instance.GetABData(assetPath);
+            if (abData == null)
+            {
+                Log.ErrorForce($"åŠ è½½èµ„æº`{assetPath}`æ—¶ï¼Œæ— æ³•è·å–å…¶å¯¹åº”çš„ABData");
+                callback(null);
+                return;
+            }
+
+            abData.Load<T>(assetPath, callback);
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ
+        /// åŒæ­¥åŠ è½½
         /// </summary>
         public override T LoadSync<T>(string assetPath)
         {
-            Assert.NotNull(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
-            throw new NotImplementedException();
+            Assert.NotNull(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
+
+            ABData abData = ABManager.Instance.GetABData(assetPath);
+            if (abData == null)
+            {
+                Log.ErrorForce($"åŠ è½½èµ„æº`{assetPath}`æ—¶ï¼Œæ— æ³•è·å–å…¶å¯¹åº”çš„ABData");
+                return null;
+            }
+
+            return abData.LoadSync<T>(assetPath);
         }
 
         /// <summary>
-        /// Òì²½¼ÓÔØÊµÀı
+        /// å¼‚æ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public override void LoadIns<T>(string assetPath, Action<T> callback)
         {
@@ -42,7 +59,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØÊµÀı
+        /// åŒæ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public override T LoadInsSync<T>(string assetPath)
         {

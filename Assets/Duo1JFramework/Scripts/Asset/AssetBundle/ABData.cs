@@ -8,49 +8,56 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// AssetBundleÊı¾İ
+    /// AssetBundleæ•°æ®
     /// </summary>
     public class ABData
     {
         /// <summary>
-        /// ¼ÓÔØ³öÀ´µÄAssetBundle°ü
+        /// åŠ è½½å‡ºæ¥çš„AssetBundleåŒ…
         /// </summary>
         private AssetBundle assetBundle;
 
         /// <summary>
-        /// ´ı¼ÓÔØµÄAssetBundle°üÃû
+        /// å¾…åŠ è½½çš„AssetBundleåŒ…å
         /// </summary>
         private string assetBundleName;
 
         /// <summary>
-        /// ´ı¼ÓÔØµÄAssetBundleÎÄ¼şÂ·¾¶
+        /// å¾…åŠ è½½çš„AssetBundleæ–‡ä»¶è·¯å¾„
         /// </summary>
         private string assetBundlePath;
 
         /// <summary>
-        /// ÊÇ·ñÒì²½¼ÓÔØÖĞ
+        /// æ˜¯å¦å¼‚æ­¥åŠ è½½ä¸­
         /// </summary>
         private bool loading = false;
 
         /// <summary>
-        /// Òì²½¼ÓÔØÍê³É»Øµ÷
+        /// å¼‚æ­¥åŠ è½½å®Œæˆå›è°ƒ
         /// </summary>
         private Action asyncLoadedCallback;
 
         /// <summary>
-        /// ÒıÓÃµÄAssetBundleµÄÁĞ±í
+        /// å¼•ç”¨çš„AssetBundleçš„åˆ—è¡¨
         /// </summary>
         private List<ABData> refABList;
 
         /// <summary>
-        /// ÒıÓÃ¸ÃAssetBundleµÄSet
+        /// å¼•ç”¨è¯¥AssetBundleçš„Set
         /// </summary>
         private HashSet<ABData> refThisABSet;
 
         /// <summary>
-        /// ¸ÃAssetBundle¼ÓÔØ³öÀ´µÄ×ÊÔ´ÁĞ±í
+        /// è¯¥AssetBundleåŠ è½½å‡ºæ¥çš„èµ„æºåˆ—è¡¨
         /// </summary>
         private Dictionary<string, ABAssetData> abAssetDataDict;
+
+        /// <summary>
+        /// å¸è½½ç©ºé—²ç­‰å¾…æ—¶é—´
+        /// </summary>
+        private float freeTime = 0;
+
+        public AssetBundle AB => assetBundle;
 
         public ABData(string assetBundleName)
         {
@@ -63,12 +70,12 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Òì²½¼ÓÔØ×ÊÔ´
+        /// å¼‚æ­¥åŠ è½½èµ„æº
         /// </summary>
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject
         {
-            Assert.NotNullOrEmpty(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
-            Assert.NotNull(callback, "»Øµ÷²»¿ÉÎª¿Õ");
+            Assert.NotNullOrEmpty(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
+            Assert.NotNull(callback, "å›è°ƒä¸å¯ä¸ºç©º");
 
             CheckABLoaded(false, () =>
             {
@@ -78,11 +85,11 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ×ÊÔ´
+        /// åŒæ­¥åŠ è½½èµ„æº
         /// </summary>
         public T LoadSync<T>(string assetPath) where T : UObject
         {
-            Assert.NotNullOrEmpty(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
+            Assert.NotNullOrEmpty(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
 
             CheckABLoaded(true);
             ABAssetData abAssetData = GetABAssetData(assetPath);
@@ -90,13 +97,13 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Ğ¶ÔØ×ÊÔ´
+        /// å¸è½½èµ„æº
         /// </summary>
         public void UnloadAsset(string assetPath)
         {
             if (!abAssetDataDict.TryGetValue(assetPath, out ABAssetData abAssetData))
             {
-                Log.ErrorForce($"{ToString()} Î´¼ÓÔØ{assetPath}£¬ÎŞ·¨Ğ¶ÔØ");
+                Log.ErrorForce($"{ToString()} æœªåŠ è½½{assetPath}ï¼Œæ— æ³•å¸è½½");
                 return;
             }
 
@@ -104,10 +111,15 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ÊÇ·ñ¿ÉÒÔĞ¶ÔØ
+        /// æ˜¯å¦å¯ä»¥å¸è½½
         /// </summary>
         public bool CanUnload()
         {
+            if (loading)
+            {
+                return false;
+            }
+
             if (refThisABSet.Count > 0)
             {
                 return false;
@@ -125,34 +137,60 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ³¢ÊÔĞ¶ÔØ
+        /// å°è¯•å¸è½½
         /// </summary>
-        public void TryUnload()
+        public bool TryUnload()
         {
             if (CanUnload())
             {
-                //todo hlj
+                return Unload(true);
             }
+
+            return false;
+        }
+
+        /// <summary>
+        /// å¸è½½
+        /// </summary>
+        private bool Unload(bool force = true)
+        {
+            if (force || CanUnload())
+            {
+                loading = false;
+                asyncLoadedCallback = null;
+
+                foreach (KeyValuePair<string, ABAssetData> kv in abAssetDataDict)
+                {
+                    kv.Value.Unload(force);
+                }
+
+                assetBundle.Unload(force);
+                assetBundle = null;
+
+                return true;
+            }
+
+            return false;
         }
 
         private ABAssetData GetABAssetData(string assetPath)
         {
             if (!IsABLoaded())
             {
-                Log.ErrorForce($"{ToString()} µ÷ÓÃABData::GetABAssetData()Ê±£¬AssetBundleÉĞÎ´¼ÓÔØÍê³É");
+                Log.ErrorForce($"{ToString()} è°ƒç”¨ABData::GetABAssetData()æ—¶ï¼ŒAssetBundleå°šæœªåŠ è½½å®Œæˆ");
                 return null;
             }
 
             if (!abAssetDataDict.TryGetValue(assetPath, out ABAssetData abAssetData))
             {
-                abAssetData = new ABAssetData(assetPath, assetBundle);
+                abAssetData = new ABAssetData(this, assetPath);
                 abAssetDataDict.Add(assetPath, abAssetData);
             }
             return abAssetData;
         }
 
         /// <summary>
-        /// ¶Ô´ËAssetBundleÌí¼ÓÆäËû°üµÄÒÀÀµ
+        /// å¯¹æ­¤AssetBundleæ·»åŠ å…¶ä»–åŒ…çš„ä¾èµ–
         /// </summary>
         private void AddRefThis(ABData abData)
         {
@@ -160,7 +198,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ÒÆ³ıAssetBundle¶Ô´ËµÄÒÀÀµ
+        /// ç§»é™¤AssetBundleå¯¹æ­¤çš„ä¾èµ–
         /// </summary>
         private void RemoveRefThis(ABData abData)
         {
@@ -168,7 +206,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ¼ì²éAssetBundleÊÇ·ñ¼ÓÔØ£¬Î´¼ÓÔØÔò¼ÓÔØ
+        /// æ£€æŸ¥AssetBundleæ˜¯å¦åŠ è½½ï¼ŒæœªåŠ è½½åˆ™åŠ è½½
         /// </summary>
         private bool CheckABLoaded(bool sync, Action callback = null)
         {
@@ -184,7 +222,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// AssetBundleÊÇ·ñÒÑ¼ÓÔØ
+        /// AssetBundleæ˜¯å¦å·²åŠ è½½
         /// </summary>
         public bool IsABLoaded()
         {
@@ -192,13 +230,13 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ¼ÓÔØAssetBundle
+        /// åŠ è½½AssetBundle
         /// </summary>
         public void LoadAssetBundle(bool sync = false, Action callback = null)
         {
             if (IsABLoaded())
             {
-                Log.Warn($"{ToString()} AssetBundleÒÑ¼ÓÔØ£¬²»¿ÉÖØ¸´¼ÓÔØ");
+                Log.Warn($"{ToString()} AssetBundleå·²åŠ è½½ï¼Œä¸å¯é‡å¤åŠ è½½");
                 callback?.Invoke();
                 return;
             }
@@ -214,7 +252,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ÄÚ²¿Òì²½¼ÓÔØAssetBundle
+        /// å†…éƒ¨å¼‚æ­¥åŠ è½½AssetBundle
         /// </summary>
         private void InnerLoadAssetBundle(Action callback)
         {
@@ -247,13 +285,13 @@ namespace Duo1JFramework.Asset
                         }
                         else
                         {
-                            Log.Warn($"{ToString()} AssetBundleÒÑ¼ÓÔØ£¬Å×Æú±¾´ÎÒì²½½á¹û");
+                            Log.Warn($"{ToString()} AssetBundleå·²åŠ è½½ï¼ŒæŠ›å¼ƒæœ¬æ¬¡å¼‚æ­¥ç»“æœ");
                             _assetBundle.DestroyImmediate();
                         }
                     }
                     else
                     {
-                        Log.ErrorForce($"{ToString()} Òì²½¼ÓÔØAssetBundleÊ§°Ü");
+                        Log.ErrorForce($"{ToString()} å¼‚æ­¥åŠ è½½AssetBundleå¤±è´¥");
                     }
 
                     if (asyncLoadedCallback != null)
@@ -266,7 +304,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ÄÚ²¿Í¬²½¼ÓÔØAssetBundle
+        /// å†…éƒ¨åŒæ­¥åŠ è½½AssetBundle
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
@@ -275,7 +313,7 @@ namespace Duo1JFramework.Asset
                 assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
                 if (assetBundle == null)
                 {
-                    Log.ErrorForce($"{ToString()} Í¬²½¼ÓÔØAssetBundleÊ§°Ü");
+                    Log.ErrorForce($"{ToString()} åŒæ­¥åŠ è½½AssetBundleå¤±è´¥");
                 }
 
                 callback?.Invoke();
@@ -283,7 +321,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// ¼ÓÔØËùÓĞÒÀÀµAssetBundle
+        /// åŠ è½½æ‰€æœ‰ä¾èµ–AssetBundle
         /// </summary>
         private void LoadAllDependenciesAB(bool sync, Action callback)
         {
@@ -321,6 +359,26 @@ namespace Duo1JFramework.Asset
             {
                 callback?.Invoke();
                 callback = null;
+            }
+        }
+
+        public void Tick()
+        {
+            if (!IsABLoaded())
+            {
+                return;
+            }
+
+            if (!CanUnload())
+            {
+                freeTime = 0;
+                return;
+            }
+
+            freeTime += Time.deltaTime;
+            if (freeTime > Def.MAX_AB_FREE_TIME)
+            {
+                TryUnload();
             }
         }
 

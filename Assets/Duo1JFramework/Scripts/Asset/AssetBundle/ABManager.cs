@@ -1,10 +1,11 @@
+using Duo1JFramework.TimerUpdate;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// AssetBundle¹ÜÀíÆ÷
+    /// AssetBundleç®¡ç†å™¨
     /// </summary>
     public class ABManager : MonoSingleton<ABManager>
     {
@@ -14,7 +15,37 @@ namespace Duo1JFramework.Asset
         private Dictionary<string, ABData> abDataDict;
 
         /// <summary>
-        /// »ñÈ¡ÒÀÀµÒıÓÃµÄABDataÁĞ±í
+        /// é€šè¿‡èµ„æºè·å–å¯¹åº”çš„ABData
+        /// </summary>
+        public ABData GetABDataByAsset(string assetPath)
+        {
+            string assetBundleName = GetAssetBundleNameByAsset(assetPath);
+            return GetABData(assetBundleName);
+        }
+
+        /// <summary>
+        /// é€šè¿‡AssetBundleåè·å–ABData
+        /// </summary>
+        public ABData GetABData(string assetBundleName)
+        {
+            if (!abDataDict.TryGetValue(assetBundleName, out ABData abData))
+            {
+                abData = new ABData(assetBundleName);
+                abDataDict.Add(assetBundleName, abData);
+            }
+            return abData;
+        }
+
+        /// <summary>
+        /// é€šè¿‡èµ„æºè·å–å¯¹åº”AssetBunbleå
+        /// </summary>
+        public string GetAssetBundleNameByAsset(string assetPath)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// è·å–ä¾èµ–å¼•ç”¨çš„ABDataåˆ—è¡¨
         /// </summary>
         public List<ABData> GetRefABDataList(string assetBundleName)
         {
@@ -29,17 +60,12 @@ namespace Duo1JFramework.Asset
             return abDataList;
         }
 
-        /// <summary>
-        /// Í¨¹ıAssetBundleÃû»ñÈ¡Êı¾İÀà
-        /// </summary>
-        private ABData GetABData(string assetBundleName)
+        public void GC()
         {
-            if (!abDataDict.TryGetValue(assetBundleName, out ABData abData))
+            foreach (KeyValuePair<string, ABData> kv in abDataDict)
             {
-                abData = new ABData(assetBundleName);
-                abDataDict.Add(assetBundleName, abData);
+                kv.Value.TryUnload();
             }
-            return abData;
         }
 
         protected override void OnDispose()
@@ -50,6 +76,16 @@ namespace Duo1JFramework.Asset
         {
             abDataDict = new Dictionary<string, ABData>();
             InitMainAssetBundle();
+
+            Register.RegisterLateUpdate(OnLateUpdate);
+        }
+
+        private void OnLateUpdate()
+        {
+            foreach (KeyValuePair<string, ABData> kv in abDataDict)
+            {
+                kv.Value.Tick();
+            }
         }
 
         private void InitMainAssetBundle()

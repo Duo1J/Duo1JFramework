@@ -12,6 +12,36 @@ namespace Duo1JFramework.TimerUpdate
         #region Update
 
         /// <summary>
+        /// PreUpdate集合
+        /// </summary>
+        private HashSet<Action> preUpdateSet;
+        /// <summary>
+        /// PreUpdate待移除列表
+        /// </summary>
+        private List<Action> preUpdateDeleteList;
+
+        /// <summary>
+        /// 注册PreUpdate
+        /// </summary>
+        public void RegisterPreUpdate(Action updater)
+        {
+            if (preUpdateSet.Contains(updater))
+            {
+                Log.ErrorForce("重复注册PreUpdate");
+                return;
+            }
+            preUpdateSet.Add(updater);
+        }
+
+        /// <summary>
+        /// 取消注册PreUpdate
+        /// </summary>
+        public void UnRegisterPreUpdate(Action updater)
+        {
+            preUpdateDeleteList.Add(updater);
+        }
+
+        /// <summary>
         /// Update集合
         /// </summary>
         private HashSet<Action> updateSet;
@@ -43,6 +73,30 @@ namespace Duo1JFramework.TimerUpdate
 
         private void Update()
         {
+            if (preUpdateSet != null)
+            {
+                if (preUpdateDeleteList != null)
+                {
+                    foreach (Action action in preUpdateDeleteList)
+                    {
+                        preUpdateSet.Remove(action);
+                    }
+                    preUpdateDeleteList.Clear();
+                }
+                foreach (Action action in preUpdateSet)
+                {
+                    try
+                    {
+                        action?.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        Assert.ExceptHandle(e);
+                        UnRegisterPreUpdate(action);
+                    }
+                }
+            }
+
             if (updateSet != null)
             {
                 if (updateDeleteList != null)
@@ -239,6 +293,8 @@ namespace Duo1JFramework.TimerUpdate
 
         protected override void OnInit()
         {
+            preUpdateSet = new HashSet<Action>();
+            preUpdateDeleteList = new List<Action>();
             updateSet = new HashSet<Action>();
             updateDeleteList = new List<Action>();
             fixedUpdateSet = new HashSet<Action>();
@@ -249,6 +305,8 @@ namespace Duo1JFramework.TimerUpdate
 
         protected override void OnDispose()
         {
+            preUpdateSet = null;
+            preUpdateDeleteList = null;
             updateSet = null;
             updateDeleteList = null;
             fixedUpdateSet = null;

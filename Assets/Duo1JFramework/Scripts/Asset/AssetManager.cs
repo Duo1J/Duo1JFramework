@@ -1,5 +1,5 @@
 using System;
-
+using UnityEngine;
 using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.Asset
@@ -73,6 +73,14 @@ namespace Duo1JFramework.Asset
         public T LoadResourceInsSync<T>(string assetPath) where T : UObject
         {
             return loader.LoadResourceInsSync<T>(assetPath);
+        }
+
+        public void GC()
+        {
+#if !UNITY_EDITOR
+            ABManager.Instance.GC();
+#endif
+            Resources.UnloadUnusedAssets();
         }
 
         /// <summary>

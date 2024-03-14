@@ -9,41 +9,41 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅事件
         /// </summary>
-        public void Register(eEvent e, Action<object> callback)
+        public void AddEvent(eEvent e, Action<object> callback)
         {
-            GetEventModel().Register(e, callback);
+            GetEventModel().AddEvent(e, callback);
         }
 
         /// <summary>
         /// 取消订阅事件
         /// </summary>
-        public bool UnRegister(eEvent e, Action<object> callback)
+        public bool RemoveEvent(eEvent e, Action<object> callback)
         {
-            return GetEventModel().UnRegister(e, callback);
+            return GetEventModel().RemoveEvent(e, callback);
         }
 
         /// <summary>
         /// 取消订阅事件下所有注册
         /// </summary>
-        public bool UnRegister(eEvent e)
+        public bool RemoveEvent(eEvent e)
         {
-            return GetEventModel().UnRegister(e);
+            return GetEventModel().RemoveEvent(e);
         }
 
         /// <summary>
         /// 取消订阅所有事件
         /// </summary>
-        public void UnRegisterAll()
+        public void RemoveAllEvent()
         {
-            GetEventModel().UnRegisterAll();
+            GetEventModel().RemoveAllEvent();
         }
 
         /// <summary>
         /// 发布事件
         /// </summary>
-        public void Dispatch(eEvent e, object args = null)
+        public void Broadcast(eEvent e, object args = null)
         {
-            GetEventModel().Dispatch(e, args);
+            GetEventModel().Broadcast(e, args);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Duo1JFramework.Event
         {
             if (this.eventModel != null)
             {
-                this.eventModel.UnRegisterAll();
+                this.eventModel.RemoveAllEvent();
             }
             this.eventModel = eventModel;
         }

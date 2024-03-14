@@ -7,26 +7,26 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅事件
         /// </summary>
-        void Register(eEvent e, Action<object> callback);
+        void AddEvent(eEvent e, Action<object> callback);
 
         /// <summary>
         /// 取消订阅事件
         /// </summary>
-        bool UnRegister(eEvent e, Action<object> callback);
+        bool RemoveEvent(eEvent e, Action<object> callback);
 
         /// <summary>
         /// 取消订阅事件下所有注册
         /// </summary>
-        bool UnRegister(eEvent e);
+        bool RemoveEvent(eEvent e);
 
         /// <summary>
         /// 取消订阅所有事件
         /// </summary>
-        void UnRegisterAll();
+        void RemoveAllEvent();
 
         /// <summary>
         /// 发布事件
         /// </summary>
-        void Dispatch(eEvent e, object args = null);
+        void Broadcast(eEvent e, object args = null);
     }
 }
