@@ -2,8 +2,12 @@ using UnityEditor;
 
 namespace Duo1JFramework
 {
+    /// åˆ›å»ºæ–°çš„çª—å£åéœ€è¦é…ç½®çª—å£å
+    /// <see cref="EditorDef.editorWndNameMap"/>
+
+
     /// <summary>
-    /// ±à¼­Æ÷´°¿Ú»ùÀà
+    /// ç¼–è¾‘å™¨çª—å£åŸºç±»
     /// </summary>
     public abstract class EditorWindowBase<T> : EditorWindow where T : EditorWindow
     {
@@ -13,9 +17,9 @@ namespace Duo1JFramework
         public float Height => position.height;
 
         /// <summary>
-        /// ´ò¿ª±à¼­Æ÷´°¿Ú
+        /// æ‰“å¼€ç¼–è¾‘å™¨çª—å£
         /// </summary>
-        /// <param name="wndName">´°¿ÚÃû£¬²»ÌîÔòÊ¹ÓÃÅäÖÃµÄÃû³Æ</param>
+        /// <param name="wndName">çª—å£åï¼Œä¸å¡«åˆ™ä½¿ç”¨é…ç½®çš„åç§°</param>
         public static T Open(string wndName = null)
         {
             return EditorUtil.OpenEditorWnd<T>(wndName);

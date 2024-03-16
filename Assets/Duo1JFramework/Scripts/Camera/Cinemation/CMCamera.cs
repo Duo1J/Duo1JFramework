@@ -31,8 +31,7 @@ namespace Duo1JFramework.Camera3D
 
             if (param.Length == 0)
             {
-                CommonException.Create("CMCamera初始化参数错误");
-                return;
+                throw CommonException.Create("CMCamera初始化参数错误");
             }
             string prefabPath = param[0] as string;
             Assert.NotNullOrEmpty(prefabPath, "主虚拟相机路径不可为空");

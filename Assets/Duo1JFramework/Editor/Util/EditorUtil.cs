@@ -140,5 +140,25 @@ namespace Duo1JFramework
         }
 
         #endregion ScriptableObject
+
+        #region Build
+
+        /// <summary>
+        /// 获取当前构建目标平台
+        /// </summary>
+        public static BuildTarget GetCurBuildTarget()
+        {
+            return EditorUserBuildSettings.activeBuildTarget;
+        }
+
+        /// <summary>
+        /// 获取AB构建选项
+        /// </summary>
+        public static BuildAssetBundleOptions GetABBuildOptions()
+        {
+            return BuildAssetBundleOptions.ChunkBasedCompression;
+        }
+
+        #endregion Build
     }
 }

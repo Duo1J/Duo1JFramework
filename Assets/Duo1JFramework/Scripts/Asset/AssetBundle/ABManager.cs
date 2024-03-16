@@ -1,4 +1,4 @@
-using Duo1JFramework.TimerUpdate;
+using Duo1JFramework.Build;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,10 +12,11 @@ namespace Duo1JFramework.Asset
         private AssetBundle mainAB;
         private AssetBundleManifest manifest;
 
+        private ABMapData abMapData;
         private Dictionary<string, ABData> abDataDict;
 
         /// <summary>
-        /// 通过资源获取对应的ABData
+        /// 通过资源路径获取对应的ABData
         /// </summary>
         public ABData GetABDataByAsset(string assetPath)
         {
@@ -28,6 +29,11 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public ABData GetABData(string assetBundleName)
         {
+            if (string.IsNullOrEmpty(assetBundleName))
+            {
+                return null;
+            }
+
             if (!abDataDict.TryGetValue(assetBundleName, out ABData abData))
             {
                 abData = new ABData(assetBundleName);
@@ -37,11 +43,11 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// 通过资源获取对应AssetBunble名
+        /// 通过资源路径获取对应AssetBunble名
         /// </summary>
         public string GetAssetBundleNameByAsset(string assetPath)
         {
-            return "";
+            return abMapData.GetAssetBundleNameByAsset(assetPath);
         }
 
         /// <summary>
@@ -74,6 +80,7 @@ namespace Duo1JFramework.Asset
 
         protected override void OnInit()
         {
+            abMapData = ABMapData.Load();
             abDataDict = new Dictionary<string, ABData>();
             InitMainAssetBundle();
 

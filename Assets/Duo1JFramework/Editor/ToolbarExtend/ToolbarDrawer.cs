@@ -1,3 +1,4 @@
+using Duo1JFramework.Asset;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Duo1JFramework
         {
             new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_FolderEmpty Icon"), () =>
             {
-                EditorUtil.OpenExplore(Application.dataPath);
+                EditorUtil.OpenExplore(Path.DataPath);
             })
         };
 

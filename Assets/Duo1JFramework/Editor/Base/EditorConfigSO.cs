@@ -3,14 +3,14 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ±à¼­Æ÷ÅäÖÃScriptableObject
+    /// ç¼–è¾‘å™¨é…ç½®ScriptableObject
     /// </summary>
     public class EditorConfigSO<T> : ScriptableObject where T : ScriptableObject
     {
         private static T instance;
 
         /// <summary>
-        /// ±à¼­Æ÷ÅäÖÃÊµÀı
+        /// ç¼–è¾‘å™¨é…ç½®å®ä¾‹
         /// </summary>
         public static T Instance
         {
@@ -25,16 +25,16 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ±à¼­Æ÷ÅäÖÃÊµÀı±£´æÂ·¾¶
+        /// ç¼–è¾‘å™¨é…ç½®å®ä¾‹ä¿å­˜è·¯å¾„
         /// </summary>
-        public static string Path => EditorUtil.GetEditorCfgSOPath<T>();
+        public static string AssetPath => EditorUtil.GetEditorCfgSOPath<T>();
 
         /// <summary>
-        /// Ñ¡ÖĞÅäÖÃ×ÊÔ´
+        /// é€‰ä¸­é…ç½®èµ„æº
         /// </summary>
         public static void SelectAsset()
         {
-            ProjectViewUtil.SelectProjectAsset(Path);
+            ProjectViewUtil.SelectProjectAsset(AssetPath);
         }
     }
 }

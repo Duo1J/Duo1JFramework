@@ -1,3 +1,4 @@
+using Duo1JFramework.Build;
 using System;
 using System.Collections.Generic;
 
@@ -40,6 +41,11 @@ namespace Duo1JFramework
         /// </summary>
         public const string TOOL_EDITOR_MONITOR_PREFIX = TOOL_PREFIX + "Monitor/";
 
+        /// <summary>
+        /// 构建
+        /// </summary>
+        public const string TOOL_EDITOR_BUILD_PREFIX = TOOL_PREFIX + "Build/";
+
         #endregion 工具路径定义
 
         /// <summary>
@@ -76,6 +82,7 @@ namespace Duo1JFramework
             [typeof(GUIIconViewer)] = "内置图标列表",
             [typeof(GUIStyleViewer)] = "内置样式列表",
             [typeof(TimerMonitor)] = "计时器监视",
+            [typeof(AssetBundleBuildEditor)] = "构建AssetBundle",
         };
 
         #endregion 编辑器窗口

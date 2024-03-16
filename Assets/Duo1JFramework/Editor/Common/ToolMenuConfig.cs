@@ -4,13 +4,14 @@ using UnityEngine;
 using Duo1JFramework.Asset;
 
 using UObject = UnityEngine.Object;
+using Duo1JFramework.Build;
 
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器工具栏菜单
+    /// 编辑器工具栏菜单配置
     /// </summary>
-    public static class ToolMenuItem
+    public static class ToolMenuConfig
     {
         #region Path 10
 
@@ -79,5 +80,15 @@ namespace Duo1JFramework
         }
 
         #endregion Monitor
+
+        #region Build 40
+
+        [MenuItem(EditorDef.TOOL_EDITOR_BUILD_PREFIX + "构建AssetBundle", priority = 40)]
+        public static AssetBundleBuildEditor OpenAssetBundleBuildEditor()
+        {
+            return AssetBundleBuildEditor.Open();
+        }
+
+        #endregion Build
     }
 }

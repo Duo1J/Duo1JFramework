@@ -1,3 +1,4 @@
+using Duo1JFramework.Config;
 using System;
 using UnityEngine;
 using UObject = UnityEngine.Object;
@@ -77,9 +78,10 @@ namespace Duo1JFramework.Asset
 
         public void GC()
         {
-#if !UNITY_EDITOR
-            ABManager.Instance.GC();
-#endif
+            if (!Game.IsEditor)
+            {
+                ABManager.Instance.GC();
+            }
             Resources.UnloadUnusedAssets();
         }
 
@@ -95,7 +97,11 @@ namespace Duo1JFramework.Asset
         {
             if (loader == null)
             {
-                if (Game.IsEditor)
+                if (GameConfig.Instance.EditorUseAB)
+                {
+                    SetCustomLoader(new ABAssetLoader());
+                }
+                else if (Game.IsEditor)
                 {
                     SetCustomLoader(new EditorAssetLoader());
                 }

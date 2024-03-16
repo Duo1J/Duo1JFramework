@@ -141,18 +141,21 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public bool TryUnload()
         {
-            if (CanUnload())
-            {
-                return Unload(true);
-            }
+            return Unload(false);
+        }
 
-            return false;
+        /// <summary>
+        /// 强制卸载
+        /// </summary>
+        public void ForceUnload()
+        {
+            Unload(true);
         }
 
         /// <summary>
         /// 卸载
         /// </summary>
-        private bool Unload(bool force = true)
+        private bool Unload(bool force = false)
         {
             if (force || CanUnload())
             {
@@ -162,6 +165,11 @@ namespace Duo1JFramework.Asset
                 foreach (KeyValuePair<string, ABAssetData> kv in abAssetDataDict)
                 {
                     kv.Value.Unload(force);
+                }
+
+                foreach (ABData abData in refABList)
+                {
+                    abData.RemoveRefThis(this);
                 }
 
                 assetBundle.Unload(force);

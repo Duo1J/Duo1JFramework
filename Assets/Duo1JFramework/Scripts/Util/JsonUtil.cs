@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 
 namespace Duo1JFramework
 {
@@ -8,11 +9,19 @@ namespace Duo1JFramework
     public static class JsonUtil
     {
         /// <summary>
-        /// 转对象转Json
+        /// object转Json
         /// </summary>
         public static string ToJson(object o)
         {
-            return JsonConvert.SerializeObject(o);
+            try
+            {
+                return JsonConvert.SerializeObject(o);
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "object转Json异常");
+                return "";
+            }
         }
 
         /// <summary>
@@ -22,13 +31,21 @@ namespace Duo1JFramework
         {
             Assert.NotNull(jsonStr, "Json字符串不可为null");
 
-            T ret = JsonConvert.DeserializeObject<T>(jsonStr);
-            if (ret == null)
+            try
             {
-                Log.ErrorForce($"Json转object失败:\n{jsonStr}");
-            }
+                T ret = JsonConvert.DeserializeObject<T>(jsonStr);
+                if (ret == null)
+                {
+                    Log.ErrorForce($"Json转object失败:\n{jsonStr}");
+                }
 
-            return ret;
+                return ret;
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "Json转object异常");
+                return default(T);
+            }
         }
 
         /// <summary>
@@ -36,13 +53,21 @@ namespace Duo1JFramework
         /// </summary>
         public static object ToObject(string jsonStr)
         {
-            object ret = JsonConvert.DeserializeObject(jsonStr);
-            if (ret == null)
+            try
             {
-                Log.ErrorForce($"Json转object失败:\n{jsonStr}");
-            }
+                object ret = JsonConvert.DeserializeObject(jsonStr);
+                if (ret == null)
+                {
+                    Log.ErrorForce($"Json转object失败:\n{jsonStr}");
+                }
 
-            return ret;
+                return ret;
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "Json转object异常");
+                return null;
+            }
         }
     }
 }

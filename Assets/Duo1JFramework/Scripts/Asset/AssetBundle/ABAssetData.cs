@@ -144,6 +144,7 @@ namespace Duo1JFramework.Asset
             if (refCnt < 0)
             {
                 Log.ErrorForce($"{ToString()} 资源引用计数异常小于0");
+                refCnt = 0;
             }
         }
 
@@ -163,7 +164,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 卸载资源
         /// </summary>
-        public bool Unload(bool force = true)
+        public bool Unload(bool force = false)
         {
             if (force || CanUnload())
             {
