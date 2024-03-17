@@ -1,4 +1,5 @@
 using Duo1JFramework.Asset;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 
@@ -14,6 +15,9 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static void BuildAllAssetBundle()
         {
+            FileUtil.DeleteDir(Path.GetAssetBundleRoot());
+            FileUtil.DeleteFile(Path.GetAssetBundleRootMeta());
+
             ABBuildStrategyData[] strategyDatas = ABBuildStrategy.Instance.Data;
 
             if (strategyDatas == null || strategyDatas.Length == 0)
@@ -33,28 +37,43 @@ namespace Duo1JFramework.Build
             }
 
             List<AssetBundleBuild> buildList = new List<AssetBundleBuild>();
+            Dictionary<string, List<string>> ab2AssetMap = new Dictionary<string, List<string>>();
 
             foreach (ABBuildData buildData in buildDatas)
             {
+                if (ab2AssetMap.ContainsKey(buildData.abName))
+                {
+                    Log.EditorError($"AssetBundle包名重复: {buildData.abName}");
+                    continue;
+                }
+                ab2AssetMap.Add(buildData.abName, buildData.assetPathList);
+
                 buildList.Add(buildData.ToAssetBundleBuild());
             }
 
-            //try
-            //{
-            //    EditorUtility.DisplayProgressBar("构建AssetBndle", "正在构建AssetBundle...", 0.3f);
+            try
+            {
+                EditorUtility.DisplayProgressBar("构建AssetBndle", "正在构建AssetBundle...", 0.3f);
 
-            //    BuildPipeline.BuildAssetBundles(
-            //        Path.GetAssetBundleRoot(),
-            //        buildList.ToArray(),
-            //        EditorUtil.GetABBuildOptions(),
-            //        EditorUtil.GetCurBuildTarget()
-            //    );
-            //}
-            //catch (Exception e)
-            //{
-            //    EditorUtility.ClearProgressBar();
-            //    Assert.ExceptHandle(e, "AssetBundle构建异常");
-            //}
+                BuildPipeline.BuildAssetBundles(
+                    Path.GetAssetBundleRoot().CheckDir(),
+                    buildList.ToArray(),
+                    EditorUtil.GetABBuildOptions(),
+                    EditorUtil.GetCurBuildTarget()
+                );
+
+                ABMapData.Save(ab2AssetMap);
+                Log.EditorInfo("构建AssetBndle成功");
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "AssetBundle构建异常");
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+                EditorUtil.SaveAndRefresh();
+            }
         }
 
         /// <summary>
@@ -69,10 +88,7 @@ namespace Duo1JFramework.Build
                 return ret.ToArray();
             }
 
-            List<string> allPathList = GetAllResPathList();
-
-            //todo hlj
-
+            string pathPrefix = Path.ASSET_FULL_PATH_PREFIX;
             foreach (ABBuildStrategyData strategyData in strategyDatas)
             {
                 if (!strategyData.CheckValiad())
@@ -86,7 +102,15 @@ namespace Duo1JFramework.Build
                 foreach (string path in strategyData.pathList)
                 {
                     string path_ = Path.CorrectPath(path);
-                    List<string> resultList = allPathList.FindAll((p) => p.StartsWith(path_));
+                    List<string> resultList = FileUtil.GetFileInDir(pathPrefix + path_, (p) =>
+                    {
+                        if (p.EndsWith(Path.META_SUFFIX))
+                        {
+                            return null;
+                        }
+
+                        return p.Replace(pathPrefix, Path.ASSET_PATH_PREFIX);
+                    });
 
                     if (buildData.assetPathList == null || buildData.assetPathList.Count == 0)
                     {
@@ -106,28 +130,6 @@ namespace Duo1JFramework.Build
             }
 
             return ret.ToArray();
-        }
-
-        /// <summary>
-        /// 获取所有Res下资源路径列表
-        /// </summary>
-        public static List<string> GetAllResPathList()
-        {
-            string prefix = Path.ASSET_PATH_PREFIX;
-            string[] allGUID = AssetDatabase.FindAssets("t:Object", new[] { prefix });
-            List<string> allPathList = new List<string>();
-            foreach (string guid in allGUID)
-            {
-                allPathList.Add(AssetDatabase.GUIDToAssetPath(guid));
-            }
-
-            List<string> ret = new List<string>();
-            foreach (string path in allPathList)
-            {
-                ret.Add(path.Replace(prefix, ""));
-            }
-
-            return ret;
         }
     }
 }

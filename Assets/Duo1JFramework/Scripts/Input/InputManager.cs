@@ -14,6 +14,23 @@ namespace Duo1JFramework.GamerInput
         private static InputLimit limit = InputLimit.All;
 
         /// <summary>
+        /// 设置鼠标是否可见
+        /// </summary>
+        /// <param name="visible"></param>
+        public static void SetCursorVisible(bool visible)
+        {
+            Cursor.visible = visible;
+            if (visible)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        /// <summary>
         /// 水平轴输入
         /// </summary>
         public static float GetAxisH(bool raw = false)

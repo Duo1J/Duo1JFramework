@@ -21,13 +21,13 @@ namespace Duo1JFramework.Asset
         public ABData GetABDataByAsset(string assetPath)
         {
             string assetBundleName = GetAssetBundleNameByAsset(assetPath);
-            return GetABData(assetBundleName);
+            return GetABDataByName(assetBundleName);
         }
 
         /// <summary>
         /// 通过AssetBundle名获取ABData
         /// </summary>
-        public ABData GetABData(string assetBundleName)
+        public ABData GetABDataByName(string assetBundleName)
         {
             if (string.IsNullOrEmpty(assetBundleName))
             {
@@ -60,7 +60,7 @@ namespace Duo1JFramework.Asset
             string[] dependencies = manifest.GetAllDependencies(assetBundleName);
             foreach (string dependency in dependencies)
             {
-                abDataList.Add(GetABData(dependency));
+                abDataList.Add(GetABDataByName(dependency));
             }
 
             return abDataList;
@@ -97,7 +97,7 @@ namespace Duo1JFramework.Asset
 
         private void InitMainAssetBundle()
         {
-            string mainAssetBundlePath = Path.GetAssetBundlePath("AssetBundle");
+            string mainAssetBundlePath = Path.GetAssetBundlePath(Path.ASSET_BUNDLE_MAIN_NAME);
             mainAB = AssetBundle.LoadFromFile(mainAssetBundlePath);
             manifest = mainAB.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
         }

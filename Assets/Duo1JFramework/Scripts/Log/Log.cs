@@ -54,7 +54,11 @@ namespace Duo1JFramework
         /// </summary>
         public static void Exception(Exception e, params object[] msg)
         {
-            Debug.LogError(Concat("<color=red>[Exception]</color> ", msg) + $"{e.Message}\n{e.StackTrace}");
+#if UNITY_EDITOR
+            Debug.LogError(Concat("<color=red>[Exception]</color> ", msg) + $"\n<color=yellow>[ExceptionInfo]</color>{e.Message}");
+#else
+            Debug.LogError(Concat("[Exception] ", msg) + $"\n[ExceptionInfo]{e.Message}\n{e.StackTrace}");
+#endif
         }
 
         /// <summary>

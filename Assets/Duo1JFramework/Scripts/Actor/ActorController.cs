@@ -41,6 +41,11 @@ namespace Duo1JFramework.Actor
         protected StateMachine fsm;
 
         /// <summary>
+        /// 角色逻辑
+        /// </summary>
+        public BaseActor Actor { get; set; }
+
+        /// <summary>
         /// 当前状态机状态
         /// </summary>
         public string CurState { get; private set; }
@@ -53,7 +58,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 是否绑定了相机
         /// </summary>
-        public bool BindCamera { get; set; }
+        public bool CameraBinded => Actor.CameraBinded;
 
         /// <summary>
         /// 当前播放的动画名
@@ -150,7 +155,7 @@ namespace Duo1JFramework.Actor
         {
             get
             {
-                if (BindCamera)
+                if (CameraBinded)
                 {
                     return Vector3.Cross(point.CameraPoint.right, Vector3.up).normalized;
                 }
@@ -165,7 +170,7 @@ namespace Duo1JFramework.Actor
         {
             get
             {
-                if (BindCamera)
+                if (CameraBinded)
                 {
                     return point.CameraPoint.right.normalized;
                 }
@@ -552,7 +557,7 @@ namespace Duo1JFramework.Actor
                 sb.AppendLine($"状态机: {CurState}");
                 sb.AppendLine($"动画状态: {curAniName}");
                 sb.AppendLine($"是否触地: {Grounded}");
-                sb.AppendLine($"是否绑定相机: {BindCamera}");
+                sb.AppendLine($"是否绑定相机: {CameraBinded}");
 
                 OnGetHierarchyInfo(sb);
                 return item.Value.ToString();

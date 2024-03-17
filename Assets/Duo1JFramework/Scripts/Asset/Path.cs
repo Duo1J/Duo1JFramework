@@ -7,11 +7,16 @@ namespace Duo1JFramework.Asset
     /// </summary>
     public static class Path
     {
-        public static string Streaming => Application.streamingAssetsPath;
+        public static string STREAMING => Application.streamingAssetsPath;
 
-        public static string Persistent => Application.persistentDataPath;
+        public static string PERSISTENT => Application.persistentDataPath;
 
-        public static string DataPath => Application.dataPath;
+        public static string DATA_PATH => Application.dataPath;
+
+        /// <summary>
+        /// meta文件后缀
+        /// </summary>
+        public const string META_SUFFIX = ".meta";
 
         /// <summary>
         /// 资源路径前缀
@@ -21,7 +26,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 资源全路径前缀
         /// </summary>
-        public static string ASSET_FULL_PATH_PREFIX = $"{DataPath}/Res/";
+        public static string ASSET_FULL_PATH_PREFIX = $"{DATA_PATH}/Res/";
 
         /// <summary>
         /// Resources资源路径前缀
@@ -56,12 +61,14 @@ namespace Duo1JFramework.Asset
 
         #region AssetBundle
 
+        public const string ASSET_BUNDLE_MAIN_NAME = "Bundle";
+
         /// <summary>
         /// 获取AssetBundle的文件路径
         /// </summary>
         public static string GetAssetBundlePath(string assetBundleName)
         {
-            return $"{GetAssetBundleRoot()}{assetBundleName}.assetbundle";
+            return $"{GetAssetBundleRoot()}{assetBundleName}";
         }
 
         /// <summary>
@@ -69,7 +76,15 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public static string GetAssetBundleRoot()
         {
-            return $"{Streaming}/Bundle/";
+            return $"{STREAMING}/{ASSET_BUNDLE_MAIN_NAME}/";
+        }
+
+        /// <summary>
+        /// 获取AssetBundle的根文件夹meta文件
+        /// </summary>
+        public static string GetAssetBundleRootMeta()
+        {
+            return $"{STREAMING}/{ASSET_BUNDLE_MAIN_NAME}.meta";
         }
 
         /// <summary>

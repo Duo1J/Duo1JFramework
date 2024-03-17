@@ -1,6 +1,7 @@
 using Duo1JFramework.Asset;
 using Duo1JFramework.Camera3D;
 using Duo1JFramework.GamerInput;
+using Duo1JFramework.UI;
 using Duo1JFramework.World;
 using System;
 using UnityEngine;
@@ -11,7 +12,9 @@ namespace Duo1JFramework.Actor
     /// 角色基类
     /// </summary>
     [Serializable]
-    public abstract class BaseActor : BaseRegister
+    public abstract class BaseActor : BaseRegister,
+        ICameraFollow,
+        ICameraLookAt
     {
         /// <summary>
         /// 管理器控制ID
@@ -57,6 +60,15 @@ namespace Duo1JFramework.Actor
         /// 角色参数
         /// </summary>
         public ActorParam Param { get; private set; }
+
+        /// <summary>
+        /// 是否绑定了相机
+        /// </summary>
+        public bool CameraBinded { get; private set; }
+
+        public virtual Transform CameraFollowPoint => GetCameraPoint();
+
+        public virtual Transform CameraLookAtPoint => GetCameraPoint();
 
         /// <summary>
         /// 初始化Actor
@@ -123,6 +135,8 @@ namespace Duo1JFramework.Actor
             Asset.ResetSRT();
 
             Controller = Asset.GetAndAssertComponent<ActorController>("Actor资源预制体上未挂载ActorController组件");
+            Controller.Actor = this;
+
             Param = Controller.GetActorParam();
 
             OnCreated();
@@ -177,6 +191,10 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public Transform GetCameraPoint()
         {
+            if (Controller == null)
+            {
+                return null;
+            }
             return Controller.GetActorPoint().CameraPoint;
         }
 
@@ -185,12 +203,9 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public virtual void BindCamera()
         {
-            Transform cameraPoint = GetCameraPoint();
-
-            CameraManager.Instance.LookAt(cameraPoint);
-            CameraManager.Instance.Follow(cameraPoint);
-
-            Controller.BindCamera = true;
+            CameraManager.Instance.LookAt = this;
+            CameraManager.Instance.Follow = this;
+            CameraBinded = true;
         }
 
         /// <summary>
@@ -198,7 +213,15 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public virtual void UnBindCamera()
         {
-            Controller.BindCamera = false;
+            CameraBinded = false;
+            if (CameraManager.Instance.LookAt == this)
+            {
+                CameraManager.Instance.LookAt = null;
+            }
+            if (CameraManager.Instance.Follow == this)
+            {
+                CameraManager.Instance.Follow = null;
+            }
         }
 
         #region 子类override

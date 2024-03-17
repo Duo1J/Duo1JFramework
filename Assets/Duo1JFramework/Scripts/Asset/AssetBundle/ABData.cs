@@ -287,14 +287,13 @@ namespace Duo1JFramework.Asset
 
                     if (_assetBundle != null)
                     {
-                        if (this.assetBundle != null)
+                        if (this.assetBundle == null)
                         {
                             this.assetBundle = _assetBundle;
                         }
                         else
                         {
                             Log.Warn($"{ToString()} AssetBundle已加载，抛弃本次异步结果");
-                            _assetBundle.DestroyImmediate();
                         }
                     }
                     else
@@ -316,14 +315,14 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
+            assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+            if (assetBundle == null)
+            {
+                Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
+            }
+
             LoadAllDependenciesAB(true, () =>
             {
-                assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-                if (assetBundle == null)
-                {
-                    Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
-                }
-
                 callback?.Invoke();
             });
         }
@@ -333,7 +332,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void LoadAllDependenciesAB(bool sync, Action callback)
         {
-            if (refABList != null)
+            if (refABList != null && refABList.Count != 0)
             {
                 int loadedCnt = 0;
                 int allCnt = refABList.Count;

@@ -83,14 +83,13 @@ namespace Duo1JFramework.Asset
             {
                 loading = false;
                 AssetBundleRequest _request = req as AssetBundleRequest;
-                if (asset != null)
+                if (asset == null)
                 {
-                    Log.Warn($"{ToString()} 资源已加载，抛弃本次异步结果");
-                    _request.asset.DestroyImmediate();
+                    asset = _request.asset;
                 }
                 else
                 {
-                    asset = _request.asset;
+                    Log.Warn($"{ToString()} 资源已加载，抛弃本次异步结果");
                 }
 
                 if (asset == null)

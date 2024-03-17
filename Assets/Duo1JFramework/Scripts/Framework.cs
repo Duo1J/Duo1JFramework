@@ -1,3 +1,5 @@
+using Duo1JFramework.GamerInput;
+
 namespace Duo1JFramework
 {
     public static class Framework

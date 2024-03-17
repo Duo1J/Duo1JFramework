@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Duo1JFramework.Camera3D
 {
     public interface ICamera
@@ -17,11 +15,11 @@ namespace Duo1JFramework.Camera3D
         /// <summary>
         /// 跟随
         /// </summary>
-        void Follow(Transform t);
+        void Follow(ICameraFollow t);
 
         /// <summary>
         /// 注视
         /// </summary>
-        void LookAt(Transform t);
+        void LookAt(ICameraLookAt t);
     }
 }

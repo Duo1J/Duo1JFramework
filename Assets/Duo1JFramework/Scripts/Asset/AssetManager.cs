@@ -17,6 +17,9 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject
         {
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
+            assetPath = ModifyAssetPath(assetPath);
+
             loader.Load<T>(assetPath, callback);
         }
 
@@ -25,6 +28,9 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public T LoadSync<T>(string assetPath) where T : UObject
         {
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
+            assetPath = ModifyAssetPath(assetPath);
+
             return loader.LoadSync<T>(assetPath);
         }
 
@@ -33,6 +39,9 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void LoadIns<T>(string assetPath, Action<T> callback) where T : UObject
         {
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
+            assetPath = ModifyAssetPath(assetPath);
+
             loader.LoadIns<T>(assetPath, callback);
         }
 
@@ -41,6 +50,9 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public T LoadInsSync<T>(string assetPath) where T : UObject
         {
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
+            assetPath = ModifyAssetPath(assetPath);
+
             return loader.LoadInsSync<T>(assetPath);
         }
 
@@ -91,6 +103,14 @@ namespace Duo1JFramework.Asset
         public void SetCustomLoader(IAssetLoader loader)
         {
             this.loader = loader;
+        }
+
+        /// <summary>
+        /// 修正资源路径，添加前缀
+        /// </summary>
+        private string ModifyAssetPath(string assetPath)
+        {
+            return $"{Path.ASSET_PATH_PREFIX}{assetPath}";
         }
 
         protected override void OnInit()

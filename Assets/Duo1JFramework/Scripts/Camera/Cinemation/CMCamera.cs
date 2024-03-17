@@ -10,14 +10,24 @@ namespace Duo1JFramework.Camera3D
     {
         public CinemachineVirtualCamera CM { get; private set; }
 
-        public void Follow(Transform t)
+        public void Follow(ICameraFollow t)
         {
-            CM.Follow = t;
+            if (t == null)
+            {
+                CM.Follow = null;
+                return;
+            }
+            CM.Follow = t.CameraFollowPoint;
         }
 
-        public void LookAt(Transform t)
+        public void LookAt(ICameraLookAt t)
         {
-            CM.LookAt = t;
+            if (t == null)
+            {
+                CM.LookAt = null;
+                return;
+            }
+            CM.LookAt = t.CameraLookAtPoint;
         }
 
         public void SetPriority(int priority)

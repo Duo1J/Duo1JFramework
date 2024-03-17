@@ -15,20 +15,12 @@ namespace Duo1JFramework.Camera3D
         /// <summary>
         /// 当前相机跟随
         /// </summary>
-        public void Follow(Transform t)
-        {
-            CheckCamera();
-            Camera.Follow(t);
-        }
+        public ICameraFollow Follow { get; set; }
 
         /// <summary>
         /// 当前相机注视
         /// </summary>
-        public void LookAt(Transform t)
-        {
-            CheckCamera();
-            Camera.LookAt(t);
-        }
+        public ICameraLookAt LookAt { get; set; }
 
         /// <summary>
         /// 初始化当前相机
@@ -57,11 +49,11 @@ namespace Duo1JFramework.Camera3D
         }
 
         /// <summary>
-        /// 检查当前相机
+        /// 检查当前相机是否创建
         /// </summary>
-        private void CheckCamera()
+        private bool CheckCamera()
         {
-            Assert.NotNull(Camera, "相机未初始化");
+            return Camera != null;
         }
 
         /// <summary>
@@ -80,6 +72,18 @@ namespace Duo1JFramework.Camera3D
 
         protected override void OnInit()
         {
+            Register.RegisterLateUpdate(OnUpdate);
+        }
+
+        private void OnUpdate()
+        {
+            if (!CheckCamera())
+            {
+                return;
+            }
+
+            Camera.LookAt(LookAt);
+            Camera.Follow(Follow);
         }
 
         public Camera MainCamera => UnityEngine.Camera.main;

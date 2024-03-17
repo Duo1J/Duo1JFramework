@@ -9,17 +9,17 @@ namespace Duo1JFramework
     public static class Game
     {
         /// <summary>
-        /// 是否是编辑器下
+        /// 是否在编辑器下
         /// </summary>
         public static bool IsEditor => Application.isEditor;
 
         /// <summary>
-        /// 游戏准备退出
+        /// 是否游戏准备退出
         /// </summary>
         public static bool IsQuit { get; set; }
 
         /// <summary>
-        /// 游戏运行中
+        /// 是否游戏运行中
         /// </summary>
         public static bool IsPlaying => Application.isPlaying;
 
@@ -36,6 +36,9 @@ namespace Duo1JFramework
             GameManager.Instance.Trigger();
         }
 
+        /// <summary>
+        /// 内存清理
+        /// </summary>
         public static void GC()
         {
             AssetManager.Instance.GC();

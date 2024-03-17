@@ -6,17 +6,17 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// ±à¼­Æ÷ÏÂ×ÊÔ´¼ÓÔØÆ÷
+    /// ç¼–è¾‘å™¨ä¸‹èµ„æºåŠ è½½å™¨
     /// </summary>
     public class EditorAssetLoader : BaseAssetLoader
     {
         /// <summary>
-        /// Òì²½¼ÓÔØ
+        /// å¼‚æ­¥åŠ è½½
         /// </summary>
         public override void Load<T>(string assetPath, Action<T> callback)
         {
-            Assert.NotNullOrEmpty(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
-            Assert.NotNull(callback, "»Øµ÷²»¿ÉÎª¿Õ");
+            Assert.NotNullOrEmpty(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
+            Assert.NotNull(callback, "å›è°ƒä¸å¯ä¸ºç©º");
 
 #if UNITY_EDITOR
             callback(LoadSync<T>(assetPath));
@@ -27,18 +27,18 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ
+        /// åŒæ­¥åŠ è½½
         /// </summary>
         public override T LoadSync<T>(string assetPath)
         {
-            Assert.NotNull(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
+            Assert.NotNull(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
 
 #if UNITY_EDITOR
-            string targetPath = Path.ASSET_PATH_PREFIX + assetPath;
+            string targetPath = assetPath;
             T asset = AssetDatabase.LoadAssetAtPath<T>(targetPath);
             if (asset == null)
             {
-                Log.Error($"ÎŞ·¨¼ÓÔØµ½×ÊÔ´`{targetPath}`");
+                Log.Error($"æ— æ³•åŠ è½½åˆ°èµ„æº`{targetPath}`");
                 return null;
             }
             return asset;
@@ -49,7 +49,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Òì²½¼ÓÔØÊµÀı
+        /// å¼‚æ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public override void LoadIns<T>(string assetPath, Action<T> callback)
         {
@@ -62,7 +62,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØÊµÀı
+        /// åŒæ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public override T LoadInsSync<T>(string assetPath)
         {

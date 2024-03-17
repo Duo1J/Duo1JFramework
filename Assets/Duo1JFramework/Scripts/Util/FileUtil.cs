@@ -1,4 +1,6 @@
+using Duo1JFramework.Asset;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Duo1JFramework
@@ -11,15 +13,21 @@ namespace Duo1JFramework
         /// <summary>
         /// 读取所有字符串
         /// </summary>
-        public static string ReadAllText(string path)
+        public static string ReadAllText(string filePath)
         {
             try
             {
-                return File.ReadAllText(path);
+                if (!File.Exists(filePath))
+                {
+                    Log.ErrorForce($"不存在文件: {filePath}");
+                    return "";
+                }
+
+                return File.ReadAllText(filePath);
             }
             catch (Exception e)
             {
-                Assert.ExceptHandle(e, $"ReadAllText(path=`{path}`)");
+                Assert.ExceptHandle(e, $"ReadAllText(path=`{filePath}`)");
                 return "";
             }
         }
@@ -27,29 +35,133 @@ namespace Duo1JFramework
         /// <summary>
         /// 写入所有字符串
         /// </summary>
-        public static void WriteAllText(string path, string txt)
+        public static void WriteAllText(string filePath, string txt)
         {
             try
             {
-                File.WriteAllText(path, txt);
+                File.WriteAllText(filePath.CheckFile(), txt);
             }
             catch (Exception e)
             {
-                Assert.ExceptHandle(e, $"WriteAllText(path=`{path}`, txt)/ntxt=`{txt}`");
+                Assert.ExceptHandle(e, $"WriteAllText(path=`{filePath}`, txt)/ntxt=`{txt}`");
             }
         }
 
-#if UNITY_EDITOR
-
         /// <summary>
-        /// 获取某文件夹下所有资源路径
+        /// 检查文件是否创建，未创建则创建
         /// </summary>
-        public static string[] GetAllAssetsPath(string folder)
+        public static string CheckFile(string filePath)
         {
-            //todo hlj
-            return null;
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    File.Create(filePath).Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"检查并创建文件异常: {filePath}");
+            }
+            return filePath;
         }
 
-#endif
+        /// <summary>
+        /// 检查文件夹是否创建，未创建则创建
+        /// </summary>
+        public static string CheckDir(string dirPath)
+        {
+            try
+            {
+                if (!Directory.Exists(dirPath))
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"检查并创建文件夹异常: {dirPath}");
+            }
+            return dirPath;
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        public static bool DeleteFile(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    return false;
+                }
+
+                File.Delete(filePath);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"删除文件异常: {filePath}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        public static bool DeleteDir(string dirPath)
+        {
+            try
+            {
+                if (!Directory.Exists(dirPath))
+                {
+                    return false;
+                }
+
+                Directory.Delete(dirPath, true);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"删除文件夹异常: {dirPath}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 获取某一文件夹下文件并过滤
+        /// 默认获取所有层级的所有文件
+        /// </summary>
+        /// <param name="pathModifier">路径修改钩子，返回null表示跳过</param>
+        public static List<string> GetFileInDir(string dirPath, Func<string, string> pathModifier = null, string searchPattern = "*", SearchOption option = SearchOption.AllDirectories)
+        {
+            List<string> ret = new List<string>();
+
+            DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+            FileInfo[] fileInfos = dirInfo.GetFiles(searchPattern, option);
+            foreach (FileInfo fileInfo in fileInfos)
+            {
+                if (fileInfo.Exists)
+                {
+                    string path = fileInfo.FullName;
+                    path = Asset.Path.CorrectPath(path);
+
+                    if (pathModifier != null)
+                    {
+                        path = pathModifier(path);
+                    }
+
+                    if (path != null)
+                    {
+                        ret.Add(path);
+                    }
+                }
+            }
+
+            return ret;
+        }
     }
 }

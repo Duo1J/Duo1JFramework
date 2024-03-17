@@ -10,21 +10,21 @@ namespace Duo1JFramework.Build
     public class ABMapData
     {
         /// <summary>
-        /// AssetBundle下的资源列表映射
+        /// AssetBundle与资源列表映射
         /// </summary>
-        public Dictionary<string, List<string>> abAssetList;
+        private Dictionary<string, List<string>> ab2AssetMap;
 
         /// <summary>
         /// 资源与AssetBundle映射
         /// </summary>
-        private Dictionary<string, string> assetMap;
+        private Dictionary<string, string> asset2ABMap;
 
         /// <summary>
         /// 通过资源路径获取对应AssetBunble名
         /// </summary>
         public string GetAssetBundleNameByAsset(string assetPath)
         {
-            if (assetMap.TryGetValue(assetPath, out string abName))
+            if (asset2ABMap.TryGetValue(assetPath, out string abName))
             {
                 return abName;
             }
@@ -38,17 +38,17 @@ namespace Duo1JFramework.Build
         /// </summary>
         public void Parse(string jsonStr)
         {
-            abAssetList = JsonUtil.ToObject<Dictionary<string, List<string>>>(jsonStr);
-            if (assetMap == null)
+            ab2AssetMap = JsonUtil.ToObject<Dictionary<string, List<string>>>(jsonStr);
+            if (asset2ABMap == null)
             {
-                assetMap = new Dictionary<string, string>();
+                asset2ABMap = new Dictionary<string, string>();
             }
             else
             {
-                assetMap.Clear();
+                asset2ABMap.Clear();
             }
 
-            foreach (KeyValuePair<string, List<string>> kv in abAssetList)
+            foreach (KeyValuePair<string, List<string>> kv in ab2AssetMap)
             {
                 if (kv.Value != null)
                 {
@@ -56,15 +56,15 @@ namespace Duo1JFramework.Build
                     foreach (string asset in kv.Value)
                     {
 #if UNITY_EDITOR
-                        if (assetMap.ContainsKey(asset))
+                        if (asset2ABMap.ContainsKey(asset))
                         {
-                            Log.Error($"assetMap中已包含`{asset}`, 其值为`{assetMap[asset]}`");
+                            Log.Error($"assetMap中已包含`{asset}`, 其值为`{asset2ABMap[asset]}`");
                             continue;
                         }
 #endif
                         try
                         {
-                            assetMap.Add(asset, key);
+                            asset2ABMap.Add(asset, key);
                         }
                         catch (Exception e)
                         {
@@ -75,13 +75,13 @@ namespace Duo1JFramework.Build
             }
         }
 
-        public void Save(string path = null)
+        public static void Save(Dictionary<string, List<string>> _abAssetList, string path = null)
         {
             Assert.GuardEditor("非Editor下不可保存ABMapData");
 
-            if (abAssetList == null)
+            if (_abAssetList == null || _abAssetList.Count == 0)
             {
-                Log.ErrorForce("abAssetList为空，无法保存");
+                Log.ErrorForce("参数_abAssetList为空，无法保存");
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace Duo1JFramework.Build
                 path = Path.GetABMapDataPath();
             }
 
-            string jsonStr = JsonUtil.ToJson(abAssetList);
+            string jsonStr = JsonUtil.ToJson(_abAssetList);
             FileUtil.WriteAllText(path, jsonStr);
         }
 
@@ -107,8 +107,8 @@ namespace Duo1JFramework.Build
 
         public ABMapData()
         {
-            abAssetList = new Dictionary<string, List<string>>();
-            assetMap = new Dictionary<string, string>();
+            ab2AssetMap = new Dictionary<string, List<string>>();
+            asset2ABMap = new Dictionary<string, string>();
         }
 
         public ABMapData(string jsonStr)

@@ -83,6 +83,31 @@ namespace Duo1JFramework
             Log.EditorInfo($"已拷贝`{text}`到粘贴板");
         }
 
+        /// <summary>
+        /// 编辑器资源编辑
+        /// </summary>
+        public static void AssetEditing(Action callback)
+        {
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+                callback?.Invoke();
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+            }
+        }
+
+        /// <summary>
+        /// 保存并刷新
+        /// </summary>
+        public static void SaveAndRefresh()
+        {
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
+
         #endregion 杂项 
 
         #region 窗口
