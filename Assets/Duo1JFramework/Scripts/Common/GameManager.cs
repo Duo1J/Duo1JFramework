@@ -11,6 +11,7 @@ namespace Duo1JFramework
         {
             Game.IsQuit = true;
             EventManager.Instance.Broadcast(eEvent.APP_QUIT);
+            Log.Info("OnApplicationQuit");
         }
 
         private void OnApplicationFocus(bool focus)
@@ -19,6 +20,7 @@ namespace Duo1JFramework
                 EventManager.Instance.Broadcast(eEvent.APP_FOCUS);
             else
                 EventManager.Instance.Broadcast(eEvent.APP_UNFOCUS);
+            Log.Info($"OnApplicationFocus: {focus}");
         }
 
         private void OnApplicationPause(bool pause)
@@ -27,6 +29,7 @@ namespace Duo1JFramework
                 EventManager.Instance.Broadcast(eEvent.APP_PAUSE);
             else
                 EventManager.Instance.Broadcast(eEvent.APP_RESUME);
+            Log.Info($"OnApplicationFocus: {pause}");
         }
 
         protected override void OnInit()

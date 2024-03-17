@@ -34,6 +34,8 @@ namespace Duo1JFramework
         public static void TriggerSingleton()
         {
             GameManager.Instance.Trigger();
+
+            Log.Info("Singleton has been triggered.");
         }
 
         /// <summary>
@@ -43,6 +45,8 @@ namespace Duo1JFramework
         {
             AssetManager.Instance.GC();
             System.GC.Collect();
+
+            Log.Info("GC called.");
         }
     }
 }

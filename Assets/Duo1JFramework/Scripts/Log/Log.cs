@@ -97,7 +97,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 直接按等级打印消息
         /// </summary>
-        public static void Level(LogLevel _logLevel, params object[] msg)
+        public static void LevelInfo(LogLevel _logLevel, params object[] msg)
         {
             if (CheckLogLevelOpen(_logLevel))
             {
@@ -130,7 +130,6 @@ namespace Duo1JFramework
         /// <summary>
         /// 强制打印错误
         /// </summary>
-        /// <param name="msg"></param>
         public static void ErrorForce(params object[] msg)
         {
             Debug.LogError(Concat("[Error] ", msg));

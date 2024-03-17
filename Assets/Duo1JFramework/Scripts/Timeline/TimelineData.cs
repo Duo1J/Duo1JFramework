@@ -53,7 +53,7 @@ namespace Duo1JFramework.Timeline
                 }
 
                 pd.SetGenericBinding(binding.sourceObject, tarObj);
-                Log.Level(LogLevel.Timeline, $"{ToString()} -> 绑定{tarObj.name}到{key}");
+                Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> 绑定{tarObj.name}到{key}");
             }
             else
             {
@@ -80,28 +80,28 @@ namespace Duo1JFramework.Timeline
         public TimelineData Play()
         {
             pd.Play();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Play()");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> Play()");
             return this;
         }
 
         public TimelineData Stop()
         {
             pd.Stop();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Stop()");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> Stop()");
             return this;
         }
 
         public TimelineData Pause()
         {
             pd.Pause();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Pause()");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> Pause()");
             return this;
         }
 
         public TimelineData Resume()
         {
             pd.Resume();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Resume()");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> Resume()");
             return this;
         }
 
@@ -110,35 +110,35 @@ namespace Duo1JFramework.Timeline
             Pause();
             SetTime(0);
             Play();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> Restart()");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> Restart()");
             return this;
         }
 
         public TimelineData SetTime(float time)
         {
             pd.time = time;
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetTime({time})");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> SetTime({time})");
             return this;
         }
 
         public TimelineData SetInitialTime(float time)
         {
             pd.initialTime = time;
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetInitialTime({time})");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> SetInitialTime({time})");
             return this;
         }
 
         public TimelineData SetWrapMode(DirectorWrapMode wrapMode)
         {
             pd.extrapolationMode = wrapMode;
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> SetWrapMode({wrapMode})");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> SetWrapMode({wrapMode})");
             return this;
         }
 
         public TimelineData RebuildGraph()
         {
             pd.RebuildGraph();
-            Log.Level(LogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
+            Log.LevelInfo(LogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
             return this;
         }
 

@@ -8,14 +8,14 @@ using Duo1JFramework.TimerUpdate;
 using Duo1JFramework.UI;
 using UnityEngine;
 
-public class GameMain : MonoBehaviour
+public class GameMain : BaseGameMain
 {
     private BaseActor mainActor;
 
-    private void Awake()
+    protected override void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        Framework.Init();
+        base.Awake();
+
 #if !UNITY_EDITOR
         InputManager.SetCursorVisible(false);
 #endif

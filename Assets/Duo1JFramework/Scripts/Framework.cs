@@ -1,5 +1,3 @@
-using Duo1JFramework.GamerInput;
-
 namespace Duo1JFramework
 {
     public static class Framework
@@ -7,6 +5,8 @@ namespace Duo1JFramework
         public static void Init()
         {
             Game.TriggerSingleton();
+
+            Log.Info($"{Def.FRAME_WORK_NAME} initialization succeeded.");
         }
     }
 }
