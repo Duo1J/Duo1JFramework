@@ -2,7 +2,6 @@ using Duo1JFramework.ObjectPool;
 using System;
 using System.Diagnostics;
 using System.Text;
-using UnityEngine;
 
 using Debug = UnityEngine.Debug;
 
@@ -64,34 +63,28 @@ namespace Duo1JFramework
         /// <summary>
         /// 编辑器消息
         /// </summary>
+        [Conditional("UNITY_EDITOR")]
         public static void EditorInfo(params object[] msg)
         {
-            if (Game.IsEditor)
-            {
-                Info(msg);
-            }
+            Info(msg);
         }
 
         /// <summary>
         /// 编辑器警告
         /// </summary>
+        [Conditional("UNITY_EDITOR")]
         public static void EditorWarn(params object[] msg)
         {
-            if (Game.IsEditor)
-            {
-                Warn(msg);
-            }
+            Warn(msg);
         }
 
         /// <summary>
         /// 编辑器错误
         /// </summary>
+        [Conditional("UNITY_EDITOR")]
         public static void EditorError(params object[] msg)
         {
-            if (Game.IsEditor)
-            {
-                Error(msg);
-            }
+            Error(msg);
         }
 
         /// <summary>

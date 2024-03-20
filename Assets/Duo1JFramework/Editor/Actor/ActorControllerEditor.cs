@@ -1,8 +1,7 @@
-using Duo1JFramework.Actor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Duo1JFramework
+namespace Duo1JFramework.Actor
 {
     [CustomEditor(typeof(ActorController), true)]
     public class ActorControllerEditor : Editor

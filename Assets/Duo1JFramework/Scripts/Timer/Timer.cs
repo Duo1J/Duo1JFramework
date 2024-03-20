@@ -187,7 +187,10 @@ namespace Duo1JFramework.TimerUpdate
 
         private Vector2 scrollPos;
 
-        public void Draw()
+        /// <summary>
+        /// 绘制监视器信息
+        /// </summary>
+        public void DrawEditorInfo()
         {
             LU.Vertical(() =>
             {

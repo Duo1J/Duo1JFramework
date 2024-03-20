@@ -1,4 +1,6 @@
+using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
+using Duo1JFramework.TimerUpdate;
 using System;
 using System.Collections.Generic;
 
@@ -83,6 +85,7 @@ namespace Duo1JFramework
             [typeof(GUIStyleViewer)] = "内置样式列表",
             [typeof(TimerMonitor)] = "计时器监视",
             [typeof(AssetBundleBuildEditor)] = "构建AssetBundle",
+            [typeof(AssetBundleMonitor)] = "AssetBundle监视",
         };
 
         #endregion 编辑器窗口

@@ -98,14 +98,6 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// 设置自定义加载器
-        /// </summary>
-        public void SetCustomLoader(IAssetLoader loader)
-        {
-            this.loader = loader;
-        }
-
-        /// <summary>
         /// 修正资源路径，添加前缀
         /// </summary>
         private string ModifyAssetPath(string assetPath)
@@ -115,19 +107,52 @@ namespace Duo1JFramework.Asset
 
         protected override void OnInit()
         {
+            CreateLoader();
+        }
+
+        private void CreateLoader()
+        {
+            //todo hlj set并修改类型
+
             if (loader == null)
             {
-                if (GameConfig.Instance.EditorUseAB)
+#if UNITY_EDITOR
+                switch (GameConfig.Instance.editorAssetLoaderType)
+#else
+                switch (GameConfig.Instance.runtimeAssetLoaderType)
+#endif
                 {
-                    SetCustomLoader(new ABAssetLoader());
-                }
-                else if (Game.IsEditor)
-                {
-                    SetCustomLoader(new EditorAssetLoader());
-                }
-                else
-                {
-                    SetCustomLoader(new ABAssetLoader());
+                    case eAssetLoaderType.AssetDatabase:
+#if UNITY_EDITOR
+                        Log.Info("使用EditorAssetLoader资源加载器");
+                        loader = new EditorAssetLoader();
+#else
+                        Log.ErrorForce("运行时不可使用AssetDatabase类型资源加载器, 使用ABAssetLoader资源加载器");
+                        loader = new ABAssetLoader();
+#endif
+                        break;
+                    case eAssetLoaderType.AssetBundle:
+                        Log.Info("使用ABAssetLoader资源加载器");
+                        loader = new ABAssetLoader();
+                        break;
+                    case eAssetLoaderType.Addressables:
+#if UNITY_EDITOR
+                        Log.ErrorForce("Addressables未实现, 使用EditorAssetLoader资源加载器");
+                        loader = new EditorAssetLoader();
+#else
+                        Log.ErrorForce("Addressables未实现, 使用ABAssetLoader资源加载器");
+                        loader = new ABAssetLoader();
+#endif
+                        break;
+                    default:
+#if UNITY_EDITOR
+                        Log.ErrorForce($"GameConfig.editorAssetLoaderType类型错误: {GameConfig.Instance.editorAssetLoaderType}, 使用EditorAssetLoader资源加载器");
+                        loader = new EditorAssetLoader();
+#else
+                        Log.ErrorForce($"GameConfig.runtimeAssetLoaderType类型错误: {GameConfig.Instance.runtimeAssetLoaderType}, 使用ABAssetLoader资源加载器");
+                        loader = new ABAssetLoader();
+#endif
+                        break;
                 }
             }
         }

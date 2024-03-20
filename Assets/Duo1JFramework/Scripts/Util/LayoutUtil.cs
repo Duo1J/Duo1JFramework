@@ -12,6 +12,10 @@ namespace Duo1JFramework
     /// </summary>
     public class LU
     {
+        public const string S2 = "  ";
+        public const string S4 = "    ";
+        public const string S6 = "      ";
+
         public static void Vertical(Action action, params GUILayoutOption[] options)
         {
             GUILayout.BeginVertical(options);
@@ -153,6 +157,14 @@ namespace Duo1JFramework
             GUI.Label(lastRect, " <i>" + comment + "</i>");
         }
 
+        public static bool Toggle(ref bool toggle, string msg)
+        {
+            toggle = GUILayout.Toggle(toggle, msg);
+            return toggle;
+        }
+
+        #region Editor
+
         public static void DisableGroup_Editor(Action action, bool disabled = true)
         {
 #if UNITY_EDITOR
@@ -181,6 +193,8 @@ namespace Duo1JFramework
             }
             return con;
         }
+
+        #endregion Editor
 
         protected LU()
         {

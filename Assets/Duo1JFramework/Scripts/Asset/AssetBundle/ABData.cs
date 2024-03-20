@@ -10,7 +10,7 @@ namespace Duo1JFramework.Asset
     /// <summary>
     /// AssetBundle数据
     /// </summary>
-    public class ABData
+    public class ABData : IEditorDrawer
     {
         /// <summary>
         /// 加载出来的AssetBundle包
@@ -399,6 +399,81 @@ namespace Duo1JFramework.Asset
             {
                 return $"<{assetBundleName}>";
             }
+        }
+
+
+        private bool drawRefABList = false;
+        private bool drawRefThisABSet = false;
+        private bool drawABAssetDataDict = false;
+        public void DrawEditorInfo()
+        {
+            LU.Vertical(() =>
+            {
+                GUILayout.Label($"AB包名: {assetBundleName}");
+                GUILayout.Label($"AB路径: {assetBundlePath}");
+                GUILayout.Label($"Loading: {loading}{LU.S4}freeTime: {freeTime}");
+
+                GUILayout.Space(10);
+
+                if (LU.Toggle(ref drawRefABList, "显示引用的AssetBundle的列表"))
+                {
+                    LU.Vertical(() =>
+                    {
+                        if (refABList == null || refABList.Count == 0)
+                        {
+                            GUILayout.Label("refABList为空");
+                        }
+                        else
+                        {
+                            foreach (ABData abData in refABList)
+                            {
+                                GUILayout.Label(abData.ToString());
+                            }
+                        }
+                    }, "box");
+
+                    GUILayout.Space(10);
+                }
+
+                if (LU.Toggle(ref drawRefThisABSet, "显示引用该AssetBundle的Set"))
+                {
+                    LU.Vertical(() =>
+                    {
+                        if (refThisABSet == null || refThisABSet.Count == 0)
+                        {
+                            GUILayout.Label("refThisABSet为空");
+                        }
+                        else
+                        {
+                            foreach (ABData abData in refThisABSet)
+                            {
+                                GUILayout.Label(abData.ToString());
+                            }
+                        }
+                    }, "box");
+
+                    GUILayout.Space(10);
+                }
+
+                if (LU.Toggle(ref drawABAssetDataDict, "显示该AssetBundle加载出来的资源列表"))
+                {
+                    LU.Vertical(() =>
+                    {
+                        if (abAssetDataDict == null || abAssetDataDict.Count == 0)
+                        {
+                            GUILayout.Label("abAssetDataDict为空");
+                        }
+                        else
+                        {
+                            GUILayout.Space(5);
+                            foreach (KeyValuePair<string, ABAssetData> kv in abAssetDataDict)
+                            {
+                                kv.Value.DrawEditorInfo();
+                            }
+                        }
+                    }, "box");
+                }
+            });
         }
     }
 }

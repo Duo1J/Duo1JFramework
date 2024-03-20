@@ -16,7 +16,7 @@ namespace Duo1JFramework.Asset
         public override void Load<T>(string assetPath, Action<T> callback)
         {
 #if UNITY_EDITOR
-            if (!CheckEditorUseABCfgOn())
+            if (!CheckEditorAssetLoaderType())
             {
                 callback(null);
                 return;
@@ -43,7 +43,7 @@ namespace Duo1JFramework.Asset
         public override T LoadSync<T>(string assetPath)
         {
 #if UNITY_EDITOR
-            if (!CheckEditorUseABCfgOn())
+            if (!CheckEditorAssetLoaderType())
             {
                 return null;
             }
@@ -67,7 +67,7 @@ namespace Duo1JFramework.Asset
         public override void LoadIns<T>(string assetPath, Action<T> callback)
         {
 #if UNITY_EDITOR
-            if (!CheckEditorUseABCfgOn())
+            if (!CheckEditorAssetLoaderType())
             {
                 callback(null);
                 return;
@@ -82,7 +82,7 @@ namespace Duo1JFramework.Asset
         public override T LoadInsSync<T>(string assetPath)
         {
 #if UNITY_EDITOR
-            if (!CheckEditorUseABCfgOn())
+            if (!CheckEditorAssetLoaderType())
             {
                 return null;
             }
@@ -91,14 +91,14 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// 检查UseAB选项是否开启
+        /// 检查编辑器下资源加载器的设置类型
         /// </summary>
-        private bool CheckEditorUseABCfgOn()
+        private bool CheckEditorAssetLoaderType()
         {
 #if UNITY_EDITOR
-            if (!GameConfig.Instance.EditorUseAB)
+            if (GameConfig.Instance.editorAssetLoaderType != eAssetLoaderType.AssetBundle)
             {
-                Log.EditorError("编辑器下使用ABAssetLoader请勾选GameConfig.EditorUseAB");
+                Log.EditorError("编辑器下使用ABAssetLoader请设置GameConfig.assetLoaderType为AssetBundle类型");
                 return false;
             }
             return true;

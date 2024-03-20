@@ -1,7 +1,7 @@
 using Duo1JFramework.TimerUpdate;
 using UnityEngine;
 
-namespace Duo1JFramework
+namespace Duo1JFramework.TimerUpdate
 {
     /// <summary>
     /// 计时器监视
@@ -33,7 +33,7 @@ namespace Duo1JFramework
             {
                 LU.Vertical(() =>
                 {
-                    timer.Draw();
+                    timer.DrawEditorInfo();
                 }, "box");
             }
         }
@@ -46,7 +46,7 @@ namespace Duo1JFramework
             {
                 LU.Vertical(() =>
                 {
-                    timer.Draw();
+                    timer.DrawEditorInfo();
                 }, "box");
             }
         }

@@ -1,7 +1,9 @@
 {
-    "name": "ToolbarExtender.Editor",
+    "name": "Duo1JFramework.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:c6cb2d8a47f83f74e9aa7eb154331711"
+    ],
     "includePlatforms": [
         "Editor"
     ],

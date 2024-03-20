@@ -5,6 +5,9 @@ namespace Duo1JFramework
     /// </summary>
     public interface IEditorDrawer
     {
-        void Draw();
+        /// <summary>
+        /// 绘制编辑器信息
+        /// </summary>
+        void DrawEditorInfo();
     }
 }

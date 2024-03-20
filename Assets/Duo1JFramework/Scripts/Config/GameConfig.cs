@@ -1,3 +1,5 @@
+using Duo1JFramework.Asset;
+
 namespace Duo1JFramework.Config
 {
     /// <summary>
@@ -7,11 +9,11 @@ namespace Duo1JFramework.Config
     {
         #region Config
 
-        /// <summary>
-        /// 编辑器下使用AssetBundle
-        /// </summary>
-        [Label("编辑器下使用AB")]
-        public bool EditorUseAB = false;
+        [Label("编辑器下资源加载类型")]
+        public eAssetLoaderType editorAssetLoaderType = eAssetLoaderType.AssetDatabase;
+
+        [Label("运行时资源加载类型")]
+        public eAssetLoaderType runtimeAssetLoaderType = eAssetLoaderType.AssetBundle;
 
         #endregion Config
 

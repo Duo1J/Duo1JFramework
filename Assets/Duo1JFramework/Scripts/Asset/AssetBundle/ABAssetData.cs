@@ -9,7 +9,7 @@ namespace Duo1JFramework.Asset
     /// <summary>
     /// AssetBundle资源数据
     /// </summary>
-    public class ABAssetData
+    public class ABAssetData : IEditorDrawer
     {
         /// <summary>
         /// 资源路径
@@ -55,13 +55,18 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
+        /// 资源是否已加载
+        /// </summary>
+        public bool AssetLoaded => asset != null;
+
+        /// <summary>
         /// 异步加载资源
         /// </summary>
         public void Load<T>(Action<T> callback) where T : UObject
         {
             Assert.NotNull(callback, "回调不可为空");
 
-            if (asset != null)
+            if (AssetLoaded)
             {
                 callback(Alloc<T>());
                 return;
@@ -83,7 +88,7 @@ namespace Duo1JFramework.Asset
             {
                 loading = false;
                 AssetBundleRequest _request = req as AssetBundleRequest;
-                if (asset == null)
+                if (!AssetLoaded)
                 {
                     asset = _request.asset;
                 }
@@ -92,7 +97,7 @@ namespace Duo1JFramework.Asset
                     Log.Warn($"{ToString()} 资源已加载，抛弃本次异步结果");
                 }
 
-                if (asset == null)
+                if (!AssetLoaded)
                 {
                     Log.ErrorForce($"{ToString()} 资源加载失败");
                 }
@@ -107,7 +112,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public T LoadSync<T>() where T : UObject
         {
-            if (asset == null)
+            if (!AssetLoaded)
             {
                 asset = assetBundle.LoadAsset(assetPath);
                 asyncLoadedCallback?.Invoke();
@@ -119,7 +124,7 @@ namespace Duo1JFramework.Asset
 
         private T Alloc<T>() where T : UObject
         {
-            if (asset == null)
+            if (!AssetLoaded)
             {
                 Log.ErrorForce($"{ToString()} 资源为空，无法分配");
                 return null;
@@ -152,6 +157,11 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public bool CanUnload()
         {
+            if (!AssetLoaded)
+            {
+                return false;
+            }
+
             if (loading)
             {
                 return false;
@@ -188,6 +198,17 @@ namespace Duo1JFramework.Asset
         public override string ToString()
         {
             return $"<{assetPath}>";
+        }
+
+        public void DrawEditorInfo()
+        {
+            LU.Vertical(() =>
+            {
+                GUILayout.Label($"资源路径: {assetPath}");
+                GUILayout.Label($"已加载: {AssetLoaded}{LU.S4}加载中: {loading}");
+                GUILayout.Label($"引用计数: {refCnt}");
+                GUILayout.Label($"引用AB: {(abData.AB == null ? "NULL" : abData.AB)}");
+            });
         }
     }
 }

@@ -48,5 +48,16 @@ public class GameMain : BaseGameMain
                 td.Play();
             });
         }
+
+#if !UNITY_EDITOR
+        if (InputManager.GetKey(KeyCode.LeftControl))
+        {
+            InputManager.SetCursorVisible(true);
+        }
+        else
+        {
+            InputManager.SetCursorVisible(false);
+        }
+#endif
     }
 }

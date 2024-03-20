@@ -2,9 +2,10 @@ using Duo1JFramework.UI;
 using UnityEditor;
 using UnityEngine;
 using Duo1JFramework.Asset;
+using Duo1JFramework.Build;
+using Duo1JFramework.TimerUpdate;
 
 using UObject = UnityEngine.Object;
-using Duo1JFramework.Build;
 
 namespace Duo1JFramework
 {
@@ -77,6 +78,12 @@ namespace Duo1JFramework
         public static TimerMonitor OpenTimerMonitor()
         {
             return TimerMonitor.Open();
+        }
+
+        [MenuItem(EditorDef.TOOL_EDITOR_MONITOR_PREFIX + "AssetBundle监视", priority = 31)]
+        public static AssetBundleMonitor OpenAssetBundleMonitor()
+        {
+            return AssetBundleMonitor.Open();
         }
 
         #endregion Monitor
