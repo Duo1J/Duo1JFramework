@@ -12,7 +12,7 @@ namespace Duo1JFramework.TimerUpdate
 
         private void OnGUI()
         {
-            if (!LU.IsPlayingTip_Editor())
+            if (!LU.IsPlayingHelpBox())
             {
                 return;
             }

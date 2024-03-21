@@ -7,22 +7,22 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// ×ÊÔ´¼ÓÔØÆ÷»ùÀà
+    /// èµ„æºåŠ è½½å™¨åŸºç±»
     /// </summary>
     public abstract class BaseAssetLoader : IAssetLoader
     {
         /// <summary>
-        /// Òì²½¼ÓÔØ
+        /// å¼‚æ­¥åŠ è½½
         /// </summary>
         public abstract void Load<T>(string assetPath, Action<T> callback) where T : UObject;
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ
+        /// åŒæ­¥åŠ è½½
         /// </summary>
         public abstract T LoadSync<T>(string assetPath) where T : UObject;
 
         /// <summary>
-        /// Òì²½¼ÓÔØÊµÀı
+        /// å¼‚æ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public virtual void LoadIns<T>(string assetPath, Action<T> callback) where T : UObject
         {
@@ -36,7 +36,7 @@ namespace Duo1JFramework.Asset
                 T ins = UObject.Instantiate(asset);
                 if (ins == null)
                 {
-                    Log.Error($"ÊµÀı»¯×ÊÔ´Ê§°Ü: `{assetPath}`");
+                    Log.Error($"å®ä¾‹åŒ–èµ„æºå¤±è´¥: `{assetPath}`");
                     callback(null);
                     return;
                 }
@@ -45,7 +45,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØÊµÀı
+        /// åŒæ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public virtual T LoadInsSync<T>(string assetPath) where T : UObject
         {
@@ -59,12 +59,12 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Òì²½¼ÓÔØResources×ÊÔ´
+        /// å¼‚æ­¥åŠ è½½Resourcesèµ„æº
         /// </summary>
         public virtual void LoadResource<T>(string assetPath, Action<T> callback) where T : UObject
         {
-            Assert.NotNullOrEmpty(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
-            Assert.NotNull(callback, "»Øµ÷²»¿ÉÎª¿Õ");
+            Assert.NotNullOrEmpty(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
+            Assert.NotNull(callback, "å›è°ƒä¸å¯ä¸ºç©º");
 
             ResourceRequest request = Resources.LoadAsync<T>(assetPath);
             UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
@@ -74,7 +74,7 @@ namespace Duo1JFramework.Asset
 
                 if (asset == null)
                 {
-                    Log.Error($"ÎŞ·¨¼ÓÔØµ½Resources×ÊÔ´: `{assetPath}`");
+                    Log.Error($"æ— æ³•åŠ è½½åˆ°Resourcesèµ„æº: `{assetPath}`");
                     callback(null);
                     return;
                 }
@@ -83,23 +83,23 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØResources×ÊÔ´
+        /// åŒæ­¥åŠ è½½Resourcesèµ„æº
         /// </summary>
         public virtual T LoadResourceSync<T>(string assetPath) where T : UObject
         {
-            Assert.NotNull(assetPath, "×ÊÔ´Â·¾¶²»¿ÉÎª¿Õ");
+            Assert.NotNull(assetPath, "èµ„æºè·¯å¾„ä¸å¯ä¸ºç©º");
 
             T asset = Resources.Load<T>(assetPath);
             if (asset == null)
             {
-                Log.Error($"ÎŞ·¨¼ÓÔØµ½Resources×ÊÔ´: `{assetPath}`");
+                Log.Error($"æ— æ³•åŠ è½½åˆ°Resourcesèµ„æº: `{assetPath}`");
                 return null;
             }
             return asset;
         }
 
         /// <summary>
-        /// Òì²½¼ÓÔØResourcesÊµÀı
+        /// å¼‚æ­¥åŠ è½½Resourceså®ä¾‹
         /// </summary>
         public virtual void LoadResourceIns<T>(string assetPath, Action<T> callback) where T : UObject
         {
@@ -113,7 +113,7 @@ namespace Duo1JFramework.Asset
                 T ins = UObject.Instantiate(asset);
                 if (ins == null)
                 {
-                    Log.Error($"ÊµÀı»¯Resources×ÊÔ´Ê§°Ü: `{assetPath}`");
+                    Log.Error($"å®ä¾‹åŒ–Resourcesèµ„æºå¤±è´¥: `{assetPath}`");
                     callback(null);
                     return;
                 }
@@ -122,7 +122,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØResourceÊµÀı
+        /// åŒæ­¥åŠ è½½Resourceå®ä¾‹
         /// </summary>
         public virtual T LoadResourceInsSync<T>(string assetPath) where T : UObject
         {
@@ -133,6 +133,10 @@ namespace Duo1JFramework.Asset
             }
             T ins = UObject.Instantiate(asset);
             return ins;
+        }
+
+        public virtual void Dispose()
+        {
         }
     }
 }

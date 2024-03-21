@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Duo1JFramework.Camera3D
+namespace Duo1JFramework.CameraAPI
 {
     /// <summary>
-    /// 3D相机管理器
+    /// 相机管理器
     /// </summary>
     public class CameraManager : MonoSingleton<CameraManager>
     {

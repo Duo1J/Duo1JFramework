@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 
 using UObject = UnityEngine.Object;
 
-namespace Duo1JFramework.Timeline
+namespace Duo1JFramework.TimelineAPI
 {
     /// <summary>
     /// Timeline包装数据

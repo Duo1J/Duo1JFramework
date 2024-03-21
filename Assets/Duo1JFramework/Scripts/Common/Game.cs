@@ -33,9 +33,9 @@ namespace Duo1JFramework
         /// </summary>
         public static void TriggerSingleton()
         {
-            GameManager.Instance.Trigger();
+            Log.Info("Trigger Singleton.");
 
-            Log.Info("Singleton has been triggered.");
+            GameManager.Instance.Trigger();
         }
 
         /// <summary>

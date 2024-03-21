@@ -407,11 +407,13 @@ namespace Duo1JFramework.Asset
         private bool drawABAssetDataDict = false;
         public void DrawEditorInfo()
         {
+            //todo hlj 调整高亮颜色
+
             LU.Vertical(() =>
             {
                 GUILayout.Label($"AB包名: {assetBundleName}");
                 GUILayout.Label($"AB路径: {assetBundlePath}");
-                GUILayout.Label($"Loading: {loading}{LU.S4}freeTime: {freeTime}");
+                GUILayout.Label($"加载中: {loading}{LU.S4}卸载空闲等待时间: {freeTime}{LU.S4}是否可以卸载: {CanUnload()}");
 
                 GUILayout.Space(10);
 

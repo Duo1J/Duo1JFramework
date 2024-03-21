@@ -2,7 +2,7 @@ using Duo1JFramework.Asset;
 using System;
 using UnityEngine;
 
-namespace Duo1JFramework.Timeline
+namespace Duo1JFramework.TimelineAPI
 {
     /// <summary>
     /// Timeline管理器

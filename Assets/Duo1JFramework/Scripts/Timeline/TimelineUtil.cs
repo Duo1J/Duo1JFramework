@@ -2,7 +2,7 @@ using System;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace Duo1JFramework.Timeline
+namespace Duo1JFramework.TimelineAPI
 {
     /// <summary>
     /// Timeline工具类

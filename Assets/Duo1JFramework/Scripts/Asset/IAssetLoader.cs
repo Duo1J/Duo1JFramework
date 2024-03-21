@@ -5,47 +5,47 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// ×ÊÔ´¼ÓÔØÆ÷
+    /// èµ„æºåŠ è½½å™¨
     /// </summary>
-    public interface IAssetLoader
+    public interface IAssetLoader : IDispose
     {
         /// <summary>
-        /// Òì²½¼ÓÔØ
+        /// å¼‚æ­¥åŠ è½½
         /// </summary>
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject;
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ
+        /// åŒæ­¥åŠ è½½
         /// </summary>
         public T LoadSync<T>(string assetPath) where T : UObject;
 
         /// <summary>
-        /// Òì²½¼ÓÔØÊµÀı
+        /// å¼‚æ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public void LoadIns<T>(string assetPath, Action<T> callback) where T : UObject;
 
         /// <summary>
-        /// Í¬²½¼ÓÔØÊµÀı
+        /// åŒæ­¥åŠ è½½å®ä¾‹
         /// </summary>
         public T LoadInsSync<T>(string assetPath) where T : UObject;
 
         /// <summary>
-        /// Òì²½¼ÓÔØResources×ÊÔ´
+        /// å¼‚æ­¥åŠ è½½Resourcesèµ„æº
         /// </summary>
         public void LoadResource<T>(string assetPath, Action<T> callback) where T : UObject;
 
         /// <summary>
-        /// Í¬²½¼ÓÔØResources×ÊÔ´
+        /// åŒæ­¥åŠ è½½Resourcesèµ„æº
         /// </summary>
         public T LoadResourceSync<T>(string assetPath) where T : UObject;
 
         /// <summary>
-        /// Òì²½¼ÓÔØResourcesÊµÀı
+        /// å¼‚æ­¥åŠ è½½Resourceså®ä¾‹
         /// </summary>
         public void LoadResourceIns<T>(string assetPath, Action<T> callback) where T : UObject;
 
         /// <summary>
-        /// /Í¬²½¼ÓÔØResourceÊµÀı
+        /// /åŒæ­¥åŠ è½½Resourceå®ä¾‹
         /// </summary>
         public T LoadResourceInsSync<T>(string assetPath) where T : UObject;
     }

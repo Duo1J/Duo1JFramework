@@ -56,7 +56,7 @@ namespace Duo1JFramework
 
         private void OnGUI()
         {
-            GUI.skin.label.richText = true;
+            EditorStyle.EnableLabelRichText();
             float width = position.width;
 
             LU.Area(new Rect(0, 0, 150, position.height), DrawLeftMenuList, "box");

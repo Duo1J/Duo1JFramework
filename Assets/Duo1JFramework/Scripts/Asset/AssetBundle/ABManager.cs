@@ -122,13 +122,13 @@ namespace Duo1JFramework.Asset
         {
             if (!UseAssetBundle)
             {
-                GUILayout.Label("当前未使用AssetBundle加载");
+                LU.HelpBox("当前未使用AssetBundle加载");
                 return;
             }
 
             if (abDataDict == null || abDataDict.Count == 0)
             {
-                GUILayout.Label("abDataDict为空");
+                LU.HelpBox("abDataDict为空");
                 return;
             }
 

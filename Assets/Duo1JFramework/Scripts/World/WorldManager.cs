@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Duo1JFramework.World
 {
+    /// <summary>
+    /// 世界场景管理器
+    /// </summary>
     public class WorldManager : MonoSingleton<WorldManager>
     {
         private Transform actorRoot;

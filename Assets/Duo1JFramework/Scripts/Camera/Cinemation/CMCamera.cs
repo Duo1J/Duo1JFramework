@@ -1,7 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 
-namespace Duo1JFramework.Camera3D
+namespace Duo1JFramework.CameraAPI
 {
     /// <summary>
     /// Cinemachine相机

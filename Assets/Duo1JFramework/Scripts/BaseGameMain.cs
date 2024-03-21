@@ -11,8 +11,6 @@ namespace Duo1JFramework
     {
         protected virtual void Awake()
         {
-            DontDestroyOnLoad(gameObject);
-
             Framework.Init();
         }
     }

@@ -1,4 +1,4 @@
-namespace Duo1JFramework.Camera3D
+namespace Duo1JFramework.CameraAPI
 {
     public interface ICamera
     {

@@ -81,11 +81,15 @@ namespace Duo1JFramework
         private static readonly Dictionary<Type, string> editorWndNameMap = new Dictionary<Type, string>()
         {
             [typeof(FolderFastJumpEditor)] = "文件夹快速选中",
+
             [typeof(GUIIconViewer)] = "内置图标列表",
             [typeof(GUIStyleViewer)] = "内置样式列表",
+            [typeof(GUIColorViewer)] = "GUI颜色调整器",
+
             [typeof(TimerMonitor)] = "计时器监视",
-            [typeof(AssetBundleBuildEditor)] = "构建AssetBundle",
             [typeof(AssetBundleMonitor)] = "AssetBundle监视",
+
+            [typeof(AssetBundleBuildEditor)] = "构建AssetBundle",
         };
 
         #endregion 编辑器窗口

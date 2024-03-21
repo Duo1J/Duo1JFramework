@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Duo1JFramework.Camera3D
+namespace Duo1JFramework.CameraAPI
 {
     /// <summary>
     /// 相机可跟随

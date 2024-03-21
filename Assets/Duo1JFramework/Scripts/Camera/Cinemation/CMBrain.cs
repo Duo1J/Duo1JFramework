@@ -2,7 +2,7 @@ using Cinemachine;
 using Duo1JFramework.Asset;
 using UnityEngine;
 
-namespace Duo1JFramework.Camera3D
+namespace Duo1JFramework.CameraAPI
 {
     /// <summary>
     /// CinemachineBarin

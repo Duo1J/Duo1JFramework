@@ -70,6 +70,12 @@ namespace Duo1JFramework
             return GUIStyleViewer.Open();
         }
 
+        [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "GUI颜色调整器", priority = 22)]
+        public static GUIColorViewer OpenGUIColorViewer()
+        {
+            return GUIColorViewer.Open();
+        }
+
         #endregion EditorStyle
 
         #region Monitor 30

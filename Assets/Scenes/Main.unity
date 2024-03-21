@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af67d59e9216c1e4abddc0c95a2bb00b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorAssetLoaderType: 0
+  editorAssetLoaderType: 1
   runtimeAssetLoaderType: 1
 --- !u!114 &1818165847
 MonoBehaviour:

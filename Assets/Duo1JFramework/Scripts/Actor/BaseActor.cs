@@ -1,5 +1,5 @@
 using Duo1JFramework.Asset;
-using Duo1JFramework.Camera3D;
+using Duo1JFramework.CameraAPI;
 using Duo1JFramework.GamerInput;
 using Duo1JFramework.UI;
 using Duo1JFramework.World;

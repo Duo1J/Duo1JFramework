@@ -107,58 +107,81 @@ namespace Duo1JFramework.Asset
 
         protected override void OnInit()
         {
-            CreateLoader();
+            CreateAssetLoader();
         }
 
-        private void CreateLoader()
+        private void CreateAssetLoader()
         {
-            //todo hlj set并修改类型
-
-            if (loader == null)
+            void SetAssetLoader(eAssetLoaderType assetLoaderType)
             {
 #if UNITY_EDITOR
-                switch (GameConfig.Instance.editorAssetLoaderType)
+                GameConfig.Instance.editorAssetLoaderType = assetLoaderType;
 #else
-                switch (GameConfig.Instance.runtimeAssetLoaderType)
+                GameConfig.Instance.runtimeAssetLoaderType = assetLoaderType;
 #endif
+                switch (assetLoaderType)
                 {
                     case eAssetLoaderType.AssetDatabase:
-#if UNITY_EDITOR
                         Log.Info("使用EditorAssetLoader资源加载器");
                         loader = new EditorAssetLoader();
-#else
-                        Log.ErrorForce("运行时不可使用AssetDatabase类型资源加载器, 使用ABAssetLoader资源加载器");
-                        loader = new ABAssetLoader();
-#endif
                         break;
                     case eAssetLoaderType.AssetBundle:
                         Log.Info("使用ABAssetLoader资源加载器");
                         loader = new ABAssetLoader();
                         break;
                     case eAssetLoaderType.Addressables:
-#if UNITY_EDITOR
-                        Log.ErrorForce("Addressables未实现, 使用EditorAssetLoader资源加载器");
-                        loader = new EditorAssetLoader();
-#else
-                        Log.ErrorForce("Addressables未实现, 使用ABAssetLoader资源加载器");
+                        Log.Info("使用ABAssetLoader资源加载器");
                         loader = new ABAssetLoader();
-#endif
                         break;
-                    default:
+                }
+            }
+
+            if (loader == null)
+            {
+                try
+                {
 #if UNITY_EDITOR
-                        Log.ErrorForce($"GameConfig.editorAssetLoaderType类型错误: {GameConfig.Instance.editorAssetLoaderType}, 使用EditorAssetLoader资源加载器");
-                        loader = new EditorAssetLoader();
+                    switch (GameConfig.Instance.editorAssetLoaderType)
 #else
-                        Log.ErrorForce($"GameConfig.runtimeAssetLoaderType类型错误: {GameConfig.Instance.runtimeAssetLoaderType}, 使用ABAssetLoader资源加载器");
-                        loader = new ABAssetLoader();
+                switch (GameConfig.Instance.runtimeAssetLoaderType)
 #endif
-                        break;
+                    {
+                        case eAssetLoaderType.AssetDatabase:
+#if UNITY_EDITOR
+                            SetAssetLoader(eAssetLoaderType.AssetDatabase);
+                            break;
+#else
+                        throw CommonException.Create("运行时不可使用AssetDatabase类型资源加载器");
+#endif
+                        case eAssetLoaderType.AssetBundle:
+                            SetAssetLoader(eAssetLoaderType.AssetBundle);
+                            break;
+                        case eAssetLoaderType.Addressables:
+                            throw CommonException.Create("Addressables资源加载器未实现");
+                        default:
+#if UNITY_EDITOR
+                            throw CommonException.Create($"GameConfig.editorAssetLoaderType类型错误: {GameConfig.Instance.editorAssetLoaderType}");
+#else
+                        throw CommonException.Create($"GameConfig.runtimeAssetLoaderType类型错误: {GameConfig.Instance.runtimeAssetLoaderType}");
+#endif
+                    }
+                }
+                catch (Exception e)
+                {
+                    Assert.ExceptHandle(e, "创建资源加载器异常, 使用对应环境默认资源加载器");
+#if UNITY_EDITOR
+                    SetAssetLoader(eAssetLoaderType.AssetDatabase);
+#else
+                    SetAssetLoader(eAssetLoaderType.AssetBundle);
+#endif
                 }
             }
         }
 
         protected override void OnDispose()
         {
+            loader?.Dispose();
+            loader = null;
         }
     }
 }

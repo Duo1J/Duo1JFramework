@@ -8,7 +8,7 @@ using UnityEditor;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器界面布局工具 (LayoutUtil)
+    /// 编辑器界面绘制工具 (LayoutUtil)
     /// </summary>
     public class LU
     {
@@ -163,6 +163,29 @@ namespace Duo1JFramework
             return toggle;
         }
 
+        public static void HelpBox(string msg)
+        {
+#if UNITY_EDITOR
+            EditorGUILayout.HelpBox(new GUIContent(msg));
+#else
+                GUILayout.Label(msg);
+#endif
+        }
+
+        public static bool IsPlayingHelpBox()
+        {
+            return ConditionHelpBox(Game.IsPlaying, "请在运行后使用");
+        }
+
+        public static bool ConditionHelpBox(bool con, string msg)
+        {
+            if (!con)
+            {
+                HelpBox(msg);
+            }
+            return con;
+        }
+
         #region Editor
 
         public static void DisableGroup_Editor(Action action, bool disabled = true)
@@ -174,24 +197,6 @@ namespace Duo1JFramework
 #else
             action?.Invoke();
 #endif
-        }
-
-        public static bool IsPlayingTip_Editor()
-        {
-            return ConditionTip_Editor(Game.IsPlaying, "请在运行后使用");
-        }
-
-        public static bool ConditionTip_Editor(bool con, string msg)
-        {
-            if (!con)
-            {
-#if UNITY_EDITOR
-                EditorGUILayout.HelpBox(new GUIContent(msg));
-#else
-                GUILayout.Label(msg);
-#endif
-            }
-            return con;
         }
 
         #endregion Editor
