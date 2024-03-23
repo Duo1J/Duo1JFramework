@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器样式
     /// </summary>
-    public static class EditorStyle
+    public class EditorStyle
     {
 #if UNITY_EDITOR
         public static bool IsProSkin => UnityEditor.EditorGUIUtility.isProSkin;
@@ -13,86 +13,41 @@ namespace Duo1JFramework
         public static bool IsProSkin => true;
 #endif
 
-        public static void EnableLabelRichText()
+        public static void SetLabelRichText(bool isOn = true)
         {
-            GUI.skin.label.richText = true;
-        }
-
-        public static void DisableLabelRichText()
-        {
-            GUI.skin.label.richText = false;
+            GUI.skin.label.richText = isOn;
+            GUI.skin.toggle.richText = isOn;
         }
 
         #region Color
 
-        //todo hlj 调整
+        //////
+        /// 按钮需要用浅色后缀L
+        //////
 
-        public static Color NormalBtnC1
-        {
-            get
-            {
-                if (IsProSkin)
-                    return Color.green;
-                else
-                    return ColorUtil.Create(152, 198, 164);
-            }
-        }
+        public static Color Green => IsProSkin ? Color.green : ColorUtil.Create(0, 120, 15);
+        public static Color GreenL => IsProSkin ? Color.green : ColorUtil.Create(150, 215, 150);
 
-        public static Color NormalBtnC2
-        {
-            get
-            {
-                if (IsProSkin)
-                    return Color.cyan;
-                else
-                    return ColorUtil.Create(152, 198, 164);
-            }
-        }
+        public static Color Blue => IsProSkin ? ColorUtil.Create(140, 140, 255) : Color.blue;
+        public static Color BlueL => IsProSkin ? Color.blue : ColorUtil.Create(154, 154, 224);
 
-        public static Color WarnBtnC1
-        {
-            get
-            {
-                if (IsProSkin)
-                    return Color.yellow;
-                else
-                    return Color.yellow;
-            }
-        }
+        public static Color Yellow => IsProSkin ? Color.yellow : ColorUtil.Create(138, 138, 0);
+        public static Color YellowL => IsProSkin ? Color.yellow : ColorUtil.Create(154, 154, 70);
 
-        public static Color WarnBtnC2
-        {
-            get
-            {
-                if (IsProSkin)
-                    return Color.red;
-                else
-                    return Color.red;
-            }
-        }
-
-        public static Color WarnTextC1
-        {
-            get
-            {
-                if (IsProSkin)
-                    return Color.yellow;
-                else
-                    return Color.yellow;
-            }
-        }
-
-        public static Color WarnTextC2
-        {
-            get
-            {
-                if (IsProSkin)
-                    return Color.red;
-                else
-                    return Color.red;
-            }
-        }
+        public static Color Red => Color.red;
+        public static Color RedL => IsProSkin ? Color.red : ColorUtil.Create(230, 120, 120);
 
         #endregion Color
+
+        protected EditorStyle()
+        {
+        }
+    }
+
+    public class ES : EditorStyle
+    {
+        protected ES()
+        {
+        }
     }
 }

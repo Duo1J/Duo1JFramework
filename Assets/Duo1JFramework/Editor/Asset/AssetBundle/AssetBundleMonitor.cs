@@ -9,6 +9,8 @@ namespace Duo1JFramework.Asset
     {
         private Vector2 scrollPos;
 
+        private bool update;
+
         private void OnGUI()
         {
             if (!LU.IsPlayingHelpBox())
@@ -16,10 +18,20 @@ namespace Duo1JFramework.Asset
                 return;
             }
 
+            LU.Toggle(ref update, "每帧更新");
+
             LU.Scroll(ref scrollPos, () =>
             {
                 ABManager.Instance.DrawEditorInfo();
             });
+        }
+
+        private void OnInspectorUpdate()
+        {
+            if (update)
+            {
+                Repaint();
+            }
         }
     }
 }

@@ -8,9 +8,9 @@ using UnityEditor;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器界面绘制工具 (LayoutUtil)
+    /// 编辑器界面绘制工具
     /// </summary>
-    public class LU
+    public class LayoutUtil
     {
         public const string S2 = "  ";
         public const string S4 = "    ";
@@ -201,14 +201,14 @@ namespace Duo1JFramework
 
         #endregion Editor
 
-        protected LU()
+        protected LayoutUtil()
         {
         }
     }
 
-    public class LayoutUtil : LU
+    public class LU : LayoutUtil
     {
-        protected LayoutUtil()
+        protected LU()
         {
         }
     }

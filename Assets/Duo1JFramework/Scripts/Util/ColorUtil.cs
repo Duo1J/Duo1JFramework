@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,15 +19,27 @@ namespace Duo1JFramework
             {
                 return ret;
             }
-            if (hex.Length != 6)
+            try
             {
-                throw CommonException.Create($"Hex color length error: {hex.Length}");
+                if (hex.Length == 7)
+                {
+                    hex = hex.Substring(1, 6);
+                }
+                if (hex.Length != 6)
+                {
+                    throw CommonException.Create($"Hex color length error: {hex}");
+                }
+                byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+                byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+                byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                ret = new Color32(r, g, b, 255);
+                return hexColorCache[hex] = ret;
             }
-            byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-            byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-            byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-            ret = new Color32(r, g, b, 255);
-            return hexColorCache[hex] = ret;
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"HexToColor转换失败: {hex}");
+                return Color.white;
+            }
         }
 
         public static string ColorToHex(Color32 color)

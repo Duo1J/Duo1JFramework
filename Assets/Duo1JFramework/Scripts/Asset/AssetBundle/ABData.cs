@@ -407,17 +407,15 @@ namespace Duo1JFramework.Asset
         private bool drawABAssetDataDict = false;
         public void DrawEditorInfo()
         {
-            //todo hlj 调整高亮颜色
-
             LU.Vertical(() =>
             {
-                GUILayout.Label($"AB包名: {assetBundleName}");
+                GUILayout.Label($"AB包名: {assetBundleName.WithColor(ES.Blue)}");
                 GUILayout.Label($"AB路径: {assetBundlePath}");
                 GUILayout.Label($"加载中: {loading}{LU.S4}卸载空闲等待时间: {freeTime}{LU.S4}是否可以卸载: {CanUnload()}");
 
                 GUILayout.Space(10);
 
-                if (LU.Toggle(ref drawRefABList, "显示引用的AssetBundle的列表"))
+                if (LU.Toggle(ref drawRefABList, "显示引用的AssetBundle的列表".WithColor(ES.Green)))
                 {
                     LU.Vertical(() =>
                     {
@@ -437,7 +435,7 @@ namespace Duo1JFramework.Asset
                     GUILayout.Space(10);
                 }
 
-                if (LU.Toggle(ref drawRefThisABSet, "显示引用该AssetBundle的Set"))
+                if (LU.Toggle(ref drawRefThisABSet, "显示引用该AssetBundle的Set".WithColor(ES.Green)))
                 {
                     LU.Vertical(() =>
                     {
@@ -457,7 +455,7 @@ namespace Duo1JFramework.Asset
                     GUILayout.Space(10);
                 }
 
-                if (LU.Toggle(ref drawABAssetDataDict, "显示该AssetBundle加载出来的资源列表"))
+                if (LU.Toggle(ref drawABAssetDataDict, "显示该AssetBundle加载出来的资源列表".WithColor(ES.Green)))
                 {
                     LU.Vertical(() =>
                     {

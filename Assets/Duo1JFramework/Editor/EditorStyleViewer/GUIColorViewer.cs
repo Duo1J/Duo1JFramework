@@ -15,7 +15,7 @@ namespace Duo1JFramework
 
         private void OnGUI()
         {
-            EditorStyle.EnableLabelRichText();
+            ES.SetLabelRichText();
 
             if (boxBg)
             {
@@ -56,7 +56,15 @@ namespace Duo1JFramework
                 }
             });
 
-            LU.SurrondSpace(30, () => { GUILayout.Label($"<size={size}><color={colorHex}>测试 - Test</color></size>"); });
+            LU.SurrondSpace(30, () =>
+            {
+                GUILayout.Label($"<size={size}><color={colorHex}>测试 - Test</color></size>");
+            });
+
+            LU.SurrondColor(colorHex.ToColor(), () =>
+            {
+                GUILayout.Button("测试 - Test");
+            });
 
             GUILayout.EndVertical();
         }
