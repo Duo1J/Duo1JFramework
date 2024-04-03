@@ -92,6 +92,12 @@ namespace Duo1JFramework
             return AssetBundleMonitor.Open();
         }
 
+        [MenuItem(EditorDef.TOOL_EDITOR_MONITOR_PREFIX + "碰撞、触发监视", priority = 32)]
+        public static CollisionMonitor OpenCollisionMonitor()
+        {
+            return CollisionMonitor.Open();
+        }
+
         #endregion Monitor
 
         #region Build 40

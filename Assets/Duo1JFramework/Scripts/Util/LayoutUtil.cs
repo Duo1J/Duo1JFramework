@@ -10,7 +10,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器界面绘制工具
     /// </summary>
-    public class LayoutUtil
+    public class LU
     {
         public const string S2 = "  ";
         public const string S4 = "    ";
@@ -201,14 +201,14 @@ namespace Duo1JFramework
 
         #endregion Editor
 
-        protected LayoutUtil()
+        protected LU()
         {
         }
     }
 
-    public class LU : LayoutUtil
+    public class LayoutUtil : LU
     {
-        protected LU()
+        protected LayoutUtil()
         {
         }
     }

@@ -88,6 +88,7 @@ namespace Duo1JFramework
 
             [typeof(TimerMonitor)] = "计时器监视",
             [typeof(AssetBundleMonitor)] = "AssetBundle监视",
+            [typeof(CollisionMonitor)] = "碰撞、触发监视",
 
             [typeof(AssetBundleBuildEditor)] = "构建AssetBundle",
         };

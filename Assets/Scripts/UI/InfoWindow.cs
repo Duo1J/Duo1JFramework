@@ -10,7 +10,7 @@ public class InfoWindow : Window
 
     protected override UIConfig CreateUIConfig()
     {
-        return new UIConfig(Path.RES_PATH_UI_PREFIX + "InfoWindow")
+        return new UIConfig("UI/InfoWindow")
             .SetIsResource(true)
             .SetLayer(UILayer.Const);
     }

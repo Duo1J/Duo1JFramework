@@ -1,0 +1,24 @@
+using Duo1JFramework.Asset;
+using Duo1JFramework.PhysicsAPI;
+using UnityEngine;
+
+namespace Duo1JFramework
+{
+    public class CollisionMonitor : EditorWindowBase<CollisionMonitor>
+    {
+        private Vector2 scrollPos;
+
+        private void OnGUI()
+        {
+            if (!LU.IsPlayingHelpBox())
+            {
+                return;
+            }
+
+            LU.Scroll(ref scrollPos, () =>
+            {
+                CollisionManager.Instance.DrawEditorInfo();
+            });
+        }
+    }
+}

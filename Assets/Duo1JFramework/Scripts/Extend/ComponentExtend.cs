@@ -1,0 +1,23 @@
+using UnityEngine;
+
+namespace Duo1JFramework
+{
+    /// <summary>
+    /// Component扩展方法
+    /// </summary>
+    public static class ComponentExtend
+    {
+        /// <summary>
+        /// 获取或添加组件
+        /// </summary>
+        public static T GetOrAddComponent<T>(this Component com) where T : Component
+        {
+            return com.gameObject.GetOrAddComponent<T>();
+        }
+
+        public static T GetAndAssertComponent<T>(this Component com, string msg = "无法获取到组件") where T : Component
+        {
+            return com.gameObject.GetAndAssertComponent<T>(msg);
+        }
+    }
+}

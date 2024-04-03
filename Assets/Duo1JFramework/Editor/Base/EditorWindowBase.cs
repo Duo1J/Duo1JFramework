@@ -4,6 +4,8 @@ namespace Duo1JFramework
 {
     /// 创建新的窗口后需要配置窗口名
     /// <see cref="EditorDef.editorWndNameMap"/>
+    /// 需要添加到菜单
+    /// <see cref="ToolMenuConfig"/>
 
 
     /// <summary>

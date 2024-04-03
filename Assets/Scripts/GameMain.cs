@@ -3,6 +3,7 @@ using Duo1JFramework.Actor;
 using Duo1JFramework.Asset;
 using Duo1JFramework.CameraAPI;
 using Duo1JFramework.GamerInput;
+using Duo1JFramework.PhysicsAPI;
 using Duo1JFramework.TimelineAPI;
 using Duo1JFramework.TimerUpdate;
 using Duo1JFramework.UI;
@@ -29,6 +30,11 @@ public class GameMain : BaseGameMain
         mainActor = ActorManager.Instance.CreateActor(
             new ActorData(typeof(CcControlableActor), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
+
+        //todo hlj
+        GameObject col = new GameObject("col");
+        col.AddComponent<BoxCollider>();
+        CollisionManager.Instance.AddCollision(col);
     }
 
     private void Update()

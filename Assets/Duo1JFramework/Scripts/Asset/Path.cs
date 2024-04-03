@@ -33,11 +33,6 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public const string RES_PATH_PREFIX = Def.FRAME_WORK_NAME + "/";
 
-        /// <summary>
-        /// Resources-UI资源路径前缀
-        /// </summary>
-        public const string RES_PATH_UI_PREFIX = RES_PATH_PREFIX + "UI/";
-
         #region Util
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Duo1JFramework
         /// <summary>
         /// UIRoot路径
         /// </summary>
-        public const string UI_ROOT_PATH = Path.RES_PATH_UI_PREFIX + "UIRoot";
+        public const string UI_ROOT_PATH = Path.RES_PATH_PREFIX + "UI/UIRoot";
 
         /// <summary>
         /// 每个UI界面的层级差

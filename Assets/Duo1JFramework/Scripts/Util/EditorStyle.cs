@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器样式
     /// </summary>
-    public class EditorStyle
+    public class ES
     {
 #if UNITY_EDITOR
         public static bool IsProSkin => UnityEditor.EditorGUIUtility.isProSkin;
@@ -39,14 +39,14 @@ namespace Duo1JFramework
 
         #endregion Color
 
-        protected EditorStyle()
+        protected ES()
         {
         }
     }
 
-    public class ES : EditorStyle
+    public class EditorStyle : ES
     {
-        protected ES()
+        protected EditorStyle()
         {
         }
     }
