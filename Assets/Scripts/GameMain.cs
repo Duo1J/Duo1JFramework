@@ -31,6 +31,9 @@ public class GameMain : BaseGameMain
         mainActor = ActorManager.Instance.CreateActor(
             new ActorData(typeof(CcControlableActor), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
+
+        //todo hlj collision
+        //todo hlj pool common
     }
 
     private void Update()
