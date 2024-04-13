@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Duo1JFramework
 {
     /// <summary>

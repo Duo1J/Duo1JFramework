@@ -15,7 +15,5 @@ namespace Duo1JFramework.PlayableAPI
         protected override void OnInit()
         {
         }
-
-        //todo hlj
     }
 }

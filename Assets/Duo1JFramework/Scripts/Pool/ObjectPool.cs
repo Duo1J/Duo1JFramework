@@ -18,10 +18,16 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public void Push(ObjectPoolItem<T> item)
         {
+            if (item == null)
+            {
+                return;
+            }
+
             if (!item.Using)
             {
                 return;
             }
+
             poolStack.Push(item);
         }
 
