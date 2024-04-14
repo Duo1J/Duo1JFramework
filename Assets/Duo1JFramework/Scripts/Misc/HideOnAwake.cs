@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Duo1JFramework
 {
-    public class HideOnAwake : MonoBehaviour
+    public class HideOnAwake : BaseMono
     {
         public bool hideOnAwake = true;
 

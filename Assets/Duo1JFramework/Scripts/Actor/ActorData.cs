@@ -3,7 +3,7 @@ using System;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 角色配置数据
+    /// 角色创建配置数据
     /// </summary>
     public class ActorData
     {

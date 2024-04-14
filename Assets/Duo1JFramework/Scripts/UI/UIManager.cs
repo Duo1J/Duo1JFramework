@@ -12,6 +12,15 @@ namespace Duo1JFramework.UI
     {
         private List<Window> wndList;
 
+        public T OpenWindow<T>() where T : Window, new()
+        {
+            Window wnd = OpenWindow(new T());
+            T ret = wnd as T;
+            Assert.NotNull(ret, $"Window转换`{typeof(T).FullName}`失败");
+
+            return ret;
+        }
+
         public Window OpenWindow(Window wnd)
         {
             try

@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 角色Inspector面板控制参数
     /// </summary>
-    public class ActorParam : MonoBehaviour
+    public class ActorParam : BaseMono
     {
         [Header("运动数值")]
         [Label("跑动速度")]

@@ -5,17 +5,17 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 可控制Rigidbody角色
+    /// 可控制Rigidbody角色逻辑
     /// </summary>
     public class RbControlableActor : GenericActor<RbActorController>
     {
-        private int jumpFrameCount = 0;
-        private const int MinJumpFrameCount = 30;
+        protected int jumpFrameStartCnt = 0;
+        protected int minJumpFrameCnt = 30;
 
         /// <summary>
         /// 初始化状态机
         /// </summary>
-        protected void InitFSM()
+        protected virtual void InitFSM()
         {
             Con.InitFSM("Move",
                 StateNode.Create("Move",
@@ -32,8 +32,6 @@ namespace Duo1JFramework.Actor
                         {
                             Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
                         }
-
-                        UpdateCamera();
                     },
                     null),
                 StateNode.Create("Jump",
@@ -44,18 +42,16 @@ namespace Duo1JFramework.Actor
                             Con.SwitchState("Move");
                             return;
                         }
-                        jumpFrameCount = 0;
+                        jumpFrameStartCnt = Time.frameCount;
                         Con.JumpByHeight(Param.jumpHeight);
                         Con.AniCrossFade(Param.jumpAniName);
                     },
                     () =>
                     {
-                        if (++jumpFrameCount >= MinJumpFrameCount && Con.Grounded)
+                        if ((Time.frameCount - jumpFrameStartCnt) >= minJumpFrameCnt && Con.Grounded)
                         {
                             Con.SwitchState("Move");
                         }
-
-                        UpdateCamera();
                     },
                     null).SetSwitchList("Move")
             );
@@ -70,14 +66,16 @@ namespace Duo1JFramework.Actor
             InitFSM();
         }
 
-        public bool InWalk()
+        public virtual bool InWalk()
         {
             return InputManager.GetKey(KeyCode.LeftControl);
         }
 
-        private void OnUpdate()
+        protected virtual void OnUpdate()
         {
             if (Con == null) return;
+
+            UpdateCamera();
 
             if (Con.Grounded &&
                 !Con.InState("Jump") &&

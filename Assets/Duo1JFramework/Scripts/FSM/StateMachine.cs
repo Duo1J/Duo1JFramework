@@ -8,6 +8,11 @@ namespace Duo1JFramework.FSM
     public class StateMachine
     {
         /// <summary>
+        /// 状态机名
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// 状态列表
         /// </summary>
         private Dictionary<string, StateNode> stateDict;
@@ -22,43 +27,39 @@ namespace Duo1JFramework.FSM
         /// </summary>
         private bool ignoreNextTick = false;
 
-        public static StateMachine Create(string curStateName, params StateNode[] stateList)
+        public static StateMachine Create(string fsmName, string curStateName, params StateNode[] stateNodeList)
         {
             StateMachine fsm = new StateMachine();
-            fsm.Init(curStateName, stateList);
+            fsm.Init(fsmName, curStateName, stateNodeList);
             return fsm;
         }
 
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Init(string curStateName, params StateNode[] stateList)
+        public void Init(string fsmName, string curStateName, params StateNode[] stateNodeList)
         {
+            Name = fsmName;
+
             curState = null;
             stateDict = new Dictionary<string, StateNode>();
-            foreach (StateNode node in stateList)
+
+            foreach (StateNode stateNode in stateNodeList)
             {
-                if (string.IsNullOrEmpty(node.StateName))
+                if (!AddNode(stateNode))
                 {
-                    Log.ErrorForce($"FSM不可使用空的状态名");
                     Dispose();
                     return;
                 }
-                if (stateDict.ContainsKey(node.StateName))
+
+                if (stateNode.StateName.Equals(curStateName))
                 {
-                    Log.ErrorForce($"FSM不可使用相同的状态名: {node.StateName}");
-                    Dispose();
-                    return;
+                    curState = stateNode;
                 }
-                if (node.StateName.Equals(curStateName))
-                {
-                    curState = node;
-                }
-                stateDict.Add(node.StateName, node);
             }
             if (curState == null)
             {
-                Log.ErrorForce($"FSM未找到当前执行状态: {curStateName}");
+                Log.ErrorForce($"{ToString()} 未找到当前执行状态: {curStateName}");
                 Dispose();
                 return;
             }
@@ -67,10 +68,54 @@ namespace Duo1JFramework.FSM
         }
 
         /// <summary>
+        /// 添加状态节点
+        /// </summary>
+        public bool AddNode(StateNode stateNode)
+        {
+            if (string.IsNullOrEmpty(stateNode.StateName))
+            {
+                Log.ErrorForce($"{ToString()} 不可使用空的状态名");
+                return false;
+            }
+
+            if (stateDict.ContainsKey(stateNode.StateName))
+            {
+                Log.ErrorForce($"{ToString()} 不可使用相同的状态名: {stateNode.StateName}");
+                return false;
+            }
+
+            stateNode.FSM = this;
+            stateDict.Add(stateNode.StateName, stateNode);
+            return true;
+        }
+
+        /// <summary>
+        /// 移除状态节点
+        /// </summary>
+        public bool RemoveNode(string stateName)
+        {
+            if (!stateDict.ContainsKey(stateName))
+            {
+                Log.ErrorForce($"{ToString()} 未包含状态`{stateName}`，无法移除");
+                return false;
+            }
+
+            if (InState(stateName))
+            {
+                Log.ErrorForce($"{ToString()} 处在状态`{stateName}`中，无法移除");
+                return false;
+            }
+
+            return stateDict.Remove(stateName);
+        }
+
+        /// <summary>
         /// 切换状态
         /// </summary>
         public bool SwitchState(string stateName, bool ignoreNextTick = true)
         {
+            Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
+
             if (InState(stateName))
                 return false;
             if (!curState.CanSwitchTo(stateName))
@@ -87,7 +132,7 @@ namespace Duo1JFramework.FSM
             }
             else
             {
-                Log.ErrorForce($"FSM未找到状态{stateName}，无法切换");
+                Log.ErrorForce($"{ToString()} 未找到状态{stateName}，无法切换");
                 return false;
             }
         }
@@ -124,6 +169,11 @@ namespace Duo1JFramework.FSM
         ~StateMachine()
         {
             Dispose();
+        }
+
+        public override string ToString()
+        {
+            return $"<FSM: {Name}>";
         }
     }
 }

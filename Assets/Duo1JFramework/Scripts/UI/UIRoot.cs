@@ -7,7 +7,7 @@ namespace Duo1JFramework.UI
     /// UI物体根节点
     /// </summary>
     [DisallowMultipleComponent]
-    public class UIRoot : MonoBehaviour
+    public class UIRoot : BaseMono
     {
         public static Transform BottomLayer => Root.Instance.UIRoot.bottomLayer;
         public static Transform NormalLayer => Root.Instance.UIRoot.normalLayer;

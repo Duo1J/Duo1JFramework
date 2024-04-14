@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 角色基类
+    /// 角色逻辑基类
     /// </summary>
     [Serializable]
     public abstract class BaseActor : BaseRegister,

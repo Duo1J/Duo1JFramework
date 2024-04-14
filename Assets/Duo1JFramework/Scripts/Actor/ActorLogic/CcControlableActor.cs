@@ -5,20 +5,20 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 可控制CharacterController角色
+    /// 可控制CharacterController角色逻辑
     /// </summary>
     public class CcControlableActor : GenericActor<CcActorController>
     {
-        private int jumpFrameCount = 0;
-        private const int MinJumpFrameCount = 30;
+        protected int jumpFrameStartCnt = 0;
+        protected int minJumpFrameCnt = 30;
 
-        private Vector3 moveVelocity;
-        private Vector3 jumpVelocity;
+        protected Vector3 moveVelocity;
+        protected Vector3 jumpVelocity;
 
         /// <summary>
         /// 初始化状态机
         /// </summary>
-        protected void InitFSM()
+        protected virtual void InitFSM()
         {
             Con.InitFSM("Move",
                 StateNode.Create("Move",
@@ -36,8 +36,6 @@ namespace Duo1JFramework.Actor
                         {
                             Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
                         }
-
-                        UpdateCamera();
                     },
                     () =>
                     {
@@ -51,7 +49,7 @@ namespace Duo1JFramework.Actor
                             Con.SwitchState("Move");
                             return;
                         }
-                        jumpFrameCount = 0;
+                        jumpFrameStartCnt = Time.frameCount;
                         InputManager.GetCircleMapAxisRaw(out float h, out float v);
                         Vector3 moveDir = Con.GetMoveDirByAxis(h, v);
                         jumpVelocity = moveDir * (InWalk() ? Param.walkSpeed : Param.moveSpeed);
@@ -60,12 +58,10 @@ namespace Duo1JFramework.Actor
                     },
                     () =>
                     {
-                        if (++jumpFrameCount >= MinJumpFrameCount && Con.Grounded)
+                        if ((Time.frameCount - jumpFrameStartCnt) >= minJumpFrameCnt && Con.Grounded)
                         {
                             Con.SwitchState("Move");
                         }
-
-                        UpdateCamera();
                     },
                     () =>
                     {
@@ -92,14 +88,16 @@ namespace Duo1JFramework.Actor
             Con.RegisterOnUpdateVelocity(OnUpdateVelocity);
         }
 
-        public bool InWalk()
+        public virtual bool InWalk()
         {
             return InputManager.GetKey(KeyCode.LeftControl);
         }
 
-        private void OnUpdate()
+        protected virtual void OnUpdate()
         {
             if (Con == null) return;
+
+            UpdateCamera();
 
             if (Con.Grounded &&
                 !Con.InState("Jump") &&

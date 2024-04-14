@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 泛型通用角色
+    /// 泛型通用角色逻辑
     /// </summary>
     public class GenericActor<T> : BaseActor where T : ActorController
     {

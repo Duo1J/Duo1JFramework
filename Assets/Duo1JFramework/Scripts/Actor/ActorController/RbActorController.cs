@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// Rigidbody Actor控制器
+    /// Rigidbody角色控制器
     /// </summary>
     public class RbActorController : ActorController
     {

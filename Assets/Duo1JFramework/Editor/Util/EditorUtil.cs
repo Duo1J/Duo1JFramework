@@ -90,20 +90,23 @@ namespace Duo1JFramework
         {
             try
             {
+                Log.EditorInfo("编辑器开始资源编辑");
                 AssetDatabase.StartAssetEditing();
                 callback?.Invoke();
             }
             finally
             {
+                Log.EditorInfo("编辑器结束资源编辑");
                 AssetDatabase.StopAssetEditing();
             }
         }
 
         /// <summary>
-        /// 保存并刷新
+        /// 编辑器保存并刷新
         /// </summary>
         public static void SaveAndRefresh()
         {
+            Log.EditorInfo("编辑器保存并刷新");
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

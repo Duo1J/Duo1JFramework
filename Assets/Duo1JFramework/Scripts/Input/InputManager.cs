@@ -16,7 +16,6 @@ namespace Duo1JFramework.GamerInput
         /// <summary>
         /// 设置鼠标是否可见
         /// </summary>
-        /// <param name="visible"></param>
         public static void SetCursorVisible(bool visible)
         {
             Cursor.visible = visible;
@@ -125,6 +124,33 @@ namespace Duo1JFramework.GamerInput
         {
             if (!CheckLimit(InputLimit.Key)) return false;
             return Input.GetKeyUp(key);
+        }
+
+        /// <summary>
+        /// 鼠标按键保持
+        /// </summary>
+        public static bool GetMouseBtn(int mouseBtn)
+        {
+            if (!CheckLimit(InputLimit.Key)) return false;
+            return Input.GetMouseButton(mouseBtn);
+        }
+
+        /// <summary>
+        /// 鼠标按键按下
+        /// </summary>
+        public static bool GetMouseBtnDown(int mouseBtn)
+        {
+            if (!CheckLimit(InputLimit.Key)) return false;
+            return Input.GetMouseButtonDown(mouseBtn);
+        }
+
+        /// <summary>
+        /// 鼠标按键抬起
+        /// </summary>
+        public static bool GetMouseBtnUp(int mouseBtn)
+        {
+            if (!CheckLimit(InputLimit.Key)) return false;
+            return Input.GetMouseButtonUp(mouseBtn);
         }
 
         /// <summary>

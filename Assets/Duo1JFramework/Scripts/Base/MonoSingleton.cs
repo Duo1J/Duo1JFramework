@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// MonoBehaviour单例基类
     /// </summary>
-    public abstract class MonoSingleton<T> : MonoRegister, IDispose where T : MonoBehaviour
+    public abstract class MonoSingleton<T> : MonoRegister, IDispose where T : BaseMono
     {
         private static T instance;
 

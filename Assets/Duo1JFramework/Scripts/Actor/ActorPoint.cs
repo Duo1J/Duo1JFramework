@@ -5,7 +5,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// 角色挂点
     /// </summary>
-    public class ActorPoint : MonoBehaviour
+    public class ActorPoint : BaseMono
     {
         /// <summary>
         /// 根位置

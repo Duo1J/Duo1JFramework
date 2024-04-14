@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 通用Actor控制器
+    /// 通用角色控制器
     /// </summary>
     public class ComActorController : ActorController
     {

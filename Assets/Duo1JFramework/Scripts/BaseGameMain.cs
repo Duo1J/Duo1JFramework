@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// GameMain基类
     /// </summary>
     [RequireComponent(typeof(GameConfig))]
-    public class BaseGameMain : MonoBehaviour
+    public class BaseGameMain : BaseMono
     {
         protected virtual void Awake()
         {

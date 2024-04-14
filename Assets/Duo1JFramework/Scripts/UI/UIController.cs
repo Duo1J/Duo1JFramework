@@ -7,7 +7,7 @@ namespace Duo1JFramework.UI
     /// UI控制器 (挂载在UI预制体根节点上)
     /// </summary>
     [RequireComponent(typeof(Canvas))]
-    public class UIController : MonoBehaviour
+    public class UIController : BaseMono
     {
         #region Field
 

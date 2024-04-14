@@ -3,11 +3,13 @@ using Duo1JFramework.Actor;
 using Duo1JFramework.Asset;
 using Duo1JFramework.CameraAPI;
 using Duo1JFramework.GamerInput;
+using Duo1JFramework.ObjectPool;
 using Duo1JFramework.PhysicsAPI;
 using Duo1JFramework.RX;
 using Duo1JFramework.TimelineAPI;
 using Duo1JFramework.TimerUpdate;
 using Duo1JFramework.UI;
+using System.Text;
 using UnityEngine;
 
 public class GameMain : BaseGameMain
@@ -26,14 +28,10 @@ public class GameMain : BaseGameMain
     private void Start()
     {
         CameraManager.Instance.InitCamera<CMCamera>("Camera/Camera3rdPerson.prefab");
-        UIManager.Instance.OpenWindow(new InfoWindow());
+        UIManager.Instance.OpenWindow<InfoWindow>();
 
-        mainActor = ActorManager.Instance.CreateActor(
-            new ActorData(typeof(CcControlableActor), "TestActor", "Actor/Actor-02.prefab"));
+        mainActor = ActorManager.Instance.CreateActor(new ActorData(typeof(ComActorLogic), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
-
-        //todo hlj collision
-        //todo hlj pool common
     }
 
     private void Update()

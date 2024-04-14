@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace Duo1JFramework.FSM
 {
@@ -9,9 +10,29 @@ namespace Duo1JFramework.FSM
     public class StateNode
     {
         /// <summary>
+        /// 归属状态机
+        /// </summary>
+        public StateMachine FSM { get; set; }
+
+        /// <summary>
         /// 状态名
         /// </summary>
         public string StateName { get; set; }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public float StartTime { get; private set; }
+
+        /// <summary>
+        /// 最大运行时间
+        /// </summary>
+        public float MaxTime { get; private set; } = -1;
+
+        /// <summary>
+        /// 最大时间转换状态名
+        /// </summary>
+        public string MaxTimeChgStateName { get; private set; }
 
         private Action stateEnter;
         private Action stateTick;
@@ -25,9 +46,27 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 创建
         /// </summary>
-        public static StateNode Create(string stateName, Action stateEnter, Action stateTick, Action stateExit)
+        public static StateNode Create(string stateName, Action stateEnter = null, Action stateTick = null, Action stateExit = null)
         {
             return new StateNode(stateName, stateEnter, stateTick, stateExit);
+        }
+
+        /// <summary>
+        /// 运行X时间(s)后切换至其他状态
+        /// </summary>
+        public StateNode TimeToState(float maxTime, string stateName)
+        {
+            Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
+
+            if (!CanSwitchTo(stateName))
+            {
+                Log.ErrorForce($"{ToString()} 不可切换至状态: {stateName}");
+                return this;
+            }
+
+            MaxTime = maxTime;
+            MaxTimeChgStateName = stateName;
+            return this;
         }
 
         /// <summary>
@@ -49,11 +88,14 @@ namespace Duo1JFramework.FSM
             return switchList.Contains(tarStateName);
         }
 
+        #region Inner
+
         /// <summary>
         /// 状态进入
         /// </summary>
         public void StateEnter()
         {
+            StartTime = Time.time;
             stateEnter?.Invoke();
         }
 
@@ -63,6 +105,11 @@ namespace Duo1JFramework.FSM
         public void StateTick()
         {
             stateTick?.Invoke();
+
+            if (MaxTime > 0 && (Time.time - StartTime) >= MaxTime)
+            {
+                FSM.SwitchState(MaxTimeChgStateName, true);
+            }
         }
 
         /// <summary>
@@ -73,12 +120,19 @@ namespace Duo1JFramework.FSM
             stateExit?.Invoke();
         }
 
-        public StateNode(string stateName, Action stateEnter, Action stateTick, Action stateExit)
+        #endregion Inner
+
+        public StateNode(string stateName, Action stateEnter = null, Action stateTick = null, Action stateExit = null)
         {
             this.StateName = stateName;
             this.stateEnter = stateEnter;
             this.stateTick = stateTick;
             this.stateExit = stateExit;
+        }
+
+        public override string ToString()
+        {
+            return $"{FSM}[State: {StateName}]";
         }
     }
 }

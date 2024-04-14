@@ -1,5 +1,6 @@
 using Duo1JFramework.Asset;
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,17 +14,31 @@ namespace Duo1JFramework
     {
         private const string BtnStyle = "AppCommand";
 
-        private static DrawItem[] leftBtnList = new DrawItem[]
+        private static List<DrawItem> leftBtnList = new List<DrawItem>();
+        private static List<DrawItem> rightBtnList = new List<DrawItem>();
+
+        /// <summary>
+        /// 初始化左侧工具栏
+        /// </summary>
+        private static void InitLeftToolbar()
         {
-            new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_FolderEmpty Icon"), () =>
+        }
+
+        /// <summary>
+        /// 初始化右侧工具栏
+        /// </summary>
+        private static void InitRightToolbar()
+        {
+            rightBtnList.Add(new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_RotateTool On"), () =>
+            {
+                EditorUtil.SaveAndRefresh();
+            }));
+
+            rightBtnList.Add(new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_FolderEmpty Icon"), () =>
             {
                 EditorUtil.OpenExplore(Path.DATA_PATH);
-            })
-        };
-
-        private static DrawItem[] rightBtnList = new DrawItem[]
-        {
-        };
+            }));
+        }
 
         private static void OnLeftToolbarGUI()
         {
@@ -51,6 +66,14 @@ namespace Duo1JFramework
         {
             ToolbarExtender.LeftToolbarGUI = OnLeftToolbarGUI;
             ToolbarExtender.RightToolbarGUI = OnRightToolbarGUI;
+
+            if (leftBtnList == null) leftBtnList = new List<DrawItem>();
+            else leftBtnList.Clear();
+            InitLeftToolbar();
+
+            if (rightBtnList == null) rightBtnList = new List<DrawItem>();
+            else rightBtnList.Clear();
+            InitRightToolbar();
         }
 
         private struct DrawItem

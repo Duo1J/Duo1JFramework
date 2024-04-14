@@ -7,7 +7,7 @@ namespace Duo1JFramework.PhysicsAPI
     /// 碰撞、触发控制器
     /// </summary>
     [DisallowMultipleComponent]
-    public class CollisionController : MonoBehaviour, IEditorDrawer
+    public class CollisionController : BaseMono, IEditorDrawer
     {
         public CollisionType collisionType = CollisionType.Trigger;
 
