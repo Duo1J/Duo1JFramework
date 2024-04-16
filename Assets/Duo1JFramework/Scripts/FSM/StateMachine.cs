@@ -116,9 +116,23 @@ namespace Duo1JFramework.FSM
         {
             Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
 
-            if (InState(stateName))
-                return false;
             if (!curState.CanSwitchTo(stateName))
+                return false;
+
+            if (!curState.CheckSwitchCon())
+                return false;
+
+            return ForceSwitchState(stateName, ignoreNextTick);
+        }
+
+        /// <summary>
+        /// 强制切换状态
+        /// </summary>
+        public bool ForceSwitchState(string stateName, bool ignoreNextTick = true)
+        {
+            Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
+
+            if (InState(stateName))
                 return false;
 
             if (stateDict.TryGetValue(stateName, out StateNode state))

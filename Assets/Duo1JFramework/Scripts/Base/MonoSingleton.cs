@@ -22,6 +22,11 @@ namespace Duo1JFramework
             {
                 if (instance == null)
                 {
+                    if (Game.IsQuit)
+                    {
+                        Log.ErrorForce($"游戏状态已退出，但仍在创建{typeof(T).FullName}");
+                        return null;
+                    }
                     instance = FindObjectOfType<T>();
                     if (instance == null)
                     {
@@ -41,7 +46,7 @@ namespace Duo1JFramework
                 DontDestroyOnLoad(gameObject);
                 if (AddToRoot && transform.parent != Root.Instance.SingletonRoot)
                 {
-                    transform.SetParent(Root.Instance.SingletonRoot.transform);
+                    gameObject.SetParent(Root.Instance.SingletonRoot);
                 }
             }
             else if (instance != this)

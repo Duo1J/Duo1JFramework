@@ -18,8 +18,13 @@ namespace Duo1JFramework
             {
                 if (singletonRoot == null)
                 {
+                    if (Game.IsQuit)
+                    {
+                        Log.ErrorForce("游戏状态已退出，但仍在创建SingletonRoot");
+                        return null;
+                    }
                     singletonRoot = new GameObject("SingletonRoot");
-                    Object.DontDestroyOnLoad(singletonRoot);
+                    DontDestroyOnLoad(singletonRoot);
                 }
                 return singletonRoot;
             }

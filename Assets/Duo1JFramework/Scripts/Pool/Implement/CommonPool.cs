@@ -1,14 +1,33 @@
+using System;
+
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
     /// 通用对象池
-    /// 需要在Pop后自行初始化
     /// </summary>
     public class CommonPool<T> : BaseObjectPool<T> where T : new()
     {
-        public static CommonPool<T> Create()
+        protected Func<T, T> InitCall;
+
+        public static CommonPool<T> Create(Func<T, T> initCall)
         {
-            return new CommonPool<T>();
+            return new CommonPool<T>(initCall);
+        }
+
+        public override T InitObject(T o)
+        {
+            o = base.InitObject(o);
+            if (InitCall != null)
+            {
+                o = InitCall(o);
+            }
+
+            return o;
+        }
+
+        public CommonPool(Func<T, T> initCall)
+        {
+            InitCall = initCall;
         }
     }
 }

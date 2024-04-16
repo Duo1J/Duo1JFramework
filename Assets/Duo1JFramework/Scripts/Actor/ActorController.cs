@@ -170,6 +170,23 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
+        /// 强制切换状态
+        /// </summary>
+        public void ForceSwitchState(string stateName, bool ignoreNextTick = true)
+        {
+            if (!CheckFSM())
+            {
+                Log.ErrorForce($"{ToString()} 状态机未初始化");
+                return;
+            }
+
+            if (fsm.ForceSwitchState(stateName, ignoreNextTick))
+            {
+                CurState = stateName;
+            }
+        }
+
+        /// <summary>
         /// 是否处在状态
         /// </summary>
         public bool InState(string stateName)

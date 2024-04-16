@@ -1,3 +1,5 @@
+using System;
+
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
@@ -7,11 +9,10 @@ namespace Duo1JFramework.ObjectPool
     {
         /// <summary>
         /// 创建通用对象池
-        /// 需要在Pop后自行初始化
         /// </summary>
-        public static CommonPool<T> Create<T>() where T : new()
+        public static CommonPool<T> Create<T>(Func<T, T> initCall) where T : new()
         {
-            return new CommonPool<T>();
+            return new CommonPool<T>(initCall);
         }
 
         /// <summary>

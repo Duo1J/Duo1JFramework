@@ -19,5 +19,10 @@ namespace Duo1JFramework
         {
             return com.gameObject.GetAndAssertComponent<T>(msg);
         }
+
+        public static void SetActive(this Component com, bool active)
+        {
+            com.gameObject.SetActive(active);
+        }
     }
 }

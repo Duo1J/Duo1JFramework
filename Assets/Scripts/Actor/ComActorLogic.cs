@@ -15,7 +15,9 @@ public class ComActorLogic : CcControlableActor
                 {
                     Con.AniCrossFade("Boxing01");
                 }
-            ).TimeToState(1.2f, "Move"));
+            )
+            .TimeToState(1f, "Move")
+            .TimeHold(1f));
 
         Con.AddFSMNode(
             StateNode.Create(
@@ -24,9 +26,9 @@ public class ComActorLogic : CcControlableActor
                 {
                     Con.AniCrossFade("Boxing02");
                 }
-            ).TimeToState(1.2f, "Move"));
-
-        //todo hlj
+            )
+            .TimeToState(1f, "Move")
+            .TimeHold(1f));
     }
 
     protected override void OnUpdate()

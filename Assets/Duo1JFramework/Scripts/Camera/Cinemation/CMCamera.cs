@@ -8,31 +8,76 @@ namespace Duo1JFramework.CameraAPI
     /// </summary>
     public class CMCamera : ICamera
     {
-        public CinemachineVirtualCamera CM { get; private set; }
+        public CinemachineVirtualCamera VirtualCamera
+        {
+            get => virtualCamera;
+            private set
+            {
+                virtualCamera = value;
+                Priority = virtualCamera.Priority;
+            }
+        }
+        private CinemachineVirtualCamera virtualCamera;
+
+        public int Priority
+        {
+            get
+            {
+                if (VirtualCamera == null)
+                {
+                    return int.MinValue;
+                }
+
+                return VirtualCamera.Priority;
+            }
+            set
+            {
+                priority = value;
+                VirtualCamera.Priority = value;
+            }
+        }
+        private int priority;
 
         public void Follow(ICameraFollow t)
         {
             if (t == null)
             {
-                CM.Follow = null;
+                VirtualCamera.Follow = null;
                 return;
             }
-            CM.Follow = t.CameraFollowPoint;
+            VirtualCamera.Follow = t.CameraFollowPoint;
         }
 
         public void LookAt(ICameraLookAt t)
         {
             if (t == null)
             {
-                CM.LookAt = null;
+                VirtualCamera.LookAt = null;
                 return;
             }
-            CM.LookAt = t.CameraLookAtPoint;
+            VirtualCamera.LookAt = t.CameraLookAtPoint;
         }
 
-        public void SetPriority(int priority)
+        /// <summary>
+        /// 设置临时优先级
+        /// </summary>
+        public void SetTempPriority(int priority)
         {
-            CM.Priority = priority;
+            if (VirtualCamera == null)
+            {
+                Log.ErrorForce($"{ToString()} 虚拟相机未初始化");
+                return;
+            }
+
+            VirtualCamera.Priority = priority;
+        }
+
+        /// <summary>
+        /// 重置临时优先级
+        /// </summary>
+        public void ResetTempPriority()
+        {
+            Priority = priority;
         }
 
         public void InitCamera(params object[] param)
@@ -46,7 +91,13 @@ namespace Duo1JFramework.CameraAPI
             string prefabPath = param[0] as string;
             Assert.NotNullOrEmpty(prefabPath, "主虚拟相机路径不可为空");
 
-            CM = CMBrain.Instance.LoadVirtualCamera(prefabPath);
+            VirtualCamera = CMBrain.Instance.LoadVirtualCamera(prefabPath);
+        }
+
+        public void InitCamera(CinemachineVirtualCamera virtualCamera)
+        {
+            DestroyCamera();
+            VirtualCamera = virtualCamera;
         }
 
         /// <summary>
@@ -54,20 +105,21 @@ namespace Duo1JFramework.CameraAPI
         /// </summary>
         public static CMCamera CreateCamera(string prefabPath)
         {
-            return CMBrain.CreateCamera(prefabPath);
+            return CMBrain.Instance.CreateCamera(prefabPath);
         }
 
         public void DestroyCamera()
         {
-            if (CM != null)
+            if (VirtualCamera != null)
             {
-                CM.gameObject.DestroyImmediate();
+                VirtualCamera.gameObject.DestroyImmediate();
             }
         }
 
         public CMCamera()
         {
             CMBrain.Instance.Trigger();
+            CMBrain.Instance.AddCMCamera(this);
         }
     }
 }

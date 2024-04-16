@@ -26,6 +26,10 @@ namespace Duo1JFramework
 
         public static void SetParent(this GameObject go, GameObject parent)
         {
+            if (parent == null)
+            {
+                return;
+            }
             go.SetParent(parent.transform);
         }
 

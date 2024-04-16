@@ -53,6 +53,7 @@ namespace Duo1JFramework.PhysicsAPI
 
         private void OnDestroy()
         {
+            if (Game.IsQuit) return;
             CollisionManager.Instance.RemoveFromDict(this);
         }
 

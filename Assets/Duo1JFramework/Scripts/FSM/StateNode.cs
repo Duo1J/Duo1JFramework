@@ -30,6 +30,11 @@ namespace Duo1JFramework.FSM
         public float MaxTime { get; private set; } = -1;
 
         /// <summary>
+        /// 最小运行时间
+        /// </summary>
+        public float MinTime { get; private set; } = 0;
+
+        /// <summary>
         /// 最大时间转换状态名
         /// </summary>
         public string MaxTimeChgStateName { get; private set; }
@@ -42,6 +47,11 @@ namespace Duo1JFramework.FSM
         /// 可切换状态列表
         /// </summary>
         private string[] switchList;
+
+        /// <summary>
+        /// 内部计算时间获取
+        /// </summary>
+        protected float CurTime => Time.time;
 
         /// <summary>
         /// 创建
@@ -70,12 +80,47 @@ namespace Duo1JFramework.FSM
         }
 
         /// <summary>
+        /// 最少保持X时间(s)
+        /// </summary>
+        public StateNode TimeHold(float minTime)
+        {
+            MinTime = minTime;
+            return this;
+        }
+
+        /// <summary>
         /// 设置可切换状态列表，为空则表示可任意切换
         /// </summary>
         public StateNode SetSwitchList(params string[] switchList)
         {
             this.switchList = switchList;
             return this;
+        }
+
+        /// <summary>
+        /// 获取可切换状态列表
+        /// </summary>
+        public string[] GetSwitchList()
+        {
+            if (switchList == null)
+            {
+                return new string[0];
+            }
+
+            return switchList;
+        }
+
+        /// <summary>
+        /// 检查是否已满足可切换条件
+        /// </summary>
+        public bool CheckSwitchCon()
+        {
+            if ((CurTime - StartTime) < MinTime)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -95,7 +140,7 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public void StateEnter()
         {
-            StartTime = Time.time;
+            StartTime = CurTime;
             stateEnter?.Invoke();
         }
 
@@ -106,7 +151,7 @@ namespace Duo1JFramework.FSM
         {
             stateTick?.Invoke();
 
-            if (MaxTime > 0 && (Time.time - StartTime) >= MaxTime)
+            if (MaxTime > 0 && (CurTime - StartTime) >= MaxTime)
             {
                 FSM.SwitchState(MaxTimeChgStateName, true);
             }
