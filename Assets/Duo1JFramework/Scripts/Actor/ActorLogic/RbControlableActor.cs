@@ -27,10 +27,14 @@ namespace Duo1JFramework.Actor
                         Con.RotateByAxis(h, v);
 
                         if (Con.CheckAxisZero(h, v))
+                        {
                             Con.AniCrossFade(Param.idleAniName);
+                            Con.CameraOffsetZ = 0;
+                        }
                         else
                         {
                             Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
+                            Con.CameraOffsetZ = InWalk() ? -0.3f : -0.7f;
                         }
                     },
                     null),

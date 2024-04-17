@@ -33,6 +33,8 @@ namespace Duo1JFramework.Actor
         {
             serializedObject.Update();
 
+            ActorController actorController = target as ActorController;
+
             //组件列表
             LU.Vertical(() =>
             {
@@ -66,6 +68,10 @@ namespace Duo1JFramework.Actor
                     {
                         if (gravityRate != null)
                             gravityRate.floatValue = EditorGUILayout.FloatField("重力比率", gravityRate.floatValue);
+
+                        actorController.CameraOffsetX = EditorGUILayout.FloatField("相机X轴偏移", actorController.CameraOffsetX);
+                        actorController.CameraOffsetY = EditorGUILayout.FloatField("相机Y轴偏移", actorController.CameraOffsetY);
+                        actorController.CameraOffsetZ = EditorGUILayout.FloatField("相机Z轴偏移", actorController.CameraOffsetZ);
                     });
                 }, "box");
             });

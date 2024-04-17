@@ -180,7 +180,6 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected virtual void UpdateCamera()
         {
-            //todo hlj 参数随运动改变
             float mx = InputManager.GetAxisMX();
             float my = InputManager.GetAxisMY();
             Controller.RotateCameraPoint(mx, my);

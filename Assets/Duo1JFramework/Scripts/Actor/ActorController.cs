@@ -61,6 +61,21 @@ namespace Duo1JFramework.Actor
         public bool CameraBinded => Actor.CameraBinded;
 
         /// <summary>
+        /// 相机X轴左右偏移
+        /// </summary>
+        public float CameraOffsetX { get; set; }
+
+        /// <summary>
+        /// 相机Y轴上下偏移
+        /// </summary>
+        public float CameraOffsetY { get; set; }
+
+        /// <summary>
+        /// 相机Z轴前后偏移
+        /// </summary>
+        public float CameraOffsetZ { get; set; }
+
+        /// <summary>
         /// 当前播放的动画名
         /// </summary>
         protected string curAniName;
@@ -339,8 +354,9 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void UpdateCameraPointPos()
         {
-            point.CameraPoint.localPosition = point.OriCameraPointLocPos -
-                point.CameraPoint.forward * param.cameraToActorLen;
+            Transform cameraPoint = point.CameraPoint;
+            point.CameraPoint.localPosition = (point.OriCameraPointLocPos - cameraPoint.forward * param.cameraToActorLen) +
+                cameraPoint.forward * CameraOffsetZ + cameraPoint.right * CameraOffsetX + cameraPoint.up * CameraOffsetY;
         }
 
         #endregion Camera
@@ -350,7 +366,6 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 获取Animator
         /// </summary>
-        /// <returns></returns>
         public Animator GetAnimator()
         {
             if (animator == null) ErrNoComponent(typeof(Animator));
