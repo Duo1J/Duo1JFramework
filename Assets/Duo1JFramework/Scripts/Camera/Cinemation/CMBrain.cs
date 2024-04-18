@@ -2,6 +2,7 @@ using Cinemachine;
 using Duo1JFramework.Asset;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.CinemachineBrain;
 
 namespace Duo1JFramework.CameraAPI
 {
@@ -26,6 +27,33 @@ namespace Duo1JFramework.CameraAPI
         /// 虚拟相机列表
         /// </summary>
         private HashSet<CMCamera> CameraSet;
+
+        /// <summary>
+        /// 忽略时间缩放
+        /// </summary>
+        public bool IgnoreTimeScale
+        {
+            get => Brain.m_IgnoreTimeScale;
+            set => Brain.m_IgnoreTimeScale = value;
+        }
+
+        /// <summary>
+        /// 更新类型
+        /// </summary>
+        public UpdateMethod UpdateType
+        {
+            get => Brain.m_UpdateMethod;
+            set => Brain.m_UpdateMethod = value;
+        }
+
+        /// <summary>
+        /// 融混更新类型
+        /// </summary>
+        public BrainUpdateMethod BlendUpdateType
+        {
+            get => Brain.m_BlendUpdateMethod;
+            set => Brain.m_BlendUpdateMethod = value;
+        }
 
         /// <summary>
         /// 设置激活相机
@@ -98,6 +126,31 @@ namespace Duo1JFramework.CameraAPI
         public void SetLiveCameraToDefault()
         {
             SetLiveCamera(Camera);
+        }
+
+        /// <summary>
+        /// 设置融混方式
+        /// </summary>
+        public void SetBlend(CinemachineBlendDefinition.Style blendType, float time)
+        {
+            Brain.m_DefaultBlend = new CinemachineBlendDefinition(blendType, time);
+        }
+
+        /// <summary>
+        /// 获取当前融混方式
+        /// </summary>
+        public CinemachineBlendDefinition GetBlend()
+        {
+            return Brain.m_DefaultBlend;
+        }
+
+        /// <summary>
+        /// 自定义融混
+        /// </summary>
+        public CinemachineBlenderSettings CustomBlend
+        {
+            get => Brain.m_CustomBlends;
+            set => Brain.m_CustomBlends = value;
         }
 
         /// <summary>

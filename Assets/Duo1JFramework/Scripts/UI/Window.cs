@@ -1,7 +1,12 @@
 using UnityEngine;
 
+//todo hlj 全屏策略 子组件绑定
+
 namespace Duo1JFramework.UI
 {
+    /// <summary>
+    /// UI逻辑
+    /// </summary>
     public abstract class Window : BaseRegister
     {
         #region Field

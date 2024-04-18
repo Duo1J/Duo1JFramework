@@ -25,6 +25,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public bool IsResource { get; private set; } = false;
 
+        /// <summary>
+        /// 是否是全屏窗口
+        /// </summary>
+        public bool IsFullScreen { get; private set; } = false;
+
         public UIConfig SetLayer(UILayer layer)
         {
             Layer = layer;
@@ -40,6 +45,12 @@ namespace Duo1JFramework.UI
         public UIConfig SetIsResource(bool isResource)
         {
             IsResource = isResource;
+            return this;
+        }
+
+        public UIConfig SetIsFullScreen(bool isFullScreen)
+        {
+            IsFullScreen = isFullScreen;
             return this;
         }
 

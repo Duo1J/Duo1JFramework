@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// UI控制器 (挂载在UI预制体根节点上)
+    /// UI控制器 (挂载在UI预制体根节点)
     /// </summary>
     [RequireComponent(typeof(Canvas))]
     public class UIController : BaseMono
