@@ -1,71 +1,122 @@
 using System;
+using System.Collections.Generic;
 
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
     /// 对象池实例基类
     /// </summary>
-    public abstract class BaseObjectPool<T> where T : new()
+    public abstract class BaseObjectPool<T> where T : class, new()
     {
-        private ObjectPool<T> pool = new ObjectPool<T>();
+        /// <summary>
+        /// 对象池实现
+        /// </summary>
+        protected ObjectPool<T> pool;
+
+        /// <summary>
+        /// 池包装对象列表
+        /// </summary>
+        protected List<ObjectPoolItem<T>> poolItemList;
 
         /// <summary>
         /// 入池
         /// </summary>
-        public void Push(ObjectPoolItem<T> item)
+        public void Push(T item)
         {
-            pool.Push(item);
+            ObjectPoolItem<T> poolItem = GetPoolItemInList(item);
+            if (poolItem == null)
+            {
+                return;
+            }
+
+            OnPushObject(item);
+            pool.Push(poolItem);
         }
 
         /// <summary>
         /// 出池
         /// </summary>
-        public ObjectPoolItem<T> Pop()
+        public T Pop()
         {
             ObjectPoolItem<T> ret = pool.Pop();
-            ret.Value = InitObject(ret.Value);
+            ret.Value = OnPopObject(ret.Value);
             ret.Using = true;
-            return ret;
+            return ret.Value;
         }
 
         /// <summary>
         /// 使用一个对象，使用完毕后自动入池
         /// </summary>
-        public void Using(Action<ObjectPoolItem<T>> action)
+        public void Using(Action<T> action)
         {
             pool.Using((item) =>
             {
-                item.Value = InitObject(item.Value);
-                action(item);
+                item.Value = OnPopObject(item.Value);
+                action(item.Value);
                 item.Using = true;
             });
         }
 
-        public object Using(Func<ObjectPoolItem<T>, object> action)
+        /// <summary>
+        /// 使用一个对象，使用完毕后自动入池
+        /// </summary>
+        public object Using(Func<T, object> action)
         {
             return pool.Using((item) =>
             {
-                item.Value = InitObject(item.Value);
-                object ret = action(item);
+                item.Value = OnPopObject(item.Value);
+                object ret = action(item.Value);
                 item.Using = true;
                 return ret;
             });
         }
 
-        /// <summary>
-        /// 创建一个新对象出池
-        /// </summary>
-        public virtual ObjectPoolItem<T> CreateNew(T o)
+        public virtual ObjectPoolItem<T> GetPoolItemInList(T item)
         {
-            return pool.CreateNew(o);
+            foreach (ObjectPoolItem<T> poolItem in poolItemList)
+            {
+                if (poolItem.Value == item)
+                {
+                    return poolItem;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// 初始化对象
+        /// 入池对象处理
         /// </summary>
-        public virtual T InitObject(T o)
+        public virtual void OnPushObject(T o)
+        {
+        }
+
+        /// <summary>
+        /// 出池对象处理
+        /// </summary>
+        public virtual T OnPopObject(T o)
         {
             return o;
+        }
+
+        /// <summary>
+        /// 初始化对象池实现
+        /// </summary>
+        public virtual void InitPool()
+        {
+            pool = new ObjectPool<T>();
+        }
+
+        private void OnCreateNew(ObjectPoolItem<T> item)
+        {
+            poolItemList.Add(item);
+        }
+
+        public BaseObjectPool()
+        {
+            InitPool();
+            pool.OnCreateNew = OnCreateNew;
+            poolItemList = new List<ObjectPoolItem<T>>();
         }
     }
 }

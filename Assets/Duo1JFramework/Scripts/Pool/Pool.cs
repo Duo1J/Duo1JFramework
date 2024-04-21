@@ -10,7 +10,7 @@ namespace Duo1JFramework.ObjectPool
         /// <summary>
         /// 创建通用对象池
         /// </summary>
-        public static CommonPool<T> Create<T>(Func<T, T> initCall) where T : new()
+        public static CommonPool<T> Create<T>(Func<T, T> initCall) where T : class, new()
         {
             return new CommonPool<T>(initCall);
         }

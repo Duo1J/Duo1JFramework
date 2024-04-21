@@ -11,7 +11,7 @@ public class InfoWindow : Window
     protected override UIConfig CreateUIConfig()
     {
         return new UIConfig("UI/InfoWindow")
-            .SetIsResource(true)
+            .SetLoadType(eAssetLoadType.Resources)
             .SetLayer(UILayer.Const);
     }
 
@@ -27,13 +27,13 @@ public class InfoWindow : Window
 
         RegisterUpdate(() =>
         {
-            Pool.StringBuilderPool.Using((item) =>
+            Pool.StringBuilderPool.Using((sb) =>
             {
-                item.Value.Append($"Res:{UnityStats.screenRes}");
-                item.Value.Append(string.Format(" - FrameTime:{0:f7}", UnityStats.frameTime));
-                item.Value.Append(string.Format(" - RenderTime:{0:f7}", UnityStats.renderTime));
-                item.Value.Append(string.Format(" - UnscaledTime:{0:f2}", Time.unscaledTime));
-                buttomInfoText.text = item.Value.ToString();
+                sb.Append($"Res:{UnityStats.screenRes}");
+                sb.Append(string.Format(" - FrameTime:{0:f7}", UnityStats.frameTime));
+                sb.Append(string.Format(" - RenderTime:{0:f7}", UnityStats.renderTime));
+                sb.Append(string.Format(" - UnscaledTime:{0:f2}", Time.unscaledTime));
+                buttomInfoText.text = sb.ToString();
             });
         });
 

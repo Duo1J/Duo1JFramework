@@ -5,6 +5,8 @@ namespace Duo1JFramework.Event
     /// </summary>
     public enum eEvent
     {
+        #region APP
+
         /// <summary>
         /// 程序退出
         /// </summary>
@@ -29,5 +31,26 @@ namespace Duo1JFramework.Event
         /// 程序继续
         /// </summary>
         APP_RESUME,
+
+        #endregion APP
+
+        #region Audio
+
+        /// <summary>
+        /// 停止所有单次音频播放
+        /// </summary>
+        AUDIO_STOP_ALL_ONE_SHOT,
+
+        /// <summary>
+        /// 停止所有持续音频播放
+        /// </summary>
+        AUDIO_STOP_ALL_KEEP,
+
+        #endregion Audio
+
+        /// <summary>
+        /// 枚举结束值
+        /// </summary>
+        END
     }
 }

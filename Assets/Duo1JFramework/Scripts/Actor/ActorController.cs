@@ -630,16 +630,15 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public string GetHierarchyInfo()
         {
-            return Pool.StringBuilderPool.Using((item) =>
+            return Pool.StringBuilderPool.Using((sb) =>
             {
-                StringBuilder sb = item.Value;
                 sb.AppendLine($"状态机: {CurState}");
                 sb.AppendLine($"动画状态: {curAniName}");
                 sb.AppendLine($"是否触地: {Grounded}");
                 sb.AppendLine($"是否绑定相机: {CameraBinded}");
 
                 OnGetHierarchyInfo(sb);
-                return item.Value.ToString();
+                return sb.ToString();
             }).ToString();
         }
 

@@ -1,3 +1,5 @@
+using Duo1JFramework.Asset;
+
 namespace Duo1JFramework.UI
 {
     /// <summary>
@@ -21,9 +23,9 @@ namespace Duo1JFramework.UI
         public bool Sync { get; private set; } = false;
 
         /// <summary>
-        /// 是否是Resources下资源
+        /// 加载方式
         /// </summary>
-        public bool IsResource { get; private set; } = false;
+        public eAssetLoadType LoadType { get; private set; } = eAssetLoadType.AssetBundle;
 
         /// <summary>
         /// 是否是全屏窗口
@@ -42,9 +44,9 @@ namespace Duo1JFramework.UI
             return this;
         }
 
-        public UIConfig SetIsResource(bool isResource)
+        public UIConfig SetLoadType(eAssetLoadType loadType)
         {
-            IsResource = isResource;
+            LoadType = loadType;
             return this;
         }
 

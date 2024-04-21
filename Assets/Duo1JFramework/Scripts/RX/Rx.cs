@@ -8,17 +8,16 @@ namespace Duo1JFramework.RX
     /// </summary>
     public partial class Rx : MonoSingleton<Rx>
     {
-        private List<ObjectPoolItem<RxObserver>> observerList;
+        private List<RxObserver> observerList;
         private List<int> removeList;
 
         public static RxObserver Observer
         {
             get
             {
-                ObjectPoolItem<RxObserver> poolItem = Pool.RxObserverPool.Pop();
-                Instance.observerList.Add(poolItem);
-
-                return poolItem.Value;
+                RxObserver observer = Pool.RxObserverPool.Pop();
+                Instance.observerList.Add(observer);
+                return observer;
             }
         }
 
@@ -26,7 +25,7 @@ namespace Duo1JFramework.RX
         {
             observerList.ForEach((observer) =>
             {
-                observer.Value._OnUpdate();
+                observer._OnUpdate();
             });
         }
 
@@ -34,7 +33,7 @@ namespace Duo1JFramework.RX
         {
             observerList.ForEach((observer) =>
             {
-                observer.Value._OnFixedUpdate();
+                observer._OnFixedUpdate();
             });
         }
 
@@ -48,7 +47,7 @@ namespace Duo1JFramework.RX
 
             observerList.ForEach((observer) =>
             {
-                observer.Value._OnLateUpdate();
+                observer._OnLateUpdate();
             });
         }
 
@@ -57,7 +56,7 @@ namespace Duo1JFramework.RX
             int remIdx = -1;
             for (int i = 0; i < observerList.Count; i++)
             {
-                if (observer == observerList[i].Value)
+                if (observer == observerList[i])
                 {
                     remIdx = i;
                     break;
@@ -77,9 +76,9 @@ namespace Duo1JFramework.RX
         {
             for (int i = 0; i < observerList.Count; i++)
             {
-                ObjectPoolItem<RxObserver> observer = observerList[i];
+                RxObserver observer = observerList[i];
                 Pool.RxObserverPool.Push(observer);
-                observer.Value._OnEnd();
+                observer._OnEnd();
             }
 
             observerList.Clear();
@@ -90,7 +89,7 @@ namespace Duo1JFramework.RX
 
         protected override void OnInit()
         {
-            observerList = new List<ObjectPoolItem<RxObserver>>();
+            observerList = new List<RxObserver>();
             removeList = new List<int>();
 
             Register.RegisterUpdate(OnUpdate);

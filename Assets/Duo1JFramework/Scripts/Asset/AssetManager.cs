@@ -13,6 +13,104 @@ namespace Duo1JFramework.Asset
         private IAssetLoader loader;
 
         /// <summary>
+        /// 通过加载方式加载
+        /// </summary>
+        public void LoadByType<T>(eAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
+        {
+            switch (loadType)
+            {
+                case eAssetLoadType.AssetBundle:
+                    {
+                        Load<T>(assetPath, callback);
+                        return;
+                    }
+                case eAssetLoadType.Resources:
+                    {
+                        LoadResource<T>(assetPath, callback);
+                        return;
+                    }
+                default:
+                    {
+                        Log.ErrorForce($"LoadByType 未处理的加载方式: `{loadType}`");
+                        callback?.Invoke(null);
+                        return;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// 通过加载方式加载实例
+        /// </summary>
+        public void LoadInsByType<T>(eAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
+        {
+            switch (loadType)
+            {
+                case eAssetLoadType.AssetBundle:
+                    {
+                        LoadIns<T>(assetPath, callback);
+                        return;
+                    }
+                case eAssetLoadType.Resources:
+                    {
+                        LoadResourceIns<T>(assetPath, callback);
+                        return;
+                    }
+                default:
+                    {
+                        Log.ErrorForce($"LoadInsByType 未处理的加载方式: `{loadType}`");
+                        callback?.Invoke(null);
+                        return;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// 通过加载方式同步加载
+        /// </summary>
+        public T LoadByTypeSync<T>(eAssetLoadType loadType, string assetPath) where T : UObject
+        {
+            switch (loadType)
+            {
+                case eAssetLoadType.AssetBundle:
+                    {
+                        return LoadSync<T>(assetPath);
+                    }
+                case eAssetLoadType.Resources:
+                    {
+                        return LoadResourceSync<T>(assetPath);
+                    }
+                default:
+                    {
+                        Log.ErrorForce($"LoadByTypeSync 未处理的加载方式: `{loadType}`");
+                        return null;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// 通过加载方式同步加载
+        /// </summary>
+        public T LoadInsByTypeSync<T>(eAssetLoadType loadType, string assetPath) where T : UObject
+        {
+            switch (loadType)
+            {
+                case eAssetLoadType.AssetBundle:
+                    {
+                        return LoadInsSync<T>(assetPath);
+                    }
+                case eAssetLoadType.Resources:
+                    {
+                        return LoadResourceInsSync<T>(assetPath);
+                    }
+                default:
+                    {
+                        Log.ErrorForce($"LoadInsByTypeSync 未处理的加载方式: `{loadType}`");
+                        return null;
+                    }
+            }
+        }
+
+        /// <summary>
         /// 异步加载
         /// </summary>
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject

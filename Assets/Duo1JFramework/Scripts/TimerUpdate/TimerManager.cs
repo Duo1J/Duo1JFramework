@@ -42,11 +42,11 @@ namespace Duo1JFramework.TimerUpdate
         public void GetTimerFromPool(float interval, Action callback)
         {
             Assert.NotNull(callback, "计时器回调不可为空");
-            ObjectPoolItem<Timer> item = Pool.TimerPool.Pop();
-            item.Value.Init(interval, false, () =>
+            Timer timer = Pool.TimerPool.Pop();
+            timer.Init(interval, false, () =>
             {
                 callback.Invoke();
-                Pool.TimerPool.Push(item);
+                Pool.TimerPool.Push(timer);
             }, 1);
         }
 
@@ -56,11 +56,11 @@ namespace Duo1JFramework.TimerUpdate
         public void GetFrameTimerFromPool(int frame, Action callback)
         {
             Assert.NotNull(callback, "计时器回调不可为空");
-            ObjectPoolItem<Timer> item = Pool.TimerPool.Pop();
-            item.Value.Init(frame, true, () =>
+            Timer timer = Pool.TimerPool.Pop();
+            timer.Init(frame, true, () =>
             {
                 callback.Invoke();
-                Pool.TimerPool.Push(item);
+                Pool.TimerPool.Push(timer);
             }, 1);
         }
 

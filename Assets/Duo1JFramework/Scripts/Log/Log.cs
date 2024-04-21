@@ -217,13 +217,13 @@ namespace Duo1JFramework
             string ret = null;
 
             StackTrace strackTrace = new StackTrace();
-            Pool.StringBuilderPool.Using((item) =>
+            Pool.StringBuilderPool.Using((sb) =>
             {
                 foreach (StackFrame frame in strackTrace.GetFrames())
                 {
-                    item.Value.AppendLine($"{frame.GetMethod()} - {frame.GetFileColumnNumber()}");
+                    sb.AppendLine($"{frame.GetMethod()} - {frame.GetFileColumnNumber()}");
                 }
-                ret = item.Value.ToString();
+                ret = sb.ToString();
             });
 
             return ret ?? string.Empty;

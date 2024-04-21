@@ -4,10 +4,12 @@ using System.Collections.Generic;
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// 基础对象池
+    /// 基础对象池实现
     /// </summary>
-    public class ObjectPool<T> where T : new()
+    public class ObjectPool<T> where T : class, new()
     {
+        public Action<ObjectPoolItem<T>> OnCreateNew;
+
         /// <summary>
         /// 对象池栈
         /// </summary>
@@ -28,6 +30,7 @@ namespace Duo1JFramework.ObjectPool
                 return;
             }
 
+            OnPushObject(item.Value);
             poolStack.Push(item);
         }
 
@@ -45,7 +48,7 @@ namespace Duo1JFramework.ObjectPool
             {
                 ret = poolStack.Pop();
             }
-            InitObject(ret.Value);
+            OnPopObject(ret.Value);
             ret.Using = true;
             return ret;
         }
@@ -64,6 +67,9 @@ namespace Duo1JFramework.ObjectPool
             Push(item);
         }
 
+        /// <summary>
+        /// 使用一个对象，使用完毕后自动入池
+        /// </summary>
         public object Using(Func<ObjectPoolItem<T>, object> action)
         {
             if (action == null)
@@ -81,13 +87,23 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public virtual ObjectPoolItem<T> CreateNew(T o)
         {
-            return new ObjectPoolItem<T>(o);
+            ObjectPoolItem<T> newItem = new ObjectPoolItem<T>(o);
+            OnCreateNew?.Invoke(newItem);
+            newItem.Using = true;
+            return newItem;
         }
 
         /// <summary>
-        /// 初始化对象
+        /// 入池对象处理
         /// </summary>
-        public virtual T InitObject(T o)
+        public virtual void OnPushObject(T o)
+        {
+        }
+
+        /// <summary>
+        /// 出池对象处理
+        /// </summary>
+        public virtual T OnPopObject(T o)
         {
             return o;
         }
@@ -101,7 +117,7 @@ namespace Duo1JFramework.ObjectPool
     /// <summary>
     /// 对象池对象包装
     /// </summary>
-    public class ObjectPoolItem<T>
+    public class ObjectPoolItem<T> where T : class, new()
     {
         public T Value { get; set; }
         public bool Using { get; set; }
@@ -109,7 +125,7 @@ namespace Duo1JFramework.ObjectPool
         public ObjectPoolItem(T o)
         {
             Value = o;
-            Using = false;
+            Using = true;
         }
     }
 }

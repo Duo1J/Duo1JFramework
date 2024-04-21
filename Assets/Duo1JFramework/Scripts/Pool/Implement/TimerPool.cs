@@ -4,7 +4,7 @@ namespace Duo1JFramework.ObjectPool
 {
     public class TimerPool : BaseObjectPool<Timer>
     {
-        public override Timer InitObject(Timer o)
+        public override Timer OnPopObject(Timer o)
         {
             o.Dispose();
             return o;

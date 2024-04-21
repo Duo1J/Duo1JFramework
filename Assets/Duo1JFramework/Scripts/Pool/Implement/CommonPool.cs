@@ -5,29 +5,24 @@ namespace Duo1JFramework.ObjectPool
     /// <summary>
     /// 通用对象池
     /// </summary>
-    public class CommonPool<T> : BaseObjectPool<T> where T : new()
+    public class CommonPool<T> : BaseObjectPool<T> where T : class, new()
     {
-        protected Func<T, T> InitCall;
+        protected Func<T, T> OnPopCall;
 
-        public static CommonPool<T> Create(Func<T, T> initCall)
+        public override T OnPopObject(T o)
         {
-            return new CommonPool<T>(initCall);
-        }
-
-        public override T InitObject(T o)
-        {
-            o = base.InitObject(o);
-            if (InitCall != null)
+            o = base.OnPopObject(o);
+            if (OnPopCall != null)
             {
-                o = InitCall(o);
+                o = OnPopCall(o);
             }
 
             return o;
         }
 
-        public CommonPool(Func<T, T> initCall)
+        public CommonPool(Func<T, T> onPopCall)
         {
-            InitCall = initCall;
+            OnPopCall = onPopCall;
         }
     }
 }

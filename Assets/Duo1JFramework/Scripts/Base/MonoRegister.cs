@@ -1,9 +1,7 @@
-using UnityEngine;
-
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Mono注册器
+    /// Monobehaviour注册器
     /// </summary>
     public class MonoRegister : BaseMono
     {
@@ -23,7 +21,7 @@ namespace Duo1JFramework
         }
         private Register register;
 
-        private void OnDestroy()
+        protected void OnDestroy()
         {
             if (register != null)
             {

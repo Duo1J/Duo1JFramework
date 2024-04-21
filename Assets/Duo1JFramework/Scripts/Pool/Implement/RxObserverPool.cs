@@ -7,7 +7,7 @@ namespace Duo1JFramework.ObjectPool
     /// </summary>
     public class RxObserverPool : BaseObjectPool<RxObserver>
     {
-        public override RxObserver InitObject(RxObserver o)
+        public override RxObserver OnPopObject(RxObserver o)
         {
             o.Clear();
             return o;

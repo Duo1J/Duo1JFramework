@@ -4,7 +4,7 @@ namespace Duo1JFramework.ObjectPool
 {
     public class StringBuilderPool : BaseObjectPool<StringBuilder>
     {
-        public override StringBuilder InitObject(StringBuilder o)
+        public override StringBuilder OnPopObject(StringBuilder o)
         {
             o.Clear();
             return o;

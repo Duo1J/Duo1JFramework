@@ -80,6 +80,22 @@ namespace Duo1JFramework
         }
         private GameObject timelineRoot;
 
+        /// <summary>
+        /// GameObject对象池根节点
+        /// </summary>
+        public GameObject GoPoolRoot
+        {
+            get
+            {
+                if (goPoolRoot == null)
+                {
+                    goPoolRoot = new GameObject("GoPoolRoot");
+                }
+                return goPoolRoot;
+            }
+        }
+        private GameObject goPoolRoot;
+
         protected override void OnInit()
         {
         }
