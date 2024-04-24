@@ -42,7 +42,7 @@ namespace Duo1JFramework.ObjectPool
             ObjectPoolItem<T> ret;
             if (poolStack.Count == 0)
             {
-                ret = CreateNew(new T());
+                ret = CreateNew();
             }
             else
             {
@@ -85,9 +85,9 @@ namespace Duo1JFramework.ObjectPool
         /// <summary>
         /// 创建一个新对象出池
         /// </summary>
-        public virtual ObjectPoolItem<T> CreateNew(T o)
+        public virtual ObjectPoolItem<T> CreateNew()
         {
-            ObjectPoolItem<T> newItem = new ObjectPoolItem<T>(o);
+            ObjectPoolItem<T> newItem = new ObjectPoolItem<T>(new T());
             OnCreateNew?.Invoke(newItem);
             newItem.Using = true;
             return newItem;

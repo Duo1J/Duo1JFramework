@@ -1,3 +1,4 @@
+using Duo1JFramework.Config;
 using UnityEngine;
 
 namespace Duo1JFramework.CameraAPI
@@ -96,8 +97,9 @@ namespace Duo1JFramework.CameraAPI
             Camera mainCamera = MainCamera;
             if (mainCamera == null)
             {
-                GameObject cameraGo = new GameObject("Camera");
+                GameObject cameraGo = new GameObject("NewMainCamera");
                 mainCamera = cameraGo.AddComponent<Camera>();
+                mainCamera.tag = TagDef.MAIN_CAMERA;
             }
             SetMainCamera(mainCamera);
 
@@ -113,9 +115,9 @@ namespace Duo1JFramework.CameraAPI
             {
                 DestroyMainCamera();
             }
-            tarCamera.tag = "MainCamera";
+            tarCamera.tag = TagDef.MAIN_CAMERA;
             tarCamera.name = $"[Render]MainCamera";
-            //todo hlj audio listener
+            tarCamera.GetOrAddComponent<AudioListener>();
             DontDestroyOnLoad(tarCamera.gameObject);
         }
 

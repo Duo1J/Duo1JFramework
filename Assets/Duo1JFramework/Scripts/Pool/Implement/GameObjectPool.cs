@@ -8,7 +8,7 @@ namespace Duo1JFramework.ObjectPool
     /// </summary>
     public class GameObjectPool : CommonPool<GameObject>
     {
-        public Transform ParentRoot => parentOverride == null ? Root.Instance.GoPoolRoot.transform : parentOverride.parent;
+        public Transform ParentRoot => parentOverride == null ? Root.Instance.GoPoolRoot.transform : parentOverride;
 
         private GameObject templateGo;
         private Transform parentOverride;
@@ -18,6 +18,12 @@ namespace Duo1JFramework.ObjectPool
             base.OnPushObject(o);
             o.SetParent(ParentRoot);
             o.SetActive(false);
+        }
+
+        public override void OnPopObject(GameObject o)
+        {
+            base.OnPopObject(o);
+            o.SetParent(ParentRoot);
         }
 
         public override void InitPool()

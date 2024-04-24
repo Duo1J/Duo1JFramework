@@ -16,6 +16,10 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         private HashSet<Action> preUpdateSet;
         /// <summary>
+        /// PreUpdate待添加列表
+        /// </summary>
+        private List<Action> preUpdateAddList;
+        /// <summary>
         /// PreUpdate待移除列表
         /// </summary>
         private List<Action> preUpdateDeleteList;
@@ -25,12 +29,12 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void RegisterPreUpdate(Action updater)
         {
-            if (preUpdateSet.Contains(updater))
+            if ((preUpdateSet.Contains(updater) || preUpdateAddList.Contains(updater)) && !preUpdateDeleteList.Contains(updater))
             {
                 Log.ErrorForce("重复注册PreUpdate");
                 return;
             }
-            preUpdateSet.Add(updater);
+            preUpdateAddList.Add(updater);
         }
 
         /// <summary>
@@ -38,6 +42,7 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void UnRegisterPreUpdate(Action updater)
         {
+            preUpdateAddList.Remove(updater);
             preUpdateDeleteList.Add(updater);
         }
 
@@ -45,6 +50,10 @@ namespace Duo1JFramework.TimerUpdate
         /// Update集合
         /// </summary>
         private HashSet<Action> updateSet;
+        /// <summary>
+        /// Update待添加列表
+        /// </summary>
+        private List<Action> updateAddList;
         /// <summary>
         /// Update待移除列表
         /// </summary>
@@ -55,12 +64,12 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void RegisterUpdate(Action updater)
         {
-            if (updateSet.Contains(updater))
+            if ((updateSet.Contains(updater) || updateAddList.Contains(updater)) && !updateDeleteList.Contains(updater))
             {
                 Log.ErrorForce("重复注册Update");
                 return;
             }
-            updateSet.Add(updater);
+            updateAddList.Add(updater);
         }
 
         /// <summary>
@@ -68,11 +77,13 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void UnRegisterUpdate(Action updater)
         {
+            updateAddList.Remove(updater);
             updateDeleteList.Add(updater);
         }
 
         private void Update()
         {
+            //预先更新
             if (preUpdateSet != null)
             {
                 if (preUpdateDeleteList != null)
@@ -82,6 +93,14 @@ namespace Duo1JFramework.TimerUpdate
                         preUpdateSet.Remove(action);
                     }
                     preUpdateDeleteList.Clear();
+                }
+                if (preUpdateAddList != null)
+                {
+                    foreach (Action action in preUpdateAddList)
+                    {
+                        preUpdateSet.Add(action);
+                    }
+                    preUpdateAddList.Clear();
                 }
                 foreach (Action action in preUpdateSet)
                 {
@@ -97,6 +116,7 @@ namespace Duo1JFramework.TimerUpdate
                 }
             }
 
+            //更新
             if (updateSet != null)
             {
                 if (updateDeleteList != null)
@@ -106,6 +126,14 @@ namespace Duo1JFramework.TimerUpdate
                         updateSet.Remove(action);
                     }
                     updateDeleteList.Clear();
+                }
+                if (updateAddList != null)
+                {
+                    foreach (Action action in updateAddList)
+                    {
+                        updateSet.Add(action);
+                    }
+                    updateAddList.Clear();
                 }
                 foreach (Action action in updateSet)
                 {
@@ -157,6 +185,10 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         private HashSet<Action> lateUpdateSet;
         /// <summary>
+        /// LateUpdate待添加列表
+        /// </summary>
+        private List<Action> lateUpdateAddList;
+        /// <summary>
         /// LateUpdate待移除列表
         /// </summary>
         private List<Action> lateUpdateDeleteList;
@@ -166,12 +198,12 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void RegisterLateUpdate(Action updater)
         {
-            if (lateUpdateSet.Contains(updater))
+            if ((lateUpdateSet.Contains(updater) || lateUpdateAddList.Contains(updater)) && !lateUpdateDeleteList.Contains(updater))
             {
                 Log.ErrorForce("重复注册LateUpdate");
                 return;
             }
-            lateUpdateSet.Add(updater);
+            lateUpdateAddList.Add(updater);
         }
 
         /// <summary>
@@ -179,11 +211,13 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void UnRegisterLateUpdate(Action updater)
         {
+            lateUpdateAddList.Remove(updater);
             lateUpdateDeleteList.Add(updater);
         }
 
         private void LateUpdate()
         {
+            //延迟更新
             if (lateUpdateSet != null)
             {
                 if (lateUpdateDeleteList != null)
@@ -193,6 +227,14 @@ namespace Duo1JFramework.TimerUpdate
                         lateUpdateSet.Remove(action);
                     }
                     lateUpdateDeleteList.Clear();
+                }
+                if (lateUpdateAddList != null)
+                {
+                    foreach (Action action in lateUpdateAddList)
+                    {
+                        lateUpdateSet.Add(action);
+                    }
+                    lateUpdateAddList.Clear();
                 }
                 foreach (Action action in lateUpdateSet)
                 {
@@ -218,6 +260,10 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         private HashSet<Action> fixedUpdateSet;
         /// <summary>
+        /// FixedUpdate待添加列表
+        /// </summary>
+        private List<Action> fixedUpdateAddList;
+        /// <summary>
         /// FixedUpdate待移除列表
         /// </summary>
         private List<Action> fixedUpdateDeleteList;
@@ -227,12 +273,12 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void RegisterFixedUpdate(Action updater)
         {
-            if (fixedUpdateSet.Contains(updater))
+            if ((fixedUpdateSet.Contains(updater) || fixedUpdateAddList.Contains(updater)) && !fixedUpdateDeleteList.Contains(updater))
             {
                 Log.ErrorForce("重复注册FixedUpdate");
                 return;
             }
-            fixedUpdateSet.Add(updater);
+            fixedUpdateAddList.Add(updater);
         }
 
         /// <summary>
@@ -240,11 +286,13 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void UnRegisterFixedUpdate(Action updater)
         {
+            fixedUpdateAddList.Remove(updater);
             fixedUpdateDeleteList.Add(updater);
         }
 
         private void FixedUpdate()
         {
+            //固定更新
             if (fixedUpdateSet != null)
             {
                 if (fixedUpdateDeleteList != null)
@@ -254,6 +302,14 @@ namespace Duo1JFramework.TimerUpdate
                         fixedUpdateSet.Remove(action);
                     }
                     fixedUpdateDeleteList.Clear();
+                }
+                if (fixedUpdateAddList != null)
+                {
+                    foreach (Action action in fixedUpdateAddList)
+                    {
+                        fixedUpdateSet.Add(action);
+                    }
+                    fixedUpdateAddList.Clear();
                 }
                 foreach (Action action in fixedUpdateSet)
                 {
@@ -294,24 +350,38 @@ namespace Duo1JFramework.TimerUpdate
         protected override void OnInit()
         {
             preUpdateSet = new HashSet<Action>();
+            preUpdateAddList = new List<Action>();
             preUpdateDeleteList = new List<Action>();
+
             updateSet = new HashSet<Action>();
+            updateAddList = new List<Action>();
             updateDeleteList = new List<Action>();
+
             fixedUpdateSet = new HashSet<Action>();
+            fixedUpdateAddList = new List<Action>();
             fixedUpdateDeleteList = new List<Action>();
+
             lateUpdateSet = new HashSet<Action>();
+            lateUpdateAddList = new List<Action>();
             lateUpdateDeleteList = new List<Action>();
         }
 
         protected override void OnDispose()
         {
             preUpdateSet = null;
+            preUpdateAddList = null;
             preUpdateDeleteList = null;
+
             updateSet = null;
+            updateAddList = null;
             updateDeleteList = null;
+
             fixedUpdateSet = null;
+            fixedUpdateAddList = null;
             fixedUpdateDeleteList = null;
+
             lateUpdateSet = null;
+            lateUpdateAddList = null;
             lateUpdateDeleteList = null;
         }
 

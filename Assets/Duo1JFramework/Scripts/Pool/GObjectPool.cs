@@ -12,7 +12,7 @@ namespace Duo1JFramework.ObjectPool
     {
         private Func<GameObject> getTemplateCall;
 
-        public override ObjectPoolItem<GameObject> CreateNew(GameObject o)
+        public override ObjectPoolItem<GameObject> CreateNew()
         {
             GameObject templateGo = getTemplateCall();
             Assert.NotNull(templateGo, "GObjectPool::CreateNew 异常，`templateGo`为空");
@@ -20,7 +20,7 @@ namespace Duo1JFramework.ObjectPool
             ObjectPoolItem<GameObject> newItem = new ObjectPoolItem<GameObject>(UObject.Instantiate(templateGo));
             OnCreateNew?.Invoke(newItem);
             newItem.Using = true;
-            //todo hlj SetParent
+
             return newItem;
         }
 

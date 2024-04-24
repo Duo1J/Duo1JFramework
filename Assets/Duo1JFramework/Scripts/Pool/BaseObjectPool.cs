@@ -39,7 +39,7 @@ namespace Duo1JFramework.ObjectPool
         public T Pop()
         {
             ObjectPoolItem<T> ret = pool.Pop();
-            ret.Value = OnPopObject(ret.Value);
+            OnPopObject(ret.Value);
             ret.Using = true;
             return ret.Value;
         }
@@ -51,7 +51,7 @@ namespace Duo1JFramework.ObjectPool
         {
             pool.Using((item) =>
             {
-                item.Value = OnPopObject(item.Value);
+                OnPopObject(item.Value);
                 action(item.Value);
                 item.Using = true;
             });
@@ -64,7 +64,7 @@ namespace Duo1JFramework.ObjectPool
         {
             return pool.Using((item) =>
             {
-                item.Value = OnPopObject(item.Value);
+                OnPopObject(item.Value);
                 object ret = action(item.Value);
                 item.Using = true;
                 return ret;
@@ -94,9 +94,8 @@ namespace Duo1JFramework.ObjectPool
         /// <summary>
         /// 出池对象处理
         /// </summary>
-        public virtual T OnPopObject(T o)
+        public virtual void OnPopObject(T o)
         {
-            return o;
         }
 
         /// <summary>

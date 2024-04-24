@@ -9,15 +9,10 @@ namespace Duo1JFramework.ObjectPool
     {
         protected Func<T, T> OnPopCall;
 
-        public override T OnPopObject(T o)
+        public override void OnPopObject(T o)
         {
-            o = base.OnPopObject(o);
-            if (OnPopCall != null)
-            {
-                o = OnPopCall(o);
-            }
-
-            return o;
+            base.OnPopObject(o);
+            OnPopCall?.Invoke(o);
         }
 
         public CommonPool(Func<T, T> onPopCall)

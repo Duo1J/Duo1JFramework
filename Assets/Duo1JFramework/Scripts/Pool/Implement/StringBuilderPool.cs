@@ -4,10 +4,9 @@ namespace Duo1JFramework.ObjectPool
 {
     public class StringBuilderPool : BaseObjectPool<StringBuilder>
     {
-        public override StringBuilder OnPopObject(StringBuilder o)
+        public override void OnPopObject(StringBuilder o)
         {
             o.Clear();
-            return o;
         }
     }
 }
