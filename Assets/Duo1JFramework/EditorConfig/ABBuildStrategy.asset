@@ -28,3 +28,6 @@ MonoBehaviour:
   - abName: World
     pathList:
     - World
+  - abName: Audio
+    pathList:
+    - Audio

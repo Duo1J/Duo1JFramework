@@ -1,4 +1,3 @@
-using Duo1JFramework.CameraAPI;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +12,7 @@ namespace Duo1JFramework.Actor
 
         private Dictionary<long, BaseActor> actorDict;
 
-        private AutoIncID IncID = AutoIncID.Create();
+        private AutoIncID incID;
 
         public BaseActor CreateActor(ActorData actorData, bool create = true)
         {
@@ -21,7 +20,7 @@ namespace Duo1JFramework.Actor
             try
             {
                 BaseActor actor = Activator.CreateInstance(logicType) as BaseActor;
-                actor.Init(IncID.NewID, actorData);
+                actor.Init(incID.NewID, actorData);
                 if (create) actor.Create();
                 actorDict.Add(actor.ID, actor);
                 return actor;
@@ -82,6 +81,7 @@ namespace Duo1JFramework.Actor
 
         protected override void OnInit()
         {
+            incID = AutoIncID.Create();
             actorDict = new Dictionary<long, BaseActor>();
         }
     }

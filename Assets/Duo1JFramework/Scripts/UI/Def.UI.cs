@@ -1,5 +1,6 @@
 using Duo1JFramework.Asset;
 using Duo1JFramework.Config;
+using UnityEngine;
 
 namespace Duo1JFramework
 {
@@ -27,5 +28,10 @@ namespace Duo1JFramework
         /// UI裁剪遮罩
         /// </summary>
         public const int UI_CULLING_MASK = 1 << LayerDef.UI;
+
+        /// <summary>
+        /// UI移动到远处的坐标，用以处理全屏策略
+        /// </summary>
+        public static readonly Vector2 UI_FAR_POS = new Vector2(-100000, -100000);
     }
 }

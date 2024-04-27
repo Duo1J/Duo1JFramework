@@ -1,7 +1,5 @@
 using UnityEngine;
 
-//todo hlj 全屏策略 子组件绑定
-
 namespace Duo1JFramework.UI
 {
     /// <summary>
@@ -12,6 +10,11 @@ namespace Duo1JFramework.UI
         #region Field
 
         /// <summary>
+        /// 窗口ID
+        /// </summary>
+        public long ID { get; private set; }
+
+        /// <summary>
         /// UI物体
         /// </summary>
         public GameObject Go
@@ -20,10 +23,13 @@ namespace Duo1JFramework.UI
             set
             {
                 go = value;
-                Controller = go.GetAndAssertComponent<UIController>($"窗口`{GetType().FullName}`未包含UIController组件");
+                RectTF = go.GetAndAssertComponent<RectTransform>($"{ToString()} 未包含RectTransform组件");
+                Controller = go.GetAndAssertComponent<UIController>($"{ToString()} 未包含UIController组件");
             }
         }
         private GameObject go;
+
+        public RectTransform RectTF { get; private set; }
 
         /// <summary>
         /// UI配置
@@ -84,13 +90,25 @@ namespace Duo1JFramework.UI
                 return;
             }
             Go.transform.SetParent(par);
-            RectTransform rectTf = Go.GetComponent<RectTransform>();
-            if (rectTf != null)
-            {
-                rectTf.ExpandAnchor();
-                rectTf.ResetSRT();
-                rectTf.sizeDelta = Vector2.zero;
-            }
+            ResetRectTransform();
+        }
+
+        /// <summary>
+        /// 重置RectTransform，铺满Canvas
+        /// </summary>
+        public void ResetRectTransform()
+        {
+            RectTF.ExpandAnchor();
+            RectTF.ResetSRT();
+            RectTF.sizeDelta = Vector2.zero;
+        }
+
+        /// <summary>
+        /// 移到远处，用以处理全屏策略
+        /// </summary>
+        public void MoveToFar()
+        {
+            RectTF.sizeDelta = Def.UI_FAR_POS;
         }
 
         /// <summary>
@@ -158,6 +176,16 @@ namespace Duo1JFramework.UI
         {
         }
 
+        public Window()
+        {
+            ID = UIManager.Instance.GetIncID();
+        }
+
         #endregion Lifecycle
+
+        public override string ToString()
+        {
+            return $"<UI-{ID}-{GetType().Name}-{Go.name}>";
+        }
     }
 }

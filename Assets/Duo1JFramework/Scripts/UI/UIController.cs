@@ -38,8 +38,16 @@ namespace Duo1JFramework.UI
             canvas.sortingOrder = layer;
         }
 
+        /// <summary>
+        /// 获取GameObject
+        /// </summary>
         public GameObject GetGo(string goName)
         {
+            if (string.IsNullOrEmpty(goName))
+            {
+                return gameObject;
+            }
+
             if (nodeDict.TryGetValue(goName, out Transform tf))
             {
                 return tf.gameObject;

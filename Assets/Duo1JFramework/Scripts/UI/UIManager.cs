@@ -10,8 +10,13 @@ namespace Duo1JFramework.UI
     /// </summary>
     public class UIManager : MonoSingleton<UIManager>
     {
+        private AutoIncID incID;
+
         private List<Window> wndList;
 
+        /// <summary>
+        /// 打开窗口
+        /// </summary>
         public T OpenWindow<T>() where T : Window, new()
         {
             Window wnd = OpenWindow(new T());
@@ -21,22 +26,25 @@ namespace Duo1JFramework.UI
             return ret;
         }
 
+        /// <summary>
+        /// 打开窗口
+        /// </summary>
         public Window OpenWindow(Window wnd)
         {
             try
             {
                 Assert.NotNull(wnd, "窗口对象为空");
 
-                Window w = GetWindow(wnd.GetType());
-                if (w != null)
+                Type wndType = wnd.GetType();
+                if (IsWindowOpened(wndType))
                 {
-                    Log.Info($"重复打开窗口`{w.GetType().FullName}`");
-                    return w;
+                    Log.Warn($"重复打开窗口`{wndType.FullName}`，执行回退到窗口`BackToWindow()`");
+                    return BackToWindow(wndType);
                 }
 
                 LoadWindowAsset(wnd, () =>
                 {
-                    Log.Info($"打开窗口`{typeof(Window).FullName}`");
+                    Log.Info($"打开窗口`{wnd.GetType().FullName}`");
                 });
             }
             catch (Exception e)
@@ -49,11 +57,22 @@ namespace Duo1JFramework.UI
                 return null;
             }
 
-
             wndList.Add(wnd);
             return wnd;
         }
 
+        /// <summary>
+        /// 回退到窗口
+        /// </summary>
+        public Window BackToWindow(Type wndType)
+        {
+            //todo hlj
+            return null;
+        }
+
+        /// <summary>
+        /// 关闭窗口
+        /// </summary>
         public bool CloseWindow(Window wnd)
         {
             try
@@ -69,6 +88,17 @@ namespace Duo1JFramework.UI
             }
         }
 
+        /// <summary>
+        /// 窗口是否已打开
+        /// </summary>
+        public bool IsWindowOpened(Type wndType)
+        {
+            return GetWindow(wndType) != null;
+        }
+
+        /// <summary>
+        /// 获取窗口
+        /// </summary>
         public Window GetWindow(Type wndType)
         {
             foreach (Window wnd in wndList)
@@ -117,6 +147,7 @@ namespace Duo1JFramework.UI
             wnd.Go = uiGo;
             Root.Instance.UIRoot.AddToLayer(wnd);
             AdjustWindowLayer(wnd);
+            //todo hlj 全屏策略
             wnd.Init();
         }
 
@@ -125,6 +156,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         private void AdjustWindowLayer(Window wnd)
         {
+            //todo hlj 对应层级下寻找
             int maxLayer = 0;
             foreach (Window w in wndList)
             {
@@ -134,8 +166,17 @@ namespace Duo1JFramework.UI
             wnd.Layer = maxLayer + Def.UI_STEP_LAYER;
         }
 
+        /// <summary>
+        /// 获取窗口自增ID
+        /// </summary>
+        public long GetIncID()
+        {
+            return incID.NewID;
+        }
+
         protected override void OnInit()
         {
+            incID = AutoIncID.Create();
             wndList = new List<Window>();
         }
 
