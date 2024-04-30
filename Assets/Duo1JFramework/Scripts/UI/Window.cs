@@ -55,22 +55,41 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 层级
         /// </summary>
-        public int Layer
+        public eUILayer Layer => Config.Layer;
+
+        /// <summary>
+        /// 是否是常驻层级
+        /// </summary>
+        public bool IsConstLayer => Layer == eUILayer.Const;
+
+        /// <summary>
+        /// 排序层级
+        /// </summary>
+        public int SortingOrder
         {
-            get => layer;
+            get => Controller.SortingOrder;
+            set => Controller.SortingOrder = value;
+        }
+
+        /// <summary>
+        /// 排序层级偏移
+        /// </summary>
+        public int SortingOrderOffset
+        {
+            get
+            {
+                return Mathf.Max(0, SortingOrder - ParSortingOrder);
+            }
             set
             {
-                int parLayer = 0;
-                Canvas parCanvas = Go.GetComponentInParent<Canvas>();
-                if (parCanvas != null)
-                {
-                    parLayer = parCanvas.sortingOrder;
-                }
-                layer = parLayer + value;
-                Controller.UpdateLayer(layer);
+                SortingOrder = ParSortingOrder + value;
             }
         }
-        private int layer;
+
+        /// <summary>
+        /// 父Canvas的排序层级
+        /// </summary>
+        public int ParSortingOrder => Root.Instance.UIRoot.GetBaseSortingOrder(Config.Layer);
 
         private bool init = false;
 
@@ -94,6 +113,14 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
+        /// 设置显隐
+        /// </summary>
+        public virtual void SetActive(bool active)
+        {
+            Go.SetActive(active);
+        }
+
+        /// <summary>
         /// 重置RectTransform，铺满Canvas
         /// </summary>
         public void ResetRectTransform()
@@ -108,7 +135,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void MoveToFar()
         {
-            RectTF.sizeDelta = Def.UI_FAR_POS;
+            RectTF.localPosition = Def.UI_FAR_POS;
         }
 
         /// <summary>
@@ -125,6 +152,14 @@ namespace Duo1JFramework.UI
         public T GetCom<T>(string goName) where T : MonoBehaviour
         {
             return Controller.GetCom<T>(goName);
+        }
+
+        /// <summary>
+        /// 关闭此窗口
+        /// </summary>
+        public void CloseWindow()
+        {
+            UIManager.Instance.CloseWindow(this);
         }
 
         #endregion Public

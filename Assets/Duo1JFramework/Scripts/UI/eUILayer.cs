@@ -3,7 +3,7 @@ namespace Duo1JFramework.UI
     /// <summary>
     /// UI层级枚举
     /// </summary>
-    public enum UILayer
+    public enum eUILayer
     {
         /// <summary>
         /// 底部

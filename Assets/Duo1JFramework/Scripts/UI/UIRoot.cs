@@ -14,8 +14,13 @@ namespace Duo1JFramework.UI
         public static Transform TopLayer => Root.Instance.UIRoot.topLayer;
         public static Transform ConstLayer => Root.Instance.UIRoot.constLayer;
 
-        public static Canvas UICanvas => Root.Instance.UIRoot.uiCanvas;
         public static Camera UICamera => Root.Instance.UIRoot.uiCamera;
+
+        public static Canvas UICanvas => Root.Instance.UIRoot.uiCanvas;
+        public static Canvas BottomCanvas => Root.Instance.UIRoot.bottomCanvas;
+        public static Canvas NormalCanvas => Root.Instance.UIRoot.normalCanvas;
+        public static Canvas TopCanvas => Root.Instance.UIRoot.topCanvas;
+        public static Canvas ConstCanvas => Root.Instance.UIRoot.constCanvas;
 
         [SerializeField]
         private Transform bottomLayer;
@@ -26,6 +31,11 @@ namespace Duo1JFramework.UI
         [SerializeField]
         private Transform constLayer;
 
+        private Canvas bottomCanvas;
+        private Canvas normalCanvas;
+        private Canvas topCanvas;
+        private Canvas constCanvas;
+
         [SerializeField]
         [Label("UI相机")]
         private Camera uiCamera;
@@ -33,34 +43,68 @@ namespace Duo1JFramework.UI
         [Label("UI画布")]
         private Canvas uiCanvas;
 
+        /// <summary>
+        /// 添加窗口到对应层级
+        /// </summary>
         public void AddToLayer(Window wnd)
         {
-            switch (wnd.Config.Layer)
+            switch (wnd.Layer)
             {
-                case UILayer.Bottom:
+                case eUILayer.Bottom:
                     {
                         wnd.SetParent(bottomLayer);
                         break;
                     }
-                case UILayer.Normal:
+                case eUILayer.Normal:
                     {
                         wnd.SetParent(normalLayer);
                         break;
                     }
-                case UILayer.Top:
+                case eUILayer.Top:
                     {
                         wnd.SetParent(topLayer);
                         break;
                     }
-                case UILayer.Const:
+                case eUILayer.Const:
                     {
                         wnd.SetParent(constLayer);
                         break;
                     }
                 default:
                     {
-                        Log.Error($"UIRoot中无法找到层级`{wnd.Config.Layer}`");
+                        Log.Error($"未处理的层级 `{wnd.Layer}`");
                         break;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// 获取层级的基础排序层级
+        /// </summary>
+        public int GetBaseSortingOrder(eUILayer layer)
+        {
+            switch (layer)
+            {
+                case eUILayer.Bottom:
+                    {
+                        return bottomCanvas.sortingOrder;
+                    }
+                case eUILayer.Normal:
+                    {
+                        return normalCanvas.sortingOrder;
+                    }
+                case eUILayer.Top:
+                    {
+                        return topCanvas.sortingOrder;
+                    }
+                case eUILayer.Const:
+                    {
+                        return constCanvas.sortingOrder;
+                    }
+                default:
+                    {
+                        Log.Error($"未处理的层级 `{layer}`");
+                        return 0;
                     }
             }
         }
@@ -71,6 +115,7 @@ namespace Duo1JFramework.UI
             DontDestroyOnLoad(gameObject);
 
             InitUICamera();
+            InitCanvas();
         }
 
         private void InitUICamera()
@@ -83,6 +128,14 @@ namespace Duo1JFramework.UI
             uiCamera.cullingMask = Def.UI_CULLING_MASK;
             uiCamera.gameObject.layer = LayerDef.UI;
             uiCamera.name = "[Render]UICamera";
+        }
+
+        private void InitCanvas()
+        {
+            bottomCanvas = bottomLayer.GetAndAssertComponent<Canvas>($"`{bottomLayer.name}` 未找到Canvasn组件");
+            normalCanvas = normalLayer.GetAndAssertComponent<Canvas>($"`{normalLayer.name}` 未找到Canvasn组件");
+            topCanvas = topLayer.GetAndAssertComponent<Canvas>($"`{topLayer.name}` 未找到Canvasn组件");
+            constCanvas = constLayer.GetAndAssertComponent<Canvas>($"`{constLayer.name}` 未找到Canvasn组件");
         }
     }
 }

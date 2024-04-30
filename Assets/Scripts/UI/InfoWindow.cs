@@ -12,7 +12,7 @@ public class InfoWindow : Window
     {
         return new UIConfig("UI/InfoWindow")
             .SetLoadType(eAssetLoadType.Resources)
-            .SetLayer(UILayer.Const);
+            .SetLayer(eUILayer.Const);
     }
 
     protected override void OnDispose()

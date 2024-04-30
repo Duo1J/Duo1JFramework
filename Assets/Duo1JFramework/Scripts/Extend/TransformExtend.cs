@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -15,6 +16,14 @@ namespace Duo1JFramework
             tf.transform.localScale = Vector3.one;
             tf.transform.localEulerAngles = Vector3.zero;
             tf.transform.localPosition = Vector3.zero;
+        }
+
+        /// <summary>
+        /// 设置子物体数量
+        /// </summary>
+        public static void SetChildCnt(this Transform tf, int cnt, Action<GameObject> foreachAction = null)
+        {
+            tf.gameObject.SetChildCnt(cnt, foreachAction);
         }
     }
 

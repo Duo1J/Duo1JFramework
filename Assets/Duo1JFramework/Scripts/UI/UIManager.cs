@@ -10,6 +10,10 @@ namespace Duo1JFramework.UI
     /// </summary>
     public class UIManager : MonoSingleton<UIManager>
     {
+        public Camera UICamera => UIRoot.UICamera;
+
+        public Canvas UICanvas => UIRoot.UICanvas;
+
         private AutoIncID incID;
 
         private List<Window> wndList;
@@ -42,6 +46,8 @@ namespace Duo1JFramework.UI
                     return BackToWindow(wndType);
                 }
 
+                wndList.Add(wnd);
+
                 LoadWindowAsset(wnd, () =>
                 {
                     Log.Info($"打开窗口`{wnd.GetType().FullName}`");
@@ -57,7 +63,6 @@ namespace Duo1JFramework.UI
                 return null;
             }
 
-            wndList.Add(wnd);
             return wnd;
         }
 
@@ -66,8 +71,32 @@ namespace Duo1JFramework.UI
         /// </summary>
         public Window BackToWindow(Type wndType)
         {
-            //todo hlj
-            return null;
+            Window tarWnd = GetWindow(wndType);
+            if (tarWnd == null)
+            {
+                Log.ErrorForce($"未打开窗口`{wndType.FullName}`，无法回退");
+                return null;
+            }
+
+            List<Window> removeList = null;
+            foreach (Window wnd in wndList)
+            {
+                if (!wnd.IsConstLayer && wnd.ID < tarWnd.ID)
+                {
+                    if (removeList == null) removeList = new List<Window>();
+                    removeList.Add(wnd);
+                }
+            }
+
+            if (removeList != null)
+            {
+                foreach (Window wnd in removeList)
+                {
+                    CloseWindow(wnd);
+                }
+            }
+
+            return tarWnd;
         }
 
         /// <summary>
@@ -78,8 +107,12 @@ namespace Duo1JFramework.UI
             try
             {
                 Assert.NotNull(wnd, "窗口对象为空");
+
                 wnd.Dispose();
-                return wndList.Remove(wnd);
+                bool ret = wndList.Remove(wnd);
+                AdjustFullscreenStrategy();
+
+                return ret;
             }
             catch (Exception e)
             {
@@ -120,23 +153,11 @@ namespace Duo1JFramework.UI
             UIConfig cfg = wnd.Config;
             Assert.NotNull(cfg, $"窗口`{wnd.GetType().Name}`配置为空");
 
-            if (cfg.Sync)
-            {
-                GameObject uiGo;
-                uiGo = AssetManager.Instance.LoadInsByTypeSync<GameObject>(cfg.LoadType, cfg.Path);
-                Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
-                LoadWindowAssetPostProcess(wnd, uiGo);
-                callback?.Invoke();
-            }
-            else
-            {
-                AssetManager.Instance.LoadInsByType<GameObject>(cfg.LoadType, cfg.Path, (uiGo) =>
-                {
-                    Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
-                    LoadWindowAssetPostProcess(wnd, uiGo);
-                    callback?.Invoke();
-                });
-            }
+            GameObject uiGo;
+            uiGo = AssetManager.Instance.LoadInsByTypeSync<GameObject>(cfg.LoadType, cfg.Path);
+            Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
+            LoadWindowAssetPostProcess(wnd, uiGo);
+            callback?.Invoke();
         }
 
         /// <summary>
@@ -146,24 +167,53 @@ namespace Duo1JFramework.UI
         {
             wnd.Go = uiGo;
             Root.Instance.UIRoot.AddToLayer(wnd);
-            AdjustWindowLayer(wnd);
-            //todo hlj 全屏策略
+            AdjustWindowSortingOrder(wnd);
+            AdjustFullscreenStrategy();
             wnd.Init();
         }
 
         /// <summary>
         /// 调整窗口层级
         /// </summary>
-        private void AdjustWindowLayer(Window wnd)
+        private void AdjustWindowSortingOrder(Window wnd)
         {
-            //todo hlj 对应层级下寻找
-            int maxLayer = 0;
+            int maxSortingOrderOffset = 0;
             foreach (Window w in wndList)
             {
                 if (w == wnd) continue;
-                if (w.Layer > maxLayer) maxLayer = w.Layer;
+                if (w.Layer != wnd.Layer) continue;
+
+                int sortingOrderOffset = w.SortingOrderOffset;
+                if (sortingOrderOffset > maxSortingOrderOffset) maxSortingOrderOffset = sortingOrderOffset;
             }
-            wnd.Layer = maxLayer + Def.UI_STEP_LAYER;
+            wnd.SortingOrderOffset = maxSortingOrderOffset + Def.UI_STEP_LAYER;
+        }
+
+        /// <summary>
+        /// 调整全屏策略
+        /// </summary>
+        private void AdjustFullscreenStrategy()
+        {
+            long maxFullscreenID = long.MinValue;
+            foreach (Window wnd in wndList)
+            {
+                if (!wnd.IsConstLayer && wnd.Config.IsFullScreen && wnd.ID > maxFullscreenID)
+                {
+                    maxFullscreenID = wnd.ID;
+                }
+            }
+
+            foreach (Window wnd in wndList)
+            {
+                if (!wnd.IsConstLayer && wnd.ID < maxFullscreenID)
+                {
+                    wnd.MoveToFar();
+                }
+                else
+                {
+                    wnd.ResetRectTransform();
+                }
+            }
         }
 
         /// <summary>

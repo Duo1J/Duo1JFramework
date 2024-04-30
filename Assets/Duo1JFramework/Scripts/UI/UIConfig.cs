@@ -15,12 +15,7 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 窗口层级
         /// </summary>
-        public UILayer Layer { get; private set; } = UILayer.Normal;
-
-        /// <summary>
-        /// 同步加载
-        /// </summary>
-        public bool Sync { get; private set; } = false;
+        public eUILayer Layer { get; private set; } = eUILayer.Normal;
 
         /// <summary>
         /// 加载方式
@@ -32,15 +27,9 @@ namespace Duo1JFramework.UI
         /// </summary>
         public bool IsFullScreen { get; private set; } = false;
 
-        public UIConfig SetLayer(UILayer layer)
+        public UIConfig SetLayer(eUILayer layer)
         {
             Layer = layer;
-            return this;
-        }
-
-        public UIConfig SetSync(bool sync)
-        {
-            Sync = sync;
             return this;
         }
 

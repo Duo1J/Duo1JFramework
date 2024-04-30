@@ -1,5 +1,8 @@
+using System;
 using UnityEditor;
 using UnityEngine;
+
+using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework
 {
@@ -48,6 +51,43 @@ namespace Duo1JFramework
             T com = go.GetComponent<T>();
             if (com == null) com = go.AddComponent<T>();
             return com;
+        }
+
+        /// <summary>
+        /// 设置子物体数量
+        /// </summary>
+        public static void SetChildCnt(this GameObject go, int cnt, Action<GameObject> foreachAction = null)
+        {
+            int childCnt = go.transform.childCount;
+
+            if (childCnt == 0)
+            {
+                Log.ErrorForce($"`{go.name}` 下未找到任何子节点");
+                return;
+            }
+
+            Transform childTemplate = go.transform.GetChild(0);
+            if (childCnt < cnt)
+            {
+                for (int i = 0; i < cnt - childCnt; i++)
+                {
+                    UObject.Instantiate(childTemplate, go.transform, true);
+                }
+            }
+
+            for (int i = 0; i < go.transform.childCount; i++)
+            {
+                Transform child = go.transform.GetChild(i);
+                if (i < cnt)
+                {
+                    child.SetActive(true);
+                    foreachAction?.Invoke(child.gameObject);
+                }
+                else
+                {
+                    child.SetActive(false);
+                }
+            }
         }
 
         #region Editor

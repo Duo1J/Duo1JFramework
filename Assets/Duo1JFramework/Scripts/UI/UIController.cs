@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Duo1JFramework.UI
 {
@@ -19,6 +20,19 @@ namespace Duo1JFramework.UI
         private Dictionary<string, MonoBehaviour> comDict;
         public const string NodePrefix = "@_";
 
+        /// <summary>
+        /// 排序层级
+        /// </summary>
+        public int SortingOrder
+        {
+            get => canvas.sortingOrder;
+            set
+            {
+                canvas.overrideSorting = true;
+                canvas.sortingOrder = value;
+            }
+        }
+
         #endregion
 
         private void Awake()
@@ -28,15 +42,6 @@ namespace Duo1JFramework.UI
         }
 
         #region Public
-
-        /// <summary>
-        /// 更新此窗口及其子物体的层级
-        /// </summary>
-        public void UpdateLayer(int layer)
-        {
-            canvas.overrideSorting = true;
-            canvas.sortingOrder = layer;
-        }
 
         /// <summary>
         /// 获取GameObject
@@ -138,11 +143,16 @@ namespace Duo1JFramework.UI
         {
             nodeDict = new Dictionary<string, Transform>();
             comDict = new Dictionary<string, MonoBehaviour>();
+
             if (nodeList == null) return;
 
-            foreach (Transform tf in nodeList)
+            for (int i = 0; i < nodeList.Count; i++)
             {
-                nodeDict.Add(tf.name.Substring(2), tf);
+                Transform node = nodeList[i];
+                if (node != null)
+                {
+                    nodeDict.Add(node.name.Substring(2), node);
+                }
             }
         }
 
