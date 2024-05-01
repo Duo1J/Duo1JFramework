@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.Playables;
-
 namespace Duo1JFramework.PlayableAPI
 {
     /// <summary>
