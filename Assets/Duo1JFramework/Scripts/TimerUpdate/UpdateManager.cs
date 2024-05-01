@@ -111,7 +111,6 @@ namespace Duo1JFramework.TimerUpdate
                     catch (Exception e)
                     {
                         Assert.ExceptHandle(e);
-                        UnRegisterPreUpdate(action);
                     }
                 }
             }
@@ -144,7 +143,6 @@ namespace Duo1JFramework.TimerUpdate
                     catch (Exception e)
                     {
                         Assert.ExceptHandle(e);
-                        UnRegisterUpdate(action);
                     }
                 }
             }
@@ -245,7 +243,6 @@ namespace Duo1JFramework.TimerUpdate
                     catch (Exception e)
                     {
                         Assert.ExceptHandle(e);
-                        UnRegisterLateUpdate(action);
                     }
                 }
             }
@@ -320,7 +317,6 @@ namespace Duo1JFramework.TimerUpdate
                     catch (Exception e)
                     {
                         Assert.ExceptHandle(e);
-                        UnRegisterFixedUpdate(action);
                     }
                 }
             }

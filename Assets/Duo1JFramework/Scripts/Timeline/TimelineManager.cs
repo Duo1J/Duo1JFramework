@@ -1,6 +1,9 @@
 using Duo1JFramework.Asset;
+using Duo1JFramework.GamerInput;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Duo1JFramework.TimelineAPI
 {
@@ -9,6 +12,8 @@ namespace Duo1JFramework.TimelineAPI
     /// </summary>
     public class TimelineManager : MonoSingleton<TimelineManager>
     {
+        private List<ResumablePlayableWrap> resumableList;
+
         /// <summary>
         /// 异步加载Timeline
         /// </summary>
@@ -50,12 +55,105 @@ namespace Duo1JFramework.TimelineAPI
             }
         }
 
+        /// <summary>
+        /// Playable设置可恢复暂停
+        /// </summary>
+        public void SetResumablePause(Playable playable, int resumeMouse = Def.INPUT_MOUSE_NONE, KeyCode resumeKey = KeyCode.None)
+        {
+            if (resumableList == null)
+            {
+                resumableList = new List<ResumablePlayableWrap>();
+            }
+            resumableList.Add(new ResumablePlayableWrap(playable, resumeMouse, resumeKey));
+        }
+
+        private void OnUpdate()
+        {
+            if (resumableList != null)
+            {
+                List<ResumablePlayableWrap> removeList = null;
+
+                InputManager.IgnoreLimit(() =>
+                {
+                    foreach (ResumablePlayableWrap item in resumableList)
+                    {
+                        if (item.Resume())
+                        {
+                            if (removeList == null)
+                            {
+                                removeList = new List<ResumablePlayableWrap>();
+                            }
+                            removeList.Add(item);
+                        }
+                    }
+                });
+
+                if (removeList != null)
+                {
+                    for (int i = 0; i < removeList.Count; i++)
+                    {
+                        resumableList.RemoveAt(i);
+                    }
+                    removeList.Clear();
+                }
+            }
+        }
+
         protected override void OnDispose()
         {
+            resumableList.Clear();
+            resumableList = null;
         }
 
         protected override void OnInit()
         {
+            resumableList = new List<ResumablePlayableWrap>();
+
+            Register.RegisterUpdate(OnUpdate);
+        }
+
+        /// <summary>
+        /// 可恢复Playable包装
+        /// </summary>
+        class ResumablePlayableWrap
+        {
+            private PlayableDirector director;
+            public Playable playable;
+            public int resumeMouse;
+            public KeyCode resumeKey;
+
+            public bool Resume()
+            {
+                if (!CheckResumable())
+                {
+                    return false;
+                }
+
+                director.Resume();
+
+                return true;
+            }
+
+            private void Pause()
+            {
+                director.Pause();
+            }
+
+            public bool CheckResumable()
+            {
+                return InputManager.GetMouseBtnDown(resumeMouse) || InputManager.GetKeyDown(resumeKey);
+            }
+
+            public ResumablePlayableWrap(Playable playable, int resumeMouse, KeyCode resumeKey)
+            {
+                this.playable = playable;
+                this.resumeMouse = resumeMouse;
+                this.resumeKey = resumeKey;
+
+                director = TimelineUtil.GetDirectorByPlayble(playable);
+
+                Pause();
+            }
         }
     }
 }

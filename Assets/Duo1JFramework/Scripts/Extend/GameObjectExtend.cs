@@ -36,8 +36,13 @@ namespace Duo1JFramework
             go.SetParent(parent.transform);
         }
 
-        public static T GetAndAssertComponent<T>(this GameObject go, string msg = "无法获取到组件")
+        public static T GetAndAssertComponent<T>(this GameObject go, string msg = null)
         {
+            if (msg == null)
+            {
+                msg = $"`{go.name}-{go.GetInstanceID()}` 未持有组件 `{typeof(T).FullName}`";
+            }
+
             T ret = go.GetComponent<T>();
             Assert.NotNull(ret, msg);
             return ret;

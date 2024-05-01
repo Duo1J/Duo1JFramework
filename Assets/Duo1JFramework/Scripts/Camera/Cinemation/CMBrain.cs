@@ -60,6 +60,11 @@ namespace Duo1JFramework.CameraAPI
         /// </summary>
         public void SetLiveCamera(CMCamera _cmCamera)
         {
+            if (LiveCamera != null)
+            {
+                LiveCamera.ResetTempPriority();
+            }
+
             int maxPriority = int.MinValue;
             foreach (CMCamera cmCamera in CameraSet)
             {
@@ -70,10 +75,6 @@ namespace Duo1JFramework.CameraAPI
             }
             _cmCamera.SetTempPriority(maxPriority + 1);
 
-            if (LiveCamera != null)
-            {
-                LiveCamera.ResetTempPriority();
-            }
             LiveCamera = _cmCamera;
         }
 

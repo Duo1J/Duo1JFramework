@@ -15,7 +15,7 @@ namespace Duo1JFramework
             return com.gameObject.GetOrAddComponent<T>();
         }
 
-        public static T GetAndAssertComponent<T>(this Component com, string msg = "无法获取到组件") where T : Component
+        public static T GetAndAssertComponent<T>(this Component com, string msg = null) where T : Component
         {
             return com.gameObject.GetAndAssertComponent<T>(msg);
         }

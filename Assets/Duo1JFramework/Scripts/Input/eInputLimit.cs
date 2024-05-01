@@ -1,32 +1,32 @@
 namespace Duo1JFramework.GamerInput
 {
     /// <summary>
-    /// ÊäÈëÏŞÖÆ
+    /// è¾“å…¥é™åˆ¶
     /// </summary>
-    public enum InputLimit
+    public enum eInputLimit
     {
         /// <summary>
-        /// ²»¿ÉÊäÈë
+        /// ä¸å¯è¾“å…¥
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// °´¼ü¿ÉÊäÈë
+        /// æŒ‰é”®å¯è¾“å…¥
         /// </summary>
         Key = 1 << 0,
 
         /// <summary>
-        /// Öá¿ÉÊäÈë
+        /// è½´å¯è¾“å…¥
         /// </summary>
         Axis = 1 << 1,
 
         /// <summary>
-        /// Êó±êÖá¿ÉÊäÈë
+        /// é¼ æ ‡è½´å¯è¾“å…¥
         /// </summary>
         MouseAxis = 1 << 2,
 
         /// <summary>
-        /// È«²¿¿ÉÊäÈë
+        /// å…¨éƒ¨å¯è¾“å…¥
         /// </summary>
         All = Key | Axis | MouseAxis
     }
