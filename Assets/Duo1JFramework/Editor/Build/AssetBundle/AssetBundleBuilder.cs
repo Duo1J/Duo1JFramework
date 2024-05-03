@@ -58,8 +58,8 @@ namespace Duo1JFramework.Build
                 BuildPipeline.BuildAssetBundles(
                     Path.GetAssetBundleRoot().CheckDir(),
                     buildList.ToArray(),
-                    EditorUtil.GetABBuildOptions(),
-                    EditorUtil.GetCurBuildTarget()
+                    EditorDef.ABBuildOptions,
+                    EditorDef.CurBuildTarget
                 );
 
                 ABMapData.Save(ab2AssetMap);

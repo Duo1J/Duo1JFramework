@@ -12,7 +12,7 @@ namespace Duo1JFramework
     /// </summary>
     public static class Log
     {
-        private static LogLevel logLevel = LogLevel.All;
+        private static eLogLevel logLevel = eLogLevel.All;
         public static StringBuilder sb = new StringBuilder();
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void Info(params object[] msg)
         {
-            if (CheckLogLevelOpen(LogLevel.Info))
+            if (CheckLogLevelOpen(eLogLevel.Info))
             {
                 Debug.Log(Concat("[Info] ", msg));
             }
@@ -31,7 +31,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void Warn(params object[] msg)
         {
-            if (CheckLogLevelOpen(LogLevel.Warn))
+            if (CheckLogLevelOpen(eLogLevel.Warn))
             {
                 Debug.LogWarning(Concat("[Warn] ", msg));
             }
@@ -42,7 +42,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void Error(params object[] msg)
         {
-            if (CheckLogLevelOpen(LogLevel.Error))
+            if (CheckLogLevelOpen(eLogLevel.Error))
             {
                 Debug.LogError(Concat("[Error] ", msg));
             }
@@ -90,7 +90,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 直接按等级打印消息
         /// </summary>
-        public static void LevelInfo(LogLevel _logLevel, params object[] msg)
+        public static void LevelInfo(eLogLevel _logLevel, params object[] msg)
         {
             if (CheckLogLevelOpen(_logLevel))
             {
@@ -101,7 +101,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 直接按等级打印警告
         /// </summary>
-        public static void LevelWarn(LogLevel _logLevel, params object[] msg)
+        public static void LevelWarn(eLogLevel _logLevel, params object[] msg)
         {
             if (CheckLogLevelOpen(_logLevel))
             {
@@ -112,7 +112,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 直接按等级打印错误
         /// </summary>
-        public static void LevelError(LogLevel _logLevel, params object[] msg)
+        public static void LevelError(eLogLevel _logLevel, params object[] msg)
         {
             if (CheckLogLevelOpen(_logLevel))
             {
@@ -131,7 +131,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 设置打印等级
         /// </summary>
-        public static void SetLogLevel(LogLevel _logLevel)
+        public static void SetLogLevel(eLogLevel _logLevel)
         {
             logLevel = _logLevel;
         }
@@ -139,17 +139,17 @@ namespace Duo1JFramework
         /// <summary>
         /// 设置打印等级
         /// </summary>
-        public static void SetLogLevel(LogLevel _logLevel, bool isOpen)
+        public static void SetLogLevel(eLogLevel _logLevel, bool isOpen)
         {
-            if (_logLevel == LogLevel.None)
+            if (_logLevel == eLogLevel.None)
             {
                 if (isOpen)
                 {
-                    logLevel = LogLevel.None;
+                    logLevel = eLogLevel.None;
                 }
                 else
                 {
-                    logLevel = LogLevel.All;
+                    logLevel = eLogLevel.All;
                 }
                 return;
             }
@@ -167,9 +167,9 @@ namespace Duo1JFramework
         /// <summary>
         /// 检查打印等级是否开放
         /// </summary>
-        public static bool CheckLogLevelOpen(LogLevel _logLevel)
+        public static bool CheckLogLevelOpen(eLogLevel _logLevel)
         {
-            if ((logLevel & LogLevel.All) > 0)
+            if ((logLevel & eLogLevel.All) > 0)
             {
                 return true;
             }

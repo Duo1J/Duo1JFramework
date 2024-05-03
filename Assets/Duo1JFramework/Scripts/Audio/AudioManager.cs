@@ -17,27 +17,27 @@ namespace Duo1JFramework.AudioAPI
         /// <summary>
         /// 背景音乐控制器
         /// </summary>
-        private AudioController BgmController
+        private AudioMgrController BgmController
         {
             get
             {
                 if (bgmController == null)
                 {
-                    bgmController = PopCon().GetComponent<AudioController>();
+                    bgmController = PopCon().GetComponent<AudioMgrController>();
                     bgmController.IsBackgroundMusic = true;
                 }
 
                 return bgmController;
             }
         }
-        private AudioController bgmController;
+        private AudioMgrController bgmController;
 
         /// <summary>
         /// 持续播放
         /// </summary>
-        public AudioController PlayKeep(AudioData audioData)
+        public AudioMgrController PlayKeep(AudioData audioData)
         {
-            AudioController controller = PopCon();
+            AudioMgrController controller = PopCon();
             controller.PlayKeep(audioData);
             return controller;
         }
@@ -53,9 +53,9 @@ namespace Duo1JFramework.AudioAPI
         /// <summary>
         /// 单次播放
         /// </summary>
-        public AudioController PlayOneShot(AudioData audioData)
+        public AudioMgrController PlayOneShot(AudioData audioData)
         {
-            AudioController controller = PopCon();
+            AudioMgrController controller = PopCon();
             controller.PlayOneShot(audioData);
             return controller;
         }
@@ -88,12 +88,12 @@ namespace Duo1JFramework.AudioAPI
         {
         }
 
-        public AudioController PopCon()
+        public AudioMgrController PopCon()
         {
-            return pool.Pop().GetComponent<AudioController>();
+            return pool.Pop().GetComponent<AudioMgrController>();
         }
 
-        public void PushCon(AudioController controller)
+        public void PushCon(AudioMgrController controller)
         {
             pool.Push(controller.gameObject);
         }
@@ -103,10 +103,10 @@ namespace Duo1JFramework.AudioAPI
         /// </summary>
         private GameObject OnPopAudioGo(GameObject go)
         {
-            AudioController controller = go.GetComponent<AudioController>();
+            AudioMgrController controller = go.GetComponent<AudioMgrController>();
             if (controller == null)
             {
-                controller = go.AddComponent<AudioController>();
+                controller = go.AddComponent<AudioMgrController>();
             }
             else
             {
@@ -121,7 +121,7 @@ namespace Duo1JFramework.AudioAPI
         {
             GameObject audioTemplate = new GameObject("AudioTemplate");
             audioTemplate.AddComponent<AudioSource>();
-            audioTemplate.AddComponent<AudioController>();
+            audioTemplate.AddComponent<AudioMgrController>();
             pool = new GameObjectPool(audioTemplate, OnPopAudioGo, transform);
         }
     }

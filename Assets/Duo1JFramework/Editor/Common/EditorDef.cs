@@ -3,6 +3,7 @@ using Duo1JFramework.Build;
 using Duo1JFramework.TimerUpdate;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Duo1JFramework
 {
@@ -16,7 +17,7 @@ namespace Duo1JFramework
         /// </summary>
         public const string TOOL_PREFIX = Def.FRAME_WORK_NAME + "/";
 
-        #region 工具路径定义
+        #region 工具栏路径定义
 
         /// <summary>
         /// UI工具栏路径前缀
@@ -48,12 +49,32 @@ namespace Duo1JFramework
         /// </summary>
         public const string TOOL_EDITOR_BUILD_PREFIX = TOOL_PREFIX + "Build/";
 
-        #endregion 工具路径定义
+        #endregion 工具栏路径定义
 
         /// <summary>
         /// 编辑器配置路径
         /// </summary>
         public const string EDITOR_CONFIG_PATH = "Assets/" + Def.FRAME_WORK_NAME + "/EditorConfig/";
+
+        #region Build
+
+        /// <summary>
+        /// 获取当前构建目标平台
+        /// </summary>
+        public static BuildTarget CurBuildTarget
+        {
+            get => EditorUserBuildSettings.activeBuildTarget;
+        }
+
+        /// <summary>
+        /// 获取AB构建选项
+        /// </summary>
+        public static BuildAssetBundleOptions ABBuildOptions
+        {
+            get => BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DisableWriteTypeTree;
+        }
+
+        #endregion Build
 
         #region 编辑器窗口
 

@@ -33,8 +33,6 @@ public class GameMain : BaseGameMain
 
         mainActor = ActorManager.Instance.CreateActor(new ActorData(typeof(ComActorLogic), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
-
-        AudioManager.Instance.PlayOneShot(new AudioData("Audio/Lena Raine - Quiet and Falling.mp3"));
     }
 
     private void Update()

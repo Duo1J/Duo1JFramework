@@ -3,7 +3,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 日志打印等级
     /// </summary>
-    public enum LogLevel
+    public enum eLogLevel
     {
         /// <summary>
         /// 无

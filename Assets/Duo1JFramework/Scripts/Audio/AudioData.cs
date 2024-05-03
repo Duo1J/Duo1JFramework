@@ -12,33 +12,38 @@ namespace Duo1JFramework.AudioAPI
         /// <summary>
         /// 音频路径
         /// </summary>
-        public string AudioPath { get; private set; }
-
-        /// <summary>
-        /// 同步加载
-        /// </summary>
-        public bool Sync { get; private set; } = false;
+        public string audioPath;
 
         /// <summary>
         /// 资源加载方式
         /// </summary>
-        public eAssetLoadType LoadType { get; private set; } = eAssetLoadType.AssetBundle;
+        public eAssetLoadType loadType = eAssetLoadType.AssetBundle;
 
-        public AudioData SetSync(bool sync)
-        {
-            Sync = sync;
-            return this;
-        }
+        /// <summary>
+        /// 同步加载
+        /// </summary>
+        public bool sync = false;
 
         public AudioData SetLoadType(eAssetLoadType loadType)
         {
-            LoadType = loadType;
+            this.loadType = loadType;
+            return this;
+        }
+
+        public AudioData SetSync(bool sync)
+        {
+            this.sync = sync;
             return this;
         }
 
         public AudioData(string audioPath)
         {
-            AudioPath = audioPath;
+            this.audioPath = audioPath;
+        }
+
+        public override string ToString()
+        {
+            return $"[loadType: {loadType}, sync: {sync}, audioPath: {audioPath}]";
         }
     }
 }

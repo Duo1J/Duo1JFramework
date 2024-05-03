@@ -5,8 +5,6 @@ namespace Duo1JFramework.AudioAPI
     /// </summary>
     public enum eAudioPlayType
     {
-        None,
-
         /// <summary>
         /// 单次
         /// </summary>

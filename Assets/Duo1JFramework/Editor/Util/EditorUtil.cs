@@ -60,28 +60,7 @@ namespace Duo1JFramework
 
         #endregion 选中
 
-        #region 杂项
-
-        /// <summary>
-        /// 打开资源管理器
-        /// </summary>
-        public static void OpenExplore(string path)
-        {
-            Log.EditorInfo($"打开文件夹: {path}");
-            System.Diagnostics.Process.Start("explorer.exe", path.Replace("/", "\\"));
-        }
-
-        /// <summary>
-        /// 复制
-        /// </summary>
-        public static void CopyText(string text)
-        {
-            TextEditor editor = new TextEditor();
-            editor.text = text;
-            editor.SelectAll();
-            editor.Copy();
-            Log.EditorInfo($"已拷贝`{text}`到粘贴板");
-        }
+        #region 资源编辑
 
         /// <summary>
         /// 编辑器资源编辑
@@ -109,6 +88,22 @@ namespace Duo1JFramework
             Log.EditorInfo("编辑器保存并刷新");
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+        }
+
+        #endregion 资源编辑
+
+        #region 杂项
+
+        /// <summary>
+        /// 复制
+        /// </summary>
+        public static void CopyText(string text)
+        {
+            TextEditor editor = new TextEditor();
+            editor.text = text;
+            editor.SelectAll();
+            editor.Copy();
+            Log.EditorInfo($"已拷贝`{text}`到粘贴板");
         }
 
         #endregion 杂项 
@@ -168,25 +163,5 @@ namespace Duo1JFramework
         }
 
         #endregion ScriptableObject
-
-        #region Build
-
-        /// <summary>
-        /// 获取当前构建目标平台
-        /// </summary>
-        public static BuildTarget GetCurBuildTarget()
-        {
-            return EditorUserBuildSettings.activeBuildTarget;
-        }
-
-        /// <summary>
-        /// 获取AB构建选项
-        /// </summary>
-        public static BuildAssetBundleOptions GetABBuildOptions()
-        {
-            return BuildAssetBundleOptions.ChunkBasedCompression;
-        }
-
-        #endregion Build
     }
 }
