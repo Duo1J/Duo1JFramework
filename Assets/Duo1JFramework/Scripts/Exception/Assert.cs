@@ -181,5 +181,44 @@ namespace Duo1JFramework
 
             return ret;
         }
+
+        /// <summary>
+        /// object类型结构体转换，转换失败打印错误
+        /// </summary>
+        public static T StructConvert<T>(object target, string msg = null) where T : struct
+        {
+            if (target == null)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}");
+                }
+                else
+                {
+                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}\n{msg}");
+                }
+                return default(T);
+            }
+
+            T ret = default(T);
+            try
+            {
+                ret = (T)target;
+            }
+            catch (Exception e)
+            {
+                if (string.IsNullOrEmpty(msg))
+                {
+                    ExceptHandle(e, $"类型转换失败, {target}转{typeof(T).FullName}");
+                }
+                else
+                {
+                    ExceptHandle(e, $"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
+
+                }
+            }
+
+            return ret;
+        }
     }
 }

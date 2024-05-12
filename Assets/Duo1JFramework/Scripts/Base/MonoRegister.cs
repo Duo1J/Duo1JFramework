@@ -21,7 +21,7 @@ namespace Duo1JFramework
         }
         private Register register;
 
-        protected void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (register != null)
             {

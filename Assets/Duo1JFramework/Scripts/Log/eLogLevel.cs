@@ -1,27 +1,27 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ÈÕÖ¾´òÓ¡µÈ¼¶
+    /// æ—¥å¿—æ‰“å°ç­‰çº§
     /// </summary>
-    public enum eLogLevel
+    public enum ELogLevel
     {
         /// <summary>
-        /// ÎŞ
+        /// æ— 
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Í¨Öª
+        /// é€šçŸ¥
         /// </summary>
         Info = 1,
 
         /// <summary>
-        /// ¾¯¸æ
+        /// è­¦å‘Š
         /// </summary>
         Warn = 1 << 1,
 
         /// <summary>
-        /// ´íÎó
+        /// é”™è¯¯
         /// </summary>
         Error = 1 << 2,
 
@@ -31,7 +31,7 @@ namespace Duo1JFramework
         Timeline = 1 << 3,
 
         /// <summary>
-        /// È«²¿
+        /// å…¨éƒ¨
         /// </summary>
         All = 1 << 30
     }

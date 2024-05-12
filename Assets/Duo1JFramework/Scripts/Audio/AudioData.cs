@@ -17,14 +17,14 @@ namespace Duo1JFramework.AudioAPI
         /// <summary>
         /// 资源加载方式
         /// </summary>
-        public eAssetLoadType loadType = eAssetLoadType.AssetBundle;
+        public EAssetLoadType loadType = EAssetLoadType.AssetBundle;
 
         /// <summary>
         /// 同步加载
         /// </summary>
         public bool sync = false;
 
-        public AudioData SetLoadType(eAssetLoadType loadType)
+        public AudioData SetLoadType(EAssetLoadType loadType)
         {
             this.loadType = loadType;
             return this;

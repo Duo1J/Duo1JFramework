@@ -12,7 +12,7 @@ public class InfoWindow : Window
     protected override UIConfig CreateUIConfig()
     {
         return new UIConfig("UI/InfoWindow")
-            .SetLoadType(eAssetLoadType.Resources)
+            .SetLoadType(EAssetLoadType.Resources)
             .SetLayer(eUILayer.Const);
     }
 

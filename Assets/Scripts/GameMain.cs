@@ -41,10 +41,10 @@ public class GameMain : BaseGameMain
         {
             TimelineManager.Instance.LoadTimeline("Timeline/Timeline-01.prefab", (td) =>
             {
-                InputManager.SetLimit(eInputLimit.All, false);
+                InputManager.SetLimit(EInputLimit.All, false);
                 td.SetDestroyCallback((td) =>
                 {
-                    InputManager.SetLimit(eInputLimit.All, true);
+                    InputManager.SetLimit(EInputLimit.All, true);
                 });
                 td.SyncTransform(ActorManager.Instance.MainActor);
                 td.SetGenericBinding("CinemachineBrain", CMBrain.Instance.Brain);

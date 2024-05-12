@@ -35,5 +35,13 @@ namespace Duo1JFramework
         {
             return Assert.Convert<T>(obj, msg);
         }
+
+        /// <summary>
+        /// object类型结构体转换，转换失败打印错误
+        /// </summary>
+        public static T StructConvert<T>(this object obj, string msg = null) where T : struct
+        {
+            return Assert.StructConvert<T>(obj, msg);
+        }
     }
 }

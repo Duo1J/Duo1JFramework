@@ -15,6 +15,11 @@ namespace Duo1JFramework
         public const string UI_ROOT_PATH = Path.RES_PATH_PREFIX + "UI/UIRoot";
 
         /// <summary>
+        /// UIRoot默认位置
+        /// </summary>
+        public static readonly Vector3 UI_ROOT_DEFAULT_POS = new Vector3(0, -1000, 0);
+
+        /// <summary>
         /// 每个UI界面的层级差
         /// </summary>
         public const int UI_STEP_LAYER = 50;

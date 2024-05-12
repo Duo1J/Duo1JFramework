@@ -3,7 +3,7 @@ namespace Duo1JFramework.AudioAPI
     /// <summary>
     /// 音频播放类型
     /// </summary>
-    public enum eAudioPlayType
+    public enum EAudioPlayType
     {
         /// <summary>
         /// 单次

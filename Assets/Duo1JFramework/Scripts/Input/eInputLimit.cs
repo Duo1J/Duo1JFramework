@@ -3,7 +3,7 @@ namespace Duo1JFramework.GamerInput
     /// <summary>
     /// 输入限制
     /// </summary>
-    public enum eInputLimit
+    public enum EInputLimit
     {
         /// <summary>
         /// 不可输入

@@ -89,6 +89,8 @@ namespace Duo1JFramework.CameraAPI
 
         public Camera MainCamera => UnityEngine.Camera.main;
 
+        public Camera EvalCamera => MainCamera;
+
         /// <summary>
         /// 获取或创建主相机
         /// </summary>

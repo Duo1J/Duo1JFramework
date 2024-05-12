@@ -41,6 +41,15 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public Transform AssetTf => Asset.transform;
 
+        public Vector3 Pos => AssetTf.position;
+        public Vector3 LocPos => AssetTf.localPosition;
+        public Quaternion Rot => AssetTf.rotation;
+        public Quaternion LocRot => AssetTf.localRotation;
+        public Vector3 Angle => AssetTf.eulerAngles;
+        public Vector3 LocAngle => AssetTf.localEulerAngles;
+        public Vector3 Scale => AssetTf.lossyScale;
+        public Vector3 LocScale => AssetTf.localScale;
+
         /// <summary>
         /// 角色模型Go
         /// </summary>

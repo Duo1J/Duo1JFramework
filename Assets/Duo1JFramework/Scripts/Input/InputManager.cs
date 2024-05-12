@@ -12,7 +12,7 @@ namespace Duo1JFramework.GamerInput
         public const string HORIZONTAL = "Horizontal";
         public const string VERTICAL = "Vertical";
 
-        private static eInputLimit limit = eInputLimit.All;
+        private static EInputLimit limit = EInputLimit.All;
 
         /// <summary>
         /// 设置鼠标是否可见
@@ -35,15 +35,15 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static void IgnoreLimit(Action action)
         {
-            ExecByLimit(eInputLimit.All, action);
+            ExecByLimit(EInputLimit.All, action);
         }
 
         /// <summary>
         /// 使用指定的输入限制执行
         /// </summary>
-        public static void ExecByLimit(eInputLimit tarLimit, Action action)
+        public static void ExecByLimit(EInputLimit tarLimit, Action action)
         {
-            eInputLimit saveLimit = limit;
+            EInputLimit saveLimit = limit;
             try
             {
                 limit = tarLimit;
@@ -60,7 +60,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static float GetAxisH(bool raw = false)
         {
-            if (!CheckLimit(eInputLimit.Axis)) return 0;
+            if (!CheckLimit(EInputLimit.Axis)) return 0;
             if (raw)
             {
                 return Input.GetAxisRaw(HORIZONTAL);
@@ -76,7 +76,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static float GetAxisV(bool raw = false)
         {
-            if (!CheckLimit(eInputLimit.Axis)) return 0;
+            if (!CheckLimit(EInputLimit.Axis)) return 0;
             if (raw)
             {
                 return Input.GetAxisRaw(VERTICAL);
@@ -112,7 +112,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static float GetAxisMX()
         {
-            if (!CheckLimit(eInputLimit.MouseAxis)) return 0;
+            if (!CheckLimit(EInputLimit.MouseAxis)) return 0;
             return Input.GetAxis("Mouse X");
         }
 
@@ -121,7 +121,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static float GetAxisMY()
         {
-            if (!CheckLimit(eInputLimit.MouseAxis)) return 0;
+            if (!CheckLimit(EInputLimit.MouseAxis)) return 0;
             return Input.GetAxis("Mouse Y");
         }
 
@@ -130,7 +130,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static bool GetKey(KeyCode key)
         {
-            if (!CheckLimit(eInputLimit.Key)) return false;
+            if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetKey(key);
         }
 
@@ -139,7 +139,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static bool GetKeyDown(KeyCode key)
         {
-            if (!CheckLimit(eInputLimit.Key)) return false;
+            if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetKeyDown(key);
         }
 
@@ -148,7 +148,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static bool GetKeyUp(KeyCode key)
         {
-            if (!CheckLimit(eInputLimit.Key)) return false;
+            if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetKeyUp(key);
         }
 
@@ -158,7 +158,7 @@ namespace Duo1JFramework.GamerInput
         public static bool GetMouseBtn(int mouseBtn)
         {
             if (mouseBtn == Def.INPUT_MOUSE_NONE) return false;
-            if (!CheckLimit(eInputLimit.Key)) return false;
+            if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetMouseButton(mouseBtn);
         }
 
@@ -168,7 +168,7 @@ namespace Duo1JFramework.GamerInput
         public static bool GetMouseBtnDown(int mouseBtn)
         {
             if (mouseBtn == Def.INPUT_MOUSE_NONE) return false;
-            if (!CheckLimit(eInputLimit.Key)) return false;
+            if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetMouseButtonDown(mouseBtn);
         }
 
@@ -178,25 +178,25 @@ namespace Duo1JFramework.GamerInput
         public static bool GetMouseBtnUp(int mouseBtn)
         {
             if (mouseBtn == Def.INPUT_MOUSE_NONE) return false;
-            if (!CheckLimit(eInputLimit.Key)) return false;
+            if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetMouseButtonUp(mouseBtn);
         }
 
         /// <summary>
         /// 设置输入是否可用
         /// </summary>
-        public static void SetLimit(eInputLimit _limit, bool isEnable)
+        public static void SetLimit(EInputLimit _limit, bool isEnable)
         {
-            if (_limit == eInputLimit.None)
+            if (_limit == EInputLimit.None)
             {
                 if (isEnable)
                 {
-                    limit = eInputLimit.None;
+                    limit = EInputLimit.None;
                     Log.Info("输入全部关闭");
                 }
                 else
                 {
-                    limit = eInputLimit.All;
+                    limit = EInputLimit.All;
                     Log.Info("输入全部开启");
                 }
                 return;
@@ -217,7 +217,7 @@ namespace Duo1JFramework.GamerInput
         /// <summary>
         /// 检测输入是否可用
         /// </summary>
-        public static bool CheckLimit(eInputLimit _limit)
+        public static bool CheckLimit(EInputLimit _limit)
         {
             return (limit & _limit) > 0;
         }

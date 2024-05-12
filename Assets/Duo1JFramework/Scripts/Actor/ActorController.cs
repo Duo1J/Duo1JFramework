@@ -1,5 +1,6 @@
 using Duo1JFramework.FSM;
 using Duo1JFramework.ObjectPool;
+using Duo1JFramework.World;
 using System;
 using System.Text;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Duo1JFramework.Actor
     /// Actor控制器
     /// </summary>
     [RequireComponent(typeof(ActorParam), typeof(ActorPoint))]
-    public abstract class ActorController : MonoRegister
+    public abstract class ActorController : BaseWorldItem
     {
         /// <summary>
         /// 角色模型

@@ -6,52 +6,52 @@ using UnityEngine;
 namespace Duo1JFramework.AudioAPI
 {
     /// <summary>
-    /// »ù´¡ÒôÆµ¿ØÖÆÆ÷
+    /// åŸºç¡€éŸ³é¢‘æ§åˆ¶å™¨
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public abstract class BaseAudioController : MonoRegister
     {
         /// <summary>
-        /// ²¥·ÅÀàĞÍ
+        /// æ’­æ”¾ç±»å‹
         /// </summary>
         [SerializeField]
-        protected eAudioPlayType audioPlayType = eAudioPlayType.OneShot;
+        protected EAudioPlayType audioPlayType = EAudioPlayType.OneShot;
 
         /// <summary>
-        /// ÒôÆµ²¥·ÅÆ÷
+        /// éŸ³é¢‘æ’­æ”¾å™¨
         /// </summary>
         protected AudioSource audioSource;
 
         /// <summary>
-        /// ÒôÆµÊı¾İ
+        /// éŸ³é¢‘æ•°æ®
         /// </summary>
         protected AudioData audioData;
 
         /// <summary>
-        /// µ¥´Î²¥·ÅÖĞ
+        /// å•æ¬¡æ’­æ”¾ä¸­
         /// </summary>
         private bool oneShotPlaying = false;
 
         /// <summary>
-        /// ³ÖĞø²¥·Å
+        /// æŒç»­æ’­æ”¾
         /// </summary>
         public void PlayKeep(AudioData audioData)
         {
-            audioPlayType = eAudioPlayType.Keep;
+            audioPlayType = EAudioPlayType.Keep;
             SetAudioDataAndLoad(audioData, Play);
         }
 
         /// <summary>
-        /// µ¥´Î²¥·Å
+        /// å•æ¬¡æ’­æ”¾
         /// </summary>
         public void PlayOneShot(AudioData audioData)
         {
-            audioPlayType = eAudioPlayType.OneShot;
+            audioPlayType = EAudioPlayType.OneShot;
             SetAudioDataAndLoad(audioData, Play);
         }
 
         /// <summary>
-        /// ÉèÖÃ²¥·ÅÊı¾İ²¢¼ÓÔØ
+        /// è®¾ç½®æ’­æ”¾æ•°æ®å¹¶åŠ è½½
         /// </summary>
         protected void SetAudioDataAndLoad(AudioData audioData, Action finCall = null)
         {
@@ -74,13 +74,13 @@ namespace Duo1JFramework.AudioAPI
         }
 
         /// <summary>
-        /// ÒôÆµÆ¬¶Î¼ÓÔØÍê³Éºó´¦Àí
+        /// éŸ³é¢‘ç‰‡æ®µåŠ è½½å®Œæˆåå¤„ç†
         /// </summary>
         protected void AudioClipLoadedPostprocess(AudioClip clip)
         {
             if (clip == null)
             {
-                Log.ErrorForce($"{audioData} ¼ÓÔØÊ§°Ü");
+                Log.ErrorForce($"{audioData} åŠ è½½å¤±è´¥");
                 return;
             }
 
@@ -89,38 +89,38 @@ namespace Duo1JFramework.AudioAPI
         }
 
         /// <summary>
-        /// Í¨¹ı²¥·ÅÀàĞÍÉèÖÃÊÇ·ñÑ­»·
+        /// é€šè¿‡æ’­æ”¾ç±»å‹è®¾ç½®æ˜¯å¦å¾ªç¯
         /// </summary>
         protected void SetLoopByPlayType()
         {
             switch (audioPlayType)
             {
-                case eAudioPlayType.OneShot:
+                case EAudioPlayType.OneShot:
                     audioSource.loop = false;
                     break;
-                case eAudioPlayType.Keep:
+                case EAudioPlayType.Keep:
                     audioSource.loop = true;
                     break;
                 default:
-                    Log.ErrorForce($"AudioClipLoadedPostprocess Î´´¦ÀíµÄÒôÆµ²¥·ÅÀàĞÍ: `{audioPlayType}`");
+                    Log.ErrorForce($"AudioClipLoadedPostprocess æœªå¤„ç†çš„éŸ³é¢‘æ’­æ”¾ç±»å‹: `{audioPlayType}`");
                     break;
             }
         }
 
         /// <summary>
-        /// ²¥·Å
+        /// æ’­æ”¾
         /// </summary>
         public void Play()
         {
             if (audioSource.clip == null)
             {
-                Log.ErrorForce($"{ToString()} AudioClipÎª¿Õ£¬ÎŞ·¨²¥·Å");
+                Log.ErrorForce($"{ToString()} AudioClipä¸ºç©ºï¼Œæ— æ³•æ’­æ”¾");
                 return;
             }
 
             audioSource.Play();
 
-            if (audioPlayType == eAudioPlayType.OneShot)
+            if (audioPlayType == EAudioPlayType.OneShot)
             {
                 oneShotPlaying = true;
             }
@@ -133,7 +133,7 @@ namespace Duo1JFramework.AudioAPI
         }
 
         /// <summary>
-        /// ÔİÍ£
+        /// æš‚åœ
         /// </summary>
         public void Pause()
         {
@@ -147,7 +147,7 @@ namespace Duo1JFramework.AudioAPI
         }
 
         /// <summary>
-        /// Í£Ö¹
+        /// åœæ­¢
         /// </summary>
         public void Stop()
         {
@@ -165,7 +165,7 @@ namespace Duo1JFramework.AudioAPI
         }
 
         /// <summary>
-        /// ÇåÀí
+        /// æ¸…ç†
         /// </summary>
         public void Clear()
         {
@@ -176,7 +176,7 @@ namespace Duo1JFramework.AudioAPI
             }
             audioData = null;
 
-            audioPlayType = eAudioPlayType.OneShot;
+            audioPlayType = EAudioPlayType.OneShot;
             oneShotPlaying = false;
 
             OnClear();
@@ -193,7 +193,7 @@ namespace Duo1JFramework.AudioAPI
                 return;
             }
 
-            if (audioPlayType != eAudioPlayType.OneShot)
+            if (audioPlayType != EAudioPlayType.OneShot)
             {
                 return;
             }

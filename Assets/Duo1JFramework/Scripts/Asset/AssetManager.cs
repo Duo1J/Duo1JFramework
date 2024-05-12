@@ -15,16 +15,16 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式加载
         /// </summary>
-        public void LoadByType<T>(eAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
+        public void LoadByType<T>(EAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
         {
             switch (loadType)
             {
-                case eAssetLoadType.AssetBundle:
+                case EAssetLoadType.AssetBundle:
                     {
                         Load<T>(assetPath, callback);
                         return;
                     }
-                case eAssetLoadType.Resources:
+                case EAssetLoadType.Resources:
                     {
                         LoadResource<T>(assetPath, callback);
                         return;
@@ -41,16 +41,16 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式加载实例
         /// </summary>
-        public void LoadInsByType<T>(eAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
+        public void LoadInsByType<T>(EAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
         {
             switch (loadType)
             {
-                case eAssetLoadType.AssetBundle:
+                case EAssetLoadType.AssetBundle:
                     {
                         LoadIns<T>(assetPath, callback);
                         return;
                     }
-                case eAssetLoadType.Resources:
+                case EAssetLoadType.Resources:
                     {
                         LoadResourceIns<T>(assetPath, callback);
                         return;
@@ -67,15 +67,15 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式同步加载
         /// </summary>
-        public T LoadByTypeSync<T>(eAssetLoadType loadType, string assetPath) where T : UObject
+        public T LoadByTypeSync<T>(EAssetLoadType loadType, string assetPath) where T : UObject
         {
             switch (loadType)
             {
-                case eAssetLoadType.AssetBundle:
+                case EAssetLoadType.AssetBundle:
                     {
                         return LoadSync<T>(assetPath);
                     }
-                case eAssetLoadType.Resources:
+                case EAssetLoadType.Resources:
                     {
                         return LoadResourceSync<T>(assetPath);
                     }
@@ -90,15 +90,15 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式同步加载
         /// </summary>
-        public T LoadInsByTypeSync<T>(eAssetLoadType loadType, string assetPath) where T : UObject
+        public T LoadInsByTypeSync<T>(EAssetLoadType loadType, string assetPath) where T : UObject
         {
             switch (loadType)
             {
-                case eAssetLoadType.AssetBundle:
+                case EAssetLoadType.AssetBundle:
                     {
                         return LoadInsSync<T>(assetPath);
                     }
-                case eAssetLoadType.Resources:
+                case EAssetLoadType.Resources:
                     {
                         return LoadResourceInsSync<T>(assetPath);
                     }
@@ -210,7 +210,7 @@ namespace Duo1JFramework.Asset
 
         private void CreateAssetLoader()
         {
-            void SetAssetLoader(eAssetLoaderType assetLoaderType)
+            void SetAssetLoader(EAssetLoaderType assetLoaderType)
             {
 #if UNITY_EDITOR
                 GameConfig.Instance.editorAssetLoaderType = assetLoaderType;
@@ -219,15 +219,15 @@ namespace Duo1JFramework.Asset
 #endif
                 switch (assetLoaderType)
                 {
-                    case eAssetLoaderType.AssetDatabase:
+                    case EAssetLoaderType.AssetDatabase:
                         Log.Info("使用EditorAssetLoader资源加载器");
                         loader = new EditorAssetLoader();
                         break;
-                    case eAssetLoaderType.AssetBundle:
+                    case EAssetLoaderType.AssetBundle:
                         Log.Info("使用ABAssetLoader资源加载器");
                         loader = new ABAssetLoader();
                         break;
-                    case eAssetLoaderType.Addressables:
+                    case EAssetLoaderType.Addressables:
                         Log.Info("使用ABAssetLoader资源加载器");
                         loader = new ABAssetLoader();
                         break;
@@ -244,17 +244,17 @@ namespace Duo1JFramework.Asset
                 switch (GameConfig.Instance.runtimeAssetLoaderType)
 #endif
                     {
-                        case eAssetLoaderType.AssetDatabase:
+                        case EAssetLoaderType.AssetDatabase:
 #if UNITY_EDITOR
-                            SetAssetLoader(eAssetLoaderType.AssetDatabase);
+                            SetAssetLoader(EAssetLoaderType.AssetDatabase);
                             break;
 #else
                         throw CommonException.Create("运行时不可使用AssetDatabase类型资源加载器");
 #endif
-                        case eAssetLoaderType.AssetBundle:
-                            SetAssetLoader(eAssetLoaderType.AssetBundle);
+                        case EAssetLoaderType.AssetBundle:
+                            SetAssetLoader(EAssetLoaderType.AssetBundle);
                             break;
-                        case eAssetLoaderType.Addressables:
+                        case EAssetLoaderType.Addressables:
                             throw CommonException.Create("Addressables资源加载器未实现");
                         default:
 #if UNITY_EDITOR
@@ -268,7 +268,7 @@ namespace Duo1JFramework.Asset
                 {
                     Assert.ExceptHandle(e, "创建资源加载器异常, 使用对应环境默认资源加载器");
 #if UNITY_EDITOR
-                    SetAssetLoader(eAssetLoaderType.AssetDatabase);
+                    SetAssetLoader(EAssetLoaderType.AssetDatabase);
 #else
                     SetAssetLoader(eAssetLoaderType.AssetBundle);
 #endif

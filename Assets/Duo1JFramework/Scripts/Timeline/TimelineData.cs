@@ -44,7 +44,7 @@ namespace Duo1JFramework.TimelineAPI
                 UObject preObj = pd.GetGenericBinding(binding.sourceObject);
                 if (preObj != null)
                 {
-                    Log.LevelWarn(eLogLevel.Timeline, $"{ToString()}上绑定{key}时，原绑定不为空");
+                    Log.LevelWarn(ELogLevel.Timeline, $"{ToString()}上绑定{key}时，原绑定不为空");
 
                     if (preObj is Component comp)
                     {
@@ -53,11 +53,11 @@ namespace Duo1JFramework.TimelineAPI
                 }
 
                 pd.SetGenericBinding(binding.sourceObject, tarObj);
-                Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> 绑定{tarObj.name}到{key}");
+                Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> 绑定{tarObj.name}到{key}");
             }
             else
             {
-                Log.LevelError(eLogLevel.Timeline, $"{ToString()}上未找到Key: {key}，无法执行绑定");
+                Log.LevelError(ELogLevel.Timeline, $"{ToString()}上未找到Key: {key}，无法执行绑定");
             }
             return this;
         }
@@ -80,28 +80,28 @@ namespace Duo1JFramework.TimelineAPI
         public TimelineData Play()
         {
             pd.Play();
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> Play()");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> Play()");
             return this;
         }
 
         public TimelineData Stop()
         {
             pd.Stop();
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> Stop()");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> Stop()");
             return this;
         }
 
         public TimelineData Pause()
         {
             pd.Pause();
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> Pause()");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> Pause()");
             return this;
         }
 
         public TimelineData Resume()
         {
             pd.Resume();
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> Resume()");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> Resume()");
             return this;
         }
 
@@ -110,35 +110,35 @@ namespace Duo1JFramework.TimelineAPI
             Pause();
             SetTime(0);
             Play();
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> Restart()");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> Restart()");
             return this;
         }
 
         public TimelineData SetTime(float time)
         {
             pd.time = time;
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> SetTime({time})");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> SetTime({time})");
             return this;
         }
 
         public TimelineData SetInitialTime(float time)
         {
             pd.initialTime = time;
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> SetInitialTime({time})");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> SetInitialTime({time})");
             return this;
         }
 
         public TimelineData SetWrapMode(DirectorWrapMode wrapMode)
         {
             pd.extrapolationMode = wrapMode;
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> SetWrapMode({wrapMode})");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> SetWrapMode({wrapMode})");
             return this;
         }
 
         public TimelineData RebuildGraph()
         {
             pd.RebuildGraph();
-            Log.LevelInfo(eLogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
+            Log.LevelInfo(ELogLevel.Timeline, $"{ToString()} -> RebuildGraph()");
             return this;
         }
 

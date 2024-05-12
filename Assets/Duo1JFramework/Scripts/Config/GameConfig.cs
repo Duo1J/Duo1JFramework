@@ -10,10 +10,10 @@ namespace Duo1JFramework.Config
         #region Config
 
         [Label("编辑器下资源加载类型")]
-        public eAssetLoaderType editorAssetLoaderType = eAssetLoaderType.AssetDatabase;
+        public EAssetLoaderType editorAssetLoaderType = EAssetLoaderType.AssetDatabase;
 
         [Label("运行时资源加载类型")]
-        public eAssetLoaderType runtimeAssetLoaderType = eAssetLoaderType.AssetBundle;
+        public EAssetLoaderType runtimeAssetLoaderType = EAssetLoaderType.AssetBundle;
 
         #endregion Config
 

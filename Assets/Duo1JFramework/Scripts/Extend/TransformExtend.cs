@@ -25,6 +25,19 @@ namespace Duo1JFramework
         {
             tf.gameObject.SetChildCnt(cnt, foreachAction);
         }
+
+        /// <summary>
+        /// 遍历子节点
+        /// </summary>
+        public static void ChildForeach(this Transform tf, Action<GameObject> foreachAction)
+        {
+            Assert.NotNull(foreachAction, "迭代函数不可为空");
+
+            for (int i = 0; i < tf.childCount; ++i)
+            {
+                foreachAction(tf.GetChild(i).gameObject);
+            }
+        }
     }
 
     /// <summary>

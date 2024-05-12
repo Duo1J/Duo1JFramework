@@ -24,7 +24,7 @@ namespace Duo1JFramework
                 {
                     if (Game.IsQuit)
                     {
-                        Log.ErrorForce($"游戏状态已退出，但仍在创建{typeof(T).FullName}");
+                        Log.ErrorForce($"游戏状态已退出，但仍在创建{typeof(T).FullName}，请使用 `Game.IsQuit` 判断处理");
                         return null;
                     }
                     instance = FindObjectOfType<T>();

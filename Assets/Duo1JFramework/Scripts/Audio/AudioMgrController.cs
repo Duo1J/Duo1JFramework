@@ -21,7 +21,7 @@ namespace Duo1JFramework.AudioAPI
                 return;
             }
 
-            audioPlayType = eAudioPlayType.Keep;
+            audioPlayType = EAudioPlayType.Keep;
             SetAudioDataAndLoad(audioData, Play);
         }
 

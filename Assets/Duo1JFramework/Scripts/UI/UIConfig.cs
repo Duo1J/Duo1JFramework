@@ -20,7 +20,7 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 加载方式
         /// </summary>
-        public eAssetLoadType LoadType { get; private set; } = eAssetLoadType.AssetBundle;
+        public EAssetLoadType LoadType { get; private set; } = EAssetLoadType.AssetBundle;
 
         /// <summary>
         /// 是否是全屏窗口
@@ -33,7 +33,7 @@ namespace Duo1JFramework.UI
             return this;
         }
 
-        public UIConfig SetLoadType(eAssetLoadType loadType)
+        public UIConfig SetLoadType(EAssetLoadType loadType)
         {
             LoadType = loadType;
             return this;
