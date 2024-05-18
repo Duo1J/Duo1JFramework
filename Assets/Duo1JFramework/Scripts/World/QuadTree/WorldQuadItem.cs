@@ -8,14 +8,30 @@ namespace Duo1JFramework.World
     /// </summary>
     public class WorldQuadItem : QuadTreeItem
     {
-        public override Vector3 Pos => transform.position;
-
-        public override void Trigger()
+        public override Bounds Bounds
         {
-            this.SetActive(active);
+            get
+            {
+                if (gizmosBounds == null)
+                {
+                    gizmosBounds = GetComponent<GizmosBounds>();
+                    if (gizmosBounds == null)
+                    {
+                        Log.ErrorForce($"{ToString()}需要添加组件 `GizmosBounds`");
+                        gizmosBounds = gameObject.AddComponent<GizmosBounds>();
+                    }
+                }
+                return gizmosBounds.Bounds;
+            }
+        }
+        protected GizmosBounds gizmosBounds;
+
+        public override void TriggerQuad()
+        {
+            this.SetActive(QuadActive);
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             WorldQuadManager.Instance.AddItem(this);
         }

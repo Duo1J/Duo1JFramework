@@ -9,26 +9,26 @@ namespace Duo1JFramework.DataStructure
     public abstract class QuadTreeItem : BaseWorldItem
     {
         /// <summary>
-        /// 是否激活
+        /// 四叉树节点是否激活
         /// </summary>
-        protected bool active;
+        public bool QuadActive { get; private set; }
 
         /// <summary>
-        /// 位置
+        /// 包围盒
         /// </summary>
-        public abstract Vector3 Pos { get; }
+        public abstract Bounds Bounds { get; }
 
         /// <summary>
-        /// 设置状态
+        /// 设置四叉树节点状态
         /// </summary>
-        public void SetState(bool active)
+        public void SetQuadState(bool quadActive)
         {
-            this.active = active;
+            QuadActive = quadActive;
         }
 
         /// <summary>
-        /// 触发
+        /// 四叉树节点触发
         /// </summary>
-        public abstract void Trigger();
+        public abstract void TriggerQuad();
     }
 }

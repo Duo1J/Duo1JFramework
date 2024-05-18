@@ -17,7 +17,7 @@ public class WorldQuadTreeController : BaseMono
     {
         bounds = GetComponent<GizmosBounds>();
 
-        WorldQuadManager.Instance.CreateTree(bounds.bounds, depth);
+        WorldQuadManager.Instance.CreateTree(bounds.Bounds, depth);
         itemPar.ChildForeach((go) =>
         {
             go.GetOrAddComponent<WorldQuadItem>();
@@ -27,6 +27,6 @@ public class WorldQuadTreeController : BaseMono
     [ContextMenu("重建")]
     public void Rebuild()
     {
-        WorldQuadManager.Instance.RebuildTree(bounds.bounds, depth);
+        WorldQuadManager.Instance.RebuildTree(bounds.Bounds, depth);
     }
 }

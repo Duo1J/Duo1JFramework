@@ -13,10 +13,10 @@ namespace Duo1JFramework.AudioAPI
 
             switch (audioPlayType)
             {
-                case eAudioPlayType.OneShot:
+                case EAudioPlayType.OneShot:
                     PlayOneShot(data);
                     break;
-                case eAudioPlayType.Keep:
+                case EAudioPlayType.Keep:
                     PlayKeep(data);
                     break;
                 default:
