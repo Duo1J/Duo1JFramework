@@ -1,8 +1,11 @@
-using System;
 using UnityEngine;
 
 namespace Duo1JFramework
 {
+    /// <summary>
+    /// 包围盒可视化编辑
+    /// </summary>
+    [DisallowMultipleComponent]
     public class GizmosBounds : BaseGizmosComponent
     {
         public Bounds Bounds

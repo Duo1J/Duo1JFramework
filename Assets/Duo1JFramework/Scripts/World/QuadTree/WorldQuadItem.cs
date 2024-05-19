@@ -10,7 +10,7 @@ namespace Duo1JFramework.World
     {
         public override Bounds Bounds => GizmosBounds.Bounds;
 
-        public GizmosBounds GizmosBounds
+        public virtual GizmosBounds GizmosBounds
         {
             get
             {
@@ -26,25 +26,38 @@ namespace Duo1JFramework.World
                 return gizmosBounds;
             }
         }
-        private GizmosBounds gizmosBounds;
+        protected GizmosBounds gizmosBounds;
 
         public override void TriggerQuad()
         {
             this.SetActive(QuadActive);
         }
 
-        private bool startAdd = false;
+        private bool addToQT = false;
+
+        /// <summary>
+        /// 添加到四叉树管理
+        /// </summary>
+        protected void AddToQuadTree()
+        {
+            if (addToQT)
+            {
+                return;
+            }
+
+            addToQT = true;
+            WorldQuadManager.Instance.AddItem(this);
+        }
 
         protected virtual void Start()
         {
-            startAdd = true;
-            WorldQuadManager.Instance.AddItem(this);
+            AddToQuadTree();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (!Game.IsQuit && startAdd)
+            if (!Game.IsQuit && addToQT)
             {
                 WorldQuadManager.Instance.RemoveItem(this);
             }

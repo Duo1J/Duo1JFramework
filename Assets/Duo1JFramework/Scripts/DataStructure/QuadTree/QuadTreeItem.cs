@@ -11,7 +11,15 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 四叉树节点是否激活
         /// </summary>
-        public bool QuadActive { get; protected set; }
+        public bool QuadActive
+        {
+            get => quadActive;
+            protected set => quadActive = value;
+        }
+
+        [Label("四叉树状态")]
+        [SerializeField]
+        private bool quadActive;
 
         /// <summary>
         /// 包围盒

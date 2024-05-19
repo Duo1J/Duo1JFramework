@@ -27,7 +27,7 @@ namespace Duo1JFramework
         public static bool CheckBoundsIsInCamera(this Bounds bound, Camera camera)
         {
             Vector4 worldPos = Vector4.one;
-            //int code = 63;
+            int code = 63;
             for (int i = -1; i <= 1; i += 2)
             {
                 for (int j = -1; j <= 1; j += 2)
@@ -37,20 +37,19 @@ namespace Duo1JFramework
                         worldPos.x = bound.center.x + i * bound.extents.x;
                         worldPos.y = bound.center.y + j * bound.extents.y;
                         worldPos.z = bound.center.z + k * bound.extents.z;
-
-                        //todo hlj
-                        Vector3 viewport = camera.WorldToViewportPoint(worldPos);
-                        if (viewport.x > 0 && viewport.x < 1 && viewport.y > 0 && viewport.y < 1 && viewport.z > 0)
-                        {
-                            return true;
-                        }
-
-                        //code &= CheckBoundsIsInCamera_ComputeOutCode(camera.projectionMatrix * camera.worldToCameraMatrix * worldPos);
+                        code &= CheckBoundsIsInCamera_ComputeOutCode(camera.projectionMatrix * camera.worldToCameraMatrix * worldPos);
                     }
                 }
             }
-            return false;
-            //return code == 0;
+            return code == 0;
+        }
+
+        /// <summary>
+        /// 使用相机平头锥体平面检测包围盒是否在相机范围内(完全包含)
+        /// </summary>
+        public static bool CheckBoundsIsInCameraByFrustum(this Bounds bound, Camera camera)
+        {
+            return GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera), bound);
         }
 
         #endregion Bounds

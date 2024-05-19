@@ -1,3 +1,4 @@
+using Duo1JFramework.World;
 using System;
 using UnityEngine;
 
@@ -7,8 +8,12 @@ namespace Duo1JFramework.PhysicsAPI
     /// 碰撞、触发控制器
     /// </summary>
     [DisallowMultipleComponent]
-    public class CollisionController : BaseMono, IEditorDrawer
+    [RequireComponent(typeof(GizmosBounds))]
+    public class CollisionController : WorldQuadItem, IEditorDrawer
     {
+        [Label("添加到四叉树")]
+        public bool addToQuadTree = true;
+
         public CollisionType collisionType = CollisionType.Trigger;
 
         private Collider collision;
@@ -46,14 +51,28 @@ namespace Duo1JFramework.PhysicsAPI
             enabled = enable;
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             CollisionManager.Instance.AddToDict(this);
         }
 
-        private void OnDestroy()
+        protected override void Start()
         {
-            if (Game.IsQuit) return;
+            if (addToQuadTree)
+            {
+                AddToQuadTree();
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (Game.IsQuit)
+            {
+                return;
+            }
+
             CollisionManager.Instance.RemoveFromDict(this);
         }
 

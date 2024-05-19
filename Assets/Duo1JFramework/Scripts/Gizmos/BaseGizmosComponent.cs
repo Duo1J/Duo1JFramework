@@ -11,11 +11,11 @@ namespace Duo1JFramework
 
 #if UNITY_EDITOR
 
-        public Color color = Color.white;
+        public Color gizmosColor = Color.white;
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = color;
+            Gizmos.color = gizmosColor;
             DrawGizmos();
         }
 
