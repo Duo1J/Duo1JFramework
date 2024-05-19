@@ -27,7 +27,7 @@ namespace Duo1JFramework
         public static bool CheckBoundsIsInCamera(this Bounds bound, Camera camera)
         {
             Vector4 worldPos = Vector4.one;
-            int code = 63;
+            //int code = 63;
             for (int i = -1; i <= 1; i += 2)
             {
                 for (int j = -1; j <= 1; j += 2)
@@ -38,11 +38,19 @@ namespace Duo1JFramework
                         worldPos.y = bound.center.y + j * bound.extents.y;
                         worldPos.z = bound.center.z + k * bound.extents.z;
 
-                        code &= CheckBoundsIsInCamera_ComputeOutCode(camera.projectionMatrix * camera.worldToCameraMatrix * worldPos);
+                        //todo hlj
+                        Vector3 viewport = camera.WorldToViewportPoint(worldPos);
+                        if (viewport.x > 0 && viewport.x < 1 && viewport.y > 0 && viewport.y < 1 && viewport.z > 0)
+                        {
+                            return true;
+                        }
+
+                        //code &= CheckBoundsIsInCamera_ComputeOutCode(camera.projectionMatrix * camera.worldToCameraMatrix * worldPos);
                     }
                 }
             }
-            return code == 0;
+            return false;
+            //return code == 0;
         }
 
         #endregion Bounds

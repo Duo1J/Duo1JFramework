@@ -1,3 +1,4 @@
+using Duo1JFramework.TimerUpdate;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,21 +37,21 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 管理对象列表
         /// </summary>
-        private List<QuadTreeItem> itemList;
+        private List<IQuadTreeItem> itemList;
 
         /// <summary>
         /// 添加对象
         /// </summary>
-        public void AddItem(QuadTreeItem item)
+        public void AddItem(IQuadTreeItem item)
         {
             CheckAndCreateChilds();
 
-            QuadTreeNode tarNode = null;
+            IQuadTreeNode tarNode = null;
             if (childs != null)
             {
                 for (int i = 0; i < childs.Length; ++i)
                 {
-                    QuadTreeNode node = childs[i];
+                    IQuadTreeNode node = childs[i];
                     if (CheckItemInBounds(node, item))
                     {
                         if (tarNode != null)
@@ -76,7 +77,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 移除对象
         /// </summary>
-        public bool RemoveItem(QuadTreeItem item)
+        public bool RemoveItem(IQuadTreeItem item)
         {
             if (childs == null)
             {
@@ -86,7 +87,7 @@ namespace Duo1JFramework.DataStructure
             bool flag = false;
             for (int i = 0; i < childs.Length; ++i)
             {
-                QuadTreeNode node = childs[i];
+                IQuadTreeNode node = childs[i];
                 if (CheckItemInBounds(node, item))
                 {
                     flag = node.RemoveItem(item);
@@ -107,11 +108,22 @@ namespace Duo1JFramework.DataStructure
         /// <param name="delay">延迟一帧执行</param>
         public void AdjustBoundsHeightByItem(bool delay = false)
         {
-            //todo hlj
+            if (delay)
+            {
+                UpdateManager.Instance.DelayOneFrame(_AdjustBoundsHeightByItem);
+            }
+            else
+            {
+                _AdjustBoundsHeightByItem();
+            }
+        }
+
+        private void _AdjustBoundsHeightByItem()
+        {
             float tarHeight = 1;
             if (itemList != null)
             {
-                foreach (QuadTreeItem item in itemList)
+                foreach (IQuadTreeItem item in itemList)
                 {
                     Bounds itemBounds = item.Bounds;
                     float itemHeight = itemBounds.center.y + itemBounds.extents.y;
@@ -189,15 +201,9 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 检查对象是否被节点包含
         /// </summary>
-        private bool CheckItemInBounds(QuadTreeNode node, QuadTreeItem item)
+        public bool CheckItemInBounds(IQuadTreeNode node, IQuadTreeItem item)
         {
-            Vector3 nodeMin = node.Bounds.min;
-            Vector3 nodeMax = node.Bounds.max;
-            Vector3 itemMin = item.Bounds.min;
-            Vector3 itemMax = item.Bounds.max;
-
-            return nodeMin.x < itemMax.x && nodeMin.z < itemMax.z &&
-                nodeMax.x > itemMin.x && nodeMax.z > itemMin.z;
+            return QuadTreeEvalLogic.CheckByBounds(node, item);
         }
 
         /// <summary>
@@ -212,7 +218,7 @@ namespace Duo1JFramework.DataStructure
                 return;
             }
 
-            foreach (QuadTreeItem item in itemList)
+            foreach (IQuadTreeItem item in itemList)
             {
                 item.SetQuadState(EvalActive);
             }
@@ -228,7 +234,7 @@ namespace Duo1JFramework.DataStructure
                 return;
             }
 
-            foreach (QuadTreeItem item in itemList)
+            foreach (IQuadTreeItem item in itemList)
             {
                 item.TriggerQuad();
             }
@@ -264,17 +270,17 @@ namespace Duo1JFramework.DataStructure
             }
         }
 
-        private void AddToItemList(QuadTreeItem item)
+        private void AddToItemList(IQuadTreeItem item)
         {
             if (itemList == null)
             {
-                itemList = new List<QuadTreeItem>();
+                itemList = new List<IQuadTreeItem>();
             }
             itemList.Add(item);
             AdjustBoundsHeightByItem(true);
         }
 
-        private bool RemoveFromItemList(QuadTreeItem item)
+        private bool RemoveFromItemList(IQuadTreeItem item)
         {
             if (itemList == null)
             {
@@ -299,15 +305,15 @@ namespace Duo1JFramework.DataStructure
         {
             if (itemList != null && itemList.Count != 0)
             {
-                Gizmos.color = Color.blue;
+                Gizmos.color = new Color(0, 0, 1, 0.3f);
             }
             else if (EvalActive)
             {
-                Gizmos.color = Color.green;
+                Gizmos.color = new Color(0, 1, 0, 0.3f);
             }
             else
             {
-                Gizmos.color = Color.white;
+                Gizmos.color = new Color(1, 1, 1, 0.1f);
             }
 
             Vector3 size = Bounds.size - Vector3.one * 0.1f;

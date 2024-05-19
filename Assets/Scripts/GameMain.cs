@@ -10,6 +10,7 @@ using Duo1JFramework.RX;
 using Duo1JFramework.TimelineAPI;
 using Duo1JFramework.TimerUpdate;
 using Duo1JFramework.UI;
+using Duo1JFramework.World;
 using System.Text;
 using UnityEngine;
 
@@ -33,6 +34,11 @@ public class GameMain : BaseGameMain
 
         mainActor = ActorManager.Instance.CreateActor(new ActorData(typeof(ComActorLogic), "TestActor", "Actor/Actor-02.prefab"));
         ActorManager.Instance.SetMainActor(mainActor, true);
+
+        GameObject.Find("QuadItemList").transform.ChildForeach((childGo) =>
+        {
+            WorldQuadManager.Instance.AddItem(childGo.GetOrAddComponent<WorldQuadItem>());
+        });
     }
 
     private void Update()

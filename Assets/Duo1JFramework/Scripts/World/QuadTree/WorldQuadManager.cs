@@ -9,27 +9,44 @@ namespace Duo1JFramework.World
     /// </summary>
     public class WorldQuadManager : MonoSingleton<WorldQuadManager>, IQuadTreeNode
     {
-        private QuadTree tree;
-        private Func<object> paramGetFunc;
+        public WorldQuadContainer Container
+        {
+            set
+            {
+                if (container != null)
+                {
+                    container.DestroyImmediate();
+                }
+                container = value;
+                container.CreateTree();
+            }
+        }
 
-        public bool gizmos = true;
+        private WorldQuadContainer container;
+
+        public Bounds Bounds => container ? container.Bounds : new Bounds();
+
+        /// <summary>
+        /// 检测参数获取委托
+        /// </summary>
+        private Func<object> paramGetFunc;
 
         /// <summary>
         /// 添加对象
         /// </summary>
-        public void AddItem(QuadTreeItem item)
+        public void AddItem(IQuadTreeItem item)
         {
-            Assert.NotNull(tree, "四叉树未初始化");
-            tree.AddItem(item);
+            Assert.NotNull(container, "四叉树容器未初始化");
+            container.AddItem(item);
         }
 
         /// <summary>
         /// 移除对象
         /// </summary>
-        public bool RemoveItem(QuadTreeItem item)
+        public bool RemoveItem(IQuadTreeItem item)
         {
-            Assert.NotNull(tree, "四叉树未初始化");
-            return tree.RemoveItem(item);
+            Assert.NotNull(container, "四叉树容器未初始化");
+            return container.RemoveItem(item);
         }
 
         /// <summary>
@@ -37,8 +54,8 @@ namespace Duo1JFramework.World
         /// </summary>
         public void Evaluate(object param)
         {
-            Assert.NotNull(tree, "四叉树未初始化");
-            tree.Evaluate(param);
+            Assert.NotNull(container, "四叉树容器树未初始化");
+            container.Evaluate(param);
         }
 
         /// <summary>
@@ -47,63 +64,33 @@ namespace Duo1JFramework.World
         /// <see cref="QuadTreeEvalLogic"/>
         /// <param name="evalLogic">QuadTreeEvalLogic</param>
         /// <param name="paramGetFunc">检测参数获取委托</param>
-        public void SetEvalLogic(Func<QuadTreeNode, object, bool> evalLogic, Func<object> paramGetFunc = null)
+        public void SetEvalLogic(Func<IQuadTreeNode, object, bool> evalLogic, Func<object> paramGetFunc = null)
         {
-            Assert.NotNull(tree, "四叉树未初始化");
-            tree.EvalLogic = evalLogic;
+            container.SetEvalLogic(evalLogic);
             this.paramGetFunc = paramGetFunc;
         }
 
-        /// <summary>
-        /// 重建四叉树
-        /// </summary>
-        public void RebuildTree(Bounds bounds, int maxDepth = QuadTree.DEFAULT_DEPTH)
+        private void OnPreUpdate()
         {
-            if (tree == null)
+            if (container != null)
             {
-                CreateTree(bounds, maxDepth);
-            }
-            else
-            {
-                tree.Rebuild(bounds, maxDepth);
-            }
-        }
-
-        /// <summary>
-        /// 创建四叉树
-        /// </summary>
-        public void CreateTree(Bounds bounds, int maxDepth = QuadTree.DEFAULT_DEPTH)
-        {
-            tree = QuadTree.Create(bounds, maxDepth);
-        }
-
-        private void OnUpdate()
-        {
-            if (tree == null)
-            {
-                return;
-            }
-
-            tree.Evaluate(paramGetFunc?.Invoke());
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (gizmos && tree != null)
-            {
-                tree.DrawGizmos();
+                container.Evaluate(paramGetFunc?.Invoke());
             }
         }
 
         protected override void OnDispose()
         {
-            tree.Clear();
-            tree = null;
         }
 
         protected override void OnInit()
         {
-            Register.RegisterUpdate(OnUpdate);
+            Register.RegisterPreUpdate(OnPreUpdate);
         }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+        }
+#endif
     }
 }

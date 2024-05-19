@@ -11,7 +11,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 视锥体检测
         /// </summary>
-        public static bool EvalByConeOfVision(QuadTreeNode node, object param)
+        public static bool EvalByConeOfVision(IQuadTreeNode node, object param)
         {
             return node.Bounds.CheckBoundsIsInCamera(CameraManager.Instance.EvalCamera);
         }
@@ -20,7 +20,7 @@ namespace Duo1JFramework.DataStructure
         /// 矩形区域检测
         /// </summary>
         /// <param name="param">Bounds区域</param>
-        public static bool EvalByRectArea(QuadTreeNode node, object param)
+        public static bool EvalByRectArea(IQuadTreeNode node, object param)
         {
             Bounds bounds = param.StructConvert<Bounds>();
             Bounds nodeBounds = node.Bounds;
@@ -31,6 +31,20 @@ namespace Duo1JFramework.DataStructure
             Vector3 nodeMax = nodeBounds.max;
 
             return min.x < nodeMax.x && min.z < nodeMax.z && max.x > nodeMin.x && max.z > nodeMin.z;
+        }
+
+        /// <summary>
+        /// 通过包围盒检查对象是否被节点包含
+        /// </summary>
+        public static bool CheckByBounds(IQuadTreeNode node, IQuadTreeItem item)
+        {
+            Vector3 nodeMin = node.Bounds.min;
+            Vector3 nodeMax = node.Bounds.max;
+            Vector3 itemMin = item.Bounds.min;
+            Vector3 itemMax = item.Bounds.max;
+
+            return nodeMin.x < itemMax.x && nodeMin.z < itemMax.z &&
+                nodeMax.x > itemMin.x && nodeMax.z > itemMin.z;
         }
     }
 }

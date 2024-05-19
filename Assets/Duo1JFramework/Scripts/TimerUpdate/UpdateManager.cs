@@ -83,6 +83,16 @@ namespace Duo1JFramework.TimerUpdate
 
         private void Update()
         {
+            if (delayOneFrameSet != null)
+            {
+                foreach (Action call in delayOneFrameSet)
+                {
+                    call();
+                }
+
+                delayOneFrameSet.Clear();
+            }
+
             //预先更新
             if (preUpdateSet != null)
             {
@@ -324,9 +334,20 @@ namespace Duo1JFramework.TimerUpdate
 
         #endregion FixedUpdate
 
+        #region Delay
+
+        private HashSet<Action> delayOneFrameSet;
+
+        public void DelayOneFrame(Action action)
+        {
+            delayOneFrameSet.Add(action);
+        }
+
+        #endregion Delay
+
         #region Yield Request
 
-        private List<AsyncOperationWrap> asyncOpeWrapList = new List<AsyncOperationWrap>();
+        private List<AsyncOperationWrap> asyncOpeWrapList;
 
         public void RegisterAsyncRequest(AsyncOperation operation, Action<AsyncOperation> callback)
         {
@@ -360,6 +381,9 @@ namespace Duo1JFramework.TimerUpdate
             lateUpdateSet = new HashSet<Action>();
             lateUpdateAddList = new List<Action>();
             lateUpdateDeleteList = new List<Action>();
+
+            delayOneFrameSet = new HashSet<Action>();
+            asyncOpeWrapList = new List<AsyncOperationWrap>();
         }
 
         protected override void OnDispose()
@@ -379,6 +403,9 @@ namespace Duo1JFramework.TimerUpdate
             lateUpdateSet = null;
             lateUpdateAddList = null;
             lateUpdateDeleteList = null;
+
+            delayOneFrameSet = null;
+            asyncOpeWrapList = null;
         }
 
         /// <summary>

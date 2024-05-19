@@ -17,7 +17,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 评估检测算法
         /// </summary>
-        public Func<QuadTreeNode, object, bool> EvalLogic
+        public Func<IQuadTreeNode, object, bool> EvalLogic
         {
             get
             {
@@ -29,12 +29,14 @@ namespace Duo1JFramework.DataStructure
             }
             set => evalLogic = value;
         }
-        private Func<QuadTreeNode, object, bool> evalLogic;
+        private Func<IQuadTreeNode, object, bool> evalLogic;
 
         /// <summary>
         /// 最大深度
         /// </summary>
         public int MaxDepth { get; private set; } = 5;
+
+        public Bounds Bounds => root.Bounds;
 
         /// <summary>
         /// 子节点数量
@@ -49,12 +51,12 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 管理对象列表
         /// </summary>
-        private List<QuadTreeItem> itemList;
+        private List<IQuadTreeItem> itemList;
 
         /// <summary>
         /// 添加对象
         /// </summary>
-        public void AddItem(QuadTreeItem item)
+        public void AddItem(IQuadTreeItem item)
         {
             root.AddItem(item);
             itemList.Add(item);
@@ -63,7 +65,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 移除对象
         /// </summary>
-        public bool RemoveItem(QuadTreeItem item)
+        public bool RemoveItem(IQuadTreeItem item)
         {
             itemList.Remove(item);
             return root.RemoveItem(item);
@@ -83,6 +85,16 @@ namespace Duo1JFramework.DataStructure
 #endif
         }
 
+        public void UnActive()
+        {
+            root.ResetEvaluate();
+            root.TriggerEvaluate();
+
+#if UNITY_EDITOR
+            evalParam = null;
+#endif
+        }
+
         /// <summary>
         /// 重建
         /// </summary>
@@ -90,14 +102,14 @@ namespace Duo1JFramework.DataStructure
         {
             MaxDepth = maxDepth;
 
-            List<QuadTreeItem> tempList = itemList;
-            itemList = new List<QuadTreeItem>();
+            List<IQuadTreeItem> tempList = itemList;
+            itemList = new List<IQuadTreeItem>();
 
             root = QuadTreeNode.Create(this, bounds, 0);
 
             if (tempList != null)
             {
-                foreach (QuadTreeItem item in tempList)
+                foreach (IQuadTreeItem item in tempList)
                 {
                     AddItem(item);
                 }
@@ -114,7 +126,7 @@ namespace Duo1JFramework.DataStructure
 
         private QuadTree(Bounds bounds, int maxDepth = 5)
         {
-            itemList = new List<QuadTreeItem>();
+            itemList = new List<IQuadTreeItem>();
             MaxDepth = maxDepth;
 
             root = QuadTreeNode.Create(this, bounds, 0);

@@ -262,5 +262,10 @@ namespace Duo1JFramework
         /// 子类销毁
         /// </summary>
         protected abstract void OnDispose();
+
+        ~BaseRegister()
+        {
+            Dispose();
+        }
     }
 }

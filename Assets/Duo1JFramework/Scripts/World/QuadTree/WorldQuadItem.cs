@@ -8,7 +8,9 @@ namespace Duo1JFramework.World
     /// </summary>
     public class WorldQuadItem : QuadTreeItem
     {
-        public override Bounds Bounds
+        public override Bounds Bounds => GizmosBounds.Bounds;
+
+        public GizmosBounds GizmosBounds
         {
             get
             {
@@ -21,25 +23,28 @@ namespace Duo1JFramework.World
                         gizmosBounds = gameObject.AddComponent<GizmosBounds>();
                     }
                 }
-                return gizmosBounds.Bounds;
+                return gizmosBounds;
             }
         }
-        protected GizmosBounds gizmosBounds;
+        private GizmosBounds gizmosBounds;
 
         public override void TriggerQuad()
         {
             this.SetActive(QuadActive);
         }
 
+        private bool startAdd = false;
+
         protected virtual void Start()
         {
+            startAdd = true;
             WorldQuadManager.Instance.AddItem(this);
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (!Game.IsQuit)
+            if (!Game.IsQuit && startAdd)
             {
                 WorldQuadManager.Instance.RemoveItem(this);
             }

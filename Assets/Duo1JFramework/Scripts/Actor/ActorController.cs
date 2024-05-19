@@ -59,7 +59,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 是否绑定了相机
         /// </summary>
-        public bool CameraBinded => Actor.CameraBinded;
+        public bool CameraBinded => Actor == null ? false : Actor.CameraBinded;
 
         /// <summary>
         /// 相机X轴左右偏移

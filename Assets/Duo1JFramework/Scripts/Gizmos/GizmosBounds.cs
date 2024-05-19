@@ -5,7 +5,11 @@ namespace Duo1JFramework
 {
     public class GizmosBounds : BaseGizmosComponent
     {
-        public Bounds Bounds => new Bounds(bounds.center + transform.position, bounds.size);
+        public Bounds Bounds
+        {
+            get => new Bounds(bounds.center + transform.position, bounds.size);
+            set => bounds = value;
+        }
 
         [SerializeField]
         private Bounds bounds;

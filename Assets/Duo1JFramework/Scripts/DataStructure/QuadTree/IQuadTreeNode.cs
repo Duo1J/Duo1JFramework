@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Duo1JFramework.DataStructure
 {
     /// <summary>
@@ -6,14 +8,19 @@ namespace Duo1JFramework.DataStructure
     public interface IQuadTreeNode
     {
         /// <summary>
+        /// 包围盒
+        /// </summary>
+        Bounds Bounds { get; }
+
+        /// <summary>
         /// 添加对象
         /// </summary>
-        void AddItem(QuadTreeItem item);
+        void AddItem(IQuadTreeItem item);
 
         /// <summary>
         /// 移除对象
         /// </summary>
-        bool RemoveItem(QuadTreeItem item);
+        bool RemoveItem(IQuadTreeItem item);
 
         /// <summary>
         /// 检测评估
