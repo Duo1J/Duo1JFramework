@@ -23,7 +23,7 @@ namespace Duo1JFramework.DataStructure
             {
                 if (evalLogic == null)
                 {
-                    evalLogic = QuadTreeEvalLogic.EvalByConeOfVision;
+                    evalLogic = QuadTreeEvalLogic.EvalByConeOfVisionIgnoreY;
                 }
                 return evalLogic;
             }
@@ -35,6 +35,11 @@ namespace Duo1JFramework.DataStructure
         /// 最大深度
         /// </summary>
         public int MaxDepth { get; private set; } = 5;
+
+        /// <summary>
+        /// 通过包围盒高度控制
+        /// </summary>
+        public bool EnableHeight { get; private set; } = false;
 
         public Bounds Bounds => root.Bounds;
 

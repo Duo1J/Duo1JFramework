@@ -27,6 +27,7 @@ namespace Duo1JFramework
         public static bool CheckBoundsIsInCamera(this Bounds bound, Camera camera)
         {
             Vector4 worldPos = Vector4.one;
+            //111111
             int code = 63;
             for (int i = -1; i <= 1; i += 2)
             {
@@ -38,6 +39,46 @@ namespace Duo1JFramework
                         worldPos.y = bound.center.y + j * bound.extents.y;
                         worldPos.z = bound.center.z + k * bound.extents.z;
                         code &= CheckBoundsIsInCamera_ComputeOutCode(camera.projectionMatrix * camera.worldToCameraMatrix * worldPos);
+
+                        if (code == 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return code == 0;
+        }
+
+        private static int CheckBoundsIsInCamera_ComputeOutCodeIgnoreY(Vector4 projectionPos)
+        {
+            int code = 0;
+            if (projectionPos.x < -projectionPos.w) code |= 1;
+            if (projectionPos.x > projectionPos.w) code |= 2;
+            if (projectionPos.z < -projectionPos.w) code |= 4;
+            if (projectionPos.z > projectionPos.w) code |= 8;
+            return code;
+        }
+
+        /// <summary>
+        /// 检测包围盒是否在相机范围内 (忽略Y轴)
+        /// </summary>
+        public static bool CheckBoundsIsInCameraIgnoreY(this Bounds bound, Camera camera)
+        {
+            Vector4 worldPos = Vector4.one;
+            //1111
+            int code = 15;
+            for (int i = -1; i <= 1; i += 2)
+            {
+                for (int j = -1; j <= 1; j += 2)
+                {
+                    worldPos.x = bound.center.x + i * bound.extents.x;
+                    worldPos.z = bound.center.z + j * bound.extents.z;
+                    code &= CheckBoundsIsInCamera_ComputeOutCodeIgnoreY(camera.projectionMatrix * camera.worldToCameraMatrix * worldPos);
+
+                    if (code == 0)
+                    {
+                        return true;
                     }
                 }
             }

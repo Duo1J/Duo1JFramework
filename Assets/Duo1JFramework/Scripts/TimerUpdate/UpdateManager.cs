@@ -338,6 +338,10 @@ namespace Duo1JFramework.TimerUpdate
 
         private HashSet<Action> delayOneFrameSet;
 
+        /// <summary>
+        /// 延迟一帧执行
+        /// 重复传入相同的委托只执行一次
+        /// </summary>
         public void DelayOneFrame(Action action)
         {
             delayOneFrameSet.Add(action);

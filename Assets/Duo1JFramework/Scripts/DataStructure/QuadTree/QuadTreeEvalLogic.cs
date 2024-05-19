@@ -17,6 +17,14 @@ namespace Duo1JFramework.DataStructure
         }
 
         /// <summary>
+        /// 视锥体检测 (忽略Y轴)
+        /// </summary>
+        public static bool EvalByConeOfVisionIgnoreY(IQuadTreeNode node, object param)
+        {
+            return node.Bounds.CheckBoundsIsInCameraIgnoreY(CameraManager.Instance.EvalCamera);
+        }
+
+        /// <summary>
         /// 矩形区域检测
         /// </summary>
         /// <param name="param">Bounds区域</param>

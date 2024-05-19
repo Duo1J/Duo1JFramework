@@ -1,4 +1,5 @@
 using Duo1JFramework.ObjectPool;
+using System;
 using System.Collections.Generic;
 
 namespace Duo1JFramework.RX
@@ -8,9 +9,11 @@ namespace Duo1JFramework.RX
     /// </summary>
     public partial class Rx : MonoSingleton<Rx>
     {
-        private List<RxObserver> observerList;
-        private List<int> removeList;
+        #region API
 
+        /// <summary>
+        /// 创建观察者
+        /// </summary>
         public static RxObserver Observer
         {
             get
@@ -20,6 +23,13 @@ namespace Duo1JFramework.RX
                 return observer;
             }
         }
+
+        #endregion API
+
+        #region Inner
+
+        private List<RxObserver> observerList;
+        private List<int> removeList;
 
         private void OnUpdate()
         {
@@ -39,16 +49,21 @@ namespace Duo1JFramework.RX
 
         private void OnLateUpdate()
         {
+            observerList.ForEach((observer) =>
+            {
+                observer._OnLateUpdate();
+            });
+
+            removeList.Sort((lhs, rhs) =>
+            {
+                return rhs - lhs;
+            });
+
             removeList.ForEach((remIdx) =>
             {
                 observerList.RemoveAt(remIdx);
             });
             removeList.Clear();
-
-            observerList.ForEach((observer) =>
-            {
-                observer._OnLateUpdate();
-            });
         }
 
         public void End(RxObserver observer)
@@ -96,5 +111,7 @@ namespace Duo1JFramework.RX
             Register.RegisterFixedUpdate(OnFixedUpdate);
             Register.RegisterLateUpdate(OnLateUpdate);
         }
+
+        #endregion Inner
     }
 }
