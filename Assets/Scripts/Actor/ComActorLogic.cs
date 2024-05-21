@@ -14,7 +14,7 @@ public class ComActorLogic : CcControlableActor
         Con.AddFSMNode(
             StateNode.Create(
                 "Box1",
-                () =>
+                (param) =>
                 {
                     Con.AniCrossFade("Boxing01");
                 }
@@ -25,7 +25,7 @@ public class ComActorLogic : CcControlableActor
         Con.AddFSMNode(
             StateNode.Create(
                 "Box2",
-                () =>
+                (param) =>
                 {
                     Con.AniCrossFade("Boxing02");
                 }

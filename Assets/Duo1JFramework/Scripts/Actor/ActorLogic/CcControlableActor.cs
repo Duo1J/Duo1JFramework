@@ -41,12 +41,12 @@ namespace Duo1JFramework.Actor
                             Con.CameraOffsetZ = InWalk() ? -0.3f : -0.7f;
                         }
                     },
-                    () =>
+                    (param) =>
                     {
                         moveVelocity = Vector3.zero;
                     }),
                 StateNode.Create("Jump",
-                    () =>
+                    (param) =>
                     {
                         if (!Con.Grounded)
                         {
@@ -67,7 +67,7 @@ namespace Duo1JFramework.Actor
                             Con.SwitchState("Move");
                         }
                     },
-                    () =>
+                    (param) =>
                     {
                         jumpVelocity = Vector3.zero;
                         Con.CameraOffsetY = 0f;

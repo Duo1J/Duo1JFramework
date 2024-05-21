@@ -39,7 +39,7 @@ namespace Duo1JFramework.Actor
                     },
                     null),
                 StateNode.Create("Jump",
-                    () =>
+                    (param) =>
                     {
                         if (!Con.Grounded)
                         {

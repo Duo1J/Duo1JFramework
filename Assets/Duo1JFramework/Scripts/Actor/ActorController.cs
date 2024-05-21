@@ -134,7 +134,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 初始化状态机
         /// </summary>
-        public void InitFSM(string curStateName, params StateNode[] stateList)
+        public void InitFSM(string curStateName, params IStateNode[] stateList)
         {
             fsm = StateMachine.Create(ToString(), curStateName, stateList);
             CurState = curStateName;
@@ -143,7 +143,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 添加状态节点
         /// </summary>
-        public bool AddFSMNode(StateNode stateNode)
+        public bool AddFSMNode(IStateNode stateNode)
         {
             if (!CheckFSM())
             {

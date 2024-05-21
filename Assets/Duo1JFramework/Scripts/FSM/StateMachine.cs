@@ -13,21 +13,24 @@ namespace Duo1JFramework.FSM
         public string Name { get; set; }
 
         /// <summary>
-        /// 状态列表
+        /// 状态字典
         /// </summary>
-        private Dictionary<string, StateNode> stateDict;
+        private Dictionary<string, IStateNode> stateDict;
 
         /// <summary>
         /// 当前状态
         /// </summary>
-        private StateNode curState;
+        private IStateNode curState;
 
         /// <summary>
         /// 忽略下次Tick
         /// </summary>
         private bool ignoreNextTick = false;
 
-        public static StateMachine Create(string fsmName, string curStateName, params StateNode[] stateNodeList)
+        /// <summary>
+        /// 创建
+        /// </summary>
+        public static StateMachine Create(string fsmName, string curStateName, params IStateNode[] stateNodeList)
         {
             StateMachine fsm = new StateMachine();
             fsm.Init(fsmName, curStateName, stateNodeList);
@@ -35,16 +38,24 @@ namespace Duo1JFramework.FSM
         }
 
         /// <summary>
+        /// 创建 (无默认状态)
+        /// </summary>
+        public static StateMachine Create(string fsmName, params IStateNode[] stateNodeList)
+        {
+            return Create(fsmName, null, stateNodeList);
+        }
+
+        /// <summary>
         /// 初始化
         /// </summary>
-        public void Init(string fsmName, string curStateName, params StateNode[] stateNodeList)
+        public void Init(string fsmName, string curStateName, params IStateNode[] stateNodeList)
         {
             Name = fsmName;
 
             curState = null;
-            stateDict = new Dictionary<string, StateNode>();
+            stateDict = new Dictionary<string, IStateNode>();
 
-            foreach (StateNode stateNode in stateNodeList)
+            foreach (IStateNode stateNode in stateNodeList)
             {
                 if (!AddNode(stateNode))
                 {
@@ -52,25 +63,25 @@ namespace Duo1JFramework.FSM
                     return;
                 }
 
-                if (stateNode.StateName.Equals(curStateName))
+                if (curStateName != null && stateNode.StateName.Equals(curStateName))
                 {
                     curState = stateNode;
                 }
             }
-            if (curState == null)
+            if (curStateName != null && curState == null)
             {
-                Log.ErrorForce($"{ToString()} 未找到当前执行状态: {curStateName}");
+                Log.ErrorForce($"{ToString()} 未找到默认执行状态: `{curStateName}`");
                 Dispose();
                 return;
             }
 
-            curState.StateEnter();
+            curState?.StateEnter(null);
         }
 
         /// <summary>
         /// 添加状态节点
         /// </summary>
-        public bool AddNode(StateNode stateNode)
+        public bool AddNode(IStateNode stateNode)
         {
             if (string.IsNullOrEmpty(stateNode.StateName))
             {
@@ -80,7 +91,7 @@ namespace Duo1JFramework.FSM
 
             if (stateDict.ContainsKey(stateNode.StateName))
             {
-                Log.ErrorForce($"{ToString()} 不可使用相同的状态名: {stateNode.StateName}");
+                Log.ErrorForce($"{ToString()} 状态名重复: `{stateNode.StateName}`");
                 return false;
             }
 
@@ -112,34 +123,40 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 切换状态
         /// </summary>
-        public bool SwitchState(string stateName, bool ignoreNextTick = true)
+        public bool SwitchState(string stateName, object param = null, bool ignoreNextTick = true)
         {
             Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
 
-            if (!curState.CanSwitchTo(stateName))
-                return false;
+            if (curState != null)
+            {
+                if (!curState.CanSwitchTo(stateName))
+                {
+                    return false;
+                }
+                if (!curState.CheckSwitchCon())
+                {
+                    return false;
+                }
+            }
 
-            if (!curState.CheckSwitchCon())
-                return false;
-
-            return ForceSwitchState(stateName, ignoreNextTick);
+            return ForceSwitchState(stateName, param, ignoreNextTick);
         }
 
         /// <summary>
         /// 强制切换状态
         /// </summary>
-        public bool ForceSwitchState(string stateName, bool ignoreNextTick = true)
+        public bool ForceSwitchState(string stateName, object param = null, bool ignoreNextTick = true)
         {
             Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
 
             if (InState(stateName))
                 return false;
 
-            if (stateDict.TryGetValue(stateName, out StateNode state))
+            if (stateDict.TryGetValue(stateName, out IStateNode state))
             {
-                curState.StateExit();
+                curState?.StateExit(param);
                 curState = state;
-                curState.StateEnter();
+                curState.StateEnter(param);
                 if (ignoreNextTick)
                     this.ignoreNextTick = true;
                 return true;
@@ -178,6 +195,10 @@ namespace Duo1JFramework.FSM
         {
             curState = null;
             stateDict = null;
+        }
+
+        private StateMachine()
+        {
         }
 
         ~StateMachine()

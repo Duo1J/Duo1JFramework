@@ -7,7 +7,7 @@ namespace Duo1JFramework.FSM
     /// <summary>
     /// 有限状态机状态节点
     /// </summary>
-    public class StateNode
+    public class StateNode : IStateNode
     {
         /// <summary>
         /// 归属状态机
@@ -39,9 +39,9 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public string MaxTimeChgStateName { get; private set; }
 
-        private Action stateEnter;
+        private Action<object> stateEnter;
         private Action stateTick;
-        private Action stateExit;
+        private Action<object> stateExit;
 
         /// <summary>
         /// 可切换状态列表
@@ -56,7 +56,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 创建
         /// </summary>
-        public static StateNode Create(string stateName, Action stateEnter = null, Action stateTick = null, Action stateExit = null)
+        public static StateNode Create(string stateName, Action<object> stateEnter = null, Action stateTick = null, Action<object> stateExit = null)
         {
             return new StateNode(stateName, stateEnter, stateTick, stateExit);
         }
@@ -138,10 +138,10 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 状态进入
         /// </summary>
-        public void StateEnter()
+        public void StateEnter(object param)
         {
             StartTime = CurTime;
-            stateEnter?.Invoke();
+            stateEnter?.Invoke(param);
         }
 
         /// <summary>
@@ -160,14 +160,14 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 状态退出
         /// </summary>
-        public void StateExit()
+        public void StateExit(object param)
         {
-            stateExit?.Invoke();
+            stateExit?.Invoke(param);
         }
 
         #endregion Inner
 
-        public StateNode(string stateName, Action stateEnter = null, Action stateTick = null, Action stateExit = null)
+        private StateNode(string stateName, Action<object> stateEnter = null, Action stateTick = null, Action<object> stateExit = null)
         {
             this.StateName = stateName;
             this.stateEnter = stateEnter;
