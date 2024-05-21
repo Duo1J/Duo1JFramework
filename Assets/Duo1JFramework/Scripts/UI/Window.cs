@@ -55,12 +55,12 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 层级
         /// </summary>
-        public eUILayer Layer => Config.Layer;
+        public EUILayer Layer => Config.Layer;
 
         /// <summary>
         /// 是否是常驻层级
         /// </summary>
-        public bool IsConstLayer => Layer == eUILayer.Const;
+        public bool IsConstLayer => Layer == EUILayer.Const;
 
         /// <summary>
         /// 排序层级

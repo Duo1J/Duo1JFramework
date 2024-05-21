@@ -49,9 +49,9 @@ namespace Duo1JFramework
         }
 
         [MenuItem(EditorDef.TOOL_PATH_PREFIX + "文件夹快速选中", priority = 13)]
-        public static FolderFastJumpEditor OpenFolderFastJumpEditor()
+        public static FolderFastJumpEditorWnd OpenFolderFastJumpEditor()
         {
-            return FolderFastJumpEditor.Open();
+            return FolderFastJumpEditorWnd.Open();
         }
 
         #endregion Path
@@ -103,9 +103,9 @@ namespace Duo1JFramework
         #region Build 40
 
         [MenuItem(EditorDef.TOOL_EDITOR_BUILD_PREFIX + "构建AssetBundle", priority = 40)]
-        public static AssetBundleBuildEditor OpenAssetBundleBuildEditor()
+        public static AssetBundleBuildEditorWnd OpenAssetBundleBuildEditor()
         {
-            return AssetBundleBuildEditor.Open();
+            return AssetBundleBuildEditorWnd.Open();
         }
 
         #endregion Build

@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b5840864beccf04c98cb98d133e91c3, type: 3}
-  m_Name: FolderFastJumpDataSO
+  m_Name: FolderFastJumpDataConfig
   m_EditorClassIdentifier: 
   list: []

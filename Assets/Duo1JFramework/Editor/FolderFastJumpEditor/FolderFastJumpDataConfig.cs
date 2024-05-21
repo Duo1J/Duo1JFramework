@@ -6,7 +6,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 文件夹快速选中工具配置
     /// </summary>
-    public class FolderFastJumpDataSo : EditorConfigSO<FolderFastJumpDataSo>
+    public class FolderFastJumpDataConfig : EditorConfigSO<FolderFastJumpDataConfig>
     {
         public List<FolderFastJumpData> list;
     }

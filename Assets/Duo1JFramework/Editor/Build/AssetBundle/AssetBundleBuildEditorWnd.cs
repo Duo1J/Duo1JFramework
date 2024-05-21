@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace Duo1JFramework.Build
 {
-    public class AssetBundleBuildEditor : EditorWindowBase<AssetBundleBuildEditor>
+    /// <summary>
+    /// AssetBundle包构建编辑器窗口
+    /// </summary>
+    public class AssetBundleBuildEditorWnd : EditorWindowBase<AssetBundleBuildEditorWnd>
     {
         private Vector2 scrollPos;
 

@@ -50,22 +50,22 @@ namespace Duo1JFramework.UI
         {
             switch (wnd.Layer)
             {
-                case eUILayer.Bottom:
+                case EUILayer.Bottom:
                     {
                         wnd.SetParent(bottomLayer);
                         break;
                     }
-                case eUILayer.Normal:
+                case EUILayer.Normal:
                     {
                         wnd.SetParent(normalLayer);
                         break;
                     }
-                case eUILayer.Top:
+                case EUILayer.Top:
                     {
                         wnd.SetParent(topLayer);
                         break;
                     }
-                case eUILayer.Const:
+                case EUILayer.Const:
                     {
                         wnd.SetParent(constLayer);
                         break;
@@ -81,23 +81,23 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 获取层级的基础排序层级
         /// </summary>
-        public int GetBaseSortingOrder(eUILayer layer)
+        public int GetBaseSortingOrder(EUILayer layer)
         {
             switch (layer)
             {
-                case eUILayer.Bottom:
+                case EUILayer.Bottom:
                     {
                         return bottomCanvas.sortingOrder;
                     }
-                case eUILayer.Normal:
+                case EUILayer.Normal:
                     {
                         return normalCanvas.sortingOrder;
                     }
-                case eUILayer.Top:
+                case EUILayer.Top:
                     {
                         return topCanvas.sortingOrder;
                     }
-                case eUILayer.Const:
+                case EUILayer.Const:
                     {
                         return constCanvas.sortingOrder;
                     }

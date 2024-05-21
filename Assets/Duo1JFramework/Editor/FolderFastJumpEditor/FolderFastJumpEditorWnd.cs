@@ -9,7 +9,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 文件夹快速选中工具
     /// </summary>
-    public class FolderFastJumpEditor : EditorWindowBase<FolderFastJumpEditor>
+    public class FolderFastJumpEditorWnd : EditorWindowBase<FolderFastJumpEditorWnd>
     {
         private List<FolderFastJumpData> defaultDataList;
         private List<FolderFastJumpData> dataList;
@@ -60,7 +60,7 @@ namespace Duo1JFramework
 
                 if (GUILayout.Button("选中配置文件"))
                 {
-                    FolderFastJumpDataSo.SelectAsset();
+                    FolderFastJumpDataConfig.SelectAsset();
                 }
             });
 
@@ -283,11 +283,11 @@ namespace Duo1JFramework
             return false;
         }
 
-        public FolderFastJumpDataSo So
+        public FolderFastJumpDataConfig So
         {
             get
             {
-                return FolderFastJumpDataSo.Instance;
+                return FolderFastJumpDataConfig.Instance;
             }
         }
 
