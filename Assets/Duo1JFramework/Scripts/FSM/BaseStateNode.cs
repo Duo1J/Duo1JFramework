@@ -1,43 +1,55 @@
 namespace Duo1JFramework.FSM
 {
     /// <summary>
-    /// 有限状态机节点接口
+    /// 基础有限状态机节点
     /// </summary>
-    public interface IStateNode
+    public abstract class BaseStateNode : IStateNode
     {
         /// <summary>
         /// 归属状态机
         /// </summary>
-        StateMachine FSM { get; set; }
+        public StateMachine FSM { get; set; }
 
         /// <summary>
         /// 状态名
         /// </summary>
-        string StateName { get; }
+        public abstract string StateName { get; }
 
         /// <summary>
         /// 状态进入
         /// </summary>
-        void StateEnter(object param);
+        public virtual void StateEnter(object param)
+        {
+        }
 
         /// <summary>
         /// 状态退出
         /// </summary>
-        void StateExit(object param);
+        public virtual void StateExit(object param)
+        {
+        }
 
         /// <summary>
         /// 状态更新
         /// </summary>
-        void StateTick();
+        public virtual void StateTick()
+        {
+        }
 
         /// <summary>
         /// 是否可切换状态至
         /// </summary>
-        bool CanSwitchTo(string tarStateName);
+        public virtual bool CanSwitchTo(string tarStateName)
+        {
+            return true;
+        }
 
         /// <summary>
         /// 检查是否已满足可切换条件
         /// </summary>
-        bool CheckSwitchCon();
+        public virtual bool CheckSwitchCon()
+        {
+            return true;
+        }
     }
 }

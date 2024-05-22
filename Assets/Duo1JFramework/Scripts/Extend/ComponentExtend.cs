@@ -15,14 +15,32 @@ namespace Duo1JFramework
             return com.gameObject.GetOrAddComponent<T>();
         }
 
+        /// <summary>
+        /// 获取并断言组件
+        /// </summary>
         public static T GetAndAssertComponent<T>(this Component com, string msg = null) where T : Component
         {
             return com.gameObject.GetAndAssertComponent<T>(msg);
         }
 
+        /// <summary>
+        /// 设置显隐
+        /// </summary>
         public static void SetActive(this Component com, bool active)
         {
             com.gameObject.SetActive(active);
         }
+
+        #region UI
+
+        /// <summary>
+        /// 设置CanvasGroup的Alpha值
+        /// </summary>
+        public static void SetCanvasGroupAlpha(this Component component, float alpha)
+        {
+            component.gameObject.SetCanvasGroupAlpha(alpha);
+        }
+
+        #endregion UI
     }
 }

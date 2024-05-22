@@ -5,19 +5,14 @@ using UnityEngine;
 namespace Duo1JFramework.FSM
 {
     /// <summary>
-    /// 有限状态机状态节点
+    /// 有限状态机动态创建节点
     /// </summary>
-    public class StateNode : IStateNode
+    public class StateNode : BaseStateNode
     {
-        /// <summary>
-        /// 归属状态机
-        /// </summary>
-        public StateMachine FSM { get; set; }
-
         /// <summary>
         /// 状态名
         /// </summary>
-        public string StateName { get; set; }
+        public override string StateName { get; }
 
         /// <summary>
         /// 开始时间
@@ -113,7 +108,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 检查是否已满足可切换条件
         /// </summary>
-        public bool CheckSwitchCon()
+        public override bool CheckSwitchCon()
         {
             if ((CurTime - StartTime) < MinTime)
             {
@@ -126,7 +121,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 是否可切换状态至
         /// </summary>
-        public bool CanSwitchTo(string tarStateName)
+        public override bool CanSwitchTo(string tarStateName)
         {
             if (switchList == null || switchList.Length == 0)
                 return true;
@@ -138,7 +133,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 状态进入
         /// </summary>
-        public void StateEnter(object param)
+        public override void StateEnter(object param)
         {
             StartTime = CurTime;
             stateEnter?.Invoke(param);
@@ -147,7 +142,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 状态更新
         /// </summary>
-        public void StateTick()
+        public override void StateTick()
         {
             stateTick?.Invoke();
 
@@ -160,7 +155,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 状态退出
         /// </summary>
-        public void StateExit(object param)
+        public override void StateExit(object param)
         {
             stateExit?.Invoke(param);
         }
