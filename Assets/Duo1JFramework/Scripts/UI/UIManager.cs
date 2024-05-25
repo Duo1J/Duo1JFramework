@@ -150,7 +150,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         private void LoadWindowAsset(Window wnd, Action callback)
         {
-            UIConfig cfg = wnd.Config;
+            UIData cfg = wnd.Config;
             Assert.NotNull(cfg, $"窗口`{wnd.GetType().Name}`配置为空");
 
             GameObject uiGo;

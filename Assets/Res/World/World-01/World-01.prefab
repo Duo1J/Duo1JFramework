@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2f7eb2248cb2f469ad9fa58cb3dfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  gizmosColor: {r: 1, g: 1, b: 1, a: 1}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 120, y: 0, z: 120}
@@ -267,6 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b12ab8b6277634dabfe7063a89abf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quadActive: 0
   showGizmos: 1
 --- !u!1 &5910789412988717823
 GameObject:
@@ -419,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2f7eb2248cb2f469ad9fa58cb3dfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  gizmosColor: {r: 1, g: 1, b: 1, a: 1}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 50, y: 0, z: 50}
@@ -437,6 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d0e051f12363f47a3eab87abf19693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quadActive: 0
   showGizmos: 1
 --- !u!1 &7280423063412134513
 GameObject:
@@ -518,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2f7eb2248cb2f469ad9fa58cb3dfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  gizmosColor: {r: 1, g: 1, b: 1, a: 1}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 50, y: 0, z: 50}
@@ -536,6 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d0e051f12363f47a3eab87abf19693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quadActive: 0
   showGizmos: 1
 --- !u!1 &8039265874226472974
 GameObject:
@@ -582,7 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2f7eb2248cb2f469ad9fa58cb3dfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  gizmosColor: {r: 1, g: 1, b: 1, a: 1}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 50, y: 0, z: 50}
@@ -600,6 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d0e051f12363f47a3eab87abf19693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quadActive: 0
   showGizmos: 1
 --- !u!1 &8610199378153663426
 GameObject:
@@ -646,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2f7eb2248cb2f469ad9fa58cb3dfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  gizmosColor: {r: 1, g: 1, b: 1, a: 1}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 50, y: 0, z: 50}
@@ -664,4 +668,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d0e051f12363f47a3eab87abf19693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quadActive: 0
   showGizmos: 1

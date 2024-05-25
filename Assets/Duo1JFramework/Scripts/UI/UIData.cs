@@ -3,9 +3,9 @@ using Duo1JFramework.Asset;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// UI配置
+    /// UI数据
     /// </summary>
-    public class UIConfig
+    public class UIData
     {
         /// <summary>
         /// 窗口预制体路径
@@ -27,25 +27,25 @@ namespace Duo1JFramework.UI
         /// </summary>
         public bool IsFullScreen { get; private set; } = false;
 
-        public UIConfig SetLayer(EUILayer layer)
+        public UIData SetLayer(EUILayer layer)
         {
             Layer = layer;
             return this;
         }
 
-        public UIConfig SetLoadType(EAssetLoadType loadType)
+        public UIData SetLoadType(EAssetLoadType loadType)
         {
             LoadType = loadType;
             return this;
         }
 
-        public UIConfig SetIsFullScreen(bool isFullScreen)
+        public UIData SetIsFullScreen(bool isFullScreen)
         {
             IsFullScreen = isFullScreen;
             return this;
         }
 
-        public UIConfig(string path)
+        public UIData(string path)
         {
             Path = path;
         }

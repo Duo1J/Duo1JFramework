@@ -104,46 +104,6 @@ namespace Duo1JFramework.DataStructure
         }
 
         /// <summary>
-        /// 通过管理对象包围盒调整自身包围盒高度
-        /// </summary>
-        /// <param name="delay">延迟一帧执行</param>
-        public void AdjustBoundsHeightByItem(bool delay = false)
-        {
-            if (!Tree.EnableHeight)
-            {
-                return;
-            }
-
-            if (delay)
-            {
-                UpdateManager.Instance.DelayOneFrame(_AdjustBoundsHeightByItem);
-            }
-            else
-            {
-                _AdjustBoundsHeightByItem();
-            }
-        }
-
-        private void _AdjustBoundsHeightByItem()
-        {
-            float tarHeight = 1;
-            if (itemList != null)
-            {
-                foreach (IQuadTreeItem item in itemList)
-                {
-                    Bounds itemBounds = item.Bounds;
-                    float itemHeight = itemBounds.center.y + itemBounds.extents.y;
-                    if (itemHeight > tarHeight)
-                    {
-                        tarHeight = itemHeight;
-                    }
-                }
-            }
-
-            Bounds = new Bounds(Bounds.center, new Vector3(Bounds.size.x, tarHeight * 2, Bounds.size.z));
-        }
-
-        /// <summary>
         /// 重置对象的评估状态
         /// </summary>
         public void ResetEvaluate()
@@ -283,7 +243,7 @@ namespace Duo1JFramework.DataStructure
                 itemList = new List<IQuadTreeItem>();
             }
             itemList.Add(item);
-            AdjustBoundsHeightByItem(true);
+            Tree.AdjustBoundsHeightByItem(true);
         }
 
         private bool RemoveFromItemList(IQuadTreeItem item)
@@ -293,7 +253,7 @@ namespace Duo1JFramework.DataStructure
                 return false;
             }
             bool flag = itemList.Remove(item);
-            AdjustBoundsHeightByItem(true);
+            Tree.AdjustBoundsHeightByItem(true);
             return flag;
         }
 
@@ -302,6 +262,44 @@ namespace Duo1JFramework.DataStructure
             this.Tree = tree;
             this.Bounds = bounds;
             this.Depth = depth;
+        }
+
+        /// <summary>
+        /// 通过管理对象包围盒调整树节点包围盒高度
+        /// </summary>
+        public float AdjustBoundsHeightByItem()
+        {
+            float childTarHeight = 1;
+            float selfTarHeight = 1;
+
+            if (childs != null)
+            {
+                for (int i = 0; i < childs.Length; ++i)
+                {
+                    float _childTarHeight = childs[i].AdjustBoundsHeightByItem();
+                    if (_childTarHeight > childTarHeight)
+                    {
+                        childTarHeight = _childTarHeight;
+                    }
+                }
+            }
+
+            if (itemList != null)
+            {
+                foreach (IQuadTreeItem item in itemList)
+                {
+                    Bounds itemBounds = item.Bounds;
+                    float itemHeight = itemBounds.center.y + itemBounds.extents.y;
+                    if (itemHeight > selfTarHeight)
+                    {
+                        selfTarHeight = itemHeight;
+                    }
+                }
+            }
+
+            float tarHeight = Mathf.Max(childTarHeight, selfTarHeight);
+            Bounds = new Bounds(Bounds.center, new Vector3(Bounds.size.x, tarHeight * 2, Bounds.size.z));
+            return tarHeight;
         }
 
         /// <summary>

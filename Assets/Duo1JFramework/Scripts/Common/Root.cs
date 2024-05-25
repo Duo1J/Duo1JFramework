@@ -1,5 +1,6 @@
 using Duo1JFramework.Asset;
 using Duo1JFramework.UI;
+using Duo1JFramework.World;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -48,6 +49,16 @@ namespace Duo1JFramework
             }
         }
         private UIRoot uiRoot;
+
+        /// <summary>
+        /// Actor根节点
+        /// </summary>
+        public Transform ActorRoot => WorldManager.Instance.ActorRoot;
+
+        /// <summary>
+        /// 世界场景根节点
+        /// </summary>
+        public Transform WorldRoot => WorldManager.Instance.WorldRoot;
 
         /// <summary>
         /// 虚拟相机根节点

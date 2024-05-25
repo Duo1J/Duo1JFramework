@@ -140,7 +140,7 @@ namespace Duo1JFramework.Actor
 
             Asset = asset;
             Asset.name = $"{Data.Name}-{ID} ({Asset.name})";
-            Asset.SetParent(WorldManager.Instance.GetActorRoot());
+            Asset.SetParent(WorldManager.Instance.ActorRoot);
             Asset.ResetSRT();
 
             Controller = Asset.GetAndAssertComponent<ActorController>("Actor资源预制体上未挂载ActorController组件");

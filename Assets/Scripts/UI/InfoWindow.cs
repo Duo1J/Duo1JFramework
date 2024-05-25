@@ -9,9 +9,9 @@ public class InfoWindow : Window
 {
     TextExtend buttomInfoText;
 
-    protected override UIConfig CreateUIConfig()
+    protected override UIData CreateUIConfig()
     {
-        return new UIConfig("UI/InfoWindow")
+        return new UIData("UI/InfoWindow")
             .SetLoadType(EAssetLoadType.Resources)
             .SetLayer(EUILayer.Const);
     }

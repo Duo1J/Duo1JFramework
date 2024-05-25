@@ -270,7 +270,7 @@ namespace Duo1JFramework.Asset
 #if UNITY_EDITOR
                     SetAssetLoader(EAssetLoaderType.AssetDatabase);
 #else
-                    SetAssetLoader(eAssetLoaderType.AssetBundle);
+                    SetAssetLoader(EAssetLoaderType.AssetBundle);
 #endif
                 }
             }

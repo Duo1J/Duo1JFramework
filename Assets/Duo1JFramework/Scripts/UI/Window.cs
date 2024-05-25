@@ -34,7 +34,7 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// UI配置
         /// </summary>
-        public UIConfig Config
+        public UIData Config
         {
             get
             {
@@ -45,7 +45,7 @@ namespace Duo1JFramework.UI
                 return config;
             }
         }
-        private UIConfig config;
+        private UIData config;
 
         /// <summary>
         /// UI控制器
@@ -173,7 +173,7 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 子类创建UI配置
         /// </summary>
-        protected abstract UIConfig CreateUIConfig();
+        protected abstract UIData CreateUIConfig();
 
         /// <summary>
         /// 初始化

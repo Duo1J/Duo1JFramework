@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Duo1JFramework
 {
-    public class GizmosShpere : BaseGizmosComponent
+    public class GizmosSphere : BaseGizmosComponent
     {
         public Vector3 Center
         {

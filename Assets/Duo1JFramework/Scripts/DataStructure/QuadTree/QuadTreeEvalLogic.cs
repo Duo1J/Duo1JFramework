@@ -21,7 +21,17 @@ namespace Duo1JFramework.DataStructure
         /// </summary>
         public static bool EvalByConeOfVisionIgnoreY(IQuadTreeNode node, object param)
         {
-            return node.Bounds.CheckBoundsIsInCameraIgnoreY(CameraManager.Instance.EvalCamera);
+            Bounds bounds = node.Bounds;
+            Camera camera = CameraManager.Instance.EvalCamera;
+
+            Vector3 cameraPos = camera.transform.position;
+            if (cameraPos.x > bounds.min.x && cameraPos.x < bounds.max.x &&
+                cameraPos.y > bounds.min.y && cameraPos.y < bounds.max.y)
+            {
+                return true;
+            }
+
+            return bounds.CheckBoundsIsInCameraIgnoreY(camera);
         }
 
         /// <summary>

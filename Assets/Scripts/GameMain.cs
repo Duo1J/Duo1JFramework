@@ -29,15 +29,18 @@ public class GameMain : BaseGameMain
 
     private void Start()
     {
-        CameraManager.Instance.InitCamera<CMCamera>("Camera/Camera3rdPerson.prefab");
         UIManager.Instance.OpenWindow<InfoWindow>();
-
-        mainActor = ActorManager.Instance.CreateActor(new ActorData(typeof(ComActorLogic), "TestActor", "Actor/Actor-02.prefab"));
-        ActorManager.Instance.SetMainActor(mainActor, true);
-
-        GameObject.Find("QuadItemList").transform.ChildForeach((childGo) =>
+        WorldManager.Instance.LoadWorld(new WorldData("World01", "World/World-01/World-01.prefab"), (controller) =>
         {
-            WorldQuadManager.Instance.AddItem(childGo.GetOrAddComponent<WorldQuadItem>());
+            CameraManager.Instance.InitCamera<CMCamera>("Camera/Camera3rdPerson.prefab");
+
+            mainActor = ActorManager.Instance.CreateActor(new ActorData(typeof(ComActorLogic), "TestActor", "Actor/Actor-02.prefab"));
+            ActorManager.Instance.SetMainActor(mainActor, true);
+
+            GameObject.Find("QuadItemList").transform.ChildForeach((childGo) =>
+            {
+                WorldQuadManager.Instance.AddItem(childGo.GetOrAddComponent<WorldQuadItem>());
+            });
         });
     }
 

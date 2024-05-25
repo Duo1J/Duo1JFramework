@@ -1,3 +1,4 @@
+using Duo1JFramework.TimerUpdate;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -141,6 +142,32 @@ namespace Duo1JFramework.DataStructure
         {
             root = null;
             itemList = null;
+        }
+
+        /// <summary>
+        /// 通过管理对象包围盒调整树节点包围盒高度
+        /// </summary>
+        /// <param name="delay">延迟一帧执行</param>
+        public void AdjustBoundsHeightByItem(bool delay = false)
+        {
+            if (!EnableHeight)
+            {
+                return;
+            }
+
+            if (delay)
+            {
+                UpdateManager.Instance.DelayOneFrame(_AdjustBoundsHeightByItem);
+            }
+            else
+            {
+                _AdjustBoundsHeightByItem();
+            }
+        }
+
+        private void _AdjustBoundsHeightByItem()
+        {
+            root.AdjustBoundsHeightByItem();
         }
 
 #if UNITY_EDITOR
