@@ -1,3 +1,4 @@
+using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.FSM;
 using Duo1JFramework.ObjectPool;
 using Duo1JFramework.World;
@@ -25,6 +26,12 @@ namespace Duo1JFramework.Actor
         /// </summary>
         [SerializeField]
         protected Animator animator;
+
+        /// <summary>
+        /// 足部IK控制器
+        /// </summary>
+        [SerializeField]
+        protected FootIKController ikCon;
 
         /// <summary>
         /// 角色参数
@@ -369,7 +376,11 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public Animator GetAnimator()
         {
-            if (animator == null) ErrNoComponent(typeof(Animator));
+            if (animator == null)
+            {
+                ErrNoComponent(typeof(Animator));
+            }
+
             return animator;
         }
 
@@ -392,6 +403,47 @@ namespace Duo1JFramework.Actor
             Assert.NotNullOrEmpty(stateName, "动画状态名不可为空");
             return !stateName.Equals(curAniName);
         }
+
+        #region IK
+
+        /// <summary>
+        /// 获取足部IK控制器
+        /// </summary>
+        public FootIKController GetIKCon()
+        {
+            if (ikCon == null)
+            {
+                ErrNoComponent(typeof(FootIKController));
+            }
+
+            return ikCon;
+        }
+
+        /// <summary>
+        /// 设置足部IK权重
+        /// </summary>
+        public void SetFootIKGoal(float leftGoal, float rightGoal, bool immediately = false)
+        {
+            GetIKCon()?.SetGoal(leftGoal, rightGoal, immediately);
+        }
+
+        /// <summary>
+        /// 设置左脚权重
+        /// </summary>
+        public void SetLeftGoal(float goal, bool immediately = false)
+        {
+            GetIKCon()?.SetLeftGoal(goal, immediately);
+        }
+
+        /// <summary>
+        /// 设置右脚权重
+        /// </summary>
+        public void SetRightGoal(float goal, bool immediately = false)
+        {
+            GetIKCon()?.SetRightGoal(goal, immediately);
+        }
+
+        #endregion IK
 
         #endregion Animation
 
@@ -452,6 +504,7 @@ namespace Duo1JFramework.Actor
             {
                 animator.applyRootMotion = false;
             }
+
             OnInitComponent();
         }
 
@@ -564,7 +617,7 @@ namespace Duo1JFramework.Actor
 
         #region Gizmos
 
-        protected virtual void OnDrawGizmos()
+        protected virtual void OnDrawGizmosSelected()
         {
             if (Application.isPlaying)
             {
@@ -613,6 +666,10 @@ namespace Duo1JFramework.Actor
             if (animator == null)
             {
                 animator = model.GetComponent<Animator>();
+            }
+            if (ikCon == null)
+            {
+                ikCon = GetComponent<FootIKController>() ?? model.GetComponent<FootIKController>();
             }
             try
             {

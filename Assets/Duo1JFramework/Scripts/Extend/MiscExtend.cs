@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -94,5 +95,21 @@ namespace Duo1JFramework
         }
 
         #endregion Bounds
+
+        #region Delegate
+
+        public static void SafeInvoke(this Action action)
+        {
+            try
+            {
+                action.Invoke();
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e);
+            }
+        }
+
+        #endregion Delegate
     }
 }

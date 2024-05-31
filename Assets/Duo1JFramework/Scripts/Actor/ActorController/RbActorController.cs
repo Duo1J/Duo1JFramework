@@ -182,9 +182,9 @@ namespace Duo1JFramework.Actor
 
         protected Vector3 editor_moveAxisByEye = Vector3.zero;
 
-        protected override void OnDrawGizmos()
+        protected override void OnDrawGizmosSelected()
         {
-            base.OnDrawGizmos();
+            base.OnDrawGizmosSelected();
 
             if (Application.isPlaying)
             {

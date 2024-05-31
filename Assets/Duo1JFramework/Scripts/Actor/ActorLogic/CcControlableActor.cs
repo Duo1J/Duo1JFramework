@@ -34,16 +34,19 @@ namespace Duo1JFramework.Actor
                         {
                             Con.AniCrossFade(Param.idleAniName);
                             Con.CameraOffsetZ = 0;
+                            Con.SetFootIKGoal(1, 1, false);
                         }
                         else
                         {
                             Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
                             Con.CameraOffsetZ = InWalk() ? -0.3f : -0.7f;
+                            Con.SetFootIKGoal(0, 0, true);
                         }
                     },
                     (param) =>
                     {
                         moveVelocity = Vector3.zero;
+                        Con.SetFootIKGoal(0, 0, true);
                     }),
                 StateNode.Create("Jump",
                     (param) =>

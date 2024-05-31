@@ -11,6 +11,7 @@ namespace Duo1JFramework.Actor
         //组件
         private SerializedProperty model;
         private SerializedProperty animator;
+        private SerializedProperty ikCon;
         private SerializedProperty rigidbody;
         private SerializedProperty cc;
 
@@ -23,6 +24,7 @@ namespace Duo1JFramework.Actor
 
             model = serializedObject.FindProperty("model");
             animator = serializedObject.FindProperty("animator");
+            ikCon = serializedObject.FindProperty("ikCon");
             rigidbody = serializedObject.FindProperty("rigidBody");
             cc = serializedObject.FindProperty("cc");
 
@@ -46,6 +48,7 @@ namespace Duo1JFramework.Actor
                     {
                         EditorGUILayout.ObjectField(model, new GUIContent("模型"));
                         EditorGUILayout.ObjectField(animator, new GUIContent("动画控制器"));
+                        EditorGUILayout.ObjectField(ikCon, new GUIContent("足部IK控制器"));
                         if (rigidbody != null)
                             EditorGUILayout.ObjectField(rigidbody, new GUIContent("刚体"));
                         if (cc != null)

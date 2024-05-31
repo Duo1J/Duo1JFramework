@@ -13,7 +13,7 @@ namespace Duo1JFramework
 
         public Color gizmosColor = Color.white;
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = gizmosColor;
             DrawGizmos();

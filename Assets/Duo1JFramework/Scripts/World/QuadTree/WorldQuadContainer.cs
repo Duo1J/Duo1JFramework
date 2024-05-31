@@ -150,15 +150,24 @@ namespace Duo1JFramework.World
 
 #if UNITY_EDITOR
 
-        public bool showGizmos = true;
+        public bool drawGizmosUnSelected = false;
 
         private void OnDrawGizmos()
         {
-            if (showGizmos)
+            if (drawGizmosUnSelected)
             {
                 tree?.DrawGizmos();
             }
         }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!drawGizmosUnSelected)
+            {
+                tree?.DrawGizmos();
+            }
+        }
+
 #endif
     }
 }
