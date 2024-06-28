@@ -18,3 +18,4 @@ Finished Now:
 10. Timeline manage
 11. World scene QuadTree manage
 12. Some editor panel support
+13. IK
