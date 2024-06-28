@@ -163,10 +163,10 @@ namespace Duo1JFramework
             return toggle;
         }
 
-        public static void HelpBox(string msg)
+        public static void HelpBox(string msg, MessageType msgType = MessageType.Info)
         {
 #if UNITY_EDITOR
-            EditorGUILayout.HelpBox(new GUIContent(msg));
+            EditorGUILayout.HelpBox(msg, msgType);
 #else
                 GUILayout.Label(msg);
 #endif

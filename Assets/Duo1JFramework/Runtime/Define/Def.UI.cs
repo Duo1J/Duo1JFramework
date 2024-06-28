@@ -9,34 +9,37 @@ namespace Duo1JFramework
     /// </summary>
     public static partial class Def
     {
-        /// <summary>
-        /// UIRoot路径
-        /// </summary>
-        public const string UI_ROOT_PATH = Path.RES_PATH_PREFIX + "UI/UIRoot";
+        public static class UI
+        {
+            /// <summary>
+            /// UIRoot路径
+            /// </summary>
+            public const string UI_ROOT_PATH = Path.RES_PATH_PREFIX + "UI/UIRoot";
 
-        /// <summary>
-        /// UIRoot默认位置
-        /// </summary>
-        public static readonly Vector3 UI_ROOT_DEFAULT_POS = new Vector3(0, -1000, 0);
+            /// <summary>
+            /// UIRoot默认位置
+            /// </summary>
+            public static readonly Vector3 UI_ROOT_DEFAULT_POS = new Vector3(0, -1000, 0);
 
-        /// <summary>
-        /// 每个UI界面的层级差
-        /// </summary>
-        public const int UI_STEP_LAYER = 50;
+            /// <summary>
+            /// 每个UI界面的层级差
+            /// </summary>
+            public const int UI_STEP_LAYER = 50;
 
-        /// <summary>
-        /// UI相机深度
-        /// </summary>
-        public const int UI_CAMERA_DEPTH = 100;
+            /// <summary>
+            /// UI相机深度
+            /// </summary>
+            public const int UI_CAMERA_DEPTH = 100;
 
-        /// <summary>
-        /// UI裁剪遮罩
-        /// </summary>
-        public const int UI_CULLING_MASK = 1 << LayerDef.UI;
+            /// <summary>
+            /// UI裁剪遮罩
+            /// </summary>
+            public const int UI_CULLING_MASK = 1 << LayerDef.UI;
 
-        /// <summary>
-        /// UI移动到远处的坐标，用以处理全屏策略
-        /// </summary>
-        public static readonly Vector2 UI_FAR_POS = new Vector2(-100000, -100000);
+            /// <summary>
+            /// UI移动到远处的坐标，用以处理全屏策略
+            /// </summary>
+            public static readonly Vector2 UI_FAR_POS = new Vector2(-100000, -100000);
+        }
     }
 }

@@ -135,7 +135,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void MoveToFar()
         {
-            RectTF.localPosition = Def.UI_FAR_POS;
+            RectTF.localPosition = Def.UI.UI_FAR_POS;
         }
 
         /// <summary>

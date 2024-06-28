@@ -5,7 +5,7 @@ namespace Duo1JFramework.Asset
     /// <summary>
     /// AssetBundle监视器
     /// </summary>
-    public class AssetBundleMonitor : EditorWindowBase<AssetBundleMonitor>
+    public class AssetBundleMonitor : BaseEditorWindow<AssetBundleMonitor>
     {
         private Vector2 scrollPos;
 

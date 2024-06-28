@@ -157,7 +157,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static bool GetMouseBtn(int mouseBtn)
         {
-            if (mouseBtn == Def.INPUT_MOUSE_NONE) return false;
+            if (mouseBtn == Def.Input.INPUT_MOUSE_NONE) return false;
             if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetMouseButton(mouseBtn);
         }
@@ -167,7 +167,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static bool GetMouseBtnDown(int mouseBtn)
         {
-            if (mouseBtn == Def.INPUT_MOUSE_NONE) return false;
+            if (mouseBtn == Def.Input.INPUT_MOUSE_NONE) return false;
             if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetMouseButtonDown(mouseBtn);
         }
@@ -177,7 +177,7 @@ namespace Duo1JFramework.GamerInput
         /// </summary>
         public static bool GetMouseBtnUp(int mouseBtn)
         {
-            if (mouseBtn == Def.INPUT_MOUSE_NONE) return false;
+            if (mouseBtn == Def.Input.INPUT_MOUSE_NONE) return false;
             if (!CheckLimit(EInputLimit.Key)) return false;
             return Input.GetMouseButtonUp(mouseBtn);
         }

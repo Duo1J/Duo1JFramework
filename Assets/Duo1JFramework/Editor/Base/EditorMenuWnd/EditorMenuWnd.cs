@@ -8,7 +8,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 左侧菜单右侧面板的编辑器窗口基类
     /// </summary>
-    public abstract class EditorMenuWnd : EditorWindowBase<EditorMenuWnd>
+    public abstract class EditorMenuWnd : BaseEditorWindow<EditorMenuWnd>
     {
         protected List<EditorMenuSubWnd> subWndList;
         protected int subWndIdx;
@@ -56,7 +56,7 @@ namespace Duo1JFramework
 
         private void OnGUI()
         {
-            ES.SetLabelRichText();
+            ES.SetRichText();
             float width = position.width;
 
             LU.Area(new Rect(0, 0, 150, position.height), DrawLeftMenuList, "box");

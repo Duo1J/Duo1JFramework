@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Duo1JFramework
 {
-    public class CollisionMonitor : EditorWindowBase<CollisionMonitor>
+    public class CollisionMonitor : BaseEditorWindow<CollisionMonitor>
     {
         private Vector2 scrollPos;
 

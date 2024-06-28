@@ -6,6 +6,7 @@ using Duo1JFramework.Build;
 using Duo1JFramework.TimerUpdate;
 
 using UObject = UnityEngine.Object;
+using Duo1JFramework.AnimationAPI;
 
 namespace Duo1JFramework
 {
@@ -54,7 +55,7 @@ namespace Duo1JFramework
             return FolderFastJumpEditorWnd.Open();
         }
 
-        #endregion Path
+        #endregion Path 10
 
         #region EditorStyle 20
 
@@ -76,7 +77,7 @@ namespace Duo1JFramework
             return GUIColorViewer.Open();
         }
 
-        #endregion EditorStyle
+        #endregion EditorStyle 20
 
         #region Monitor 30
 
@@ -98,7 +99,7 @@ namespace Duo1JFramework
             return CollisionMonitor.Open();
         }
 
-        #endregion Monitor
+        #endregion Monitor 40
 
         #region Build 40
 
@@ -108,6 +109,16 @@ namespace Duo1JFramework
             return AssetBundleBuildEditorWnd.Open();
         }
 
-        #endregion Build
+        #endregion Build 40
+
+        #region Animation 50
+
+        [MenuItem(EditorDef.TOOL_EDITOR_ANIMATION_PREFIX + "足部IK曲线生成器", priority = 50)]
+        public static FootIKCurveGenerator OpenFootIKCurveGenerator()
+        {
+            return FootIKCurveGenerator.Open();
+        }
+
+        #endregion Animation 50
     }
 }

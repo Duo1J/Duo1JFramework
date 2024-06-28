@@ -49,6 +49,11 @@ namespace Duo1JFramework
         /// </summary>
         public const string TOOL_EDITOR_BUILD_PREFIX = TOOL_PREFIX + "Build/";
 
+        /// <summary>
+        /// 动画
+        /// </summary>
+        public const string TOOL_EDITOR_ANIMATION_PREFIX = TOOL_PREFIX + "Animation/";
+
         #endregion 工具栏路径定义
 
         /// <summary>

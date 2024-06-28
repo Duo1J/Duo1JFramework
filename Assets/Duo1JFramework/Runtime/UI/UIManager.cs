@@ -186,7 +186,7 @@ namespace Duo1JFramework.UI
                 int sortingOrderOffset = w.SortingOrderOffset;
                 if (sortingOrderOffset > maxSortingOrderOffset) maxSortingOrderOffset = sortingOrderOffset;
             }
-            wnd.SortingOrderOffset = maxSortingOrderOffset + Def.UI_STEP_LAYER;
+            wnd.SortingOrderOffset = maxSortingOrderOffset + Def.UI.UI_STEP_LAYER;
         }
 
         /// <summary>

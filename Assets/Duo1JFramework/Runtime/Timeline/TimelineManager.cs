@@ -58,7 +58,7 @@ namespace Duo1JFramework.TimelineAPI
         /// <summary>
         /// Playable设置可恢复暂停
         /// </summary>
-        public void SetResumablePause(Playable playable, int resumeMouse = Def.INPUT_MOUSE_NONE, KeyCode resumeKey = KeyCode.None)
+        public void SetResumablePause(Playable playable, int resumeMouse = Def.Input.INPUT_MOUSE_NONE, KeyCode resumeKey = KeyCode.None)
         {
             if (resumableList == null)
             {

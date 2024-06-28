@@ -6,7 +6,7 @@ namespace Duo1JFramework.TimerUpdate
     /// <summary>
     /// 计时器监视
     /// </summary>
-    public class TimerMonitor : EditorWindowBase<TimerMonitor>
+    public class TimerMonitor : BaseEditorWindow<TimerMonitor>
     {
         private Vector2 scrollPos;
 

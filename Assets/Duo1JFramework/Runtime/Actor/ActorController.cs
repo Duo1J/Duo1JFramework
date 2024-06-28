@@ -298,8 +298,8 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public bool CheckAxis(float h, float v)
         {
-            return Mathf.Abs(h) > Def.MIN_HAXIS_MOVE ||
-                   Mathf.Abs(v) > Def.MIN_VAXIS_MOVE;
+            return Mathf.Abs(h) > Def.Actor.MIN_HAXIS_MOVE ||
+                   Mathf.Abs(v) > Def.Actor.MIN_VAXIS_MOVE;
         }
 
         /// <summary>
@@ -441,6 +441,17 @@ namespace Duo1JFramework.Actor
         public void SetRightGoal(float goal, bool immediately = false)
         {
             GetIKCon()?.SetRightGoal(goal, immediately);
+        }
+
+        /// <summary>
+        /// 通过动画曲线设置足部IK权重
+        /// </summary>
+        public void SetFootIKGoalByCurve()
+        {
+            Animator anim = GetAnimator();
+            float leftGoal = anim.GetFloat(Def.Anim.LEFT_FOOT_IK_CURVE_PARAM);
+            float rightGoal = anim.GetFloat(Def.Anim.RIGHT_FOOT_IK_CURVE_PARAM);
+            SetFootIKGoal(leftGoal, rightGoal, true);
         }
 
         #endregion IK

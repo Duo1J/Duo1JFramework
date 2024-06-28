@@ -7,7 +7,7 @@ namespace Duo1JFramework.TimelineAPI
     [Serializable]
     public class EndPauseBehaviour : BaseTLBehaviour
     {
-        public int resumeMouse = Def.INPUT_MOUSE_LEFT;
+        public int resumeMouse = Def.Input.INPUT_MOUSE_LEFT;
         public KeyCode resumeKey = KeyCode.Space;
 
         private bool canPause = false;

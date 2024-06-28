@@ -9,7 +9,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 文件夹快速选中工具
     /// </summary>
-    public class FolderFastJumpEditorWnd : EditorWindowBase<FolderFastJumpEditorWnd>
+    public class FolderFastJumpEditorWnd : BaseEditorWindow<FolderFastJumpEditorWnd>
     {
         private List<FolderFastJumpData> defaultDataList;
         private List<FolderFastJumpData> dataList;

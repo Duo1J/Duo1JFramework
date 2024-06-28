@@ -8,7 +8,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 内置样式列表
     /// </summary>
-    public class GUIStyleViewer : EditorWindowBase<GUIStyleViewer>
+    public class GUIStyleViewer : BaseEditorWindow<GUIStyleViewer>
     {
         private struct DrawItem
         {

@@ -117,7 +117,7 @@ namespace Duo1JFramework.TimerUpdate
         {
             if (!isRunning) return;
 
-            if (repeat != Def.TIMER_REPEAT_FOREVER && curRepeat >= repeat)
+            if (repeat != Def.Timer.TIMER_REPEAT_FOREVER && curRepeat >= repeat)
             {
                 Stop();
             }
@@ -172,7 +172,7 @@ namespace Duo1JFramework.TimerUpdate
             }
             else if (repeat < 0)
             {
-                repeat = Def.TIMER_REPEAT_FOREVER;
+                repeat = Def.Timer.TIMER_REPEAT_FOREVER;
             }
 
             this.interval = interval;

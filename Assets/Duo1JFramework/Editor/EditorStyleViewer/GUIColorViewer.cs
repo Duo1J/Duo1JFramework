@@ -6,7 +6,7 @@ namespace Duo1JFramework
     /// <summary>
     /// GUI颜色调整器
     /// </summary>
-    public class GUIColorViewer : EditorWindowBase<GUIColorViewer>
+    public class GUIColorViewer : BaseEditorWindow<GUIColorViewer>
     {
         private bool boxBg = false;
 
@@ -15,7 +15,7 @@ namespace Duo1JFramework
 
         private void OnGUI()
         {
-            ES.SetLabelRichText();
+            ES.SetRichText();
 
             if (boxBg)
             {

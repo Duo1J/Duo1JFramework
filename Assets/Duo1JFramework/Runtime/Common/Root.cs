@@ -41,8 +41,8 @@ namespace Duo1JFramework
             {
                 if (uiRoot == null)
                 {
-                    GameObject uiRootGo = AssetManager.Instance.LoadResourceInsSync<GameObject>(Def.UI_ROOT_PATH);
-                    uiRootGo.transform.position = Def.UI_ROOT_DEFAULT_POS;
+                    GameObject uiRootGo = AssetManager.Instance.LoadResourceInsSync<GameObject>(Def.UI.UI_ROOT_PATH);
+                    uiRootGo.transform.position = Def.UI.UI_ROOT_DEFAULT_POS;
                     uiRoot = uiRootGo.GetComponent<UIRoot>();
                 }
                 return uiRoot;

@@ -124,8 +124,8 @@ namespace Duo1JFramework.UI
             {
                 throw CommonException.Create("UICamera为空");
             }
-            uiCamera.depth = Def.UI_CAMERA_DEPTH;
-            uiCamera.cullingMask = Def.UI_CULLING_MASK;
+            uiCamera.depth = Def.UI.UI_CAMERA_DEPTH;
+            uiCamera.cullingMask = Def.UI.UI_CULLING_MASK;
             uiCamera.gameObject.layer = LayerDef.UI;
             uiCamera.name = "[Render]UICamera";
         }

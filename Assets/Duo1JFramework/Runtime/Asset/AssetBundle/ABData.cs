@@ -383,7 +383,7 @@ namespace Duo1JFramework.Asset
             }
 
             freeTime += Time.deltaTime;
-            if (freeTime > Def.MAX_AB_FREE_TIME)
+            if (freeTime > Def.Asset.MAX_AB_FREE_TIME)
             {
                 TryUnload();
             }

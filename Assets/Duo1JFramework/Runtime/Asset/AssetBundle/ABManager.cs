@@ -132,7 +132,7 @@ namespace Duo1JFramework.Asset
                 return;
             }
 
-            ES.SetLabelRichText();
+            ES.SetRichText();
             foreach (KeyValuePair<string, ABData> kv in abDataDict)
             {
                 GUILayout.Space(20);

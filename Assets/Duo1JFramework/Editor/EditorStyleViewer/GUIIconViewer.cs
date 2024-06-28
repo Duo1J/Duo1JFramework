@@ -9,7 +9,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 内置图标列表
     /// </summary>
-    public class GUIIconViewer : EditorWindowBase<GUIIconViewer>
+    public class GUIIconViewer : BaseEditorWindow<GUIIconViewer>
     {
         private List<GUIContent> iconList;
         private Vector2 scrollPos;

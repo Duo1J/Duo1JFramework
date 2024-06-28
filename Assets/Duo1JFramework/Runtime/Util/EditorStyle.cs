@@ -13,11 +13,36 @@ namespace Duo1JFramework
         public static bool IsProSkin => true;
 #endif
 
-        public static void SetLabelRichText(bool isOn = true)
+        #region RichText
+
+        /// <summary>
+        /// 设置所有样式的富文本
+        /// </summary>
+        public static void SetRichText(bool isOn = true)
         {
-            GUI.skin.label.richText = isOn;
-            GUI.skin.toggle.richText = isOn;
+            RichTextLabel = isOn;
+            RichTextToggle = isOn;
         }
+
+        /// <summary>
+        /// Label富文本
+        /// </summary>
+        public static bool RichTextLabel
+        {
+            get => GUI.skin.label.richText;
+            set => GUI.skin.label.richText = value;
+        }
+
+        /// <summary>
+        /// Toggle富文本
+        /// </summary>
+        public static bool RichTextToggle
+        {
+            get => GUI.skin.toggle.richText;
+            set => GUI.skin.toggle.richText = value;
+        }
+
+        #endregion RichText
 
         #region Color
 

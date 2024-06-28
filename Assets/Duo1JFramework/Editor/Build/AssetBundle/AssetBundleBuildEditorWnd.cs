@@ -6,7 +6,7 @@ namespace Duo1JFramework.Build
     /// <summary>
     /// AssetBundle包构建编辑器窗口
     /// </summary>
-    public class AssetBundleBuildEditorWnd : EditorWindowBase<AssetBundleBuildEditorWnd>
+    public class AssetBundleBuildEditorWnd : BaseEditorWindow<AssetBundleBuildEditorWnd>
     {
         private Vector2 scrollPos;
 

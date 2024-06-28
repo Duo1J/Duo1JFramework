@@ -92,6 +92,38 @@ namespace Duo1JFramework
 
         #endregion 资源编辑
 
+        #region 动画
+
+        public static void AnimMode(Action action)
+        {
+            try
+            {
+                Log.EditorInfo("StartAnimationMode");
+                AnimationMode.StartAnimationMode();
+                action?.Invoke();
+            }
+            finally
+            {
+                Log.EditorInfo("StopAnimationMode");
+                AnimationMode.StopAnimationMode();
+            }
+        }
+
+        public static void AnimSampling(Action action)
+        {
+            try
+            {
+                AnimationMode.BeginSampling();
+                action?.Invoke();
+            }
+            finally
+            {
+                AnimationMode.EndSampling();
+            }
+        }
+
+        #endregion 动画
+
         #region 杂项
 
         /// <summary>
@@ -106,7 +138,7 @@ namespace Duo1JFramework
             Log.EditorInfo($"已拷贝`{text}`到粘贴板");
         }
 
-        #endregion 杂项 
+        #endregion 杂项
 
         #region 窗口
 
