@@ -12,12 +12,12 @@ namespace Duo1JFramework.TimerUpdate
 
         private void OnGUI()
         {
-            if (!LU.IsPlayingHelpBox())
+            if (!ED.IsPlayingHelpBox())
             {
                 return;
             }
 
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
                 DrawActiveTimer();
                 GUILayout.Space(10);
@@ -31,7 +31,7 @@ namespace Duo1JFramework.TimerUpdate
 
             foreach (Timer timer in TimerManager.Instance.TimerSet)
             {
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
                     timer.DrawEditorInfo();
                 }, "box");
@@ -44,7 +44,7 @@ namespace Duo1JFramework.TimerUpdate
 
             foreach (Timer timer in TimerManager.Instance.RemoveSet)
             {
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
                     timer.DrawEditorInfo();
                 }, "box");

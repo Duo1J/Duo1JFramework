@@ -9,12 +9,12 @@ namespace Duo1JFramework
 
         private void OnGUI()
         {
-            if (!LU.IsPlayingHelpBox())
+            if (!ED.IsPlayingHelpBox())
             {
                 return;
             }
 
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
                 CollisionManager.Instance.DrawEditorInfo();
             });

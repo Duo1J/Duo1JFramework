@@ -13,14 +13,14 @@ namespace Duo1JFramework.Asset
 
         private void OnGUI()
         {
-            if (!LU.IsPlayingHelpBox())
+            if (!ED.IsPlayingHelpBox())
             {
                 return;
             }
 
-            LU.Toggle(ref update, "每帧更新");
+            ED.Toggle(ref update, "每帧更新");
 
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
                 ABManager.Instance.DrawEditorInfo();
             });

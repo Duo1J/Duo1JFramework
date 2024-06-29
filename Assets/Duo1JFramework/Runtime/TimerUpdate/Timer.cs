@@ -192,9 +192,9 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void DrawEditorInfo()
         {
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
-                LU.Horizontal(() =>
+                ED.Horizontal(() =>
                 {
                     GUILayout.Label($"是否初始化: {init}");
                     GUILayout.Label($"帧计时器: {isFrameTimer}");
@@ -202,7 +202,7 @@ namespace Duo1JFramework.TimerUpdate
                     GUILayout.Label($"重复次数: {curRepeat}/{repeat}");
                 });
 
-                LU.Horizontal(() =>
+                ED.Horizontal(() =>
                 {
                     GUILayout.Label($"运行中: {isRunning}");
                     GUILayout.Label($"启动时间: {startTime}");
@@ -212,7 +212,7 @@ namespace Duo1JFramework.TimerUpdate
                 if (Game.IsDebug)
                 {
                     GUILayout.Label("Start()调用栈");
-                    LU.Scroll(ref scrollPos, () =>
+                    ED.Scroll(ref scrollPos, () =>
                     {
                         GUILayout.Label(stackTrace_Debug);
                     }, "box", GUILayout.MaxHeight(70));

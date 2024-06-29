@@ -122,13 +122,13 @@ namespace Duo1JFramework.Asset
         {
             if (!UseAssetBundle)
             {
-                LU.HelpBox("当前未使用AssetBundle加载");
+                ED.HelpBox("当前未使用AssetBundle加载");
                 return;
             }
 
             if (abDataDict == null || abDataDict.Count == 0)
             {
-                LU.HelpBox("abDataDict为空");
+                ED.HelpBox("abDataDict为空");
                 return;
             }
 
@@ -136,7 +136,7 @@ namespace Duo1JFramework.Asset
             foreach (KeyValuePair<string, ABData> kv in abDataDict)
             {
                 GUILayout.Space(20);
-                LU.Vertical(kv.Value.DrawEditorInfo, "box");
+                ED.Vertical(kv.Value.DrawEditorInfo, "box");
             }
         }
     }

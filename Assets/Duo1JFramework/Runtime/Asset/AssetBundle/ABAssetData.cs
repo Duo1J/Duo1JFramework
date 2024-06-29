@@ -202,10 +202,10 @@ namespace Duo1JFramework.Asset
 
         public void DrawEditorInfo()
         {
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
                 GUILayout.Label($"资源路径: {assetPath}");
-                GUILayout.Label($"已加载: {AssetLoaded}{LU.S4}加载中: {loading}");
+                GUILayout.Label($"已加载: {AssetLoaded}{ED.S4}加载中: {loading}");
                 GUILayout.Label($"引用计数: {refCnt}");
                 GUILayout.Label($"引用AB: {(abData == null ? "NULL" : abData)}");
             });

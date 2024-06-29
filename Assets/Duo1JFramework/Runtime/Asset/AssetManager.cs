@@ -220,15 +220,15 @@ namespace Duo1JFramework.Asset
                 switch (assetLoaderType)
                 {
                     case EAssetLoaderType.AssetDatabase:
-                        Log.Info("使用EditorAssetLoader资源加载器");
+                        Log.Info("使用`EditorAssetLoader`资源加载器");
                         loader = new EditorAssetLoader();
                         break;
                     case EAssetLoaderType.AssetBundle:
-                        Log.Info("使用ABAssetLoader资源加载器");
+                        Log.Info("使用`ABAssetLoader`资源加载器");
                         loader = new ABAssetLoader();
                         break;
                     case EAssetLoaderType.Addressables:
-                        Log.Info("使用ABAssetLoader资源加载器");
+                        Log.Info("使用`ABAssetLoader`资源加载器");
                         loader = new ABAssetLoader();
                         break;
                 }

@@ -407,17 +407,17 @@ namespace Duo1JFramework.Asset
         private bool drawABAssetDataDict = false;
         public void DrawEditorInfo()
         {
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
                 GUILayout.Label($"AB包名: {assetBundleName.WithColor(ES.Blue)}");
                 GUILayout.Label($"AB路径: {assetBundlePath}");
-                GUILayout.Label($"加载中: {loading}{LU.S4}卸载空闲等待时间: {freeTime}{LU.S4}是否可以卸载: {CanUnload()}");
+                GUILayout.Label($"加载中: {loading}{ED.S4}卸载空闲等待时间: {freeTime}{ED.S4}是否可以卸载: {CanUnload()}");
 
                 GUILayout.Space(10);
 
-                if (LU.Toggle(ref drawRefABList, "显示引用的AssetBundle的列表".WithColor(ES.Green)))
+                if (ED.Toggle(ref drawRefABList, "显示引用的AssetBundle的列表".WithColor(ES.Green)))
                 {
-                    LU.Vertical(() =>
+                    ED.Vertical(() =>
                     {
                         if (refABList == null || refABList.Count == 0)
                         {
@@ -435,9 +435,9 @@ namespace Duo1JFramework.Asset
                     GUILayout.Space(10);
                 }
 
-                if (LU.Toggle(ref drawRefThisABSet, "显示引用该AssetBundle的Set".WithColor(ES.Green)))
+                if (ED.Toggle(ref drawRefThisABSet, "显示引用该AssetBundle的Set".WithColor(ES.Green)))
                 {
-                    LU.Vertical(() =>
+                    ED.Vertical(() =>
                     {
                         if (refThisABSet == null || refThisABSet.Count == 0)
                         {
@@ -455,9 +455,9 @@ namespace Duo1JFramework.Asset
                     GUILayout.Space(10);
                 }
 
-                if (LU.Toggle(ref drawABAssetDataDict, "显示该AssetBundle加载出来的资源列表".WithColor(ES.Green)))
+                if (ED.Toggle(ref drawABAssetDataDict, "显示该AssetBundle加载出来的资源列表".WithColor(ES.Green)))
                 {
-                    LU.Vertical(() =>
+                    ED.Vertical(() =>
                     {
                         if (abAssetDataDict == null || abAssetDataDict.Count == 0)
                         {

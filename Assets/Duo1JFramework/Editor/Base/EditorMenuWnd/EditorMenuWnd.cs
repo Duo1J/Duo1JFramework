@@ -59,10 +59,10 @@ namespace Duo1JFramework
             ES.SetRichText();
             float width = position.width;
 
-            LU.Area(new Rect(0, 0, 150, position.height), DrawLeftMenuList, "box");
+            ED.Area(new Rect(0, 0, 150, position.height), DrawLeftMenuList, "box");
             width -= 150;
 
-            LU.Area(new Rect(150, 0, width, position.height), DrawRightSubPanel);
+            ED.Area(new Rect(150, 0, width, position.height), DrawRightSubPanel);
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace Duo1JFramework
         /// </summary>
         private void DrawLeftMenuList()
         {
-            LU.Scroll(ref leftScrollPos, () =>
+            ED.Scroll(ref leftScrollPos, () =>
             {
-                LU.SurrondColor(subWndList == null, Color.red, () =>
+                ED.SurrondColor(subWndList == null, Color.red, () =>
                 {
                     if (GUILayout.Button("重新加载数据"))
                     {
@@ -82,11 +82,11 @@ namespace Duo1JFramework
 
                 if (subWndList != null)
                 {
-                    LU.SurrondSpace(10, () =>
+                    ED.SurrondSpace(10, () =>
                     {
                         for (int i = 0; i < subWndList.Count; i++)
                         {
-                            LU.SurrondColor(i == subWndIdx, Color.green, () =>
+                            ED.SurrondColor(i == subWndIdx, Color.green, () =>
                             {
                                 if (GUILayout.Button(subWndList[i].MenuName))
                                 {
@@ -106,7 +106,7 @@ namespace Duo1JFramework
         /// </summary>
         private void DrawRightSubPanel()
         {
-            LU.Scroll(ref rightScrollPos, () =>
+            ED.Scroll(ref rightScrollPos, () =>
             {
                 if (subWndList == null)
                 {

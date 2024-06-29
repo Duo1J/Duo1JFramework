@@ -12,8 +12,19 @@ namespace Duo1JFramework
     /// </summary>
     public static class Log
     {
+        /// <summary>
+        /// 日志等级
+        /// </summary>
         private static ELogLevel logLevel = ELogLevel.All;
+
         public static StringBuilder sb = new StringBuilder();
+
+        public const string INFO_TAG = "[Info] ";
+        public const string WARN_TAG = "[Warn] ";
+        public const string ERROR_TAG = "[Error] ";
+
+        public const string EXCEPT_TAG = "[Exception] ";
+        public const string EXCEPT_INFO_TAG = "[ExceptionInfo] ";
 
         /// <summary>
         /// 消息
@@ -22,7 +33,7 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(ELogLevel.Info))
             {
-                Debug.Log(Concat("[Info] ", msg));
+                Debug.Log(Concat(INFO_TAG, msg));
             }
         }
 
@@ -33,7 +44,7 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(ELogLevel.Warn))
             {
-                Debug.LogWarning(Concat("[Warn] ", msg));
+                Debug.LogWarning(Concat(WARN_TAG, msg));
             }
         }
 
@@ -44,8 +55,16 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(ELogLevel.Error))
             {
-                Debug.LogError(Concat("[Error] ", msg));
+                Debug.LogError(Concat(ERROR_TAG, msg));
             }
+        }
+
+        /// <summary>
+        /// 强制打印错误
+        /// </summary>
+        public static void ErrorForce(params object[] msg)
+        {
+            Debug.LogError(Concat(ERROR_TAG, msg));
         }
 
         /// <summary>
@@ -54,9 +73,9 @@ namespace Duo1JFramework
         public static void Exception(Exception e, params object[] msg)
         {
 #if UNITY_EDITOR
-            Debug.LogError(Concat("<color=red>[Exception]</color> ", msg) + $"\n<color=yellow>[ExceptionInfo]</color>{e.Message}\n{e.StackTrace}");
+            Debug.LogError(Concat($"<color=red>{EXCEPT_TAG}</color>", msg) + $"\n<color=yellow>{EXCEPT_INFO_TAG}</color>{e.Message}\n{e.StackTrace}");
 #else
-            Debug.LogError(Concat("[Exception] ", msg) + $"\n[ExceptionInfo]{e.Message}\n{e.StackTrace}");
+            Debug.LogError(Concat(EXCEPT_TAG, msg) + $"\n{EXCEPT_INFO_TAG}{e.Message}\n{e.StackTrace}");
 #endif
         }
 
@@ -118,14 +137,6 @@ namespace Duo1JFramework
             {
                 Debug.LogError(Concat($"<color=green>[{_logLevel}]</color> ", msg));
             }
-        }
-
-        /// <summary>
-        /// 强制打印错误
-        /// </summary>
-        public static void ErrorForce(params object[] msg)
-        {
-            Debug.LogError(Concat("[Error] ", msg));
         }
 
         /// <summary>

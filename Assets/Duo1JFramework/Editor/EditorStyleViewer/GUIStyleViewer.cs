@@ -36,7 +36,7 @@ namespace Duo1JFramework
                 oldPos = position;
             }
 
-            LU.Horizontal(() =>
+            ED.Horizontal(() =>
             {
                 if (GUILayout.Toggle(showStyle, "Styles", EditorStyles.toolbarButton) != showStyle)
                 {
@@ -107,7 +107,7 @@ namespace Duo1JFramework
                             if (GUILayout.Button(thisStyle.name, GUILayout.Width(width)))
                                 EditorUtil.CopyText("\"" + thisStyle.name + "\"");
 
-                            LU.Horizontal(() =>
+                            ED.Horizontal(() =>
                             {
                                 GUILayout.Toggle(false, inactiveText, thisStyle, GUILayout.Width(width / 2));
                                 GUILayout.Toggle(true, activeText, thisStyle, GUILayout.Width(width / 2));
@@ -192,7 +192,7 @@ namespace Duo1JFramework
             float areaHeight = position.height - top;
             scrollBarPos = GUI.VerticalScrollbar(r, scrollBarPos, areaHeight, 0.0f, maxY);
 
-            LU.Area(new Rect(0, top, position.width - 16.0f, areaHeight), () =>
+            ED.Area(new Rect(0, top, position.width - 16.0f, areaHeight), () =>
             {
                 int count = 0;
                 foreach (DrawItem draw in drawItemList)
@@ -202,7 +202,7 @@ namespace Duo1JFramework
 
                     if (newRect.y + newRect.height > 0 && newRect.y < areaHeight)
                     {
-                        LU.Area(newRect, () =>
+                        ED.Area(newRect, () =>
                         {
                             draw.action();
                         }, GUI.skin.textField);

@@ -118,7 +118,7 @@ namespace Duo1JFramework.PhysicsAPI
 
         public void DrawEditorInfo()
         {
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
                 GUILayout.Label($"{gameObject.name} - {gameObject.GetInstanceID()}");
 

@@ -10,11 +10,13 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器界面绘制工具
     /// </summary>
-    public class LU
+    public class ED
     {
         public const string S2 = "  ";
         public const string S4 = "    ";
         public const string S6 = "      ";
+
+        #region Wrap
 
         public static void Vertical(Action action, params GUILayoutOption[] options)
         {
@@ -115,6 +117,68 @@ namespace Duo1JFramework
             }
         }
 
+        public static void DisableGroup_Editor(Action action, bool disabled = true)
+        {
+#if UNITY_EDITOR
+            EditorGUI.BeginDisabledGroup(disabled);
+            action?.SafeInvoke();
+            EditorGUI.EndDisabledGroup();
+#else
+            action?.Invoke();
+#endif
+        }
+
+        #endregion Wrap
+
+        #region Element
+
+        public static bool Toggle(ref bool toggle, string msg)
+        {
+            toggle = GUILayout.Toggle(toggle, msg);
+            return toggle;
+        }
+
+        public static void HelpBox(string msg)
+        {
+#if UNITY_EDITOR
+            EditorGUILayout.HelpBox(new GUIContent(msg));
+#else
+                GUILayout.Label(msg);
+#endif
+        }
+
+#if UNITY_EDITOR
+        public static void HelpBox_Editor(string msg, MessageType msgType = MessageType.Info)
+        {
+            EditorGUILayout.HelpBox(msg, msgType);
+            GUILayout.Label(msg);
+        }
+#endif
+
+        /// <summary>
+        /// 是否运行中的提示Box
+        /// </summary>
+        public static bool IsPlayingHelpBox()
+        {
+            return ConditionHelpBox(Game.IsPlaying, "请在运行后使用");
+        }
+
+        /// <summary>
+        /// 条件显示的提示Box
+        /// </summary>
+        public static bool ConditionHelpBox(bool con, string msg)
+        {
+            if (!con)
+            {
+                HelpBox(msg);
+            }
+            return con;
+        }
+
+        #endregion Element
+
+        #region Last Append
+
         /// <summary>
         /// 为上一个Rect下画分界线
         /// </summary>
@@ -157,58 +221,16 @@ namespace Duo1JFramework
             GUI.Label(lastRect, " <i>" + comment + "</i>");
         }
 
-        public static bool Toggle(ref bool toggle, string msg)
-        {
-            toggle = GUILayout.Toggle(toggle, msg);
-            return toggle;
-        }
+        #endregion Last Append
 
-        public static void HelpBox(string msg, MessageType msgType = MessageType.Info)
-        {
-#if UNITY_EDITOR
-            EditorGUILayout.HelpBox(msg, msgType);
-#else
-                GUILayout.Label(msg);
-#endif
-        }
-
-        public static bool IsPlayingHelpBox()
-        {
-            return ConditionHelpBox(Game.IsPlaying, "请在运行后使用");
-        }
-
-        public static bool ConditionHelpBox(bool con, string msg)
-        {
-            if (!con)
-            {
-                HelpBox(msg);
-            }
-            return con;
-        }
-
-        #region Editor
-
-        public static void DisableGroup_Editor(Action action, bool disabled = true)
-        {
-#if UNITY_EDITOR
-            EditorGUI.BeginDisabledGroup(disabled);
-            action?.SafeInvoke();
-            EditorGUI.EndDisabledGroup();
-#else
-            action?.Invoke();
-#endif
-        }
-
-        #endregion Editor
-
-        protected LU()
+        protected ED()
         {
         }
     }
 
-    public class LayoutUtil : LU
+    public class EditorDrawer : ED
     {
-        protected LayoutUtil()
+        protected EditorDrawer()
         {
         }
     }

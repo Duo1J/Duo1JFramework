@@ -26,20 +26,20 @@ namespace Duo1JFramework
                 GUILayout.BeginVertical();
             }
 
-            LU.Horizontal(() => { boxBg = GUILayout.Toggle(boxBg, "是否打开背景"); });
+            ED.Horizontal(() => { boxBg = GUILayout.Toggle(boxBg, "是否打开背景"); });
 
-            LU.SurrondSpace(5, () =>
+            ED.SurrondSpace(5, () =>
             {
-                LU.Horizontal(() =>
+                ED.Horizontal(() =>
                 {
                     GUILayout.Label("字体大小");
                     size = EditorGUILayout.IntSlider(size, 6, 70);
                 });
             });
 
-            LU.SurrondSpace(5, () =>
+            ED.SurrondSpace(5, () =>
             {
-                LU.Horizontal(() =>
+                ED.Horizontal(() =>
                 {
                     GUILayout.Label("颜色");
                     color = EditorGUILayout.ColorField(color);
@@ -47,7 +47,7 @@ namespace Duo1JFramework
             });
 
             string colorHex = "#" + ColorUtility.ToHtmlStringRGB(color);
-            LU.Horizontal(() =>
+            ED.Horizontal(() =>
             {
                 GUILayout.Label(colorHex);
                 if (GUILayout.Button("复制"))
@@ -56,12 +56,12 @@ namespace Duo1JFramework
                 }
             });
 
-            LU.SurrondSpace(30, () =>
+            ED.SurrondSpace(30, () =>
             {
                 GUILayout.Label($"<size={size}><color={colorHex}>测试 - Test</color></size>");
             });
 
-            LU.SurrondColor(colorHex.ToColor(), () =>
+            ED.SurrondColor(colorHex.ToColor(), () =>
             {
                 GUILayout.Button("测试 - Test");
             });

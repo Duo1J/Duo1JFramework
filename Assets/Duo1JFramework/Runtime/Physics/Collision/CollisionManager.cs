@@ -58,12 +58,12 @@ namespace Duo1JFramework.PhysicsAPI
 
         public void DrawEditorInfo()
         {
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
                 foreach (CollisionController con in conDict.Values)
                 {
                     GUILayout.Space(20);
-                    LU.Horizontal(() =>
+                    ED.Horizontal(() =>
                     {
                         con.DrawEditorInfo();
                     }, "box");

@@ -33,13 +33,13 @@ namespace Duo1JFramework.UI
             List<Transform> nodeList = uiController.GetNodeList();
             if (nodeList != null)
             {
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
-                    LU.DisableGroup_Editor(() =>
+                    ED.DisableGroup_Editor(() =>
                     {
                         for (int i = 0, len = nodeList.Count; i < len; i++)
                         {
-                            LU.Horizontal(() =>
+                            ED.Horizontal(() =>
                             {
                                 EditorGUILayout.LabelField($"({i})", GUILayout.Width(32));
                                 EditorGUILayout.ObjectField(nodeList[i], typeof(Transform), false);

@@ -148,7 +148,7 @@ namespace Duo1JFramework
         /// <param name="wndName">窗口名，不填则使用配置的名称</param>
         public static T OpenEditorWnd<T>(string _wndName = null) where T : EditorWindow
         {
-            string wndName = string.IsNullOrEmpty(_wndName) ? EditorDef.GetEditorWndName(typeof(T)) : _wndName;
+            string wndName = string.IsNullOrEmpty(_wndName) ? EditorDef.Menu.GetEditorWndName(typeof(T)) : _wndName;
 
             T wnd = EditorWindow.GetWindow<T>();
             if (!string.IsNullOrEmpty(wndName))

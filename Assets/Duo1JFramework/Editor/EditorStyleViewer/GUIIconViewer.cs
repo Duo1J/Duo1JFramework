@@ -17,12 +17,12 @@ namespace Duo1JFramework
 
         private void DrawIconList()
         {
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
                 int col = Mathf.FloorToInt(Width / cellSize);
                 for (int i = 0; i < iconList.Count; i += col)
                 {
-                    LU.Horizontal(() =>
+                    ED.Horizontal(() =>
                     {
                         for (int j = 0; j < col; j++)
                         {
@@ -64,9 +64,9 @@ namespace Duo1JFramework
                 }
             }
 
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
-                LU.Horizontal(() =>
+                ED.Horizontal(() =>
                 {
                     GUILayout.Label("大小");
                     cellSize = GUILayout.HorizontalSlider(cellSize, 35, 70);

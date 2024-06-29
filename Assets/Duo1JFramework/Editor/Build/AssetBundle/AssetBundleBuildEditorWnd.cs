@@ -12,9 +12,9 @@ namespace Duo1JFramework.Build
 
         private void OnGUI()
         {
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
                     GUILayout.FlexibleSpace();
 

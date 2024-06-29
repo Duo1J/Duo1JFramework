@@ -26,9 +26,9 @@ namespace Duo1JFramework
                 ReadSoData();
             }
 
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
                     DrawButtonList();
 
@@ -43,14 +43,14 @@ namespace Duo1JFramework
 
         private void DrawButtonList()
         {
-            LU.Horizontal(() =>
+            ED.Horizontal(() =>
             {
                 if (GUILayout.Button("加载数据"))
                 {
                     ReadSoData();
                 }
 
-                LU.SurrondColor(ES.GreenL, () =>
+                ED.SurrondColor(ES.GreenL, () =>
                 {
                     if (GUILayout.Button("保存数据"))
                     {
@@ -64,9 +64,9 @@ namespace Duo1JFramework
                 }
             });
 
-            LU.Horizontal(() =>
+            ED.Horizontal(() =>
             {
-                LU.SurrondColor(ES.GreenL, () =>
+                ED.SurrondColor(ES.GreenL, () =>
                 {
                     if (GUILayout.Button("添加数据"))
                     {
@@ -116,7 +116,7 @@ namespace Duo1JFramework
                     closed = false;
                 }
 
-                LU.Horizontal(() =>
+                ED.Horizontal(() =>
                 {
                     FolderFastJumpData data = defaultDataList[i];
                     if (GUILayout.Button("选中", GUILayout.Width(45)))
@@ -145,9 +145,9 @@ namespace Duo1JFramework
             for (int i = 0; i < dataList.Count; i++)
             {
                 FolderFastJumpData data = dataList[i];
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
-                    LU.Horizontal(() =>
+                    ED.Horizontal(() =>
                     {
                         GUILayout.Label("备注", GUILayout.Width(35));
                         data.name = GUILayout.TextField(data.name, GUILayout.MaxWidth(120));
@@ -158,7 +158,7 @@ namespace Duo1JFramework
                         GUILayout.Space(20);
 
                         bool nullPath = string.IsNullOrEmpty(data.path);
-                        LU.SurrondColor(nullPath ? oriColor : Color.cyan, () =>
+                        ED.SurrondColor(nullPath ? oriColor : Color.cyan, () =>
                         {
                             if (GUILayout.Button("选中", GUILayout.Width(45)))
                             {
@@ -166,7 +166,7 @@ namespace Duo1JFramework
                             }
                         });
 
-                        LU.SurrondColor(nullPath ? Color.cyan : oriColor, () =>
+                        ED.SurrondColor(nullPath ? Color.cyan : oriColor, () =>
                         {
                             if (GUILayout.Button("设置为当前选中", GUILayout.Width(100)))
                             {

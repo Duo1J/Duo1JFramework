@@ -33,7 +33,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void TriggerSingleton()
         {
-            Log.Info("Trigger Singleton.");
+            Log.Info("触发单例");
 
             GameManager.Instance.Trigger();
         }

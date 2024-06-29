@@ -56,7 +56,7 @@ namespace Duo1JFramework.AnimationAPI
             RichText = true;
             DrawErrMsg();
 
-            LU.Scroll(ref scrollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
                 if (GUILayout.Button("设置采样目标为当前选中"))
                 {
@@ -66,9 +66,9 @@ namespace Duo1JFramework.AnimationAPI
 
                 if (sampleGo == null)
                 {
-                    LU.HelpBox("请在Hierarchy窗口选择要生成的物体", MessageType.Info);
-                    LU.HelpBox("目标物体应拥有Animator组件\n组件拥有AnimatorController资产且具备人形骨骼", MessageType.Info);
-                    LU.HelpBox("将要自动计算曲线的动画Clip都放到AnimatorController中", MessageType.Info);
+                    ED.HelpBox_Editor("请在Hierarchy窗口选择要生成的物体", MessageType.Info);
+                    ED.HelpBox_Editor("目标物体应拥有Animator组件\n组件拥有AnimatorController资产且具备人形骨骼", MessageType.Info);
+                    ED.HelpBox_Editor("将要自动计算曲线的动画Clip都放到AnimatorController中", MessageType.Info);
                     return;
                 }
 
@@ -166,7 +166,7 @@ namespace Duo1JFramework.AnimationAPI
                 foreach (AnimationClip clip in clips)
                 {
                     string assetPath = AssetDatabase.GetAssetPath(clip);
-                    Debug.Log($"生成`{clip.name}`的IK曲线");
+                    Log.EditorInfo($"生成`{clip.name}`的IK曲线");
 
                     ModelImporter importer = AssetImporter.GetAtPath(assetPath) as ModelImporter;
                     if (importer == null)

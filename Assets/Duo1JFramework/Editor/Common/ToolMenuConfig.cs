@@ -17,7 +17,7 @@ namespace Duo1JFramework
     {
         #region Path 10
 
-        [MenuItem(EditorDef.TOOL_PATH_PREFIX + "UI节点快速命名 &1", priority = 10)]
+        [MenuItem(EditorDef.Menu.PATH_PREFIX + "UI节点快速命名 &1", priority = 10)]
         public static void UINodeFastName()
         {
             if (EditorUtil.GetActiveGo(out GameObject go))
@@ -29,7 +29,7 @@ namespace Duo1JFramework
             }
         }
 
-        [MenuItem(EditorDef.TOOL_PATH_PREFIX + "复制文件路径(无后缀) &2", priority = 11)]
+        [MenuItem(EditorDef.Menu.PATH_PREFIX + "复制文件路径(无后缀) &2", priority = 11)]
         public static void CopyProjectFilePath()
         {
             if (EditorUtil.GetActiveObj(out UObject go))
@@ -39,7 +39,7 @@ namespace Duo1JFramework
             }
         }
 
-        [MenuItem(EditorDef.TOOL_PATH_PREFIX + "复制文件路径(带后缀) &3", priority = 12)]
+        [MenuItem(EditorDef.Menu.PATH_PREFIX + "复制文件路径(带后缀) &3", priority = 12)]
         public static void CopyProjectFilePathWithSuffix()
         {
             if (EditorUtil.GetActiveObj(out UObject go))
@@ -49,7 +49,7 @@ namespace Duo1JFramework
             }
         }
 
-        [MenuItem(EditorDef.TOOL_PATH_PREFIX + "文件夹快速选中", priority = 13)]
+        [MenuItem(EditorDef.Menu.PATH_PREFIX + EditorDef.Menu.FOLDER_FAST_JUMP_EDITOR_WND, priority = 13)]
         public static FolderFastJumpEditorWnd OpenFolderFastJumpEditor()
         {
             return FolderFastJumpEditorWnd.Open();
@@ -59,19 +59,19 @@ namespace Duo1JFramework
 
         #region EditorStyle 20
 
-        [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "内置图标列表", priority = 20)]
+        [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_ICON_VIEWER, priority = 20)]
         private static GUIIconViewer OpenGUIIconViewer()
         {
             return GUIIconViewer.Open();
         }
 
-        [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "内置样式列表", priority = 21)]
+        [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_STYLE_VIEWER, priority = 21)]
         public static GUIStyleViewer OpenGUIStyleViewer()
         {
             return GUIStyleViewer.Open();
         }
 
-        [MenuItem(EditorDef.TOOL_EDITOR_STYLE_PREFIX + "GUI颜色调整器", priority = 22)]
+        [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_COLOR_VIEWER, priority = 22)]
         public static GUIColorViewer OpenGUIColorViewer()
         {
             return GUIColorViewer.Open();
@@ -81,19 +81,19 @@ namespace Duo1JFramework
 
         #region Monitor 30
 
-        [MenuItem(EditorDef.TOOL_EDITOR_MONITOR_PREFIX + "计时器监视", priority = 30)]
+        [MenuItem(EditorDef.Menu.MONITOR_PREFIX + EditorDef.Menu.TIMER_MONITOR, priority = 30)]
         public static TimerMonitor OpenTimerMonitor()
         {
             return TimerMonitor.Open();
         }
 
-        [MenuItem(EditorDef.TOOL_EDITOR_MONITOR_PREFIX + "AssetBundle监视", priority = 31)]
+        [MenuItem(EditorDef.Menu.MONITOR_PREFIX + EditorDef.Menu.ASSET_BUNDLE_MONITOR, priority = 31)]
         public static AssetBundleMonitor OpenAssetBundleMonitor()
         {
             return AssetBundleMonitor.Open();
         }
 
-        [MenuItem(EditorDef.TOOL_EDITOR_MONITOR_PREFIX + "碰撞、触发监视", priority = 32)]
+        [MenuItem(EditorDef.Menu.MONITOR_PREFIX + EditorDef.Menu.COLLISION_MONITOR, priority = 32)]
         public static CollisionMonitor OpenCollisionMonitor()
         {
             return CollisionMonitor.Open();
@@ -103,7 +103,7 @@ namespace Duo1JFramework
 
         #region Build 40
 
-        [MenuItem(EditorDef.TOOL_EDITOR_BUILD_PREFIX + "构建AssetBundle", priority = 40)]
+        [MenuItem(EditorDef.Menu.BUILD_PREFIX + EditorDef.Menu.ASSET_BUNDLE_BUILD_EDITOR_WND, priority = 40)]
         public static AssetBundleBuildEditorWnd OpenAssetBundleBuildEditor()
         {
             return AssetBundleBuildEditorWnd.Open();
@@ -113,7 +113,7 @@ namespace Duo1JFramework
 
         #region Animation 50
 
-        [MenuItem(EditorDef.TOOL_EDITOR_ANIMATION_PREFIX + "足部IK曲线生成器", priority = 50)]
+        [MenuItem(EditorDef.Menu.ANIMATION_PREFIX + EditorDef.Menu.FOOT_IK_CURVE_GENERATOR, priority = 50)]
         public static FootIKCurveGenerator OpenFootIKCurveGenerator()
         {
             return FootIKCurveGenerator.Open();

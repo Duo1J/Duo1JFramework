@@ -38,13 +38,13 @@ namespace Duo1JFramework.Actor
             ActorController actorController = target as ActorController;
 
             //组件列表
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
                 GUILayout.Label("组件列表");
 
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
-                    LU.SurrondSpace(3, () =>
+                    ED.SurrondSpace(3, () =>
                     {
                         EditorGUILayout.ObjectField(model, new GUIContent("模型"));
                         EditorGUILayout.ObjectField(animator, new GUIContent("动画控制器"));
@@ -65,9 +65,9 @@ namespace Duo1JFramework.Actor
                 GUILayout.Space(5);
                 GUILayout.Label("参数列表");
 
-                LU.Vertical(() =>
+                ED.Vertical(() =>
                 {
-                    LU.SurrondSpace(3, () =>
+                    ED.SurrondSpace(3, () =>
                     {
                         if (gravityRate != null)
                             gravityRate.floatValue = EditorGUILayout.FloatField("重力比率", gravityRate.floatValue);
@@ -82,7 +82,7 @@ namespace Duo1JFramework.Actor
             GUILayout.Space(5);
 
             //状态
-            LU.Vertical(() =>
+            ED.Vertical(() =>
             {
                 GUILayout.Label("当前状态信息");
                 GUILayout.Space(3);
