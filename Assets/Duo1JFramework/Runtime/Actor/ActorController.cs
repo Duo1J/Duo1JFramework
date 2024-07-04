@@ -409,7 +409,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 获取足部IK控制器
         /// </summary>
-        public FootIKController GetIKCon()
+        public FootIKController GetFootIKCon()
         {
             if (ikCon == null)
             {
@@ -424,7 +424,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void SetFootIKGoal(float leftGoal, float rightGoal, bool immediately = false)
         {
-            GetIKCon()?.SetGoal(leftGoal, rightGoal, immediately);
+            GetFootIKCon()?.SetGoal(leftGoal, rightGoal, immediately);
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void SetLeftGoal(float goal, bool immediately = false)
         {
-            GetIKCon()?.SetLeftGoal(goal, immediately);
+            GetFootIKCon()?.SetLeftGoal(goal, immediately);
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void SetRightGoal(float goal, bool immediately = false)
         {
-            GetIKCon()?.SetRightGoal(goal, immediately);
+            GetFootIKCon()?.SetRightGoal(goal, immediately);
         }
 
         /// <summary>

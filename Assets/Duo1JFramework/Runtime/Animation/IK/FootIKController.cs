@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace Duo1JFramework.AnimationAPI
 {
@@ -9,23 +8,29 @@ namespace Duo1JFramework.AnimationAPI
     public class FootIKController : MonoRegister
     {
         [Label("动画控制器")]
-        public Animator animator;
+        [SerializeField]
+        private Animator animator;
 
         [Label("目标动画层级")]
-        public int tarLayerIdx = 0;
+        [SerializeField]
+        private int tarLayerIdx = 0;
 
         [Label("权重过渡速度")]
-        public float goalLerpSpeed = 10;
+        [SerializeField]
+        private float goalLerpSpeed = 10;
 
         [Space]
         [Label("左侧脚TF")]
-        public Transform leftFootTF;
+        [SerializeField]
+        private Transform leftFootTF;
 
         [Label("右侧脚TF")]
-        public Transform rightFootTF;
+        [SerializeField]
+        private Transform rightFootTF;
 
         [Label("目标位置偏移")]
-        public Vector3 tarPosOffset = new Vector3(0, 0.1f, 0);
+        [SerializeField]
+        private Vector3 tarPosOffset = new Vector3(0, 0.1f, 0);
 
         /// <summary>
         /// 左侧射线起点
@@ -39,19 +44,24 @@ namespace Duo1JFramework.AnimationAPI
 
         [Space]
         [Label("射线检测层")]
-        public LayerMask rayLayerMask = 1 << 6;
+        [SerializeField]
+        private LayerMask rayLayerMask = 1 << 6;
 
         [Label("射线位置偏移")]
-        public Vector3 rayPosOffset = new Vector3(0, 0.6f, 0);
+        [SerializeField]
+        private Vector3 rayPosOffset = new Vector3(0, 0.6f, 0);
 
         [Label("胶囊长度")]
-        public float rayCapsuleLen = 0.2f;
+        [SerializeField]
+        private float rayCapsuleLen = 0.2f;
 
         [Label("胶囊半径")]
-        public float rayCapsuleRadius = 0.05f;
+        [SerializeField]
+        private float rayCapsuleRadius = 0.05f;
 
         [Label("射线最大检测距离")]
-        public float rayMaxDistance = 1f;
+        [SerializeField]
+        private float rayMaxDistance = 1f;
 
         /// <summary>
         /// 当前左脚权重
