@@ -1,12 +1,11 @@
-
 namespace Duo1JFramework
 {
-    /// <summary>
-    /// 动画相关定义
-    /// </summary>
     public static partial class Def
     {
-        public static class Anim
+        /// <summary>
+        /// 动画相关定义
+        /// </summary>
+        public static partial class Anim
         {
             /// <summary>
             /// 左脚IK动画曲线参数名

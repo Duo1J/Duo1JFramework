@@ -1,15 +1,14 @@
 using Duo1JFramework.Asset;
-using Duo1JFramework.Config;
 using UnityEngine;
 
 namespace Duo1JFramework
 {
-    /// <summary>
-    /// UI定义
-    /// </summary>
     public static partial class Def
     {
-        public static class UI
+        /// <summary>
+        /// UI定义
+        /// </summary>
+        public static partial class UI
         {
             /// <summary>
             /// UIRoot路径
@@ -34,7 +33,7 @@ namespace Duo1JFramework
             /// <summary>
             /// UI裁剪遮罩
             /// </summary>
-            public const int UI_CULLING_MASK = 1 << LayerDef.UI;
+            public const int UI_CULLING_MASK = 1 << Def.Layer.UI;
 
             /// <summary>
             /// UI移动到远处的坐标，用以处理全屏策略

@@ -62,7 +62,7 @@ namespace Duo1JFramework.Asset
         public ABData(string assetBundleName)
         {
             this.assetBundleName = assetBundleName;
-            assetBundlePath = Path.GetAssetBundlePath(assetBundleName);
+            assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
 
             refABList = ABManager.Instance.GetRefABDataList(assetBundleName);
             refThisABSet = new HashSet<ABData>();

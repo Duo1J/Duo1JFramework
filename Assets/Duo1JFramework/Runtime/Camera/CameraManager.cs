@@ -101,7 +101,7 @@ namespace Duo1JFramework.CameraAPI
             {
                 GameObject cameraGo = new GameObject("NewMainCamera");
                 mainCamera = cameraGo.AddComponent<Camera>();
-                mainCamera.tag = TagDef.MAIN_CAMERA;
+                mainCamera.tag = Def.Tag.MAIN_CAMERA;
             }
             SetMainCamera(mainCamera);
 
@@ -117,7 +117,7 @@ namespace Duo1JFramework.CameraAPI
             {
                 DestroyMainCamera();
             }
-            tarCamera.tag = TagDef.MAIN_CAMERA;
+            tarCamera.tag = Def.Tag.MAIN_CAMERA;
             tarCamera.name = $"[Render]MainCamera";
             tarCamera.GetOrAddComponent<AudioListener>();
             DontDestroyOnLoad(tarCamera.gameObject);

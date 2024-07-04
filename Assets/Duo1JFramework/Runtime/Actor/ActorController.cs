@@ -456,6 +456,43 @@ namespace Duo1JFramework.Actor
 
         #endregion IK
 
+        /// <summary>
+        /// 设置OnAnimatorMove回调
+        /// </summary>
+        public void SetOnAnimatorMove(Action onAnimatorMove)
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            RootMotionController rootMotionCon = animator.gameObject.GetOrAddComponent<RootMotionController>();
+            rootMotionCon.SetOnAnimatorMove(onAnimatorMove);
+        }
+
+        public void SetOnAnimatorMove(Action<Animator> onAnimatorMove)
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            RootMotionController rootMotionCon = animator.gameObject.GetOrAddComponent<RootMotionController>();
+
+            if (onAnimatorMove == null)
+            {
+                rootMotionCon.SetOnAnimatorMove(null);
+                return;
+            }
+
+            rootMotionCon.SetOnAnimatorMove(() =>
+            {
+                onAnimatorMove(animator);
+            });
+        }
+
         #endregion Animation
 
         #region Misc
@@ -542,7 +579,7 @@ namespace Duo1JFramework.Actor
                 Vector3.down,
                 out RaycastHit hitInfo,
                 param.rayGroundLen,
-                Layer.OnlyLayer(Layer.WORLD)
+                LayerUtil.OnlyLayer(Def.Layer.WORLD)
             );
 
             normal = Grounded ? hitInfo.normal : Vector3.up;

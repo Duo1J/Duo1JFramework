@@ -148,11 +148,13 @@ namespace Duo1JFramework
         }
 
 #if UNITY_EDITOR
+
         public static void HelpBox_Editor(string msg, MessageType msgType = MessageType.Info)
         {
             EditorGUILayout.HelpBox(msg, msgType);
             GUILayout.Label(msg);
         }
+
 #endif
 
         /// <summary>
@@ -174,6 +176,32 @@ namespace Duo1JFramework
             }
             return con;
         }
+
+#if UNITY_EDITOR
+
+        /// <summary>
+        /// 搜索框
+        /// </summary>
+        public static void SearchTextField_Editor(ref string searchKey, Action searchCall, Action cancelCall, bool showCancel = true)
+        {
+            GUILayout.BeginHorizontal();
+
+            searchKey = EditorGUILayout.TextField(searchKey, new GUIStyle("SearchTextField"), GUILayout.Height(20));
+
+            if (showCancel && GUILayout.Button("取消", new GUIStyle("SearchCancelButton")))
+            {
+                cancelCall?.Invoke();
+            }
+
+            if (GUILayout.Button(new GUIContent("搜索"), GUILayout.Width(40), GUILayout.Height(20)))
+            {
+                searchCall?.Invoke();
+            }
+
+            GUILayout.EndHorizontal();
+        }
+
+#endif
 
         #endregion Element
 

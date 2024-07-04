@@ -2,7 +2,10 @@ namespace Duo1JFramework
 {
     public static partial class Def
     {
-        public static class Timer
+        /// <summary>
+        /// 计时器定义
+        /// </summary>
+        public static partial class Timer
         {
             /// <summary>
             /// 计时器无限重复

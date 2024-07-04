@@ -1,11 +1,11 @@
 namespace Duo1JFramework
 {
-    /// <summary>
-    /// 输入相关定义
-    /// </summary>
     public static partial class Def
     {
-        public static class Input
+        /// <summary>
+        /// 输入相关定义
+        /// </summary>
+        public static partial class Input
         {
             /// <summary>
             /// 鼠标左键

@@ -15,8 +15,8 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static void BuildAllAssetBundle()
         {
-            FileUtil.DeleteDir(Path.GetAssetBundleRoot());
-            FileUtil.DeleteFile(Path.GetAssetBundleRootMeta());
+            FileUtil.DeleteDir(PathUtil.GetAssetBundleRoot());
+            FileUtil.DeleteFile(PathUtil.GetAssetBundleRootMeta());
 
             ABBuildStrategyData[] strategyDatas = ABBuildStrategy.Instance.Data;
 
@@ -56,7 +56,7 @@ namespace Duo1JFramework.Build
                 EditorUtility.DisplayProgressBar("构建AssetBndle", "正在构建AssetBundle...", 0.3f);
 
                 BuildPipeline.BuildAssetBundles(
-                    Path.GetAssetBundleRoot().CheckDir(),
+                    PathUtil.GetAssetBundleRoot().CheckDir(),
                     buildList.ToArray(),
                     EditorDef.Build.ABBuildOptions,
                     EditorDef.Build.CurBuildTarget
@@ -88,7 +88,7 @@ namespace Duo1JFramework.Build
                 return ret.ToArray();
             }
 
-            string pathPrefix = Path.ASSET_FULL_PATH_PREFIX;
+            string pathPrefix = Def.Path.ASSET_FULL_PATH_PREFIX;
             foreach (ABBuildStrategyData strategyData in strategyDatas)
             {
                 if (!strategyData.CheckValiad())
@@ -101,15 +101,15 @@ namespace Duo1JFramework.Build
 
                 foreach (string path in strategyData.pathList)
                 {
-                    string path_ = Path.CorrectPath(path);
+                    string path_ = PathUtil.CorrectPath(path);
                     List<string> resultList = FileUtil.GetFileInDir(pathPrefix + path_, (p) =>
                     {
-                        if (p.EndsWith(Path.META_SUFFIX))
+                        if (p.EndsWith(Def.Path.META_SUFFIX))
                         {
                             return null;
                         }
 
-                        return p.Replace(pathPrefix, Path.ASSET_PATH_PREFIX);
+                        return p.Replace(pathPrefix, Def.Path.ASSET_PATH_PREFIX);
                     });
 
                     if (buildData.assetPathList == null || buildData.assetPathList.Count == 0)

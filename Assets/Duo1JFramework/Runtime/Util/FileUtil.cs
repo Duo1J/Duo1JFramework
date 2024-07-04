@@ -147,7 +147,7 @@ namespace Duo1JFramework
                 if (fileInfo.Exists)
                 {
                     string path = fileInfo.FullName;
-                    path = Asset.Path.CorrectPath(path);
+                    path = PathUtil.CorrectPath(path);
 
                     if (pathModifier != null)
                     {

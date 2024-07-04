@@ -17,11 +17,11 @@ namespace Duo1JFramework.Config
 
         #endregion Config
 
-        protected override void OnDispose()
+        protected override void OnInit()
         {
         }
 
-        protected override void OnInit()
+        protected override void OnDispose()
         {
         }
     }

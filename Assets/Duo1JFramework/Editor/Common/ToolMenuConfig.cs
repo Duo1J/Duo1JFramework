@@ -35,7 +35,7 @@ namespace Duo1JFramework
             if (EditorUtil.GetActiveObj(out UObject go))
             {
                 string path = AssetDatabase.GetAssetPath(go);
-                EditorUtil.CopyText(Path.RemoveFileType(path));
+                EditorUtil.CopyText(PathUtil.RemoveFileType(path));
             }
         }
 

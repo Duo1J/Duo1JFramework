@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// </summary>
     public static partial class Def
     {
-        public static class Actor
+        public static partial class Actor
         {
             /// <summary>
             /// H轴最小移动盲区

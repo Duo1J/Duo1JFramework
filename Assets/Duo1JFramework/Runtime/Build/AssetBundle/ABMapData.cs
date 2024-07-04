@@ -87,7 +87,7 @@ namespace Duo1JFramework.Build
 
             if (string.IsNullOrEmpty(path))
             {
-                path = Path.GetABMapDataPath();
+                path = PathUtil.GetABMapDataPath();
             }
 
             string jsonStr = JsonUtil.ToJson(_abAssetList);
@@ -98,7 +98,7 @@ namespace Duo1JFramework.Build
         {
             if (string.IsNullOrEmpty(path))
             {
-                path = Path.GetABMapDataPath();
+                path = PathUtil.GetABMapDataPath();
             }
 
             string cfg = FileUtil.ReadAllText(path);

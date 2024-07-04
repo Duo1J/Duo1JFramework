@@ -73,9 +73,9 @@ namespace Duo1JFramework
         public static void Exception(Exception e, params object[] msg)
         {
 #if UNITY_EDITOR
-            Debug.LogError(Concat($"<color=red>{EXCEPT_TAG}</color>", msg) + $"\n<color=yellow>{EXCEPT_INFO_TAG}</color>{e.Message}\n{e.StackTrace}");
+            Debug.LogError(Concat($"<color=red>{EXCEPT_TAG}</color>", msg) + $"\n<color=yellow>{EXCEPT_INFO_TAG}</color>{e.Message}\n\n{e.StackTrace}\n");
 #else
-            Debug.LogError(Concat(EXCEPT_TAG, msg) + $"\n{EXCEPT_INFO_TAG}{e.Message}\n{e.StackTrace}");
+            Debug.LogError(Concat(EXCEPT_TAG, msg) + $"\n{EXCEPT_INFO_TAG}{e.Message}\n\n{e.StackTrace}\n");
 #endif
         }
 

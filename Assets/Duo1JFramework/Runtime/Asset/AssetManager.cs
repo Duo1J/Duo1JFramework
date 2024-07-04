@@ -200,7 +200,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private string ModifyAssetPath(string assetPath)
         {
-            return $"{Path.ASSET_PATH_PREFIX}{assetPath}";
+            return $"{Def.Path.ASSET_PATH_PREFIX}{assetPath}";
         }
 
         protected override void OnInit()

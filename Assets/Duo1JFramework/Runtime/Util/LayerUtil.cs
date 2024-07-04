@@ -1,16 +1,13 @@
-using UnityEngine;
-
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 层级管理
+    /// 层级工具
     /// </summary>
-    public static class Layer
+    public static class LayerUtil
     {
-        public const int UI = 5;
-
-        public const int WORLD = 6;
-
+        /// <summary>
+        /// 开启层级列表
+        /// </summary>
         public static int OnlyLayer(params int[] layerList)
         {
             int ret = 0;

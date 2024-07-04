@@ -9,6 +9,8 @@ namespace Duo1JFramework
     /// <summary>
     /// 可注册器基类
     /// </summary>
+    /// <see cref="Register"/>
+    /// <see cref="MonoRegister"/>
     public abstract class BaseRegister : IDispose
     {
         /// <summary>

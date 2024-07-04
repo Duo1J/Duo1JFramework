@@ -159,6 +159,30 @@ namespace Duo1JFramework
             return wnd;
         }
 
+        /// <summary>
+        /// 聚焦控件
+        /// </summary>
+        public static void FocusControl(string name)
+        {
+            GUI.FocusControl(name);
+        }
+
+        /// <summary>
+        /// 失焦控件
+        /// </summary>
+        public static void LostFocusControl()
+        {
+            FocusControl(null);
+        }
+
+        /// <summary>
+        /// 聚焦窗口
+        /// </summary>
+        public static void FocusWindow(int windowID)
+        {
+            GUI.FocusWindow(windowID);
+        }
+
         #endregion
 
         #region ScriptableObject
