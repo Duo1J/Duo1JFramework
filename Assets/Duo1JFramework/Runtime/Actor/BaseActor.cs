@@ -63,12 +63,17 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 角色控制器
         /// </summary>
-        public ActorController Controller { get; private set; }
+        public BaseActorController Controller { get; private set; }
 
         /// <summary>
         /// 角色参数
         /// </summary>
         public ActorParam Param { get; private set; }
+
+        /// <summary>
+        /// 角色挂点
+        /// </summary>
+        public ActorPoint Point { get; private set; }
 
         /// <summary>
         /// 是否绑定了相机
@@ -143,10 +148,11 @@ namespace Duo1JFramework.Actor
             Asset.SetParent(WorldManager.Instance.ActorRoot);
             Asset.ResetSRT();
 
-            Controller = Asset.GetAndAssertComponent<ActorController>("Actor资源预制体上未挂载ActorController组件");
-            Controller.Actor = this;
+            Controller = Asset.GetAndAssertComponent<BaseActorController>("Actor资源预制体上未挂载ActorController组件");
+            Controller.Logic = this;
 
-            Param = Controller.GetActorParam();
+            Param = Controller.Param;
+            Point = Controller.Point;
 
             OnCreated();
         }
@@ -204,7 +210,7 @@ namespace Duo1JFramework.Actor
             {
                 return null;
             }
-            return Controller.GetActorPoint().CameraPoint;
+            return Point.CameraPoint;
         }
 
         /// <summary>

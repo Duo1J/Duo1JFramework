@@ -12,12 +12,13 @@ namespace Duo1JFramework.Actor
     /// Actor控制器
     /// </summary>
     [RequireComponent(typeof(ActorParam), typeof(ActorPoint))]
-    public abstract class ActorController : BaseWorldItem
+    public abstract class BaseActorController : BaseWorldItem
     {
+        #region Property
+
         /// <summary>
         /// 角色模型
         /// </summary>
-        [Header("组件")]
         [SerializeField]
         protected GameObject model;
 
@@ -31,7 +32,7 @@ namespace Duo1JFramework.Actor
         /// 足部IK控制器
         /// </summary>
         [SerializeField]
-        protected FootIKController ikCon;
+        protected FootIKController footIKCon;
 
         /// <summary>
         /// 角色参数
@@ -48,10 +49,24 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected StateMachine fsm;
 
+        #endregion Property
+
+        #region Field
+
+        /// <summary>
+        /// 角色参数
+        /// </summary>
+        public ActorParam Param => param;
+
+        /// <summary>
+        /// 角色挂点
+        /// </summary>
+        public ActorPoint Point => point;
+
         /// <summary>
         /// 角色逻辑
         /// </summary>
-        public BaseActor Actor { get; set; }
+        public BaseActor Logic { get; set; }
 
         /// <summary>
         /// 当前状态机状态
@@ -59,14 +74,86 @@ namespace Duo1JFramework.Actor
         public string CurState { get; private set; }
 
         /// <summary>
+        /// 当前播放的动画名
+        /// </summary>
+        public string CurAniName { get; private set; }
+
+        #region Transform
+
+        /// <summary>
+        /// 模型Go
+        /// </summary>
+        public GameObject Model => model;
+
+        /// <summary>
+        /// 根节点Go
+        /// </summary>
+        public GameObject Root => gameObjectCache;
+
+        /// <summary>
+        /// 旋转对象
+        /// </summary>
+        public GameObject RotateGo => Model;
+
+        /// <summary>
+        /// 目视Forward
+        /// </summary>
+        public Vector3 EyeForward
+        {
+            get
+            {
+                if (CameraBinded)
+                {
+                    return Vector3.Cross(point.CameraPoint.right, Vector3.up).normalized;
+                }
+                return Vector3.forward.normalized;
+            }
+        }
+
+        /// <summary>
+        /// 目视Right
+        /// </summary>
+        public Vector3 EyeRight
+        {
+            get
+            {
+                if (CameraBinded)
+                {
+                    return point.CameraPoint.right.normalized;
+                }
+                return Vector3.right.normalized;
+            }
+        }
+
+        /// <summary>
+        /// 目视Up
+        /// </summary>
+        public Vector3 EyeUp
+        {
+            get
+            {
+                return Vector3.up.normalized;
+            }
+        }
+
+        /// <summary>
+        /// 与地面相交的法线向量
+        /// </summary>
+        protected Vector3 Normal { get; private set; } = Vector3.up;
+
+        /// <summary>
         /// 是否着地
         /// </summary>
         public bool Grounded { get; private set; }
 
+        #endregion Transform
+
+        #region Camera
+
         /// <summary>
         /// 是否绑定了相机
         /// </summary>
-        public bool CameraBinded => Actor == null ? false : Actor.CameraBinded;
+        public bool CameraBinded => Logic == null ? false : Logic.CameraBinded;
 
         /// <summary>
         /// 相机X轴左右偏移
@@ -83,10 +170,9 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public float CameraOffsetZ { get; set; }
 
-        /// <summary>
-        /// 当前播放的动画名
-        /// </summary>
-        protected string curAniName;
+        #endregion Camera
+
+        #endregion Field
 
         #region Switch
 
@@ -105,36 +191,13 @@ namespace Duo1JFramework.Actor
         #region Callback
 
         /// <summary>
-        /// 落地状态改变
+        /// 落地状态改变回调
         /// </summary>
         public Action<bool> OnGroundedChange;
 
         #endregion Callback
 
-        #region Field
-
-        /// <summary>
-        /// 与地面相交的法线向量
-        /// </summary>
-        protected Vector3 normal = Vector3.up;
-
-        /// <summary>
-        /// 根节点Go
-        /// </summary>
-        public GameObject Root => gameObject;
-
-        /// <summary>
-        /// 模型Go
-        /// </summary>
-        public GameObject Model => model;
-
-        #endregion Field
-
         #region Public Method
-
-        #region Const
-
-        #endregion Const
 
         #region FSM
 
@@ -232,56 +295,6 @@ namespace Duo1JFramework.Actor
         }
 
         #endregion FSM
-
-        #region Transform
-
-        /// <summary>
-        /// 目视Forward
-        /// </summary>
-        public Vector3 EyeForward
-        {
-            get
-            {
-                if (CameraBinded)
-                {
-                    return Vector3.Cross(point.CameraPoint.right, Vector3.up).normalized;
-                }
-                return Vector3.forward.normalized;
-            }
-        }
-
-        /// <summary>
-        /// 目视Right
-        /// </summary>
-        public Vector3 EyeRight
-        {
-            get
-            {
-                if (CameraBinded)
-                {
-                    return point.CameraPoint.right.normalized;
-                }
-                return Vector3.right.normalized;
-            }
-        }
-
-        /// <summary>
-        /// 目视Up
-        /// </summary>
-        public Vector3 EyeUp
-        {
-            get
-            {
-                return Vector3.up.normalized;
-            }
-        }
-
-        /// <summary>
-        /// 旋转对象
-        /// </summary>
-        public GameObject RotateGo => model;
-
-        #endregion Transform
 
         #region Helper
 
@@ -389,19 +402,19 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void AniCrossFade(string stateName, float transitionRate = 0.2f, int layer = -1)
         {
-            if (!AniCanStateChange(stateName))
+            if (!AniCanChangeState(stateName))
                 return;
-            curAniName = stateName;
+            CurAniName = stateName;
             GetAnimator()?.CrossFade(stateName, transitionRate, layer);
         }
 
         /// <summary>
         /// 当前是否可以转换为目标动画状态
         /// </summary>
-        public bool AniCanStateChange(string stateName)
+        public bool AniCanChangeState(string stateName)
         {
             Assert.NotNullOrEmpty(stateName, "动画状态名不可为空");
-            return !stateName.Equals(curAniName);
+            return !stateName.Equals(CurAniName);
         }
 
         #region IK
@@ -411,12 +424,12 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public FootIKController GetFootIKCon()
         {
-            if (ikCon == null)
+            if (footIKCon == null)
             {
                 ErrNoComponent(typeof(FootIKController));
             }
 
-            return ikCon;
+            return footIKCon;
         }
 
         /// <summary>
@@ -430,7 +443,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 设置左脚权重
         /// </summary>
-        public void SetLeftGoal(float goal, bool immediately = false)
+        public void SetLeftFootIKGoal(float goal, bool immediately = false)
         {
             GetFootIKCon()?.SetLeftGoal(goal, immediately);
         }
@@ -438,7 +451,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 设置右脚权重
         /// </summary>
-        public void SetRightGoal(float goal, bool immediately = false)
+        public void SetRightFootIKGoal(float goal, bool immediately = false)
         {
             GetFootIKCon()?.SetRightGoal(goal, immediately);
         }
@@ -495,26 +508,6 @@ namespace Duo1JFramework.Actor
 
         #endregion Animation
 
-        #region Misc
-
-        /// <summary>
-        /// 获取ActorParam
-        /// </summary>
-        public ActorParam GetActorParam()
-        {
-            return param;
-        }
-
-        /// <summary>
-        /// 获取ActorPoint
-        /// </summary>
-        public ActorPoint GetActorPoint()
-        {
-            return point;
-        }
-
-        #endregion Misc
-
         #endregion Public Method
 
         #region Private Method
@@ -522,14 +515,14 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 初始化Inspector配置数据
         /// </summary>
-        private void InitActorMonoData()
+        private void InitMonoData()
         {
             //ActorParam
             param = GetComponent<ActorParam>();
             if (param == null)
             {
                 ErrNoComponent(typeof(ActorParam), "添加默认ActorParam组件");
-                param = gameObject.AddComponent<ActorParam>();
+                param = gameObjectCache.AddComponent<ActorParam>();
             }
 
             //ActorPoint
@@ -537,7 +530,7 @@ namespace Duo1JFramework.Actor
             if (point == null)
             {
                 ErrNoComponent(typeof(ActorPoint), "添加默认ActorPoint组件");
-                point = gameObject.AddComponent<ActorPoint>();
+                point = gameObjectCache.AddComponent<ActorPoint>();
                 point.AutoMatch();
             }
         }
@@ -547,12 +540,6 @@ namespace Duo1JFramework.Actor
         /// </summary>
         private void InitComponent()
         {
-            //Animator
-            if (animator != null)
-            {
-                animator.applyRootMotion = false;
-            }
-
             OnInitComponent();
         }
 
@@ -582,7 +569,7 @@ namespace Duo1JFramework.Actor
                 LayerUtil.OnlyLayer(Def.Layer.WORLD)
             );
 
-            normal = Grounded ? hitInfo.normal : Vector3.up;
+            Normal = Grounded ? hitInfo.normal : Vector3.up;
 
             if (oldVal != Grounded)
             {
@@ -595,9 +582,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         private void UpdateFSM()
         {
-            if (fsm == null)
-                return;
-            fsm.Tick();
+            fsm?.Tick();
         }
 
         #endregion Private Method
@@ -608,7 +593,11 @@ namespace Duo1JFramework.Actor
         {
             try
             {
-                if (FallSpeedUp) UpdateFallSpeedUp();
+                if (FallSpeedUp)
+                {
+                    UpdateFallSpeedUp();
+                }
+
                 UpdateGroundedState();
 
                 OnUpdateSub();
@@ -625,12 +614,22 @@ namespace Duo1JFramework.Actor
         {
         }
 
+        private void OnFixedUpdate()
+        {
+            OnFixedUpdateSub();
+        }
+
+        protected virtual void OnFixedUpdateSub()
+        {
+        }
+
         protected virtual void Awake()
         {
-            InitActorMonoData();
+            InitMonoData();
             InitComponent();
 
             Register.RegisterUpdate(OnUpdate);
+            Register.RegisterFixedUpdate(OnFixedUpdate);
         }
 
         /// <summary>
@@ -638,11 +637,11 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected void ErrNoComponent(Type type, string msg = "")
         {
-            Err($"该角色未持有{type.Name}组件，name: {gameObject.name}。{msg}", true);
+            Err($"该角色未持有`{type.Name}`组件，name: {gameObjectCache.name}。{msg}", true);
         }
 
         /// <summary>
-        /// Actor报错
+        /// 报错
         /// </summary>
         protected void Err(string msg, bool force = true)
         {
@@ -658,7 +657,7 @@ namespace Duo1JFramework.Actor
 
         public override string ToString()
         {
-            return $"<Actor: {gameObject.name}>";
+            return $"<ActorController: {gameObjectCache.name}>";
         }
 
         #endregion Lifecycle
@@ -711,14 +710,17 @@ namespace Duo1JFramework.Actor
                 Err("该角色未设置模型", true);
                 return;
             }
+
             if (animator == null)
             {
                 animator = model.GetComponent<Animator>();
             }
-            if (ikCon == null)
+
+            if (footIKCon == null)
             {
-                ikCon = GetComponent<FootIKController>() ?? model.GetComponent<FootIKController>();
+                footIKCon = GetComponent<FootIKController>() ?? model.GetComponent<FootIKController>();
             }
+
             try
             {
                 OnCollectComponent();
@@ -736,16 +738,17 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public string GetHierarchyInfo()
         {
-            return Pool.StringBuilderPool.Using((sb) =>
+            return Pool.StringBuilderPool.Using((Func<StringBuilder, object>)((sb) =>
             {
-                sb.AppendLine($"状态机: {CurState}");
-                sb.AppendLine($"动画状态: {curAniName}");
+                sb.AppendLine($"状态: {CurState}");
+                sb.AppendLine($"动画状态: {CurAniName}");
                 sb.AppendLine($"是否触地: {Grounded}");
                 sb.AppendLine($"是否绑定相机: {CameraBinded}");
 
                 OnGetHierarchyInfo(sb);
+
                 return sb.ToString();
-            }).ToString();
+            })).ToString();
         }
 
         protected virtual void OnGetHierarchyInfo(StringBuilder sb)

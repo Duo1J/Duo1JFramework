@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 3870905162506871156}
   animator: {fileID: 3870905162514289470}
-  ikCon: {fileID: 4452395929612605221}
+  footIKCon: {fileID: 4452395929612605221}
   cc: {fileID: 5815481064931470439}
   gravityRate: 1
 --- !u!143 &5815481064931470439

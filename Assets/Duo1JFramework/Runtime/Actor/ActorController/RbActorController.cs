@@ -6,7 +6,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// Rigidbody角色控制器
     /// </summary>
-    public class RbActorController : ActorController
+    public class RbActorController : BaseActorController
     {
         /// <summary>
         /// 角色刚体
@@ -22,10 +22,10 @@ namespace Duo1JFramework.Actor
         public void SetMoveSpeedByAxis(float h, float v, float speed)
         {
             Vector3 axisByEye = GetAxisByEye(h, v);
-            if (normal != Vector3.up)
+            if (Normal != Vector3.up)
             {
-                Vector3 projectVec = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
-                if ((projectVec.y - axisByEye.y) > 0 && Vector3.Angle(Vector3.up, normal) > param.maxSlopeAngle)
+                Vector3 projectVec = Vector3.ProjectOnPlane(axisByEye, Normal).normalized;
+                if ((projectVec.y - axisByEye.y) > 0 && Vector3.Angle(Vector3.up, Normal) > param.maxSlopeAngle)
                 {
                     SetVelocity(new Vector2(0, 0));
                     return;

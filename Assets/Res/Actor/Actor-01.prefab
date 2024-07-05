@@ -83,7 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 3870905162506871156}
   animator: {fileID: 3870905162514289470}
-  ikCon: {fileID: 3038563654102783735}
+  footIKCon: {fileID: 3038563654102783735}
   rigidBody: {fileID: 6810609857197229036}
 --- !u!114 &7064342187519431148
 MonoBehaviour:

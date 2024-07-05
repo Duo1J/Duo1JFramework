@@ -6,7 +6,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// CharactorController角色控制器
     /// </summary>
-    public class CcActorController : ActorController
+    public class CcActorController : BaseActorController
     {
         /// <summary>
         /// 角色控制器
@@ -56,7 +56,7 @@ namespace Duo1JFramework.Actor
         public Vector3 GetMoveDirByAxis(float h, float v)
         {
             Vector3 axisByEye = GetAxisByEye(h, v);
-            axisByEye = Vector3.ProjectOnPlane(axisByEye, normal).normalized;
+            axisByEye = Vector3.ProjectOnPlane(axisByEye, Normal).normalized;
             return axisByEye;
         }
 

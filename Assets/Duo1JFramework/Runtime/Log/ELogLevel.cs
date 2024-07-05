@@ -1,8 +1,11 @@
+using System;
+
 namespace Duo1JFramework
 {
     /// <summary>
     /// 日志打印等级
     /// </summary>
+    [Flags]
     public enum ELogLevel
     {
         /// <summary>
