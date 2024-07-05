@@ -29,7 +29,7 @@ namespace Duo1JFramework
         public static bool IsDebug => IsEditor;
 
         /// <summary>
-        /// 触发单例类
+        /// 触发内部单例类
         /// </summary>
         public static void TriggerSingleton()
         {
@@ -46,7 +46,7 @@ namespace Duo1JFramework
             AssetManager.Instance.GC();
             System.GC.Collect();
 
-            Log.Info("GC called.");
+            Log.Info("GC调用");
         }
     }
 }

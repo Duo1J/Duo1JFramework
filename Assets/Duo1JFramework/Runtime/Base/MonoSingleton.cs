@@ -74,7 +74,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 单例触发
         /// </summary>
-        public virtual void Trigger()
+        public void Trigger()
         {
         }
 
