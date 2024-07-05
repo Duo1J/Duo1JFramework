@@ -3,7 +3,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// 泛型通用角色逻辑
     /// </summary>
-    public class GenericActor<T> : BaseActor where T : BaseActorController
+    public abstract class GenericActor<T> : BaseActor where T : BaseActorController
     {
         /// <summary>
         /// 泛型Actor控制器
@@ -12,18 +12,15 @@ namespace Duo1JFramework.Actor
         {
             get
             {
-                if (con == null) con = Controller.Convert<T>();
+                if (con == null)
+                {
+                    con = Controller.Convert<T>();
+                }
+
                 return con;
             }
         }
+
         private T con;
-
-        protected override void OnCreated()
-        {
-        }
-
-        protected override void OnDispose()
-        {
-        }
     }
 }

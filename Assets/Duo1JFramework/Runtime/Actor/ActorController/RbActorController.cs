@@ -6,7 +6,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// Rigidbody角色控制器
     /// </summary>
-    public class RbActorController : BaseActorController
+    public class RbActorController : ActorController
     {
         /// <summary>
         /// 角色刚体

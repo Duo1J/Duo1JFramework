@@ -3,7 +3,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// 通用角色控制器
     /// </summary>
-    public class ComActorController : BaseActorController
+    public class ActorController : BaseActorController
     {
         protected override void OnCollectComponent()
         {

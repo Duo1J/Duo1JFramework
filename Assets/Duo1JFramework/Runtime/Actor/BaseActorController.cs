@@ -400,9 +400,9 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 动画状态转换
         /// </summary>
-        public void AniCrossFade(string stateName, float transitionRate = 0.2f, int layer = -1)
+        public void AnimCrossFade(string stateName, float transitionRate = 0.2f, int layer = -1)
         {
-            if (!AniCanChangeState(stateName))
+            if (!AnimCanChangeState(stateName))
                 return;
             CurAniName = stateName;
             GetAnimator()?.CrossFade(stateName, transitionRate, layer);
@@ -411,7 +411,7 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 当前是否可以转换为目标动画状态
         /// </summary>
-        public bool AniCanChangeState(string stateName)
+        public bool AnimCanChangeState(string stateName)
         {
             Assert.NotNullOrEmpty(stateName, "动画状态名不可为空");
             return !stateName.Equals(CurAniName);

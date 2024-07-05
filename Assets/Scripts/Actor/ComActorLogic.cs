@@ -16,7 +16,7 @@ public class ComActorLogic : CcControlableActor
                 "Box1",
                 (param) =>
                 {
-                    Con.AniCrossFade("Boxing01");
+                    Con.AnimCrossFade("Boxing01");
                 }
             )
             .TimeToState(1f, "Move")
@@ -27,7 +27,7 @@ public class ComActorLogic : CcControlableActor
                 "Box2",
                 (param) =>
                 {
-                    Con.AniCrossFade("Boxing02");
+                    Con.AnimCrossFade("Boxing02");
                 }
             )
             .TimeToState(1f, "Move")

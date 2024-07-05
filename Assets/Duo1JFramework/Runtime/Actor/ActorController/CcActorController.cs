@@ -6,7 +6,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// CharactorController角色控制器
     /// </summary>
-    public class CcActorController : BaseActorController
+    public class CcActorController : ActorController
     {
         /// <summary>
         /// 角色控制器

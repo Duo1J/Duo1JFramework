@@ -32,13 +32,13 @@ namespace Duo1JFramework.Actor
 
                         if (Con.CheckAxisZero(h, v))
                         {
-                            Con.AniCrossFade(Param.idleAniName);
+                            Con.AnimCrossFade(Param.idleAniName);
                             Con.CameraOffsetZ = 0;
                             Con.SetFootIKGoal(1, 1, false);
                         }
                         else
                         {
-                            Con.AniCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
+                            Con.AnimCrossFade(InWalk() ? Param.walkAniName : Param.runAniName);
                             Con.CameraOffsetZ = InWalk() ? -0.3f : -0.7f;
                             Con.SetFootIKGoal(0, 0, true);
                         }
@@ -61,7 +61,7 @@ namespace Duo1JFramework.Actor
                         Vector3 moveDir = Con.GetMoveDirByAxis(h, v);
                         jumpVelocity = moveDir * (InWalk() ? Param.walkSpeed : Param.moveSpeed);
                         jumpVelocity.y = Con.GetJumpVeloByHeight();
-                        Con.AniCrossFade(Param.jumpAniName);
+                        Con.AnimCrossFade(Param.jumpAniName);
                     },
                     () =>
                     {
