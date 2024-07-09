@@ -1,4 +1,5 @@
 using Duo1JFramework.Asset;
+using UnityEngine;
 
 namespace Duo1JFramework.Config
 {
@@ -7,15 +8,21 @@ namespace Duo1JFramework.Config
     /// </summary>
     public class GameConfig : MonoSingleton<GameConfig>
     {
-        #region Config
+        #region Runtime
 
-        [Label("编辑器下资源加载类型")]
-        public EAssetLoaderType editorAssetLoaderType = EAssetLoaderType.AssetDatabase;
-
+        [Header("Runtime")]
         [Label("运行时资源加载类型")]
         public EAssetLoaderType runtimeAssetLoaderType = EAssetLoaderType.AssetBundle;
 
-        #endregion Config
+        #endregion Runtime
+
+        #region Editor
+
+        [Header("Editor")]
+        [Label("编辑器下资源加载类型")]
+        public EAssetLoaderType editorAssetLoaderType = EAssetLoaderType.AssetDatabase;
+
+        #endregion Editor
 
         protected override void OnInit()
         {
