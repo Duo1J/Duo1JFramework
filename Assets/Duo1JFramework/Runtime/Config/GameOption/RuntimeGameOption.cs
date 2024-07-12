@@ -4,10 +4,10 @@ using System;
 namespace Duo1JFramework.Config
 {
     /// <summary>
-    /// 运行时游戏配置
+    /// 运行时游戏配置选项
     /// </summary>
     [Serializable]
-    public class RuntimeGameConfig
+    public class RuntimeGameOption
     {
         [Label("运行时资源加载类型")]
         public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;

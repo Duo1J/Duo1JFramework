@@ -213,9 +213,9 @@ namespace Duo1JFramework.Asset
             void SetAssetLoader(EAssetLoaderType assetLoaderType)
             {
 #if UNITY_EDITOR
-                GameConfig.Editor.assetLoaderType = assetLoaderType;
+                GameOption.Editor.assetLoaderType = assetLoaderType;
 #else
-                GameConfig.Runtime.assetLoaderType = assetLoaderType;
+                GameOption.Runtime.assetLoaderType = assetLoaderType;
 #endif
                 switch (assetLoaderType)
                 {
@@ -239,9 +239,9 @@ namespace Duo1JFramework.Asset
                 try
                 {
 #if UNITY_EDITOR
-                    switch (GameConfig.Editor.assetLoaderType)
+                    switch (GameOption.Editor.assetLoaderType)
 #else
-                    switch (GameConfig.Runtime.assetLoaderType)
+                    switch (GameOption.Runtime.assetLoaderType)
 #endif
                     {
                         case EAssetLoaderType.AssetDatabase:
@@ -258,9 +258,9 @@ namespace Duo1JFramework.Asset
                             throw CommonException.Create("Addressables资源加载器未实现");
                         default:
 #if UNITY_EDITOR
-                            throw CommonException.Create($"GameConfig.editor.assetLoaderType类型错误: {GameConfig.Editor.assetLoaderType}");
+                            throw CommonException.Create($"GameOption.editor.assetLoaderType类型错误: {GameOption.Editor.assetLoaderType}");
 #else
-                        throw CommonException.Create($"GameConfig.runtime.assetLoaderType类型错误: {GameConfig.Runtime.assetLoaderType}");
+                        throw CommonException.Create($"GameOption.runtime.assetLoaderType类型错误: {GameOption.Runtime.assetLoaderType}");
 #endif
                     }
                 }

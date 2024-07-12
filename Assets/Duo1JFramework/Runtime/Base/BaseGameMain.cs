@@ -6,7 +6,7 @@ namespace Duo1JFramework
     /// <summary>
     /// GameMain基类
     /// </summary>
-    [RequireComponent(typeof(GameConfig))]
+    [RequireComponent(typeof(GameOption))]
     public class BaseGameMain : MonoRegister
     {
         protected virtual void Awake()
