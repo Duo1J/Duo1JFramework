@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 左侧菜单的右侧子面板
     /// </summary>
-    public abstract class EditorMenuSubWnd
+    public abstract class LeftMenuSubEditorWnd
     {
         /// <summary>
         /// 子面板索引
@@ -15,7 +15,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 父面板
         /// </summary>
-        public EditorMenuWnd Parent { get; set; }
+        public LeftMenuEditorWnd Parent { get; set; }
 
         /// <summary>
         /// 数据是否已加载

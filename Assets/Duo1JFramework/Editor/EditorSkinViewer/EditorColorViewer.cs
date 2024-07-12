@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// GUI颜色调整器
+    /// 编辑器颜色查看器
     /// </summary>
-    public class GUIColorViewer : BaseEditorWindow<GUIColorViewer>
+    public class EditorColorViewer : BaseEditorWindow<EditorColorViewer>
     {
         private bool boxBg = false;
 

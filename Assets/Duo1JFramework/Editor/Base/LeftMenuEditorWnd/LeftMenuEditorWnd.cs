@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -8,9 +7,9 @@ namespace Duo1JFramework
     /// <summary>
     /// 左侧菜单右侧面板的编辑器窗口基类
     /// </summary>
-    public abstract class EditorMenuWnd : BaseEditorWindow<EditorMenuWnd>
+    public abstract class LeftMenuEditorWnd : BaseEditorWindow<LeftMenuEditorWnd>
     {
-        protected List<EditorMenuSubWnd> subWndList;
+        protected List<LeftMenuSubEditorWnd> subWndList;
         protected int subWndIdx;
 
         private Vector2 leftScrollPos;
@@ -39,10 +38,10 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取子面板
         /// </summary>
-        public T GetSubWnd<T>() where T : EditorMenuSubWnd
+        public T GetSubWnd<T>() where T : LeftMenuSubEditorWnd
         {
             Type t = typeof(T);
-            foreach (EditorMenuSubWnd subWnd in subWndList)
+            foreach (LeftMenuSubEditorWnd subWnd in subWndList)
             {
                 if (subWnd.GetType() == t)
                 {
@@ -114,7 +113,7 @@ namespace Duo1JFramework
                     return;
                 }
 
-                EditorMenuSubWnd subWnd = subWndList[subWndIdx];
+                LeftMenuSubEditorWnd subWnd = subWndList[subWndIdx];
                 if (subWnd == null)
                 {
                     subWndIdx = 0;
@@ -144,11 +143,11 @@ namespace Duo1JFramework
         /// </summary>
         private void _ReloadData()
         {
-            subWndList = new List<EditorMenuSubWnd>();
+            subWndList = new List<LeftMenuSubEditorWnd>();
             InitSubWndList(subWndList);
             for (int i = 0; i < subWndList.Count; i++)
             {
-                EditorMenuSubWnd subWnd = subWndList[i];
+                LeftMenuSubEditorWnd subWnd = subWndList[i];
                 subWnd.Idx = i;
                 subWnd.Parent = this;
             }
@@ -159,7 +158,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 初始化添加子面板列表
         /// </summary>
-        protected abstract void InitSubWndList(List<EditorMenuSubWnd> subWndList);
+        protected abstract void InitSubWndList(List<LeftMenuSubEditorWnd> subWndList);
 
         /// <summary>
         /// 重新加载数据

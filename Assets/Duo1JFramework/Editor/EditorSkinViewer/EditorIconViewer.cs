@@ -6,9 +6,9 @@ using UnityEditor;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 内置图标列表
+    /// 编辑器内置图标列表查看器
     /// </summary>
-    public class GUIIconViewer : BaseEditorWindow<GUIIconViewer>
+    public class EditorIconViewer : BaseEditorWindow<EditorIconViewer>
     {
         private List<GUIContent> iconList;
         private Vector2 scrollPos;

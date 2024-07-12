@@ -16,7 +16,7 @@ namespace Duo1JFramework
         [SettingsProvider]
         public static SettingsProvider CreateSettingProvider()
         {
-            return new ProjectSettingsProvider(Def.FRAME_WORK_NAME, SettingsScope.Project, null);
+            return new ProjectSettingsProvider($"Project/{Def.FRAME_WORK_NAME}", SettingsScope.Project, null);
         }
 
         public override void OnGUI(string searchContext)

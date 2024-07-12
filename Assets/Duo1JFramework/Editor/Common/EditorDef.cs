@@ -110,9 +110,9 @@ namespace Duo1JFramework
             {
                 [typeof(FolderFastJumpEditorWnd)] = FOLDER_FAST_JUMP_EDITOR_WND,
 
-                [typeof(GUIIconViewer)] = GUI_ICON_VIEWER,
-                [typeof(GUIStyleViewer)] = GUI_STYLE_VIEWER,
-                [typeof(GUIColorViewer)] = GUI_COLOR_VIEWER,
+                [typeof(EditorIconViewer)] = GUI_ICON_VIEWER,
+                [typeof(EditorStyleViewer)] = GUI_STYLE_VIEWER,
+                [typeof(EditorColorViewer)] = GUI_COLOR_VIEWER,
 
                 [typeof(TimerMonitor)] = TIMER_MONITOR,
                 [typeof(AssetBundleMonitor)] = ASSET_BUNDLE_MONITOR,

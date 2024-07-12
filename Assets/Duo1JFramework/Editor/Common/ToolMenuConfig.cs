@@ -60,21 +60,21 @@ namespace Duo1JFramework
         #region EditorStyle 20
 
         [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_ICON_VIEWER, priority = 20)]
-        private static GUIIconViewer OpenGUIIconViewer()
+        private static EditorIconViewer OpenGUIIconViewer()
         {
-            return GUIIconViewer.Open();
+            return EditorIconViewer.Open();
         }
 
         [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_STYLE_VIEWER, priority = 21)]
-        public static GUIStyleViewer OpenGUIStyleViewer()
+        public static EditorStyleViewer OpenGUIStyleViewer()
         {
-            return GUIStyleViewer.Open();
+            return EditorStyleViewer.Open();
         }
 
         [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_COLOR_VIEWER, priority = 22)]
-        public static GUIColorViewer OpenGUIColorViewer()
+        public static EditorColorViewer OpenGUIColorViewer()
         {
-            return GUIColorViewer.Open();
+            return EditorColorViewer.Open();
         }
 
         #endregion EditorStyle 20

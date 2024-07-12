@@ -6,9 +6,9 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 内置样式列表
+    /// 编辑器内置样式查看器
     /// </summary>
-    public class GUIStyleViewer : BaseEditorWindow<GUIStyleViewer>
+    public class EditorStyleViewer : BaseEditorWindow<EditorStyleViewer>
     {
         private struct DrawItem
         {
