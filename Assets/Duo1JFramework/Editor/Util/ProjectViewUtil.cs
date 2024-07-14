@@ -47,7 +47,7 @@ namespace Duo1JFramework
         public static void OpenExplorer(string path)
         {
             Assert.NotNullOrEmpty(path, "待打开系统资源管理器路径为空");
-            System.Diagnostics.Process.Start("explorer.exe", path);
+            Process.Start("explorer.exe", path);
         }
     }
 }

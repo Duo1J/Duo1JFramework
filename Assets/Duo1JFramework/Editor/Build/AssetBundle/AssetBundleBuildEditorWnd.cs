@@ -10,23 +10,74 @@ namespace Duo1JFramework.Build
     {
         private Vector2 scrollPos;
 
+        private ABBuildStrategy strategy;
+
         private void OnGUI()
+        {
+            RichText = true;
+
+            DrawBuildInfo();
+            DrawBottomButton();
+        }
+
+        private void DrawBuildInfo()
         {
             ED.Scroll(ref scrollPos, () =>
             {
-                ED.Vertical(() =>
+                foreach (ABBuildStrategyData data in strategy.Data)
                 {
-                    GUILayout.FlexibleSpace();
-
-                    if (GUILayout.Button("构建AssetBundle"))
+                    GUILayout.Label($"<color={ES.GreenSL}>{data.abName}包:</color>");
+                    foreach (string path in data.pathList)
                     {
-                        if (EditorUtility.DisplayDialog("", "是否执行构建AssetBundle", "确认", "取消"))
-                        {
-                            AssetBundleBuilder.BuildAllAssetBundle();
-                        }
+                        GUILayout.Label($"{ED.S8}{path}");
                     }
-                });
+                }
             });
+        }
+
+        private void DrawBottomButton()
+        {
+            ED.Vertical(() =>
+            {
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button("定位到构建策略文件"))
+                {
+                    ABBuildStrategy.Instance.SelectAsset();
+                }
+
+                if (GUILayout.Button("清理构建的AssetBundle"))
+                {
+                    if (EditorUtility.DisplayDialog("", "是否执行清理构建的AssetBundle", "确认", "取消"))
+                    {
+                        AssetBundleBuilder.ClearAllAssetBundle();
+                    }
+                }
+
+                if (GUILayout.Button("构建AssetBundle"))
+                {
+                    if (EditorUtility.DisplayDialog("", "是否执行构建AssetBundle", "确认", "取消"))
+                    {
+                        AssetBundleBuilder.BuildAllAssetBundle();
+                    }
+                }
+            });
+        }
+
+        protected override void LoadData()
+        {
+            base.LoadData();
+            strategy = ABBuildStrategy.Instance;
+        }
+
+        protected override void SaveData()
+        {
+            base.SaveData();
+            if (strategy != null)
+            {
+                EditorUtility.SetDirty(strategy);
+                EditorUtil.SaveAndRefresh();
+            }
         }
     }
 }

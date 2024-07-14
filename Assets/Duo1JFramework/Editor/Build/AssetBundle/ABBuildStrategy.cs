@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using UnityEngine;
 
 namespace Duo1JFramework.Build
@@ -12,6 +11,9 @@ namespace Duo1JFramework.Build
         [SerializeField]
         private ABBuildStrategyData[] data;
 
+        /// <summary>
+        /// AssetBundle构建策略数据
+        /// </summary>
         public ABBuildStrategyData[] Data => data;
     }
 

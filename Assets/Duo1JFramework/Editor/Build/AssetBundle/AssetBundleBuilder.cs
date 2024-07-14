@@ -15,15 +15,14 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static void BuildAllAssetBundle()
         {
-            FileUtil.DeleteDir(PathUtil.GetAssetBundleRoot());
-            FileUtil.DeleteFile(PathUtil.GetAssetBundleRootMeta());
+            ClearAllAssetBundle();
 
             ABBuildStrategyData[] strategyDatas = ABBuildStrategy.Instance.Data;
 
             if (strategyDatas == null || strategyDatas.Length == 0)
             {
                 Log.EditorError($"AB构建策略配置为空: `{ABBuildStrategy.AssetPath}`");
-                ABBuildStrategy.SelectAsset();
+                ABBuildStrategy.Instance.SelectAsset();
                 return;
             }
 
@@ -32,7 +31,7 @@ namespace Duo1JFramework.Build
             if (buildDatas == null || buildDatas.Length == 0)
             {
                 Log.EditorError($"AB构建数据为空，请检查策略配置: `{ABBuildStrategy.AssetPath}`");
-                ABBuildStrategy.SelectAsset();
+                ABBuildStrategy.Instance.SelectAsset();
                 return;
             }
 
@@ -74,6 +73,24 @@ namespace Duo1JFramework.Build
                 EditorUtility.ClearProgressBar();
                 EditorUtil.SaveAndRefresh();
             }
+        }
+
+        /// <summary>
+        /// 清理所有构建的AssetBundle
+        /// </summary>
+        public static void ClearAllAssetBundle()
+        {
+            FileUtil.DeleteDir(PathUtil.GetAssetBundleRoot());
+            FileUtil.DeleteFile(PathUtil.GetAssetBundleRootMeta());
+            EditorUtil.SaveAndRefresh();
+        }
+
+        /// <summary>
+        /// 命令行构建所有AssetBundle
+        /// </summary>
+        public static void CommandBuildAllAssetBundle()
+        {
+
         }
 
         /// <summary>

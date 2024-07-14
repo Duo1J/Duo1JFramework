@@ -1,3 +1,4 @@
+using Duo1JFramework.Asset;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -125,6 +126,46 @@ namespace Duo1JFramework
         #endregion 动画
 
         #region 杂项
+
+        /// <summary>
+        /// 进度条
+        /// </summary>
+        public static void ProgressBar(Action action, string title, string content, float fakeProgress = 0.3f)
+        {
+            try
+            {
+                EditorUtility.DisplayProgressBar(title, content, fakeProgress);
+                action?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e);
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        /// <summary>
+        /// 通过回调修改进度的进度条
+        /// </summary>
+        public static void ProgressBar(Action<Action<float>> action, string title, string content)
+        {
+            try
+            {
+                EditorUtility.DisplayProgressBar(title, content, 0);
+                action?.Invoke((progress) => EditorUtility.DisplayProgressBar(title, content, progress));
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e);
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
 
         /// <summary>
         /// 复制

@@ -60,7 +60,7 @@ namespace Duo1JFramework
 
                 if (GUILayout.Button("选中配置文件"))
                 {
-                    FolderFastJumpDataConfig.SelectAsset();
+                    FolderFastJumpDataConfig.Instance.SelectAsset();
                 }
             });
 

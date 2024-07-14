@@ -32,9 +32,16 @@ namespace Duo1JFramework
         /// <summary>
         /// 选中配置资源
         /// </summary>
-        public static void SelectAsset()
+        public void SelectAsset()
         {
             ProjectViewUtil.SelectProjectAsset(AssetPath);
+        }
+
+        /// <summary>
+        /// 实例触发
+        /// </summary>
+        public void Trigger()
+        {
         }
     }
 }

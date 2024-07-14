@@ -51,16 +51,24 @@ namespace Duo1JFramework
         //////
 
         public static Color Green => IsProSkin ? Color.green : ColorUtil.Create(0, 120, 15);
+        public static string GreenS => ColorUtil.ColorToHex(Green);
         public static Color GreenL => IsProSkin ? Color.green : ColorUtil.Create(150, 215, 150);
+        public static string GreenSL => ColorUtil.ColorToHex(GreenL);
 
         public static Color Blue => IsProSkin ? ColorUtil.Create(140, 140, 255) : Color.blue;
+        public static string BlueS => ColorUtil.ColorToHex(Blue);
         public static Color BlueL => IsProSkin ? Color.blue : ColorUtil.Create(154, 154, 224);
+        public static string BlueSL => ColorUtil.ColorToHex(BlueL);
 
         public static Color Yellow => IsProSkin ? Color.yellow : ColorUtil.Create(138, 138, 0);
+        public static string YellowS => ColorUtil.ColorToHex(Yellow);
         public static Color YellowL => IsProSkin ? Color.yellow : ColorUtil.Create(154, 154, 70);
+        public static string YellowSL => ColorUtil.ColorToHex(YellowL);
 
         public static Color Red => Color.red;
+        public static string RedS => ColorUtil.ColorToHex(Red);
         public static Color RedL => IsProSkin ? Color.red : ColorUtil.Create(230, 120, 120);
+        public static string RedSL => ColorUtil.ColorToHex(RedL);
 
         #endregion Color
 

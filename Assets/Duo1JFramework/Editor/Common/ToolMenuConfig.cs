@@ -103,8 +103,14 @@ namespace Duo1JFramework
 
         #region Build 40
 
-        [MenuItem(EditorDef.Menu.BUILD_PREFIX + EditorDef.Menu.ASSET_BUNDLE_BUILD_EDITOR_WND, priority = 40)]
-        public static AssetBundleBuildEditorWnd OpenAssetBundleBuildEditor()
+        [MenuItem(EditorDef.Menu.BUILD_PREFIX + EditorDef.Menu.APP_BUILD_EDITOR_WND, priority = 40)]
+        public static AppBuildEditorWnd OpenAppBuildEditorWnd()
+        {
+            return AppBuildEditorWnd.Open();
+        }
+
+        [MenuItem(EditorDef.Menu.BUILD_PREFIX + EditorDef.Menu.ASSET_BUNDLE_BUILD_EDITOR_WND, priority = 41)]
+        public static AssetBundleBuildEditorWnd OpenAssetBundleBuildEditorWnd()
         {
             return AssetBundleBuildEditorWnd.Open();
         }

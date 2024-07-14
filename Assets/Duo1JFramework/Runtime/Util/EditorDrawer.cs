@@ -15,6 +15,7 @@ namespace Duo1JFramework
         public const string S2 = "  ";
         public const string S4 = "    ";
         public const string S6 = "      ";
+        public const string S8 = "        ";
 
         #region Wrap
 
