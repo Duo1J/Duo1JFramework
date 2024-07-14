@@ -56,7 +56,7 @@ namespace Duo1JFramework.Build
                     }
                     else
                     {
-                        tarPath = $"{tarPath}/{AppBuilder.BuildTarFolder}";
+                        tarPath = $"{tarPath}/{AppBuilder.BuildTarFolderName}";
                         if (EditorUtility.DisplayDialog("", $"是否执行构建App到 {tarPath}", "确认", "取消"))
                         {
                             AppBuilder.BuildApp(tarPath);

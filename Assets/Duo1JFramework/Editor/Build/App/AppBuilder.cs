@@ -1,7 +1,6 @@
 using Duo1JFramework.Asset;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -15,14 +14,9 @@ namespace Duo1JFramework.Build
     public static class AppBuilder
     {
         /// <summary>
-        /// 构建目标文件夹
+        /// App构建目标文件夹名
         /// </summary>
-        public static string BuildTarFolder => $"{Application.productName}_Out";
-
-        /// <summary>
-        /// 构建Player文件夹
-        /// </summary>
-        public const string BuildPlayerFolder = "/Game/";
+        public static string BuildTarFolderName => $"{Application.productName}_Out";
 
         /// <summary>
         /// 以AppBuildStrategy参数构建App
@@ -46,13 +40,15 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// 构建PlayerApp
+        /// 构建Player
         /// </summary>
         private static void BuildPlayer(AppBuildStrategyData data, string tarPath)
         {
             try
             {
-                string tarPlayerFolder = tarPath + BuildPlayerFolder;
+                Assert.NotNull(tarPath, "Player构建目标路径不可为空");
+                FileUtil.CheckDir(tarPath);
+                string tarPlayerFolder = tarPath + $"/{Application.productName}/";
                 if (FileUtil.DeleteDir(tarPlayerFolder))
                 {
                     Log.EditorInfo($"Player构建时，删除已存在文件夹: {tarPlayerFolder}");
