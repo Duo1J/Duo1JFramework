@@ -14,6 +14,8 @@ namespace Duo1JFramework
         /// </summary>
         public static void Init()
         {
+            Log4Net.Init();
+
             if (Initialized)
             {
                 Log.ErrorForce($"{Def.FRAME_WORK_NAME} 重复初始化");

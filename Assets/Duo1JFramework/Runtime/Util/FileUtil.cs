@@ -50,39 +50,45 @@ namespace Duo1JFramework
         /// <summary>
         /// 检查文件是否创建，未创建则创建
         /// </summary>
-        public static string CheckFile(string filePath)
+        public static bool CheckFile(string filePath)
         {
             try
             {
                 if (!File.Exists(filePath))
                 {
                     File.Create(filePath).Dispose();
+                    return true;
                 }
+
+                return false;
             }
             catch (Exception e)
             {
                 Assert.ExceptHandle(e, $"检查并创建文件异常: {filePath}");
+                return false;
             }
-            return filePath;
         }
 
         /// <summary>
         /// 检查文件夹是否创建，未创建则创建
         /// </summary>
-        public static string CheckDir(string dirPath)
+        public static bool CheckDir(string dirPath)
         {
             try
             {
                 if (!Directory.Exists(dirPath))
                 {
                     Directory.CreateDirectory(dirPath);
+                    return true;
                 }
+
+                return false;
             }
             catch (Exception e)
             {
                 Assert.ExceptHandle(e, $"检查并创建文件夹异常: {dirPath}");
+                return false;
             }
-            return dirPath;
         }
 
         /// <summary>

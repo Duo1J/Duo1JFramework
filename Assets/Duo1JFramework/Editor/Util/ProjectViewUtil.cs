@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 using UObject = UnityEngine.Object;
 
@@ -46,8 +46,9 @@ namespace Duo1JFramework
         /// </summary>
         public static void OpenExplorer(string path)
         {
-            Assert.NotNullOrEmpty(path, "待打开系统资源管理器路径为空");
-            Process.Start("explorer.exe", path);
+            Assert.NotNullOrEmpty(path, "待打开的系统资源管理器路径为空");
+            //Process.Start("explorer.exe", path);
+            Application.OpenURL(path);
         }
     }
 }

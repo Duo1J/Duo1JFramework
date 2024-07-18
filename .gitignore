@@ -71,3 +71,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 /Assets/StreamingAssets/Bundle
 /Assets/StreamingAssets/Bundle.meta
+/Assets/StreamingAssets/Duo1JFramework/Log
+/Assets/StreamingAssets/Duo1JFramework/Log.meta

@@ -1,5 +1,6 @@
 using Duo1JFramework.Asset;
 using System;
+using UnityEngine;
 
 namespace Duo1JFramework.Config
 {
@@ -11,5 +12,9 @@ namespace Duo1JFramework.Config
     {
         [Label("编辑器下资源加载类型")]
         public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetDatabase;
+
+        [Space]
+        [Label("使用Log4Net日志")]
+        public bool useLog4Net = true;
     }
 }

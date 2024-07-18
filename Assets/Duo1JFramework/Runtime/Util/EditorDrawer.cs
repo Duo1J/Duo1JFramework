@@ -144,7 +144,7 @@ namespace Duo1JFramework
 #if UNITY_EDITOR
             EditorGUILayout.HelpBox(new GUIContent(msg));
 #else
-                GUILayout.Label(msg);
+            GUILayout.Label(msg);
 #endif
         }
 
@@ -153,7 +153,6 @@ namespace Duo1JFramework
         public static void HelpBox_Editor(string msg, MessageType msgType = MessageType.Info)
         {
             EditorGUILayout.HelpBox(msg, msgType);
-            GUILayout.Label(msg);
         }
 
 #endif

@@ -1,6 +1,3 @@
-using Duo1JFramework.Asset;
-using UnityEngine;
-
 namespace Duo1JFramework
 {
     /// <summary>
@@ -13,7 +10,8 @@ namespace Duo1JFramework
         /// </summary>
         public static string CheckFile(this string str)
         {
-            return FileUtil.CheckFile(str);
+            FileUtil.CheckFile(str);
+            return str;
         }
 
         /// <summary>
@@ -21,7 +19,8 @@ namespace Duo1JFramework
         /// </summary>
         public static string CheckDir(this string str)
         {
-            return FileUtil.CheckDir(str);
+            FileUtil.CheckDir(str);
+            return str;
         }
     }
 }

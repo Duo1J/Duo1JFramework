@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -9,11 +10,14 @@ namespace Duo1JFramework
     /// </summary>
     public abstract class LeftMenuEditorWnd : BaseEditorWindow<LeftMenuEditorWnd>
     {
-        protected List<LeftMenuSubEditorWnd> subWndList;
-        protected int subWndIdx;
+        private List<LeftMenuSubEditorWnd> subWndList;
+        private int subWndIdx;
 
         private Vector2 leftScrollPos;
         private Vector2 rightScrollPos;
+
+        private const int MinMenuWidth = 150;
+        public float MenuWidth { get; protected set; } = MinMenuWidth;
 
         /// <summary>
         /// 切换菜单到
@@ -56,12 +60,14 @@ namespace Duo1JFramework
         private void OnGUI()
         {
             ES.SetRichText();
-            float width = position.width;
 
-            ED.Area(new Rect(0, 0, 150, position.height), DrawLeftMenuList, "box");
-            width -= 150;
+            float width = Width;
+            MenuWidth = Mathf.Clamp(MenuWidth, MinMenuWidth, width);
 
-            ED.Area(new Rect(150, 0, width, position.height), DrawRightSubPanel);
+            ED.Area(new Rect(0, 0, MenuWidth, position.height), DrawLeftMenuList, "box");
+            width -= MenuWidth;
+
+            ED.Area(new Rect(MenuWidth, 0, width, position.height), DrawRightSubPanel);
         }
 
         /// <summary>
@@ -109,7 +115,7 @@ namespace Duo1JFramework
             {
                 if (subWndList == null)
                 {
-                    GUILayout.Label("左侧菜单数据为空，请重新加载");
+                    ED.HelpBox_Editor("左侧菜单数据为空，请重新加载", MessageType.Error);
                     return;
                 }
 
@@ -133,7 +139,7 @@ namespace Duo1JFramework
                 }
                 else
                 {
-                    GUILayout.Label("请在游戏运行后使用");
+                    ED.HelpBox_Editor("请在游戏运行后使用", MessageType.Warning);
                 }
             });
         }
