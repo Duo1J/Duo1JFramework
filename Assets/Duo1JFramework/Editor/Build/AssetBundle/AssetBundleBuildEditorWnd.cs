@@ -63,6 +63,11 @@ namespace Duo1JFramework.Build
                 {
                     if (EditorUtility.DisplayDialog("", "是否执行构建AssetBundle", "确认", "取消"))
                     {
+                        if (!EditorUtil.CheckPlatformChgAndAsk(ABBuildStrategy.Instance.BuildTarget))
+                        {
+                            return;
+                        }
+
                         AssetBundleBuilder.BuildAllAssetBundle();
                     }
                 }

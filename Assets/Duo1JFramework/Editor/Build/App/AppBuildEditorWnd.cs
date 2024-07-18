@@ -49,6 +49,11 @@ namespace Duo1JFramework.Build
 
                 if (GUILayout.Button("构建App"))
                 {
+                    if (!EditorUtil.CheckPlatformChgAndAsk(AppBuildStrategy.Instance.Data.buildTarget))
+                    {
+                        return;
+                    }
+
                     string tarPath = EditorUtility.SaveFolderPanel("选择App构建目标路径", "", "");
                     if (string.IsNullOrEmpty(tarPath))
                     {

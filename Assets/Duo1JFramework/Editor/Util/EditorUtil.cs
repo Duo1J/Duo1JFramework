@@ -91,6 +91,22 @@ namespace Duo1JFramework
             AssetDatabase.Refresh();
         }
 
+        /// <summary>
+        /// 检测是否需要切换平台并询问是否继续
+        /// </summary>
+        /// <returns>是否继续</returns>
+        public static bool CheckPlatformChgAndAsk(BuildTarget buildTarget)
+        {
+            if (EditorUserBuildSettings.activeBuildTarget == buildTarget)
+            {
+                return true;
+            }
+
+            return EditorUtility.DisplayDialog("提示",
+                $"平台将从{EditorUserBuildSettings.activeBuildTarget.GetName()}切换为{buildTarget.GetName()}, 是否继续?",
+                "是", "否");
+        }
+
         #endregion 资源编辑
 
         #region 动画
