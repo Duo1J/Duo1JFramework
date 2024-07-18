@@ -24,6 +24,11 @@ namespace Duo1JFramework.Build
         {
             ED.Scroll(ref scrollPos, () =>
             {
+                strategy.BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup("构建目标", strategy.BuildTarget);
+                strategy.BuildOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("构建选项", strategy.BuildOptions);
+
+                GUILayout.Space(10);
+
                 foreach (ABBuildStrategyData data in strategy.Data)
                 {
                     GUILayout.Label($"<color={ES.GreenSL}>{data.abName}包:</color>");

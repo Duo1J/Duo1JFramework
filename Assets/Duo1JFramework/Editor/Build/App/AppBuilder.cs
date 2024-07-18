@@ -30,7 +30,7 @@ namespace Duo1JFramework.Build
 
             if (data.buildAsset)
             {
-                if (!BuildAsset(data.assetLoaderType))
+                if (!BuildAsset(data.buildTarget, data.assetLoaderType))
                 {
                     return;
                 }
@@ -69,9 +69,9 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// 根据类型构建资源
+        /// 根据目标和类型构建资源
         /// </summary>
-        public static bool BuildAsset(EAssetLoaderType assetLoaderType)
+        public static bool BuildAsset(BuildTarget buildTarget, EAssetLoaderType assetLoaderType)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Duo1JFramework.Build
                         }
                     case EAssetLoaderType.AssetBundle:
                         {
-                            AssetBundleBuilder.BuildAllAssetBundle();
+                            AssetBundleBuilder.BuildAllAssetBundle(buildTarget);
                             return true;
                         }
                     case EAssetLoaderType.Addressables:

@@ -1,4 +1,3 @@
-using Duo1JFramework.Asset;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,9 +10,18 @@ namespace Duo1JFramework.Build
     public static class AssetBundleBuilder
     {
         /// <summary>
+        /// 使用ABBuildStrategy配置的目标构建所有AssetBundle
+        /// </summary>
+        /// <see cref="ABBuildStrategy"/>
+        public static void BuildAllAssetBundle()
+        {
+            BuildAllAssetBundle(ABBuildStrategy.Instance.BuildTarget);
+        }
+
+        /// <summary>
         /// 构建所有AssetBundle
         /// </summary>
-        public static void BuildAllAssetBundle()
+        public static void BuildAllAssetBundle(BuildTarget buildTarget)
         {
             ClearAllAssetBundle();
 
@@ -57,12 +65,12 @@ namespace Duo1JFramework.Build
                 BuildPipeline.BuildAssetBundles(
                     PathUtil.GetAssetBundleRoot().CheckDir(),
                     buildList.ToArray(),
-                    EditorDef.Build.ABBuildOptions,
-                    EditorDef.Build.CurBuildTarget
+                    ABBuildStrategy.Instance.BuildOptions,
+                    buildTarget
                 );
 
                 ABMapData.Save(ab2AssetMap);
-                Log.EditorInfo("构建AssetBndle成功");
+                Log.EditorInfo($"构建{buildTarget.GetName()}平台的AssetBndle成功");
             }
             catch (Exception e)
             {

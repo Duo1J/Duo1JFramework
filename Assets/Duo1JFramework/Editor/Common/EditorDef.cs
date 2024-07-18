@@ -127,27 +127,5 @@ namespace Duo1JFramework
 
             #endregion 工具窗口名称
         }
-
-        /// <summary>
-        /// 构建相关定义
-        /// </summary>
-        public static class Build
-        {
-            /// <summary>
-            /// 获取当前构建目标平台
-            /// </summary>
-            public static BuildTarget CurBuildTarget
-            {
-                get => EditorUserBuildSettings.activeBuildTarget;
-            }
-
-            /// <summary>
-            /// 获取AB构建选项
-            /// </summary>
-            public static BuildAssetBundleOptions ABBuildOptions
-            {
-                get => BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DisableWriteTypeTree;
-            }
-        }
     }
 }

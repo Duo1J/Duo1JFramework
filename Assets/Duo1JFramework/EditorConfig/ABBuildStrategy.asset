@@ -12,4 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c1d717e504772478ceed83b7a01cac, type: 3}
   m_Name: ABBuildStrategy
   m_EditorClassIdentifier: 
-  data: []
+  buildTarget: 19
+  buildOptions: 256
+  data:
+  - abName: Actor
+    pathList:
+    - Actor
+  - abName: Audio
+    pathList:
+    - Audio
+  - abName: Camera
+    pathList:
+    - Camera
+  - abName: Models
+    pathList:
+    - Models
+  - abName: Timeline
+    pathList:
+    - Timeline
+  - abName: UI
+    pathList:
+    - UI
+  - abName: World
+    pathList:
+    - World

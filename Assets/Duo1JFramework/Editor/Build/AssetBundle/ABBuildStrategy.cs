@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Duo1JFramework.Build
@@ -8,6 +9,16 @@ namespace Duo1JFramework.Build
     /// </summary>
     public class ABBuildStrategy : EditorConfigSO<ABBuildStrategy>
     {
+        [Label("构建目标")]
+        [SerializeField]
+        private BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
+        public BuildTarget BuildTarget { get => buildTarget; set => buildTarget = value; }
+
+        [Label("构建选项")]
+        [SerializeField]
+        private BuildAssetBundleOptions buildOptions = BuildAssetBundleOptions.ChunkBasedCompression;
+        public BuildAssetBundleOptions BuildOptions { get => buildOptions; set => buildOptions = value; }
+
         [SerializeField]
         private ABBuildStrategyData[] data;
 
