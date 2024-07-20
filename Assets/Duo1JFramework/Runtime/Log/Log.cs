@@ -1,7 +1,7 @@
-using Duo1JFramework.ObjectPool;
 using System;
 using System.Diagnostics;
 using System.Text;
+using Duo1JFramework.ObjectPool;
 
 using Debug = UnityEngine.Debug;
 
@@ -17,7 +17,7 @@ namespace Duo1JFramework
         /// </summary>
         private static ELogLevel logLevel = ELogLevel.All;
 
-        public static StringBuilder sb = new StringBuilder();
+        private static StringBuilder sb = new StringBuilder();
 
         public const string INFO_TAG = "[Info] ";
         public const string WARN_TAG = "[Warn] ";
@@ -113,7 +113,11 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(_logLevel))
             {
-                Debug.Log(Concat($"<color=green>[{_logLevel}]</color> ", msg));
+#if UNITY_EDITOR
+                Debug.Log(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
+#else
+                Debug.Log(Concat($"[{_logLevel.GetName()}] ", msg));
+#endif
             }
         }
 
@@ -124,7 +128,11 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(_logLevel))
             {
-                Debug.LogWarning(Concat($"<color=green>[{_logLevel}]</color> ", msg));
+#if UNITY_EDITOR
+                Debug.LogWarning(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
+#else
+                Debug.LogWarning(Concat($"[{_logLevel.GetName()}] ", msg));
+#endif
             }
         }
 
@@ -135,7 +143,11 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(_logLevel))
             {
-                Debug.LogError(Concat($"<color=green>[{_logLevel}]</color> ", msg));
+#if UNITY_EDITOR
+                Debug.LogError(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
+#else
+                Debug.LogError(Concat($"[{_logLevel.GetName()}] ", msg));
+#endif
             }
         }
 
@@ -213,11 +225,6 @@ namespace Duo1JFramework
                 }
             }
             return sb.ToString();
-        }
-
-        public static string Concat(params string[] msg)
-        {
-            return Concat(null, msg);
         }
 
         /// <summary>
