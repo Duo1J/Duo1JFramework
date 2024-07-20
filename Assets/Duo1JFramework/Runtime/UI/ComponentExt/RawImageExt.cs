@@ -1,9 +1,8 @@
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Duo1JFramework.UI
 {
-    public class TextExtend : Text
+    public class RawImageExt : RawImage
     {
     }
 }

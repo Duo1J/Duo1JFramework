@@ -1,4 +1,3 @@
-using Duo1JFramework.Asset;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -29,24 +28,11 @@ namespace Duo1JFramework
         public static bool IsDebug => IsEditor;
 
         /// <summary>
-        /// 触发内部单例类
-        /// </summary>
-        public static void TriggerSingleton()
-        {
-            Log.Info("触发单例");
-
-            GameManager.Instance.Trigger();
-        }
-
-        /// <summary>
         /// 内存清理
         /// </summary>
         public static void GC()
         {
-            AssetManager.Instance.GC();
-            System.GC.Collect();
-
-            Log.Info("GC调用");
+            Framework.GC();
         }
     }
 }

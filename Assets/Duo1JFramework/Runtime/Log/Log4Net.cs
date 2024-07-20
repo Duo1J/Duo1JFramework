@@ -75,6 +75,8 @@ namespace Duo1JFramework
 
         public static void Shutdown()
         {
+            Log.Info("Log4Net 关闭");
+            initialized = false;
             LogManager.Shutdown();
         }
 

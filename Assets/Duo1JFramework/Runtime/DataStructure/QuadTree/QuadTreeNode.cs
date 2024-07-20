@@ -1,5 +1,3 @@
-using Duo1JFramework.RX;
-using Duo1JFramework.TimerUpdate;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// 基础对象池实现
+    /// 通用对象池实现
     /// </summary>
     public class ObjectPool<T> where T : class, new()
     {

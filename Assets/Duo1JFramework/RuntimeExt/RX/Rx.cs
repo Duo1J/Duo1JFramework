@@ -1,13 +1,12 @@
-using Duo1JFramework.ObjectPool;
-using System;
+using Duo1JFramework.Ext.ObjectPool;
 using System.Collections.Generic;
 
-namespace Duo1JFramework.RX
+namespace Duo1JFramework.Ext.RX
 {
     /// <summary>
     /// 响应式API
     /// </summary>
-    public partial class Rx : MonoSingleton<Rx>
+    public class Rx : MonoSingleton<Rx>
     {
         #region API
 

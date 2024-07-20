@@ -24,10 +24,5 @@ namespace Duo1JFramework.ObjectPool
         /// Timer池
         /// </summary>
         public static TimerPool TimerPool = new TimerPool();
-
-        /// <summary>
-        /// 响应式监听者池
-        /// </summary>
-        public static RxObserverPool RxObserverPool = new RxObserverPool();
     }
 }

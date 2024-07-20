@@ -1,6 +1,6 @@
 using System;
 
-namespace Duo1JFramework.RX
+namespace Duo1JFramework.Ext.RX
 {
     /// <summary>
     /// 响应式监听者

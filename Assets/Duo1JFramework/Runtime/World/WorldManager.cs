@@ -134,7 +134,7 @@ namespace Duo1JFramework.World
             if (controller == null)
             {
                 Log.Warn($"世界`{worldData.Path}`未挂载`BaseWorldController`的派生组件, 默认挂载`ComWorldController`");
-                controller = go.AddComponent<ComWorldController>();
+                controller = go.AddComponent<WorldController>();
             }
 
             controller.Init(worldData);

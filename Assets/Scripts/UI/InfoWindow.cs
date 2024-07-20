@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class InfoWindow : Window
 {
-    TextExtend buttomInfoText;
+    TextExt buttomInfoText;
 
     protected override UIData CreateUIConfig()
     {
@@ -24,7 +24,7 @@ public class InfoWindow : Window
     {
 #if UNITY_EDITOR
 
-        buttomInfoText = GetCom<TextExtend>("BottomInfo");
+        buttomInfoText = GetCom<TextExt>("BottomInfo");
 
         RegisterUpdate(() =>
         {

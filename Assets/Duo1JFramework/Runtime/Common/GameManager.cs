@@ -9,15 +9,18 @@ namespace Duo1JFramework
     {
         private void OnApplicationQuit()
         {
-            Log.Info("OnApplicationQuit");
+            //Log.Info("OnApplicationQuit");
 
             Game.IsQuit = true;
+
             EventManager.Instance.Broadcast(eEvent.APP_QUIT);
+
+            Framework.Shutdown();
         }
 
         private void OnApplicationFocus(bool focus)
         {
-            Log.Info($"OnApplicationFocus: {focus}");
+            //Log.Info($"OnApplicationFocus: {focus}");
 
             if (focus)
                 EventManager.Instance.Broadcast(eEvent.APP_FOCUS);
@@ -27,7 +30,7 @@ namespace Duo1JFramework
 
         private void OnApplicationPause(bool pause)
         {
-            Log.Info($"OnApplicationFocus: {pause}");
+            //Log.Info($"OnApplicationFocus: {pause}");
 
             if (pause)
                 EventManager.Instance.Broadcast(eEvent.APP_PAUSE);

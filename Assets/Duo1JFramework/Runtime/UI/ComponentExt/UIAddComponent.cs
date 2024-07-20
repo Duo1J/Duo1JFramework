@@ -4,11 +4,11 @@ namespace Duo1JFramework.UI
 {
     public static class UIAddComponent
     {
-        public static ImageExtend AddImage(this GameObject go)
+        public static ImageExt AddImage(this GameObject go)
         {
-            ImageExtend com = go.GetComponent<ImageExtend>();
+            ImageExt com = go.GetComponent<ImageExt>();
             if (com != null) return com;
-            com = go.AddComponent<ImageExtend>();
+            com = go.AddComponent<ImageExt>();
             com.raycastTarget = false;
             return com;
         }
@@ -22,39 +22,39 @@ namespace Duo1JFramework.UI
             return com;
         }
 
-        public static RawImageExtend AddRawImage(this GameObject go)
+        public static RawImageExt AddRawImage(this GameObject go)
         {
-            RawImageExtend com = go.GetComponent<RawImageExtend>();
+            RawImageExt com = go.GetComponent<RawImageExt>();
             if (com != null) return com;
-            com = go.AddComponent<RawImageExtend>();
+            com = go.AddComponent<RawImageExt>();
             com.raycastTarget = false;
             return com;
         }
 
-        public static ButtonExtend AddButton(this GameObject go)
+        public static ButtonExt AddButton(this GameObject go)
         {
-            ButtonExtend com = go.GetComponent<ButtonExtend>();
+            ButtonExt com = go.GetComponent<ButtonExt>();
             if (com != null) return com;
-            com = go.AddComponent<ButtonExtend>();
+            com = go.AddComponent<ButtonExt>();
             EmptyGraphic emptyGraphic = go.AddEmptyGraphic();
             com.targetGraphic = emptyGraphic;
             return com;
         }
 
-        public static TMPExtend AddTMP(this GameObject go)
+        public static TMPExt AddTMP(this GameObject go)
         {
-            TMPExtend com = go.GetComponent<TMPExtend>();
+            TMPExt com = go.GetComponent<TMPExt>();
             if (com != null) return com;
-            com = go.AddComponent<TMPExtend>();
+            com = go.AddComponent<TMPExt>();
             com.raycastTarget = false;
             return com;
         }
 
-        public static TextExtend AddText(this GameObject go)
+        public static TextExt AddText(this GameObject go)
         {
-            TextExtend com = go.GetComponent<TextExtend>();
+            TextExt com = go.GetComponent<TextExt>();
             if (com != null) return com;
-            com = go.AddComponent<TextExtend>();
+            com = go.AddComponent<TextExt>();
             com.raycastTarget = false;
             com.fontSize = 32;
             com.alignment = TextAnchor.MiddleLeft;
