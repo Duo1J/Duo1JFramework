@@ -4,8 +4,35 @@ using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework
 {
+    /// <summary>
+    /// 断言
+    /// </summary>
     public static class Assert
     {
+        /// <summary>
+        /// 通用异常处理
+        /// </summary>
+        public static void ExceptHandle(Exception e, params object[] msg)
+        {
+            Log.Exception(e, msg);
+        }
+
+        /// <summary>
+        /// 抛出一般异常
+        /// </summary>
+        public static void Throw(string msg)
+        {
+            throw CommonException.Create(msg);
+        }
+
+        /// <summary>
+        /// 获取当前调用栈
+        /// </summary>
+        public static string GetStackTrace()
+        {
+            return Log.GetStackTrace();
+        }
+
         /// <summary>
         /// 断言不为空
         /// </summary>
@@ -25,7 +52,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 判断字符串是否不为null以及""，否则抛出异常
+        /// 断言字符串是否不为null以及""，否则抛出异常
         /// </summary>
         public static void NotNullOrEmpty(string str, string message = "")
         {
@@ -45,8 +72,6 @@ namespace Duo1JFramework
         /// <summary>
         /// 判断是否为真，否则抛出异常
         /// </summary>
-        /// <param name="b"></param>
-        /// <param name="message"></param>
         public static void Guard(bool b, string message)
         {
             if (!b)
@@ -60,22 +85,6 @@ namespace Duo1JFramework
                     Throw($"<Guard异常>: {message}");
                 }
             }
-        }
-
-        /// <summary>
-        /// 通用异常处理
-        /// </summary>
-        public static void ExceptHandle(Exception e, params object[] msg)
-        {
-            Log.Exception(e, msg);
-        }
-
-        /// <summary>
-        /// 抛出一般异常
-        /// </summary>
-        private static void Throw(string msg)
-        {
-            throw CommonException.Create(msg);
         }
 
         /// <summary>
