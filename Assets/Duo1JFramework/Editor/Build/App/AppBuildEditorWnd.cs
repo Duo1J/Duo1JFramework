@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework.Build
 {
     /// <summary>
-    /// App¹¹½¨±à¼­Æ÷
+    /// Appæ„å»ºç¼–è¾‘å™¨
     /// </summary>
     public class AppBuildEditorWnd : BaseEditorWindow<AppBuildEditorWnd>
     {
@@ -27,11 +27,11 @@ namespace Duo1JFramework.Build
                 {
                     AppBuildStrategyData data = strategy.Data;
 
-                    data.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("¹¹½¨Ä¿±ê", data.buildTarget);
-                    data.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField("¹¹½¨Ñ¡Ïî", data.buildOptions);
+                    data.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("æ„å»ºç›®æ ‡", data.buildTarget);
+                    data.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField("æ„å»ºé€‰é¡¹", data.buildOptions);
 
-                    data.buildAsset = EditorGUILayout.Toggle("¹¹½¨×ÊÔ´", data.buildAsset);
-                    data.assetLoaderType = (EAssetLoaderType)EditorGUILayout.EnumPopup("×ÊÔ´¼ÓÔØÆ÷ÀàĞÍ", data.assetLoaderType);
+                    data.buildAsset = EditorGUILayout.Toggle("æ„å»ºèµ„æº", data.buildAsset);
+                    data.assetLoaderType = (EAssetLoaderType)EditorGUILayout.EnumPopup("èµ„æºåŠ è½½å™¨ç±»å‹", data.assetLoaderType);
                 });
             });
         }
@@ -42,27 +42,27 @@ namespace Duo1JFramework.Build
             {
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("¶¨Î»µ½¹¹½¨²ßÂÔÎÄ¼ş"))
+                if (GUILayout.Button("å®šä½åˆ°æ„å»ºç­–ç•¥æ–‡ä»¶"))
                 {
                     AppBuildStrategy.Instance.SelectAsset();
                 }
 
-                if (GUILayout.Button("¹¹½¨App"))
+                if (GUILayout.Button("æ„å»ºApp"))
                 {
                     if (!EditorUtil.CheckPlatformChgAndAsk(AppBuildStrategy.Instance.Data.buildTarget))
                     {
                         return;
                     }
 
-                    string tarPath = EditorUtility.SaveFolderPanel("Ñ¡ÔñApp¹¹½¨Ä¿±êÂ·¾¶", "", "");
+                    string tarPath = EditorUtility.SaveFolderPanel("é€‰æ‹©Appæ„å»ºç›®æ ‡è·¯å¾„", "", "");
                     if (string.IsNullOrEmpty(tarPath))
                     {
-                        Log.EditorError("App¹¹½¨Ä¿±êÂ·¾¶²»¿ÉÎª¿Õ");
+                        Log.EditorError("Appæ„å»ºç›®æ ‡è·¯å¾„ä¸å¯ä¸ºç©º");
                     }
                     else
                     {
                         tarPath = $"{tarPath}/{AppBuilder.BuildTarFolderName}";
-                        if (EditorUtility.DisplayDialog("", $"ÊÇ·ñÖ´ĞĞ¹¹½¨Appµ½ {tarPath}", "È·ÈÏ", "È¡Ïû"))
+                        if (EditorUtility.DisplayDialog("", $"æ˜¯å¦æ‰§è¡Œæ„å»ºAppåˆ° {tarPath}", "ç¡®è®¤", "å–æ¶ˆ"))
                         {
                             AppBuilder.BuildApp(tarPath);
                         }

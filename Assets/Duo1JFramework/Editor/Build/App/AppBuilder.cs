@@ -9,21 +9,21 @@ using UnityEngine.SceneManagement;
 namespace Duo1JFramework.Build
 {
     /// <summary>
-    /// App¹¹½¨Æ÷
+    /// Appæ„å»ºå™¨
     /// </summary>
     public static class AppBuilder
     {
         /// <summary>
-        /// App¹¹½¨Ä¿±êÎÄ¼ş¼ĞÃû
+        /// Appæ„å»ºç›®æ ‡æ–‡ä»¶å¤¹å
         /// </summary>
         public static string BuildTarFolderName => $"{Application.productName}_Out";
 
         /// <summary>
-        /// ÒÔAppBuildStrategy²ÎÊı¹¹½¨App
+        /// ä»¥AppBuildStrategyå‚æ•°æ„å»ºApp
         /// </summary>
         public static void BuildApp(string tarPath)
         {
-            Assert.NotNull(tarPath, "App¹¹½¨Ä¿±êÂ·¾¶²»¿ÉÎª¿Õ");
+            Assert.NotNull(tarPath, "Appæ„å»ºç›®æ ‡è·¯å¾„ä¸å¯ä¸ºç©º");
             FileUtil.CheckDir(tarPath);
 
             AppBuildStrategyData data = AppBuildStrategy.Instance.Data;
@@ -40,18 +40,18 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// ¹¹½¨Player
+        /// æ„å»ºPlayer
         /// </summary>
         private static void BuildPlayer(AppBuildStrategyData data, string tarPath)
         {
             try
             {
-                Assert.NotNull(tarPath, "Player¹¹½¨Ä¿±êÂ·¾¶²»¿ÉÎª¿Õ");
+                Assert.NotNull(tarPath, "Playeræ„å»ºç›®æ ‡è·¯å¾„ä¸å¯ä¸ºç©º");
                 FileUtil.CheckDir(tarPath);
                 string tarPlayerFolder = tarPath + $"/{Application.productName}/";
                 if (FileUtil.DeleteDir(tarPlayerFolder))
                 {
-                    Log.EditorInfo($"Player¹¹½¨Ê±£¬É¾³ıÒÑ´æÔÚÎÄ¼ş¼Ğ: {tarPlayerFolder}");
+                    Log.EditorInfo($"Playeræ„å»ºæ—¶ï¼Œåˆ é™¤å·²å­˜åœ¨æ–‡ä»¶å¤¹: {tarPlayerFolder}");
                 }
 
                 string tarPlayerPath = tarPlayerFolder + $"{Application.productName}.exe";
@@ -59,17 +59,17 @@ namespace Duo1JFramework.Build
                 BuildPipeline.BuildPlayer(buildSettingSceneList.ToArray(), tarPlayerPath, data.buildTarget, data.buildOptions);
 
                 ProjectViewUtil.OpenExplorer(tarPath);
-                Log.EditorInfo($"Player¹¹½¨³É¹¦: {tarPath}");
+                Log.EditorInfo($"Playeræ„å»ºæˆåŠŸ: {tarPath}");
             }
             catch (Exception e)
             {
-                Log.EditorError($"Player¹¹½¨Ê§°Ü");
+                Log.EditorError($"Playeræ„å»ºå¤±è´¥");
                 Assert.ExceptHandle(e);
             }
         }
 
         /// <summary>
-        /// ¸ù¾İÄ¿±êºÍÀàĞÍ¹¹½¨×ÊÔ´
+        /// æ ¹æ®ç›®æ ‡å’Œç±»å‹æ„å»ºèµ„æº
         /// </summary>
         public static bool BuildAsset(BuildTarget buildTarget, EAssetLoaderType assetLoaderType)
         {
@@ -79,7 +79,7 @@ namespace Duo1JFramework.Build
                 {
                     case EAssetLoaderType.AssetDatabase:
                         {
-                            Log.EditorInfo($"×ÊÔ´¹¹½¨Ê±£¬`{assetLoaderType.GetName()}`¼ÓÔØÆ÷ÀàĞÍÎŞĞè¹¹½¨");
+                            Log.EditorInfo($"èµ„æºæ„å»ºæ—¶ï¼Œ`{assetLoaderType.GetName()}`åŠ è½½å™¨ç±»å‹æ— éœ€æ„å»º");
                             return true;
                         }
                     case EAssetLoaderType.AssetBundle:
@@ -89,26 +89,26 @@ namespace Duo1JFramework.Build
                         }
                     case EAssetLoaderType.Addressables:
                         {
-                            Log.EditorError($"×ÊÔ´¹¹½¨Ê±£¬Addressables¼ÓÔØÆ÷ÀàĞÍÎ´ÊµÏÖ");
+                            Log.EditorError($"èµ„æºæ„å»ºæ—¶ï¼ŒAddressablesåŠ è½½å™¨ç±»å‹æœªå®ç°");
                             return false;
                         }
                     default:
                         {
-                            Log.EditorError($"×ÊÔ´¹¹½¨Ê±£¬¼ÓÔØÆ÷ÀàĞÍ´íÎó: {assetLoaderType}");
+                            Log.EditorError($"èµ„æºæ„å»ºæ—¶ï¼ŒåŠ è½½å™¨ç±»å‹é”™è¯¯: {assetLoaderType}");
                             return false;
                         }
                 }
             }
             catch (Exception e)
             {
-                Log.EditorError($"×ÊÔ´¹¹½¨Ê±£¬¹¹½¨¼ÓÔØÆ÷ÀàĞÍ`{assetLoaderType}`µÄ×ÊÔ´Òì³£");
+                Log.EditorError($"èµ„æºæ„å»ºæ—¶ï¼Œæ„å»ºåŠ è½½å™¨ç±»å‹`{assetLoaderType}`çš„èµ„æºå¼‚å¸¸");
                 Assert.ExceptHandle(e);
                 return false;
             }
         }
 
         /// <summary>
-        /// ÃüÁîĞĞ¹¹½¨App
+        /// å‘½ä»¤è¡Œæ„å»ºApp
         /// </summary>
         public static void CommandBuildApp()
         {
@@ -117,7 +117,7 @@ namespace Duo1JFramework.Build
         #region Tool
 
         /// <summary>
-        /// »ñÈ¡ÉèÖÃÖĞĞè¹¹½¨µÄÉèÖÃ³¡¾°ÁĞ±í
+        /// è·å–è®¾ç½®ä¸­éœ€æ„å»ºçš„è®¾ç½®åœºæ™¯åˆ—è¡¨
         /// </summary>
         public static List<EditorBuildSettingsScene> GetBuildSettingSceneList()
         {
@@ -126,7 +126,7 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// »ñÈ¡ÉèÖÃÖĞĞè¹¹½¨µÄ³¡¾°ÁĞ±í
+        /// è·å–è®¾ç½®ä¸­éœ€æ„å»ºçš„åœºæ™¯åˆ—è¡¨
         /// </summary>
         public static List<Scene> GetBuildSceneList()
         {

@@ -6,7 +6,7 @@ using UnityEditor;
 namespace Duo1JFramework.Build
 {
     /// <summary>
-    /// App¹¹½¨²ßÂÔ
+    /// Appæ„å»ºç­–ç•¥
     /// </summary>
     public class AppBuildStrategy : EditorConfigSO<AppBuildStrategy>
     {
@@ -14,7 +14,7 @@ namespace Duo1JFramework.Build
         private AppBuildStrategyData data;
 
         /// <summary>
-        /// App¹¹½¨²ßÂÔÊı¾İ
+        /// Appæ„å»ºç­–ç•¥æ•°æ®
         /// </summary>
         public AppBuildStrategyData Data => data;
     }
@@ -22,16 +22,16 @@ namespace Duo1JFramework.Build
     [Serializable]
     public class AppBuildStrategyData
     {
-        [Label("¹¹½¨Ä¿±ê")]
+        [Label("æ„å»ºç›®æ ‡")]
         public BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
 
-        [Label("¹¹½¨Ñ¡Ïî")]
+        [Label("æ„å»ºé€‰é¡¹")]
         public BuildOptions buildOptions;
 
-        [Label("¹¹½¨×ÊÔ´")]
+        [Label("æ„å»ºèµ„æº")]
         public bool buildAsset = true;
 
-        [Label("×ÊÔ´¼ÓÔØÆ÷ÀàĞÍ (ÓëGameOption¶ÔÓ¦)")]
+        [Label("èµ„æºåŠ è½½å™¨ç±»å‹ (ä¸GameOptionå¯¹åº”)")]
         public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;
     }
 }
