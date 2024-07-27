@@ -6,7 +6,7 @@ Developing...
 
 Finished Now:
 
-1. Base 3C
+1. Base 3C、IK
 2. Asset manage
 3. AssetBundle configuration and build
 4. UI Framework
@@ -16,6 +16,5 @@ Finished Now:
 8. Object pool
 9. Timer and Update register center
 10. Timeline manage
-11. World scene QuadTree manage
-12. Some editor panel support
-13. IK
+11. World scene、QuadTree manage
+12. Editor panel support
