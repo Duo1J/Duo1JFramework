@@ -36,6 +36,14 @@ namespace Duo1JFramework.Build
                 }
             }
 
+            if (data.copyAsset)
+            {
+                if (!CopyAsset(data.assetLoaderType))
+                {
+                    return;
+                }
+            }
+
             BuildPlayer(data, tarPath);
         }
 
@@ -101,7 +109,45 @@ namespace Duo1JFramework.Build
             }
             catch (Exception e)
             {
-                Log.EditorError($"资源构建时，构建加载器类型`{assetLoaderType}`的资源异常");
+                Log.EditorError($"资源构建时，构建加载器类型`{assetLoaderType.GetName()}`的资源异常");
+                Assert.ExceptHandle(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 根据类型拷贝资源到运行时目录
+        /// </summary>
+        public static bool CopyAsset(EAssetLoaderType assetLoaderType)
+        {
+            try
+            {
+                switch (assetLoaderType)
+                {
+                    case EAssetLoaderType.AssetDatabase:
+                        {
+                            Log.EditorInfo($"资源拷贝时，`{assetLoaderType.GetName()}`加载器类型无需拷贝");
+                            return true;
+                        }
+                    case EAssetLoaderType.AssetBundle:
+                        {
+                            return AssetBundleBuilder.CopyAllAssetBundleBuild();
+                        }
+                    case EAssetLoaderType.Addressables:
+                        {
+                            Log.EditorError($"资源拷贝时，Addressables加载器类型未实现");
+                            return false;
+                        }
+                    default:
+                        {
+                            Log.EditorError($"资源拷贝时，加载器类型错误: {assetLoaderType}");
+                            return false;
+                        }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.EditorError($"资源拷贝时，拷贝加载器类型`{assetLoaderType.GetName()}`的资源异常");
                 Assert.ExceptHandle(e);
                 return false;
             }

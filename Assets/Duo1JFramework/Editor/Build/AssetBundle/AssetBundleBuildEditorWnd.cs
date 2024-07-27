@@ -55,22 +55,25 @@ namespace Duo1JFramework.Build
                 {
                     if (EditorUtility.DisplayDialog("", "是否执行清理构建的AssetBundle", "确认", "取消"))
                     {
-                        AssetBundleBuilder.ClearAllAssetBundle();
+                        AssetBundleBuilder.ClearAllAssetBundleBuild();
                     }
                 }
 
-                if (GUILayout.Button("构建AssetBundle"))
+                ED.SurrondColor(ES.GreenL, () =>
                 {
-                    if (EditorUtility.DisplayDialog("", "是否执行构建AssetBundle", "确认", "取消"))
+                    if (GUILayout.Button("构建AssetBundle"))
                     {
-                        if (!EditorUtil.CheckPlatformChgAndAsk(ABBuildStrategy.Instance.BuildTarget))
+                        if (EditorUtility.DisplayDialog("", "是否执行构建AssetBundle", "确认", "取消"))
                         {
-                            return;
-                        }
+                            if (!EditorUtil.CheckPlatformChgAndAsk(ABBuildStrategy.Instance.BuildTarget))
+                            {
+                                return;
+                            }
 
-                        AssetBundleBuilder.BuildAllAssetBundle();
+                            AssetBundleBuilder.BuildAllAssetBundle();
+                        }
                     }
-                }
+                });
             });
         }
 

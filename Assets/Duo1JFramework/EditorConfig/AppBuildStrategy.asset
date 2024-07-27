@@ -16,4 +16,5 @@ MonoBehaviour:
     buildTarget: 19
     buildOptions: 0
     buildAsset: 1
+    copyAsset: 1
     assetLoaderType: 1

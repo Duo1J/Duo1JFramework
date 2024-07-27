@@ -10,7 +10,7 @@ namespace Duo1JFramework.Config
     [Serializable]
     public class RuntimeGameOption
     {
-        [Label("运行时资源加载类型")]
+        [Label("资源加载器")]
         public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;
 
         [Space]

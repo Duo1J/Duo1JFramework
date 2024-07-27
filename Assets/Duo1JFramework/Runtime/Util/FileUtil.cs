@@ -138,6 +138,53 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 拷贝文件夹
+        /// 若存在相同文件则跳过
+        /// </summary>
+        public static bool CopyDirectory(string srcDir, string tarDir)
+        {
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(srcDir);
+                if (!dirInfo.Exists)
+                {
+                    Log.ErrorForce($"未找到待拷贝的源文件夹: `{srcDir}`");
+                    return false;
+                }
+
+                if (!CheckDir(tarDir))
+                {
+                    return false;
+                }
+
+                DirectoryInfo[] dirInfoList = dirInfo.GetDirectories();
+                FileInfo[] fileInfoList = dirInfo.GetFiles();
+
+                foreach (FileInfo fileInfo in fileInfoList)
+                {
+                    string tempPath = Path.Combine(tarDir, fileInfo.Name);
+                    fileInfo.CopyTo(tempPath, false);
+                }
+
+                foreach (DirectoryInfo subDirInfo in dirInfoList)
+                {
+                    string tempPath = Path.Combine(tarDir, subDirInfo.Name);
+                    if (!CopyDirectory(subDirInfo.FullName, tempPath))
+                    {
+                        throw CommonException.Create($"拷贝文件夹`{subDirInfo.FullName}`到`{tempPath}`失败");
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"拷贝文件夹`{srcDir}`到`{tarDir}`时发生异常");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 获取某一文件夹下文件并过滤
         /// 默认获取所有层级的所有文件
         /// </summary>
@@ -153,7 +200,7 @@ namespace Duo1JFramework
                 if (fileInfo.Exists)
                 {
                     string path = fileInfo.FullName;
-                    path = PathUtil.CorrectPath(path);
+                    path = PathUtil.UnifySplit(path);
 
                     if (pathModifier != null)
                     {

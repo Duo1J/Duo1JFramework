@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 
 namespace Duo1JFramework.Build
@@ -23,7 +24,7 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static void BuildAllAssetBundle(BuildTarget buildTarget)
         {
-            ClearAllAssetBundle();
+            ClearAllAssetBundleBuild();
 
             ABBuildStrategyData[] strategyDatas = ABBuildStrategy.Instance.Data;
 
@@ -63,7 +64,7 @@ namespace Duo1JFramework.Build
                 EditorUtility.DisplayProgressBar("构建AssetBndle", "正在构建AssetBundle...", 0.3f);
 
                 BuildPipeline.BuildAssetBundles(
-                    PathUtil.GetAssetBundleRoot().CheckDir(),
+                    PathUtil.GetAssetBundleEditorRoot().CheckDir(),
                     buildList.ToArray(),
                     ABBuildStrategy.Instance.BuildOptions,
                     buildTarget
@@ -86,11 +87,53 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 清理所有构建的AssetBundle
         /// </summary>
-        public static void ClearAllAssetBundle()
+        public static void ClearAllAssetBundleBuild()
         {
-            FileUtil.DeleteDir(PathUtil.GetAssetBundleRoot());
-            FileUtil.DeleteFile(PathUtil.GetAssetBundleRootMeta());
+            FileUtil.DeleteDir(PathUtil.GetAssetBundleEditorRoot());
             EditorUtil.SaveAndRefresh();
+        }
+
+        /// <summary>
+        /// 清理所有拷贝的运行时AssetBundle
+        /// </summary>
+        public static void ClearAllAssetBundleCopy()
+        {
+            FileUtil.DeleteDir(PathUtil.GetAssetBundleRuntimeRoot());
+            FileUtil.DeleteFile(PathUtil.GetAssetBundleRuntimeRootMeta());
+            EditorUtil.SaveAndRefresh();
+        }
+
+        /// <summary>
+        /// 拷贝所有构建的AssetBundle到运行时文件夹
+        /// </summary>
+        public static bool CopyAllAssetBundleBuild()
+        {
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+
+                string editorRoot = PathUtil.GetAssetBundleEditorRoot();
+                if (!Directory.Exists(editorRoot))
+                {
+                    Log.ErrorForce($"未找到AssetBundle的构建根文件夹，请重新构建: `{editorRoot}`");
+                    return false;
+                }
+
+                ClearAllAssetBundleCopy();
+
+                string runtimeRoot = PathUtil.GetAssetBundleRuntimeRoot();
+                return FileUtil.CopyDirectory(editorRoot, runtimeRoot);
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "拷贝所有构建的AssetBundle到运行时文件夹时异常");
+                return false;
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+                EditorUtil.SaveAndRefresh();
+            }
         }
 
         /// <summary>
@@ -126,7 +169,7 @@ namespace Duo1JFramework.Build
 
                 foreach (string path in strategyData.pathList)
                 {
-                    string path_ = PathUtil.CorrectPath(path);
+                    string path_ = PathUtil.UnifySplit(path);
                     List<string> resultList = FileUtil.GetFileInDir(pathPrefix + path_, (p) =>
                     {
                         if (p.EndsWith(Def.Path.META_SUFFIX))

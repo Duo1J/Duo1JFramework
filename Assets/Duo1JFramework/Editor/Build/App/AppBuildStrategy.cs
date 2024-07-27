@@ -31,6 +31,9 @@ namespace Duo1JFramework.Build
         [Label("构建资源")]
         public bool buildAsset = true;
 
+        [Label("拷贝资源到运行时目录")]
+        public bool copyAsset = true;
+
         [Label("资源加载器类型 (与GameOption对应)")]
         public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;
     }
