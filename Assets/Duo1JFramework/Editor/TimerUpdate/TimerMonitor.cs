@@ -29,7 +29,7 @@ namespace Duo1JFramework.TimerUpdate
         {
             GUILayout.Label("计时器列表");
 
-            foreach (Timer timer in TimerManager.Instance.TimerSet)
+            foreach (Timer timer in TimerManager.Instance.TimerSet_Editor)
             {
                 ED.Vertical(() =>
                 {
@@ -42,7 +42,7 @@ namespace Duo1JFramework.TimerUpdate
         {
             GUILayout.Label("待移除计时器列表");
 
-            foreach (Timer timer in TimerManager.Instance.RemoveSet)
+            foreach (Timer timer in TimerManager.Instance.RemoveSet_Editor)
             {
                 ED.Vertical(() =>
                 {

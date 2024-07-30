@@ -9,13 +9,21 @@ namespace Duo1JFramework.TimerUpdate
     /// </summary>
     public class TimerManager : MonoSingleton<TimerManager>
     {
+        /// <summary>
+        /// 运行中计时器集合
+        /// </summary>
         private HashSet<Timer> timerSet;
+
+        /// <summary>
+        /// 待移除计时器集合
+        /// </summary>
         private HashSet<Timer> removeSet;
 
         /// <summary>
         /// 获取一个计时器
         /// </summary>
-        /// <param name="interval">秒数</param>
+        /// <param name="interval">毫秒数</param>
+        /// <param name="repeat">重复次数，<0 (Def.TIMER_REPEAT_FOREVER)为无限</param>
         public Timer GetTimer(float interval, Action callback, int repeat = 1)
         {
             return _GetTimer(interval, false, callback, repeat);
@@ -24,15 +32,11 @@ namespace Duo1JFramework.TimerUpdate
         /// <summary>
         /// 获取一个帧计时器
         /// </summary>
+        /// <param name="interval">帧数</param>
+        /// <param name="repeat">重复次数，<0 (Def.TIMER_REPEAT_FOREVER)为无限</param>
         public Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
         {
             return _GetTimer(frame, true, callback, repeat);
-        }
-
-        private Timer _GetTimer(float interval, bool isFrameTimer, Action callback, int repeat)
-        {
-            Assert.NotNull(callback, "计时器回调不可为空");
-            return new Timer(interval, isFrameTimer, callback, repeat);
         }
 
         /// <summary>
@@ -45,8 +49,18 @@ namespace Duo1JFramework.TimerUpdate
             Timer timer = Pool.TimerPool.Pop();
             timer.Init(interval, false, () =>
             {
-                callback.Invoke();
-                Pool.TimerPool.Push(timer);
+                try
+                {
+                    callback.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Assert.ExceptHandle(e, "GetTimerFromPool计时器回调异常");
+                }
+                finally
+                {
+                    Pool.TimerPool.Push(timer);
+                }
             }, 1);
         }
 
@@ -59,8 +73,18 @@ namespace Duo1JFramework.TimerUpdate
             Timer timer = Pool.TimerPool.Pop();
             timer.Init(frame, true, () =>
             {
-                callback.Invoke();
-                Pool.TimerPool.Push(timer);
+                try
+                {
+                    callback.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Assert.ExceptHandle(e, "GetFrameTimerFromPool计时器回调异常");
+                }
+                finally
+                {
+                    Pool.TimerPool.Push(timer);
+                }
             }, 1);
         }
 
@@ -76,7 +100,10 @@ namespace Duo1JFramework.TimerUpdate
 
         public void UnRegisterTimer(Timer timer)
         {
-            if (timerSet == null) return;
+            if (timerSet == null)
+            {
+                return;
+            }
             if (removeSet == null)
             {
                 removeSet = new HashSet<Timer>();
@@ -104,6 +131,12 @@ namespace Duo1JFramework.TimerUpdate
             }
         }
 
+        private Timer _GetTimer(float interval, bool isFrameTimer, Action callback, int repeat)
+        {
+            Assert.NotNull(callback, "计时器回调不可为空");
+            return new Timer(interval, isFrameTimer, callback, repeat);
+        }
+
         protected override void OnDispose()
         {
             timerSet = null;
@@ -118,8 +151,8 @@ namespace Duo1JFramework.TimerUpdate
 
 #if UNITY_EDITOR
 
-        public HashSet<Timer> TimerSet => timerSet;
-        public HashSet<Timer> RemoveSet => removeSet;
+        public HashSet<Timer> TimerSet_Editor => timerSet;
+        public HashSet<Timer> RemoveSet_Editor => removeSet;
 
 #endif
     }
