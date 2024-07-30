@@ -10,12 +10,24 @@ namespace Duo1JFramework.UI
     /// </summary>
     public class UIManager : MonoSingleton<UIManager>
     {
+        /// <summary>
+        /// UI相机
+        /// </summary>
         public Camera UICamera => UIRoot.UICamera;
 
+        /// <summary>
+        /// UI根Canvas
+        /// </summary>
         public Canvas UICanvas => UIRoot.UICanvas;
 
+        /// <summary>
+        /// 窗口自增ID
+        /// </summary>
         private AutoIncID incID;
 
+        /// <summary>
+        /// 窗口列表
+        /// </summary>
         private List<Window> wndList;
 
         /// <summary>
@@ -69,6 +81,14 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 回退到窗口
         /// </summary>
+        public Window BackToWindow<T>() where T : Window, new()
+        {
+            return BackToWindow(typeof(T));
+        }
+
+        /// <summary>
+        /// 回退到窗口
+        /// </summary>
         public Window BackToWindow(Type wndType)
         {
             Window tarWnd = GetWindow(wndType);
@@ -102,6 +122,21 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 关闭窗口
         /// </summary>
+        public bool CloseWindow<T>() where T : Window, new()
+        {
+            Window window = GetWindow<T>();
+            if (window == null)
+            {
+                Log.ErrorForce($"未打开窗口`{typeof(T).FullName}`，无法关闭");
+                return false;
+            }
+
+            return CloseWindow(window);
+        }
+
+        /// <summary>
+        /// 关闭窗口
+        /// </summary>
         public bool CloseWindow(Window wnd)
         {
             try
@@ -124,9 +159,25 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 窗口是否已打开
         /// </summary>
+        public bool IsWindowOpened<T>() where T : Window, new()
+        {
+            return IsWindowOpened(typeof(T));
+        }
+
+        /// <summary>
+        /// 窗口是否已打开
+        /// </summary>
         public bool IsWindowOpened(Type wndType)
         {
             return GetWindow(wndType) != null;
+        }
+
+        /// <summary>
+        /// 获取窗口
+        /// </summary>
+        public Window GetWindow<T>() where T : Window, new()
+        {
+            return GetWindow(typeof(T));
         }
 
         /// <summary>

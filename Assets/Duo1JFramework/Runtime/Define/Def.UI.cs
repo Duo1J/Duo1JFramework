@@ -13,7 +13,7 @@ namespace Duo1JFramework
             /// <summary>
             /// UIRoot路径
             /// </summary>
-            public const string UI_ROOT_PATH = Path.RES_PATH_PREFIX + "UI/UIRoot";
+            public const string UI_ROOT_PATH = Path.RES_PATH_PREFIX + "UI/_UIRoot";
 
             /// <summary>
             /// UIRoot默认位置

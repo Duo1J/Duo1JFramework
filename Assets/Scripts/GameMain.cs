@@ -55,6 +55,11 @@ public class GameMain : BaseGameMain
             });
         }
 
+        if (InputManager.GetKeyDown(KeyCode.M))
+        {
+            RuntimeInspectorWnd.Switch();
+        }
+
 #if !UNITY_EDITOR
         if (InputManager.GetKey(KeyCode.LeftControl))
         {
