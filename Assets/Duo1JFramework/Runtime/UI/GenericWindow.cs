@@ -1,7 +1,7 @@
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// 泛型窗口
+    /// 泛型UI窗口逻辑
     /// </summary>
     public abstract class GenericWindow<T> : Window where T : Window, new()
     {

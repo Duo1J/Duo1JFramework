@@ -196,6 +196,8 @@ namespace Duo1JFramework.UI
             return null;
         }
 
+        #region Inner
+
         /// <summary>
         /// 加载窗口资源
         /// </summary>
@@ -285,5 +287,7 @@ namespace Duo1JFramework.UI
         {
             wndList = null;
         }
+
+        #endregion Inner
     }
 }

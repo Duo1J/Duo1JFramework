@@ -39,6 +39,14 @@ namespace Duo1JFramework
         #region Transform
 
         /// <summary>
+        /// 获取RectTransform
+        /// </summary>
+        public static RectTransform RectTF(this GameObject go)
+        {
+            return go.transform.RectTF();
+        }
+
+        /// <summary>
         /// 重置旋转、缩放、坐标
         /// </summary>
         public static void ResetSRT(this GameObject go)

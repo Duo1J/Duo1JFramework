@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// UI逻辑
+    /// UI窗口逻辑
     /// </summary>
     public abstract class Window : BaseRegister
     {

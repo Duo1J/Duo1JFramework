@@ -18,7 +18,7 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// 当前拖拽面板的根节点，一般是Canvas
+        /// 面板根节点
         /// </summary>
         private RectTransform canvasRectTF;
 

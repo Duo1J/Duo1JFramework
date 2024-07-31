@@ -1,4 +1,5 @@
 using Duo1JFramework.Asset;
+using UnityEngine;
 
 namespace Duo1JFramework.UI
 {
@@ -16,6 +17,11 @@ namespace Duo1JFramework.UI
 
         protected override void OnInit()
         {
+            GameObject rumtimeHierarchyGo = GetGo("RuntimeHierarchy");
+            rumtimeHierarchyGo.RectTF()?.BindDragPanel();
+
+            GameObject rumtimeInspectorGo = GetGo("RuntimeInspector");
+            rumtimeInspectorGo.RectTF()?.BindDragPanel();
         }
     }
 }
