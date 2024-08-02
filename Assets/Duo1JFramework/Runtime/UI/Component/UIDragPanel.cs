@@ -47,7 +47,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         private Vector3 oriPanelPos;
 
-        private void Awake()
+        private void Start()
         {
             rootCanvas = GetComponentInParent<Canvas>();
             canvasRectTF = rootCanvas.transform as RectTransform;
