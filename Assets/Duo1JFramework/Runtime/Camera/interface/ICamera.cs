@@ -1,5 +1,8 @@
 namespace Duo1JFramework.CameraAPI
 {
+    /// <summary>
+    /// 相机逻辑接口
+    /// </summary>
     public interface ICamera
     {
         /// <summary>

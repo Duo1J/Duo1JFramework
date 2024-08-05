@@ -10,13 +10,46 @@ namespace Duo1JFramework.Asset
     /// </summary>
     public class AssetManager : MonoSingleton<AssetManager>, IAssetLoader
     {
+        /// <summary>
+        /// 资源加载器
+        /// </summary>
         private IAssetLoader loader;
+
+        /// <summary>
+        /// 当前设置的资源包加载类型
+        /// </summary>
+        public EAssetLoadType BundleLoadType
+        {
+            get
+            {
+                if (bundleLoadType == EAssetLoadType.Bundle)
+                {
+#if UNITY_EDITOR
+                    switch (GameOption.Editor.assetLoaderType)
+#else
+                    switch (GameOption.Runtime.assetLoaderType)
+#endif
+                    {
+                        case EAssetLoaderType.AssetDatabase:
+                        case EAssetLoaderType.AssetBundle:
+                            bundleLoadType = EAssetLoadType.AssetBundle;
+                            break;
+                        case EAssetLoaderType.Addressables:
+                            bundleLoadType = EAssetLoadType.Addressables;
+                            break;
+                    }
+                }
+                return bundleLoadType;
+            }
+        }
+        private EAssetLoadType bundleLoadType = EAssetLoadType.Bundle;
 
         /// <summary>
         /// 通过加载方式加载
         /// </summary>
         public void LoadByType<T>(EAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
         {
+            PreprocessLoadType(ref loadType);
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
@@ -43,6 +76,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void LoadInsByType<T>(EAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
         {
+            PreprocessLoadType(ref loadType);
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
@@ -69,6 +103,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public T LoadByTypeSync<T>(EAssetLoadType loadType, string assetPath) where T : UObject
         {
+            PreprocessLoadType(ref loadType);
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
@@ -92,6 +127,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public T LoadInsByTypeSync<T>(EAssetLoadType loadType, string assetPath) where T : UObject
         {
+            PreprocessLoadType(ref loadType);
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
@@ -107,6 +143,17 @@ namespace Duo1JFramework.Asset
                         Log.ErrorForce($"LoadInsByTypeSync 未处理的加载方式: `{loadType}`");
                         return null;
                     }
+            }
+        }
+
+        /// <summary>
+        /// 资源加载方式预处理
+        /// </summary>
+        public void PreprocessLoadType(ref EAssetLoadType loadType)
+        {
+            if (loadType == EAssetLoadType.Bundle)
+            {
+                loadType = BundleLoadType;
             }
         }
 

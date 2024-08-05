@@ -17,9 +17,9 @@ namespace Duo1JFramework.TimelineAPI
         /// <summary>
         /// 异步加载Timeline
         /// </summary>
-        public void LoadTimeline(string timelinePath, Action<TimelineData> callback = null)
+        public void LoadTimeline(string timelinePath, Action<TimelineData> callback = null, EAssetLoadType loadType = EAssetLoadType.Bundle)
         {
-            AssetManager.Instance.LoadIns<GameObject>(timelinePath, (go) =>
+            AssetManager.Instance.LoadInsByType<GameObject>(loadType, timelinePath, (go) =>
             {
                 TimelineData td = WrapTimelinePrefab(go);
                 callback?.Invoke(td);
@@ -29,9 +29,9 @@ namespace Duo1JFramework.TimelineAPI
         /// <summary>
         /// 同步加载Timeline
         /// </summary>
-        public TimelineData LoadTimelineSync(string timelinePath)
+        public TimelineData LoadTimelineSync(string timelinePath, EAssetLoadType loadType = EAssetLoadType.Bundle)
         {
-            GameObject go = AssetManager.Instance.LoadInsSync<GameObject>(timelinePath);
+            GameObject go = AssetManager.Instance.LoadInsByTypeSync<GameObject>(loadType, timelinePath);
             return WrapTimelinePrefab(go);
         }
 
@@ -115,7 +115,7 @@ namespace Duo1JFramework.TimelineAPI
         /// <summary>
         /// 可恢复Playable包装
         /// </summary>
-        class ResumablePlayableWrap
+        private class ResumablePlayableWrap
         {
             private PlayableDirector director;
             public Playable playable;

@@ -1,4 +1,3 @@
-using Duo1JFramework.Config;
 using UnityEngine;
 
 namespace Duo1JFramework.UI
@@ -9,18 +8,18 @@ namespace Duo1JFramework.UI
     [DisallowMultipleComponent]
     public class UIRoot : BaseMono
     {
-        public static Transform BottomLayer => Root.Instance.UIRoot.bottomLayer;
-        public static Transform NormalLayer => Root.Instance.UIRoot.normalLayer;
-        public static Transform TopLayer => Root.Instance.UIRoot.topLayer;
-        public static Transform ConstLayer => Root.Instance.UIRoot.constLayer;
+        public static Transform BottomLayer => Root.UIRoot.bottomLayer;
+        public static Transform NormalLayer => Root.UIRoot.normalLayer;
+        public static Transform TopLayer => Root.UIRoot.topLayer;
+        public static Transform ConstLayer => Root.UIRoot.constLayer;
 
-        public static Camera UICamera => Root.Instance.UIRoot.uiCamera;
+        public static Camera UICamera => Root.UIRoot.uiCamera;
 
-        public static Canvas UICanvas => Root.Instance.UIRoot.uiCanvas;
-        public static Canvas BottomCanvas => Root.Instance.UIRoot.bottomCanvas;
-        public static Canvas NormalCanvas => Root.Instance.UIRoot.normalCanvas;
-        public static Canvas TopCanvas => Root.Instance.UIRoot.topCanvas;
-        public static Canvas ConstCanvas => Root.Instance.UIRoot.constCanvas;
+        public static Canvas UICanvas => Root.UIRoot.uiCanvas;
+        public static Canvas BottomCanvas => Root.UIRoot.bottomCanvas;
+        public static Canvas NormalCanvas => Root.UIRoot.normalCanvas;
+        public static Canvas TopCanvas => Root.UIRoot.topCanvas;
+        public static Canvas ConstCanvas => Root.UIRoot.constCanvas;
 
         [SerializeField]
         private Transform bottomLayer;

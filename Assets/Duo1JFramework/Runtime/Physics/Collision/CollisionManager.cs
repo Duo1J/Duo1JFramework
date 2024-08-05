@@ -1,3 +1,4 @@
+using Duo1JFramework.PhysicsAPI.Physics2D;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +9,14 @@ namespace Duo1JFramework.PhysicsAPI
     /// </summary>
     public class CollisionManager : MonoSingleton<CollisionManager>, IEditorDrawer
     {
-        private Dictionary<int, CollisionController> conDict;
+        /// <summary>
+        /// 碰撞控制器字典
+        /// </summary>
+        private Dictionary<int, ICollisionController> conDict;
 
+        /// <summary>
+        /// 为Go添加3D碰撞
+        /// </summary>
         public CollisionController AddCollision(GameObject go, CollisionType collisionType = CollisionType.Trigger)
         {
             CollisionController con = go.GetOrAddComponent<CollisionController>();
@@ -17,11 +24,24 @@ namespace Duo1JFramework.PhysicsAPI
             return con;
         }
 
-        public void AddToDict(CollisionController con)
+        /// <summary>
+        /// 为Go添加2D碰撞
+        /// </summary>
+        public CollisionController2D AddCollision2D(GameObject go, CollisionType collisionType = CollisionType.Trigger)
+        {
+            CollisionController2D con = go.GetOrAddComponent<CollisionController2D>();
+            con.SetCollisionType(collisionType);
+            return con;
+        }
+
+        /// <summary>
+        /// 添加控制器到字典管理
+        /// </summary>
+        public void AddToDict(ICollisionController con)
         {
             Assert.NotNull(conDict, "conDict为空");
 
-            int insID = con.gameObject.GetInstanceID();
+            int insID = con.GetInstanceID();
             if (conDict.ContainsKey(insID))
             {
                 Log.ErrorForce($"conDict已包含insID: `{insID}`");
@@ -33,11 +53,15 @@ namespace Duo1JFramework.PhysicsAPI
             }
         }
 
-        public void RemoveFromDict(CollisionController con)
+        /// <summary>
+        /// 从字典移除控制器
+        /// </summary>
+        /// <param name="con"></param>
+        public void RemoveFromDict(ICollisionController con)
         {
             Assert.NotNull(conDict, "conDict为空");
 
-            int insID = con.gameObject.GetInstanceID();
+            int insID = con.GetInstanceID();
             if (conDict.ContainsKey(insID))
             {
                 conDict.Remove(insID);
@@ -53,14 +77,14 @@ namespace Duo1JFramework.PhysicsAPI
 
         protected override void OnInit()
         {
-            conDict = new Dictionary<int, CollisionController>();
+            conDict = new Dictionary<int, ICollisionController>();
         }
 
         public void DrawEditorInfo()
         {
             ED.Vertical(() =>
             {
-                foreach (CollisionController con in conDict.Values)
+                foreach (ICollisionController con in conDict.Values)
                 {
                     GUILayout.Space(20);
                     ED.Horizontal(() =>

@@ -3,7 +3,7 @@ using System;
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// 通用对象池
+    /// 通用对象池实例
     /// </summary>
     public class CommonPool<T> : BaseObjectPool<T> where T : class, new()
     {

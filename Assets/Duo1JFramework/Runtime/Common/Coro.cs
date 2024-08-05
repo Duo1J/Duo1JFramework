@@ -8,19 +8,19 @@ namespace Duo1JFramework
     /// </summary>
     public class Coro : MonoSingleton<Coro>
     {
-        public Coroutine StartCoro(IEnumerator e)
+        public static Coroutine StartCoro(IEnumerator e)
         {
-            return StartCoroutine(e);
+            return Instance.StartCoroutine(e);
         }
 
-        public void StopCoro(IEnumerator e)
+        public static void StopCoro(IEnumerator e)
         {
-            StopCoroutine(e);
+            Instance.StopCoroutine(e);
         }
 
-        public void StopCoro(Coroutine c)
+        public static void StopCoro(Coroutine c)
         {
-            StopCoroutine(c);
+            Instance.StopCoroutine(c);
         }
 
         protected override void OnDispose()

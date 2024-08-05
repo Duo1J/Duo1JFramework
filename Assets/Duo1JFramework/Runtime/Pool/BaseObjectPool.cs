@@ -11,7 +11,7 @@ namespace Duo1JFramework.ObjectPool
         /// <summary>
         /// 对象池实现
         /// </summary>
-        protected ObjectPool<T> pool;
+        protected ObjectPoolModel<T> pool;
 
         /// <summary>
         /// 池包装对象列表
@@ -103,7 +103,7 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public virtual void InitPool()
         {
-            pool = new ObjectPool<T>();
+            pool = new ObjectPoolModel<T>();
         }
 
         private void OnCreateNew(ObjectPoolItem<T> item)

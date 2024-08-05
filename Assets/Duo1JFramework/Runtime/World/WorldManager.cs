@@ -11,53 +11,17 @@ namespace Duo1JFramework.World
     public class WorldManager : MonoSingleton<WorldManager>
     {
         /// <summary>
-        /// 世界控制器字典
+        /// 世界场景控制器字典
         /// </summary>
         private Dictionary<string, BaseWorldController> worldDict;
 
         /// <summary>
-        /// 获取Actor根节点
-        /// </summary>
-        public Transform ActorRoot
-        {
-            get
-            {
-                if (actorRoot == null)
-                {
-                    GameObject go = new GameObject("ActorRoot");
-                    go.ResetSRT();
-                    actorRoot = go.transform;
-                }
-                return actorRoot;
-            }
-        }
-        private Transform actorRoot;
-
-        /// <summary>
-        /// 获取世界场景根节点
-        /// </summary>
-        public Transform WorldRoot
-        {
-            get
-            {
-                if (worldRoot == null)
-                {
-                    GameObject go = new GameObject("WorldRoot");
-                    go.ResetSRT();
-                    worldRoot = go.transform;
-                }
-                return worldRoot;
-            }
-        }
-        private Transform worldRoot;
-
-        /// <summary>
-        /// 加载世界
+        /// 加载世界场景
         /// </summary>
         public void LoadWorld(WorldData worldData, Action<BaseWorldController> callback)
         {
             Assert.NotNull(worldData, "参数worldData不可为空");
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNull(callback, "LoadWorld回调不可为空");
 
             if (worldDict.ContainsKey(worldData.Name))
             {
@@ -69,7 +33,7 @@ namespace Duo1JFramework.World
         }
 
         /// <summary>
-        /// 销毁世界
+        /// 销毁世界场景
         /// </summary>
         public void DestroyWorld(string worldName)
         {
@@ -84,7 +48,7 @@ namespace Duo1JFramework.World
         }
 
         /// <summary>
-        /// 获取世界控制器
+        /// 获取世界场景控制器
         /// </summary>
         public BaseWorldController GetWorld(string worldName)
         {
@@ -96,6 +60,8 @@ namespace Duo1JFramework.World
 
             return worldDict[worldName];
         }
+
+        #region Inner
 
         /// <summary>
         /// 加载世界资源
@@ -128,12 +94,12 @@ namespace Duo1JFramework.World
                 return;
             }
 
-            go.SetParent(WorldRoot);
+            go.SetParent(Root.WorldRoot);
 
             BaseWorldController controller = go.GetComponent<BaseWorldController>();
             if (controller == null)
             {
-                Log.Warn($"世界`{worldData.Path}`未挂载`BaseWorldController`的派生组件, 默认挂载`ComWorldController`");
+                Log.Warn($"世界`{worldData.Path}`未挂载`BaseWorldController`的派生组件, 默认挂载`WorldController`");
                 controller = go.AddComponent<WorldController>();
             }
 
@@ -153,5 +119,7 @@ namespace Duo1JFramework.World
         {
             worldDict = new Dictionary<string, BaseWorldController>();
         }
+
+        #endregion Inner
     }
 }

@@ -219,7 +219,7 @@ namespace Duo1JFramework.UI
         private void LoadWindowAssetPostProcess(Window wnd, GameObject uiGo)
         {
             wnd.Go = uiGo;
-            Root.Instance.UIRoot.AddToLayer(wnd);
+            Root.UIRoot.AddToLayer(wnd);
             AdjustWindowSortingOrder(wnd);
             AdjustFullscreenStrategy();
             wnd.Init();

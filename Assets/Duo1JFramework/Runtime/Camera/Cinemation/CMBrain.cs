@@ -171,7 +171,7 @@ namespace Duo1JFramework.CameraAPI
                 cameraGo.DestroyImmediate();
                 return null;
             }
-            cameraGo.SetParent(Root.Instance.VirtualCameraRoot);
+            cameraGo.SetParent(Root.VirtualCameraRoot);
             return ret;
         }
 

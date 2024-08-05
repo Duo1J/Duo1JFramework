@@ -8,7 +8,7 @@ namespace Duo1JFramework.World
     public class WorldData
     {
         /// <summary>
-        /// 世界名
+        /// 世界场景名
         /// </summary>
         public string Name { get; private set; }
 
@@ -25,7 +25,7 @@ namespace Duo1JFramework.World
         /// <summary>
         /// 加载方式
         /// </summary>
-        public EAssetLoadType LoadType { get; private set; } = EAssetLoadType.AssetBundle;
+        public EAssetLoadType LoadType { get; private set; } = EAssetLoadType.Bundle;
 
         public WorldData SetLoadType(EAssetLoadType loadType)
         {

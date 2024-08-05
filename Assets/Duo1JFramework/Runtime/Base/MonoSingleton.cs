@@ -44,9 +44,9 @@ namespace Duo1JFramework
             {
                 instance = this.Convert<T>();
                 DontDestroyOnLoad(gameObject);
-                if (AddToRoot && transform.parent != Root.Instance.SingletonRoot)
+                if (AddToRoot && transform.parent != Root.SingletonRoot)
                 {
-                    gameObject.SetParent(Root.Instance.SingletonRoot);
+                    gameObject.SetParent(Root.SingletonRoot);
                 }
             }
             else if (instance != this)

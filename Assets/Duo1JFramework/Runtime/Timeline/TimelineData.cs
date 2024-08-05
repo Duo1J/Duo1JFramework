@@ -1,4 +1,3 @@
-using Duo1JFramework.Actor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -72,11 +71,6 @@ namespace Duo1JFramework.TimelineAPI
             return this;
         }
 
-        public TimelineData SyncTransform(BaseActor baseActor)
-        {
-            return SyncTransform(baseActor.ModelTf);
-        }
-
         public TimelineData Play()
         {
             pd.Play();
@@ -148,6 +142,7 @@ namespace Duo1JFramework.TimelineAPI
             {
                 return;
             }
+
             IsDestroyed = true;
             OnDestroyed?.Invoke(this);
 
@@ -165,6 +160,7 @@ namespace Duo1JFramework.TimelineAPI
             {
                 Destroy();
             };
+
             return this;
         }
 
@@ -180,6 +176,24 @@ namespace Duo1JFramework.TimelineAPI
             return this;
         }
 
+        public override string ToString()
+        {
+            return $"<Timeline-{go.name}-{go.GetInstanceID()}>";
+        }
+
+        public TimelineData(GameObject go)
+        {
+            Assert.NotNull(go, "Timeline预制体Go为空，无法创建TimelineData");
+            this.go = go;
+            this.pd = go.GetAndAssertComponent<PlayableDirector>($"无法从{ToString()}上获取PlayableDirector");
+
+            this.go.SetParent(Root.TimelineRoot);
+            this.pd.playOnAwake = false;
+
+            InitBindingDict();
+            RegisterCallback();
+        }
+
         /// <summary>
         /// 初始化绑定映射字典
         /// </summary>
@@ -190,33 +204,14 @@ namespace Duo1JFramework.TimelineAPI
             {
                 return this;
             }
+
             bindingDict = new Dictionary<string, PlayableBinding>();
             foreach (PlayableBinding binding in pd.playableAsset.outputs)
             {
                 bindingDict.Add(binding.streamName, binding);
             }
+
             return this;
-        }
-
-        public override string ToString()
-        {
-            return $"<Timeline-{go.name}-{go.GetInstanceID()}>";
-        }
-
-        public TimelineData(GameObject go)
-        {
-            Assert.NotNull(go, "Timeline预制体Go为空，无法创建TimelineData");
-            this.go = go;
-
-            PlayableDirector pd = go.GetComponent<PlayableDirector>();
-            Assert.NotNull(pd, $"无法从{ToString()}上获取PlayableDirector");
-            this.pd = pd;
-
-            this.go.SetParent(Root.Instance.TimelineRoot);
-            this.pd.playOnAwake = false;
-
-            InitBindingDict();
-            RegisterCallback();
         }
 
         private void RegisterCallback()

@@ -1,4 +1,3 @@
-using Duo1JFramework.Config;
 using UnityEngine;
 
 namespace Duo1JFramework.CameraAPI
@@ -22,6 +21,16 @@ namespace Duo1JFramework.CameraAPI
         /// 当前相机注视
         /// </summary>
         public ICameraLookAt LookAt { get; set; }
+
+        /// <summary>
+        /// 主相机
+        /// </summary>
+        public Camera MainCamera => UnityEngine.Camera.main;
+
+        /// <summary>
+        /// 评估相机
+        /// </summary>
+        public Camera EvalCamera => MainCamera;
 
         /// <summary>
         /// 初始化当前相机
@@ -86,10 +95,6 @@ namespace Duo1JFramework.CameraAPI
             Camera.LookAt(LookAt);
             Camera.Follow(Follow);
         }
-
-        public Camera MainCamera => UnityEngine.Camera.main;
-
-        public Camera EvalCamera => MainCamera;
 
         /// <summary>
         /// 获取或创建主相机

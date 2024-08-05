@@ -48,7 +48,7 @@ public class GameMain : BaseGameMain
                 {
                     InputManager.SetLimit(EInputLimit.All, true);
                 });
-                td.SyncTransform(ActorManager.Instance.MainActor);
+                td.SyncTransform(ActorManager.Instance.MainActor.ModelTf);
                 td.SetGenericBinding("CinemachineBrain", CMBrain.Instance.Brain);
                 td.DestroyOnStop();
                 td.Play();

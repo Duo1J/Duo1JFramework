@@ -8,12 +8,12 @@ namespace Duo1JFramework.World
     public abstract class BaseWorldController : BaseMono
     {
         /// <summary>
-        /// 世界数据
+        /// 世界场景数据
         /// </summary>
         public WorldData WorldData { get; private set; }
 
         /// <summary>
-        /// 世界预制体
+        /// 世界场景预制体
         /// </summary>
         public GameObject Asset
         {

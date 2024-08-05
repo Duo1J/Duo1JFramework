@@ -1,3 +1,4 @@
+using Duo1JFramework.Asset;
 using System;
 
 namespace Duo1JFramework.Actor
@@ -18,15 +19,47 @@ namespace Duo1JFramework.Actor
         public string Name { get; private set; }
 
         /// <summary>
-        /// 模型预制体路径
+        /// 预制体路径
         /// </summary>
         public string Path { get; private set; }
 
+        /// <summary>
+        /// 同步加载
+        /// </summary>
+        public bool Sync { get; set; } = false;
+
+        /// <summary>
+        /// 加载方式
+        /// </summary>
+        public EAssetLoadType LoadType { get; set; } = EAssetLoadType.Bundle;
+
+        public ActorData SetSync(bool sync)
+        {
+            Sync = sync;
+            return this;
+        }
+
+        public ActorData SetLoadType(EAssetLoadType loadType)
+        {
+            LoadType = loadType;
+            return this;
+        }
+
         public ActorData(Type logicType, string name, string path)
         {
+            if (name == null)
+            {
+                name = "";
+            }
+
             LogicType = logicType;
             Name = name;
             Path = path;
+        }
+
+        public override string ToString()
+        {
+            return $"<ActorData--{Name}-{LogicType}-{Path}>";
         }
     }
 }

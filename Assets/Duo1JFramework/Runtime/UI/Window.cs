@@ -89,7 +89,7 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 父Canvas的排序层级
         /// </summary>
-        public int ParSortingOrder => Root.Instance.UIRoot.GetBaseSortingOrder(Config.Layer);
+        public int ParSortingOrder => Root.UIRoot.GetBaseSortingOrder(Config.Layer);
 
         private bool init = false;
 

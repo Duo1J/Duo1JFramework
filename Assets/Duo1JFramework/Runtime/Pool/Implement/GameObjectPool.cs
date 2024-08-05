@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// GameObject对象池
+    /// GameObject对象池实例
     /// </summary>
     public class GameObjectPool : CommonPool<GameObject>
     {
-        public Transform ParentRoot => parentOverride == null ? Root.Instance.GoPoolRoot.transform : parentOverride;
+        public Transform ParentRoot => parentOverride == null ? Root.GoPoolRoot.transform : parentOverride;
 
         private GameObject templateGo;
         private Transform parentOverride;
@@ -28,7 +28,7 @@ namespace Duo1JFramework.ObjectPool
 
         public override void InitPool()
         {
-            pool = new GObjectPool(() => templateGo);
+            pool = new GObjectPoolModel(() => templateGo);
         }
 
         public GameObjectPool(GameObject templateGo, Func<GameObject, GameObject> initCall, Transform parentOverride = null) : base(initCall)

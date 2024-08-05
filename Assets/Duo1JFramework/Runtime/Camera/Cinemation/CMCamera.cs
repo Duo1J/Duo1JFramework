@@ -19,6 +19,9 @@ namespace Duo1JFramework.CameraAPI
         }
         private CinemachineVirtualCamera virtualCamera;
 
+        /// <summary>
+        /// 虚拟相机优先级
+        /// </summary>
         public int Priority
         {
             get
@@ -38,6 +41,10 @@ namespace Duo1JFramework.CameraAPI
         }
         private int priority;
 
+        /// <summary>
+        /// 虚拟相机跟随
+        /// </summary>
+        /// <param name="t"></param>
         public void Follow(ICameraFollow t)
         {
             if (t == null)
@@ -48,6 +55,10 @@ namespace Duo1JFramework.CameraAPI
             VirtualCamera.Follow = t.CameraFollowPoint;
         }
 
+        /// <summary>
+        /// 虚拟相机注视
+        /// </summary>
+        /// <param name="t"></param>
         public void LookAt(ICameraLookAt t)
         {
             if (t == null)
@@ -80,6 +91,9 @@ namespace Duo1JFramework.CameraAPI
             Priority = priority;
         }
 
+        /// <summary>
+        /// 通过预制体路径初始化相机
+        /// </summary>
         public void InitCamera(params object[] param)
         {
             DestroyCamera();
@@ -94,6 +108,9 @@ namespace Duo1JFramework.CameraAPI
             VirtualCamera = CMBrain.Instance.LoadVirtualCamera(prefabPath);
         }
 
+        /// <summary>
+        /// 通过虚拟相机初始化相机
+        /// </summary>
         public void InitCamera(CinemachineVirtualCamera virtualCamera)
         {
             DestroyCamera();
@@ -108,6 +125,9 @@ namespace Duo1JFramework.CameraAPI
             return CMBrain.Instance.CreateCamera(prefabPath);
         }
 
+        /// <summary>
+        /// 销毁相机
+        /// </summary>
         public void DestroyCamera()
         {
             if (VirtualCamera != null)
