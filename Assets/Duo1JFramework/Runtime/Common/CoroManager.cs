@@ -6,7 +6,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 协程管理器
     /// </summary>
-    public class Coro : MonoSingleton<Coro>
+    public class CoroManager : MonoSingleton<CoroManager>
     {
         public static Coroutine StartCoro(IEnumerator e)
         {
