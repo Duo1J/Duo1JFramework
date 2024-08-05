@@ -15,7 +15,7 @@ namespace Duo1JFramework.PhysicsAPI
         public bool addToQuadTree = true;
 
         [SerializeField]
-        private CollisionType collisionType = CollisionType.Trigger;
+        private ECollisionType collisionType = ECollisionType.Trigger;
 
         private Collider collision;
 
@@ -36,10 +36,10 @@ namespace Duo1JFramework.PhysicsAPI
             return collision;
         }
 
-        public void SetCollisionType(CollisionType collisionType)
+        public void SetCollisionType(ECollisionType collisionType)
         {
             this.collisionType = collisionType;
-            GetCollider().isTrigger = collisionType == CollisionType.Trigger;
+            GetCollider().isTrigger = collisionType == ECollisionType.Trigger;
         }
 
         public void SetEnable(bool enable)
@@ -128,11 +128,5 @@ namespace Duo1JFramework.PhysicsAPI
                 GUILayout.Label($"IsTrigger: {col.isTrigger}");
             });
         }
-    }
-
-    public enum CollisionType
-    {
-        Collider,
-        Trigger
     }
 }

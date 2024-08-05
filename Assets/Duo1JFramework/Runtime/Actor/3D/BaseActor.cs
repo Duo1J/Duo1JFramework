@@ -1,7 +1,6 @@
 using Duo1JFramework.Asset;
 using Duo1JFramework.CameraAPI;
 using Duo1JFramework.GamerInput;
-using Duo1JFramework.World;
 using System;
 using UnityEngine;
 
@@ -176,17 +175,6 @@ namespace Duo1JFramework.Actor
             AfterUnLoadAsset();
         }
 
-        /// <summary>
-        /// 销毁
-        /// </summary>
-        public override void Dispose()
-        {
-            base.Dispose();
-
-            OnDispose();
-            UnLoadAsset();
-        }
-
         public override string ToString()
         {
             return $"<Actor-{ID}-{(Data == null ? "NullName" : Data.Name)}-{(Data == null ? "NullLogicType" : Data.LogicType)}><Con-{(Controller == null ? "NullController" : Controller.ToString())}>";
@@ -279,10 +267,11 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// 子类销毁
+        /// 销毁
         /// </summary>
         protected override void OnDispose()
         {
+            UnLoadAsset();
         }
 
         #endregion 子类override

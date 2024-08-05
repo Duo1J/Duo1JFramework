@@ -239,14 +239,18 @@ namespace Duo1JFramework
         /// <summary>
         /// 销毁
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
             if (Game.IsQuit)
+            {
                 return;
+            }
+
             if (Disposed)
             {
                 return;
             }
+
             Disposed = true;
 
             UnRegisterPreUpdate();

@@ -26,7 +26,7 @@ namespace Duo1JFramework.CameraAPI
             cmCamera = CMBrain.Instance.CreateCamera(virtualCamera);
 
             collisionController = GetComponent<CollisionController>();
-            collisionController.SetCollisionType(CollisionType.Trigger);
+            collisionController.SetCollisionType(ECollisionType.Trigger);
 
             collisionController.TriggerEnter = TriggerEnterHandle;
             collisionController.TriggerExit = TriggerExitHandle;

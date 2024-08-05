@@ -17,7 +17,7 @@ namespace Duo1JFramework.PhysicsAPI
         /// <summary>
         /// 为Go添加3D碰撞
         /// </summary>
-        public CollisionController AddCollision(GameObject go, CollisionType collisionType = CollisionType.Trigger)
+        public CollisionController AddCollision(GameObject go, ECollisionType collisionType = ECollisionType.Trigger)
         {
             CollisionController con = go.GetOrAddComponent<CollisionController>();
             con.SetCollisionType(collisionType);
@@ -27,7 +27,7 @@ namespace Duo1JFramework.PhysicsAPI
         /// <summary>
         /// 为Go添加2D碰撞
         /// </summary>
-        public CollisionController2D AddCollision2D(GameObject go, CollisionType collisionType = CollisionType.Trigger)
+        public CollisionController2D AddCollision2D(GameObject go, ECollisionType collisionType = ECollisionType.Trigger)
         {
             CollisionController2D con = go.GetOrAddComponent<CollisionController2D>();
             con.SetCollisionType(collisionType);

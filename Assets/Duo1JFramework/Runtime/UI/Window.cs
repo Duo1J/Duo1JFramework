@@ -189,26 +189,16 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// 销毁
-        /// </summary>
-        public override void Dispose()
-        {
-            base.Dispose();
-
-            OnDispose();
-            Go?.DestroyImmediate();
-        }
-
-        /// <summary>
         /// 子类初始化
         /// </summary>
         protected abstract void OnInit();
 
         /// <summary>
-        /// 子类销毁
+        /// 销毁
         /// </summary>
         protected override void OnDispose()
         {
+            Go?.DestroyImmediate();
         }
 
         public Window()

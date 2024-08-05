@@ -10,9 +10,9 @@ namespace Duo1JFramework.PhysicsAPI.Physics2D
     public class CollisionController2D : BaseWorldItem, ICollisionController
     {
         [SerializeField]
-        private CollisionType collisionType = CollisionType.Trigger;
+        private ECollisionType collisionType = ECollisionType.Trigger;
 
-        public void SetCollisionType(CollisionType collisionType)
+        public void SetCollisionType(ECollisionType collisionType)
         {
             this.collisionType = collisionType;
         }

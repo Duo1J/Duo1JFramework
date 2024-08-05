@@ -18,6 +18,6 @@ namespace Duo1JFramework.PhysicsAPI
         /// <summary>
         /// 设置碰撞、触发类型
         /// </summary>
-        void SetCollisionType(CollisionType collisionType);
+        void SetCollisionType(ECollisionType collisionType);
     }
 }

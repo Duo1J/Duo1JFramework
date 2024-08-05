@@ -1,4 +1,5 @@
 using Duo1JFramework.CameraAPI;
+using System;
 using UnityEngine;
 
 namespace Duo1JFramework.Actor.Actor2D
@@ -6,6 +7,7 @@ namespace Duo1JFramework.Actor.Actor2D
     /// <summary>
     /// 2D½ÇÉ«Âß¼­»ùÀà
     /// </summary>
+    [Serializable]
     public abstract class BaseActor2D : BaseRegister,
             ICameraFollow,
             ICameraLookAt
@@ -22,7 +24,6 @@ namespace Duo1JFramework.Actor.Actor2D
 
         protected override void OnDispose()
         {
-            base.Dispose();
         }
     }
 }
