@@ -14,9 +14,13 @@ namespace Duo1JFramework.PhysicsAPI
         [Label("添加到四叉树")]
         public bool addToQuadTree = true;
 
+        [Label("碰撞体类型")]
         [SerializeField]
         private ECollisionType collisionType = ECollisionType.Trigger;
 
+        /// <summary>
+        /// 碰撞体
+        /// </summary>
         private Collider collision;
 
         public Action<CollisionController, Collision> ColliderEnter;
@@ -27,15 +31,22 @@ namespace Duo1JFramework.PhysicsAPI
         public Action<CollisionController, Collider> TriggerStay;
         public Action<CollisionController, Collider> TriggerExit;
 
+        /// <summary>
+        /// 获取碰撞体
+        /// </summary>
+        /// <param name="refresh">是否刷新缓存</param>
         public Collider GetCollider(bool refresh = false)
         {
             if (collision == null || refresh)
             {
-                collision = this.GetAndAssertComponent<Collider>($"CollisionController上必须挂载Collider类型组件, 物体: {gameObject.name} - {gameObject.GetInstanceID()}");
+                collision = this.GetAndAssertComponent<Collider>($"{ToString()}CollisionController上必须挂载Collider类型组件");
             }
             return collision;
         }
 
+        /// <summary>
+        /// 设置碰撞、触发类型
+        /// </summary>
         public void SetCollisionType(ECollisionType collisionType)
         {
             this.collisionType = collisionType;
@@ -116,7 +127,7 @@ namespace Duo1JFramework.PhysicsAPI
         {
             ED.Vertical(() =>
             {
-                GUILayout.Label($"{gameObject.name} - {gameObject.GetInstanceID()}");
+                GUILayout.Label(ToString());
 
                 Collider col = GetCollider();
                 if (col == null)

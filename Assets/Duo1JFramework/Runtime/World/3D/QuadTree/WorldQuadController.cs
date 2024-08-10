@@ -5,8 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// 世界四叉树控制器
-    /// 可作为四叉树容器的子树
+    /// 世界场景四叉树控制器, 用于管理受四叉树控制物体, 可作为四叉树容器的子树
     /// </summary>
     /// <see cref="WorldQuadContainer"/>
     [RequireComponent(typeof(GizmosBounds))]

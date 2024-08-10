@@ -49,7 +49,7 @@ namespace Duo1JFramework
 
         public override string ToString()
         {
-            return $"<{name}: {GetInstanceID()}>";
+            return $"<Mono-{name}: {GetInstanceID()}>";
         }
     }
 }

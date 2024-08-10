@@ -4,10 +4,8 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     [CustomEditor(typeof(BaseActorController), true)]
-    public class ActorControllerEditor : Editor
+    public class ActorControllerEditor : BaseCustomEditor<BaseActorController>
     {
-        private BaseActorController actorController;
-
         //组件
         private SerializedProperty model;
         private SerializedProperty animator;
@@ -18,9 +16,9 @@ namespace Duo1JFramework.Actor
         //参数
         private SerializedProperty gravityRate;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            actorController = (BaseActorController)target;
+            base.OnEnable();
 
             model = serializedObject.FindProperty("model");
             animator = serializedObject.FindProperty("animator");
@@ -30,13 +28,8 @@ namespace Duo1JFramework.Actor
 
             gravityRate = serializedObject.FindProperty("gravityRate");
         }
-
-        public override void OnInspectorGUI()
+        protected override void Draw()
         {
-            serializedObject.Update();
-
-            BaseActorController actorController = target as BaseActorController;
-
             //组件列表
             ED.Vertical(() =>
             {
@@ -49,17 +42,23 @@ namespace Duo1JFramework.Actor
                         EditorGUILayout.ObjectField(model, new GUIContent("模型"));
                         EditorGUILayout.ObjectField(animator, new GUIContent("动画控制器"));
                         EditorGUILayout.ObjectField(footIKCon, new GUIContent("足部IK控制器"));
+
                         if (rigidbody != null)
+                        {
                             EditorGUILayout.ObjectField(rigidbody, new GUIContent("刚体"));
+                        }
+
                         if (cc != null)
+                        {
                             EditorGUILayout.ObjectField(cc, new GUIContent("角色控制器"));
+                        }
                     });
                 }, "box");
 
                 if (GUILayout.Button("一键收集组件"))
                 {
-                    actorController.CollectComponent();
-                    EditorUtility.SetDirty(actorController);
+                    instance.CollectComponent();
+                    EditorUtility.SetDirty(instance);
                 }
 
                 GUILayout.Space(5);
@@ -72,9 +71,9 @@ namespace Duo1JFramework.Actor
                         if (gravityRate != null)
                             gravityRate.floatValue = EditorGUILayout.FloatField("重力比率", gravityRate.floatValue);
 
-                        actorController.CameraOffsetX = EditorGUILayout.FloatField("相机X轴偏移", actorController.CameraOffsetX);
-                        actorController.CameraOffsetY = EditorGUILayout.FloatField("相机Y轴偏移", actorController.CameraOffsetY);
-                        actorController.CameraOffsetZ = EditorGUILayout.FloatField("相机Z轴偏移", actorController.CameraOffsetZ);
+                        instance.CameraOffsetX = EditorGUILayout.FloatField("相机X轴偏移", instance.CameraOffsetX);
+                        instance.CameraOffsetY = EditorGUILayout.FloatField("相机Y轴偏移", instance.CameraOffsetY);
+                        instance.CameraOffsetZ = EditorGUILayout.FloatField("相机Z轴偏移", instance.CameraOffsetZ);
                     });
                 }, "box");
             });
@@ -86,11 +85,9 @@ namespace Duo1JFramework.Actor
             {
                 GUILayout.Label("当前状态信息");
                 GUILayout.Space(3);
-                string info = actorController.GetHierarchyInfo();
+                string info = instance.GetHierarchyInfo();
                 GUILayout.TextField(info);
             }, "box");
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

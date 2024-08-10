@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// 通用世界四叉树管理物体
+    /// 基础四叉树控制物体
     /// </summary>
     public class WorldQuadItem : QuadTreeItem
     {

@@ -5,32 +5,26 @@ using System.Collections.Generic;
 namespace Duo1JFramework.UI
 {
     [CustomEditor(typeof(UIController), true)]
-    public class UIControllerEditor : Editor
+    public class UIControllerEditor : BaseCustomEditor<UIController>
     {
-        private UIController uiController;
-
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            uiController = target as UIController;
+            base.OnEnable();
         }
 
-        public override void OnInspectorGUI()
+        protected override void Draw()
         {
-            serializedObject.Update();
-
             if (GUILayout.Button("收集节点"))
             {
-                uiController.CollectNode();
-                EditorUtility.SetDirty(uiController);
+                instance.CollectNode();
+                EditorUtility.SetDirty(instance);
             }
             DrawNodeList();
-
-            serializedObject.ApplyModifiedProperties();
         }
 
         private void DrawNodeList()
         {
-            List<Transform> nodeList = uiController.GetNodeList();
+            List<Transform> nodeList = instance.GetNodeList();
             if (nodeList != null)
             {
                 ED.Vertical(() =>

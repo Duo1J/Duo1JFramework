@@ -54,6 +54,11 @@ namespace Duo1JFramework
         /// </summary>
         public void RegisterPreUpdate(Action _preUpdater)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             UpdateManager.Instance.RegisterPreUpdate(_preUpdater);
             preUpdater = _preUpdater;
         }
@@ -63,7 +68,16 @@ namespace Duo1JFramework
         /// </summary>
         public void UnRegisterPreUpdate()
         {
-            if (preUpdater == null) return;
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (preUpdater == null)
+            {
+                return;
+            }
+
             UpdateManager.Instance.UnRegisterPreUpdate(preUpdater);
             preUpdater = null;
         }
@@ -73,6 +87,11 @@ namespace Duo1JFramework
         /// </summary>
         public void RegisterUpdate(Action _updater)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             UpdateManager.Instance.RegisterUpdate(_updater);
             updater = _updater;
         }
@@ -82,7 +101,16 @@ namespace Duo1JFramework
         /// </summary>
         public void UnRegisterUpdate()
         {
-            if (updater == null) return;
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (updater == null)
+            {
+                return;
+            }
+
             UpdateManager.Instance.UnRegisterUpdate(updater);
             updater = null;
         }
@@ -92,6 +120,11 @@ namespace Duo1JFramework
         /// </summary>
         public void RegisterLateUpdate(Action _lateUpdater)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             UpdateManager.Instance.RegisterLateUpdate(_lateUpdater);
             lateUpdater = _lateUpdater;
         }
@@ -101,7 +134,16 @@ namespace Duo1JFramework
         /// </summary>
         public void UnRegisterLateUpdate()
         {
-            if (lateUpdater == null) return;
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (lateUpdater == null)
+            {
+                return;
+            }
+
             UpdateManager.Instance.UnRegisterLateUpdate(lateUpdater);
             lateUpdater = null;
         }
@@ -111,6 +153,11 @@ namespace Duo1JFramework
         /// </summary>
         public void RegisterFixedUpdate(Action _fixedUpdater)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             UpdateManager.Instance.RegisterFixedUpdate(_fixedUpdater);
             fixedUpdater = _fixedUpdater;
         }
@@ -120,7 +167,16 @@ namespace Duo1JFramework
         /// </summary>
         public void UnRegisterFixedUpdate()
         {
-            if (fixedUpdater == null) return;
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (fixedUpdater == null)
+            {
+                return;
+            }
+
             UpdateManager.Instance.UnRegisterFixedUpdate(fixedUpdater);
             fixedUpdater = null;
         }
@@ -134,6 +190,11 @@ namespace Duo1JFramework
         /// </summary>
         public Timer GetTimer(float interval, Action callback, int repeat = 1)
         {
+            if (CheckDisposed())
+            {
+                return null;
+            }
+
             Timer timer = TimerManager.Instance.GetTimer(interval, callback, repeat);
             if (timerList == null)
             {
@@ -148,6 +209,11 @@ namespace Duo1JFramework
         /// </summary>
         public Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
         {
+            if (CheckDisposed())
+            {
+                return null;
+            }
+
             Timer timer = TimerManager.Instance.GetFrameTimer(frame, callback, repeat);
             if (timerList == null)
             {
@@ -162,6 +228,11 @@ namespace Duo1JFramework
         /// </summary>
         public void StopTimer(Timer timer)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             timer.Stop();
             if (timerList == null) return;
             timerList.Remove(timer);
@@ -172,7 +243,16 @@ namespace Duo1JFramework
         /// </summary>
         public void StopAllTimer()
         {
-            if (timerList == null) return;
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (timerList == null)
+            {
+                return;
+            }
+
             foreach (Timer timer in timerList)
             {
                 timer.Stop();
@@ -189,6 +269,11 @@ namespace Duo1JFramework
         /// </summary>
         public void RegisterEvent(eEvent e, Action<object> callback)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             if (eventDict == null)
             {
                 eventDict = new Dictionary<eEvent, List<Action<object>>>();
@@ -208,6 +293,11 @@ namespace Duo1JFramework
         /// </summary>
         public void UnRegisterEvent(eEvent e, Action<object> callback)
         {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
             if (eventDict != null)
             {
                 if (eventDict.TryGetValue(e, out List<Action<object>> list))
@@ -224,7 +314,16 @@ namespace Duo1JFramework
         /// </summary>
         public void UnRegisterAllEvent()
         {
-            if (eventDict == null) return;
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (eventDict == null)
+            {
+                return;
+            }
+
             foreach (KeyValuePair<eEvent, List<Action<object>>> kv in eventDict)
             {
                 foreach (Action<object> callback in kv.Value)
@@ -235,6 +334,27 @@ namespace Duo1JFramework
         }
 
         #endregion Event
+
+        private bool CheckDisposed()
+        {
+            if (Disposed)
+            {
+                Log.ErrorForce($"`{GetHashCode()}`计时器已销毁");
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public void Reset()
+        {
+            Dispose();
+            Disposed = false;
+            OnReset();
+        }
 
         /// <summary>
         /// 销毁
@@ -251,16 +371,28 @@ namespace Duo1JFramework
                 return;
             }
 
-            Disposed = true;
+            try
+            {
+                UnRegisterPreUpdate();
+                UnRegisterUpdate();
+                UnRegisterLateUpdate();
+                UnRegisterFixedUpdate();
+                StopAllTimer();
+                UnRegisterAllEvent();
 
-            UnRegisterPreUpdate();
-            UnRegisterUpdate();
-            UnRegisterLateUpdate();
-            UnRegisterFixedUpdate();
-            StopAllTimer();
-            UnRegisterAllEvent();
+                OnDispose();
+            }
+            finally
+            {
+                Disposed = true;
+            }
+        }
 
-            OnDispose();
+        /// <summary>
+        /// 子类重置
+        /// </summary>
+        protected virtual void OnReset()
+        {
         }
 
         /// <summary>

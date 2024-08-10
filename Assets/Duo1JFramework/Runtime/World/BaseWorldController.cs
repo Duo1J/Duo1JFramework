@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// 基础世界场景控制器
+    /// 世界场景控制器基类
     /// </summary>
     public abstract class BaseWorldController : BaseMono
     {

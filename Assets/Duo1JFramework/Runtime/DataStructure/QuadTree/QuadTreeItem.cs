@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Duo1JFramework.DataStructure
 {
     /// <summary>
-    /// 四叉树管理对象抽象
+    /// 四叉树3D管理对象基类
     /// </summary>
-    public abstract class QuadTreeItem : BaseWorldItem, IQuadTreeItem
+    public abstract class QuadTreeItem : WorldItem, IQuadTreeItem
     {
         /// <summary>
         /// 四叉树节点是否激活

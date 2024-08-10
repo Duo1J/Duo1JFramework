@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Duo1JFramework.DataStructure
 {
     /// <summary>
-    /// 四叉树接口
+    /// 四叉树节点接口
     /// </summary>
     public interface IQuadTreeNode
     {

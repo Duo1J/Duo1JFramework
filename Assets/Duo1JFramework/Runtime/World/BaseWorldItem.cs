@@ -1,7 +1,7 @@
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// 基础世界场景物体
+    /// 世界场景物体基类
     /// </summary>
     public abstract class BaseWorldItem : MonoRegister
     {

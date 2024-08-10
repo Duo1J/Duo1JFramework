@@ -21,12 +21,28 @@ namespace Duo1JFramework
         }
         private Register register;
 
-        protected virtual void OnDestroy()
+        /// <summary>
+        /// 重置注册器
+        /// </summary>
+        protected void ResetRegister()
+        {
+            Register.Reset();
+        }
+
+        /// <summary>
+        /// 销毁注册器
+        /// </summary>
+        protected void DisposeRegister()
         {
             if (register != null)
             {
                 register.Dispose();
             }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            DisposeRegister();
         }
     }
 }

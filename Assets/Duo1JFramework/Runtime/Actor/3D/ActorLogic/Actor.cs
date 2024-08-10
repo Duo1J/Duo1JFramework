@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 通用角色逻辑
+    /// 基础角色逻辑
     /// </summary>
     public class Actor : BaseActor
     {

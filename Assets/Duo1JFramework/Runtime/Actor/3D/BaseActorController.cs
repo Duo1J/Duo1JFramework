@@ -9,10 +9,10 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// 角色控制器
+    /// 角色控制器基类
     /// </summary>
     [RequireComponent(typeof(ActorParam), typeof(ActorPoint))]
-    public abstract class BaseActorController : BaseWorldItem
+    public abstract class BaseActorController : WorldItem
     {
         #region Property
 

@@ -99,8 +99,8 @@ namespace Duo1JFramework.World
             BaseWorldController controller = go.GetComponent<BaseWorldController>();
             if (controller == null)
             {
-                Log.Warn($"世界`{worldData.Path}`未挂载`BaseWorldController`的派生组件, 默认挂载`WorldController`");
-                controller = go.AddComponent<WorldController>();
+                Log.Warn($"世界`{worldData.Path}`未挂载`BaseWorldController`的派生组件, 默认挂载`DefaultWorldController`");
+                controller = go.AddComponent<DefaultWorldController>();
             }
 
             controller.Init(worldData);
