@@ -233,6 +233,9 @@ namespace Duo1JFramework.Asset
             return loader.LoadResourceInsSync<T>(assetPath);
         }
 
+        /// <summary>
+        /// 资源垃圾清理
+        /// </summary>
         public void GC()
         {
             if (!Game.IsEditor)

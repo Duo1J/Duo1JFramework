@@ -1,30 +1,69 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using Duo1JFramework.Asset;
 using Duo1JFramework.Config;
 using log4net;
 using log4net.Config;
 using UnityEngine;
+
+using TextAsset = UnityEngine.TextAsset;
 
 namespace Duo1JFramework
 {
     public static class Log4Net
     {
         private static ILog logger = GetLogger("D");
+
+        /// <summary>
+        /// 默认Logger
+        /// </summary>
         public static ILog Logger => logger;
 
+        /// <summary>
+        /// 通过类型获取Logger
+        /// </summary>
         public static ILog GetLogger(Type t)
         {
             return LogManager.GetLogger(t);
         }
 
+        /// <summary>
+        /// 通过字符串获取Logger
+        /// </summary>
         public static ILog GetLogger(string s)
         {
             return LogManager.GetLogger(s);
         }
 
-        public static readonly string LOG_CONFIG_FOLDER = Path.Combine(Application.streamingAssetsPath, Def.FRAME_WORK_NAME);
-        public static readonly string LOG_CONFIG_PATH = Path.Combine(LOG_CONFIG_FOLDER, "log4net.config");
-        public static readonly string LOG_FOLDER_PATH = Path.Combine(LOG_CONFIG_FOLDER, "Log");
+        /// <summary>
+        /// 配置文件夹
+        /// </summary>
+        public static readonly string LOG_CONFIG_FOLDER = Path.Combine(Def.Path.RES_PATH_PREFIX, "Log4Net");
+
+        /// <summary>
+        /// 配置文件路径
+        /// </summary>
+        public static readonly string LOG_CONFIG_PATH = Path.Combine(LOG_CONFIG_FOLDER, "log4net");
+
+        /// <summary>
+        /// 覆写配置文件夹
+        /// </summary>
+        public static readonly string LOG_CONFIG_OVERRIDE_FOLDER = Path.Combine(Def.Path.STREAMING, Def.FRAME_WORK_NAME);
+
+        /// <summary>
+        /// 覆写配置文件路径
+        /// </summary>
+        public static readonly string LOG_CONFIG_OVERRIDE_PATH = Path.Combine(LOG_CONFIG_OVERRIDE_FOLDER, "log4net.cfg");
+
+        /// <summary>
+        /// 输出文件夹
+        /// </summary>
+        public static readonly string LOG_FOLDER_PATH = Path.Combine(LOG_CONFIG_OVERRIDE_FOLDER, "Log");
+
+        /// <summary>
+        /// 输出文件名
+        /// </summary>
         public const string LOG_FILE_NAME = "log";
 
         private const string PROPKEY_FOLDER = "ApplicationLogPath";
@@ -54,11 +93,7 @@ namespace Duo1JFramework
 
             try
             {
-                CheckConfigFile();
-
-                GlobalContext.Properties[PROPKEY_FOLDER] = LOG_FOLDER_PATH;
-                GlobalContext.Properties[PROPKEY_FILE] = LOG_FILE_NAME;
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(LOG_CONFIG_PATH));
+                InitLog4NetConfig();
 
                 Application.logMessageReceived += OnLogMessageReceived;
 
@@ -106,20 +141,36 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 检查配置文件
+        /// 初始化配置
         /// </summary>
-        public static void CheckConfigFile()
+        private static void InitLog4NetConfig()
         {
-            if (FileUtil.CheckDir(LOG_CONFIG_FOLDER))
+            GlobalContext.Properties[PROPKEY_FILE] = LOG_FILE_NAME;
+            GlobalContext.Properties[PROPKEY_FOLDER] = LOG_FOLDER_PATH;
+
+            Stream stream = null;
+            if (File.Exists(LOG_CONFIG_OVERRIDE_PATH))
             {
-                Log.Info($"创建log4net配置文件夹: {LOG_CONFIG_FOLDER}");
+                Log.Info("Log4Net使用Streaming配置");
+                stream = new FileStream(LOG_CONFIG_OVERRIDE_PATH, FileMode.OpenOrCreate);
+            }
+            else
+            {
+                TextAsset textAsset = AssetManager.Instance.LoadResourceSync<TextAsset>(LOG_CONFIG_PATH);
+                if (textAsset != null)
+                {
+                    Log.Info("Log4Net使用Resources配置");
+                    stream = new MemoryStream(Encoding.UTF8.GetBytes(textAsset.text));
+                }
             }
 
-            if (FileUtil.CheckFile(LOG_CONFIG_PATH))
+            if (stream == null)
             {
-                Log.Info($"创建log4net默认配置文件: {LOG_CONFIG_PATH}");
-                FileUtil.WriteAllText(LOG_CONFIG_PATH, ConfigFileContent);
+                Log.Info("Log4Net使用默认配置");
+                stream = new MemoryStream(Encoding.UTF8.GetBytes(ConfigFileContent));
             }
+
+            XmlConfigurator.Configure(stream);
         }
 
         /// <summary>
