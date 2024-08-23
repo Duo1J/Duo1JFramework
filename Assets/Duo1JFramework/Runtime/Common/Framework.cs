@@ -27,6 +27,7 @@ namespace Duo1JFramework
         public static void Init()
         {
             Log4Net.Init();
+            PrintLogo();
 
             if (Initialized)
             {
@@ -77,6 +78,15 @@ namespace Duo1JFramework
 
         private Framework()
         {
+        }
+
+        private static void PrintLogo()
+        {
+#if UNITY_EDITOR
+            Log.Info($"<size=16><{Def.FRAME_WORK_NAME}></size>");
+#else
+            Log.Info($"<{Def.FRAME_WORK_NAME}>");
+#endif
         }
 
         private static void InitInner()

@@ -95,24 +95,24 @@ namespace Duo1JFramework
             {
                 InitLog4NetConfig();
 
+                Log.Info("Log4Net 初始化成功");
                 Application.logMessageReceived += OnLogMessageReceived;
 
                 initialized = true;
-                Log.Info("Log4Net 初始化成功");
             }
             catch (Exception e)
             {
                 initialized = false;
-                Log.Info("Log4Net 初始化异常");
-                Assert.ExceptHandle(e);
+                Assert.ExceptHandle(e, "Log4Net 初始化异常");
             }
         }
 
         public static void Shutdown()
         {
-            Log.Info("Log4Net 关闭");
             initialized = false;
             LogManager.Shutdown();
+            Application.logMessageReceived -= OnLogMessageReceived;
+            Log.Info("Log4Net 关闭");
         }
 
         private static void OnLogMessageReceived(string condition, string stackTrace, LogType type)
