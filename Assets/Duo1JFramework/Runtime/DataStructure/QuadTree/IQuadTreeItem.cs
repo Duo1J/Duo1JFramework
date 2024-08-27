@@ -8,14 +8,14 @@ namespace Duo1JFramework.DataStructure
     public interface IQuadTreeItem
     {
         /// <summary>
-        /// 四叉树节点是否激活
-        /// </summary>
-        bool QuadActive { get; }
-
-        /// <summary>
         /// 包围盒
         /// </summary>
         Bounds Bounds { get; }
+
+        /// <summary>
+        /// 四叉树节点是否激活
+        /// </summary>
+        bool QuadActive { get; }
 
         /// <summary>
         /// 设置四叉树节点状态

@@ -177,7 +177,7 @@ namespace Duo1JFramework.Actor
 
         public override string ToString()
         {
-            return $"<Actor-{ID}-{(Data == null ? "NullName" : Data.Name)}-{(Data == null ? "NullLogicType" : Data.LogicType)}><Con-{(Controller == null ? "NullController" : Controller.ToString())}>";
+            return $"<Actor-{ID}-{(Data == null ? "NullName" : Data.Name)}-{(Data == null ? "NullLogicType" : Data.LogicType.ToString())}><Con-{(Controller == null ? "NullController" : Controller.ToString())}>";
         }
 
         /// <summary>

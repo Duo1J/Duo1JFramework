@@ -21,26 +21,30 @@ namespace Duo1JFramework.Ext.Atomic
 
         public int Increment()
         {
-            int initialValue, newValue;
-            do
-            {
-                initialValue = Read();
-                newValue = initialValue + 1;
-            } while (Interlocked.CompareExchange(ref _value, newValue, initialValue) != initialValue);
+            return Interlocked.Increment(ref _value);
 
-            return newValue;
+            //int initialValue, newValue;
+            //do
+            //{
+            //    initialValue = Read();
+            //    newValue = initialValue + 1;
+            //} while (Interlocked.CompareExchange(ref _value, newValue, initialValue) != initialValue);
+
+            //return newValue;
         }
 
         public int Decrement()
         {
-            int initialValue, newValue;
-            do
-            {
-                initialValue = Read();
-                newValue = initialValue - 1;
-            } while (Interlocked.CompareExchange(ref _value, newValue, initialValue) != initialValue);
+            return Interlocked.Decrement(ref _value);
 
-            return newValue;
+            //int initialValue, newValue;
+            //do
+            //{
+            //    initialValue = Read();
+            //    newValue = initialValue - 1;
+            //} while (Interlocked.CompareExchange(ref _value, newValue, initialValue) != initialValue);
+
+            //return newValue;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework.DataStructure
 {
     /// <summary>
-    /// 四叉树节点
+    /// 3D四叉树节点
     /// </summary>
     public class QuadTreeNode : IQuadTreeNode, IGizmosDrawer
     {
@@ -31,7 +31,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 子节点列表
         /// </summary>
-        private QuadTreeNode[] childs;
+        private QuadTreeNode[] childList;
 
         /// <summary>
         /// 管理对象列表
@@ -46,11 +46,11 @@ namespace Duo1JFramework.DataStructure
             CheckAndCreateChilds();
 
             IQuadTreeNode tarNode = null;
-            if (childs != null)
+            if (childList != null)
             {
-                for (int i = 0; i < childs.Length; ++i)
+                for (int i = 0; i < childList.Length; ++i)
                 {
-                    IQuadTreeNode node = childs[i];
+                    IQuadTreeNode node = childList[i];
                     if (CheckItemInBounds(node, item))
                     {
                         if (tarNode != null)
@@ -78,15 +78,15 @@ namespace Duo1JFramework.DataStructure
         /// </summary>
         public bool RemoveItem(IQuadTreeItem item)
         {
-            if (childs == null)
+            if (childList == null)
             {
                 return RemoveFromItemList(item);
             }
 
             bool flag = false;
-            for (int i = 0; i < childs.Length; ++i)
+            for (int i = 0; i < childList.Length; ++i)
             {
-                IQuadTreeNode node = childs[i];
+                IQuadTreeNode node = childList[i];
                 if (CheckItemInBounds(node, item))
                 {
                     flag = node.RemoveItem(item);
@@ -108,11 +108,11 @@ namespace Duo1JFramework.DataStructure
         {
             SetItemListState(false);
 
-            if (childs != null)
+            if (childList != null)
             {
-                for (int i = 0; i < childs.Length; ++i)
+                for (int i = 0; i < childList.Length; ++i)
                 {
-                    childs[i].ResetEvaluate();
+                    childList[i].ResetEvaluate();
                 }
             }
         }
@@ -129,11 +129,11 @@ namespace Duo1JFramework.DataStructure
 
             SetItemListState(true);
 
-            if (childs != null)
+            if (childList != null)
             {
-                for (int i = 0; i < childs.Length; ++i)
+                for (int i = 0; i < childList.Length; ++i)
                 {
-                    childs[i].Evaluate(param);
+                    childList[i].Evaluate(param);
                 }
             }
         }
@@ -145,11 +145,11 @@ namespace Duo1JFramework.DataStructure
         {
             TriggerItemListState();
 
-            if (childs != null)
+            if (childList != null)
             {
-                for (int i = 0; i < childs.Length; ++i)
+                for (int i = 0; i < childList.Length; ++i)
                 {
-                    childs[i].TriggerEvaluate();
+                    childList[i].TriggerEvaluate();
                 }
             }
         }
@@ -213,12 +213,12 @@ namespace Duo1JFramework.DataStructure
             {
                 return;
             }
-            if (childs != null)
+            if (childList != null)
             {
                 return;
             }
 
-            childs = new QuadTreeNode[QuadTree.CHILD_COUNT];
+            childList = new QuadTreeNode[BaseQuadTree.CHILD_COUNT];
 
             int idx = 0;
             Vector3 size = Bounds.size;
@@ -229,7 +229,7 @@ namespace Duo1JFramework.DataStructure
                     Vector3 centerOffset = new Vector3(size.x / 4 * i, 0, size.z / 4 * j);
                     Vector3 childSize = new Vector3(size.x / 2, size.y, size.z / 2);
                     Bounds childBounds = new Bounds(Bounds.center + centerOffset, childSize);
-                    childs[idx++] = Create(Tree, childBounds, Depth + 1);
+                    childList[idx++] = Create(Tree, childBounds, Depth + 1);
                 }
             }
         }
@@ -270,11 +270,11 @@ namespace Duo1JFramework.DataStructure
             float childTarHeight = 1;
             float selfTarHeight = 1;
 
-            if (childs != null)
+            if (childList != null)
             {
-                for (int i = 0; i < childs.Length; ++i)
+                for (int i = 0; i < childList.Length; ++i)
                 {
-                    float _childTarHeight = childs[i].AdjustBoundsHeightByItem();
+                    float _childTarHeight = childList[i].AdjustBoundsHeightByItem();
                     if (_childTarHeight > childTarHeight)
                     {
                         childTarHeight = _childTarHeight;
@@ -328,11 +328,11 @@ namespace Duo1JFramework.DataStructure
                 Gizmos.DrawWireCube(Bounds.center, new Vector3(size.x, 1, size.z));
             }
 
-            if (childs != null)
+            if (childList != null)
             {
-                for (int i = 0; i < childs.Length; ++i)
+                for (int i = 0; i < childList.Length; ++i)
                 {
-                    childs[i].DrawGizmos();
+                    childList[i].DrawGizmos();
                 }
             }
         }

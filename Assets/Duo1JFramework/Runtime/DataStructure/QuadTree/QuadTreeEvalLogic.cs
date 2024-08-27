@@ -8,6 +8,8 @@ namespace Duo1JFramework.DataStructure
     /// </summary>
     public static class QuadTreeEvalLogic
     {
+        #region 3D
+
         /// <summary>
         /// 视锥体检测
         /// </summary>
@@ -64,5 +66,7 @@ namespace Duo1JFramework.DataStructure
             return nodeMin.x < itemMax.x && nodeMin.z < itemMax.z &&
                 nodeMax.x > itemMin.x && nodeMax.z > itemMin.z;
         }
+
+        #endregion 3D
     }
 }
