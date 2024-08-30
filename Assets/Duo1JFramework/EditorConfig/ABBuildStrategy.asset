@@ -18,9 +18,6 @@ MonoBehaviour:
   - abName: Actor
     pathList:
     - Actor
-  - abName: Audio
-    pathList:
-    - Audio
   - abName: Camera
     pathList:
     - Camera

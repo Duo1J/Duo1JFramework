@@ -136,6 +136,14 @@ namespace GBG.PlayableGraphMonitor.Editor
             }
         }
 
+        private void ShowButton(Rect position)
+        {
+            if (GUI.Button(position, EditorGUIUtility.IconContent("_Help"), GUI.skin.FindStyle("IconButton")))
+            {
+                Application.OpenURL("https://github.com/SolarianZ/UnityPlayableGraphMonitorTool");
+            }
+        }
+
         private void UpdateGraphView()
         {
             var currentTimeMS = GetCurrentEditorTimeMs();
@@ -220,23 +228,11 @@ namespace GBG.PlayableGraphMonitor.Editor
 
         void IHasCustomMenu.AddItemsToMenu(GenericMenu menu)
         {
-#if UNITY_2021_1_OR_NEWER
-            menu.AddItem(new GUIContent("Show clip progress bar title (will degrade performance)"),
-                _viewUpdateContext.ShowClipProgressBarTitle, OnToggleShowClipProgressBarTitle);
-#endif
-
-            menu.AddItem(new GUIContent("Keep updating edges when mouse leave GraphView (will degrade performance)"),
-                _viewUpdateContext.KeepUpdatingEdges, OnToggleKeepUpdatingEdges);
-        }
-
-        private void OnToggleShowClipProgressBarTitle()
-        {
-            _viewUpdateContext.ShowClipProgressBarTitle = !_viewUpdateContext.ShowClipProgressBarTitle;
-        }
-
-        private void OnToggleKeepUpdatingEdges()
-        {
-            _viewUpdateContext.KeepUpdatingEdges = !_viewUpdateContext.KeepUpdatingEdges;
+            // Source Code
+            menu.AddItem(new GUIContent("Source Code"), false, () =>
+            {
+                Application.OpenURL("https://github.com/SolarianZ/UnityPlayableGraphMonitorTool");
+            });
         }
 
         #endregion
