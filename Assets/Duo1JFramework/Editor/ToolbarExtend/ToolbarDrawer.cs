@@ -31,7 +31,7 @@ namespace Duo1JFramework
         {
             rightBtnList.Add(new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_RotateTool On"), () =>
             {
-                EditorUtil.SaveAndRefresh();
+                EditorUtil.SaveAndRefresh("Toolbar");
             }));
 
             rightBtnList.Add(new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_FolderEmpty Icon"), () =>

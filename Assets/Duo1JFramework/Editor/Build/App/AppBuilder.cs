@@ -42,6 +42,11 @@ namespace Duo1JFramework.Build
                 {
                     return;
                 }
+
+                if (data.assetLoaderType == EAssetLoaderType.AssetBundle && data.deleteManifest)
+                {
+                    AssetBundleBuilder.DeleteAllManifestCopy();
+                }
             }
 
             BuildPlayer(data, tarPath);
@@ -85,11 +90,6 @@ namespace Duo1JFramework.Build
             {
                 switch (assetLoaderType)
                 {
-                    case EAssetLoaderType.AssetDatabase:
-                        {
-                            Log.EditorInfo($"资源构建时，`{assetLoaderType.GetName()}`加载器类型无需构建");
-                            return true;
-                        }
                     case EAssetLoaderType.AssetBundle:
                         {
                             AssetBundleBuilder.BuildAllAssetBundle(buildTarget);
@@ -124,11 +124,6 @@ namespace Duo1JFramework.Build
             {
                 switch (assetLoaderType)
                 {
-                    case EAssetLoaderType.AssetDatabase:
-                        {
-                            Log.EditorInfo($"资源拷贝时，`{assetLoaderType.GetName()}`加载器类型无需拷贝");
-                            return true;
-                        }
                     case EAssetLoaderType.AssetBundle:
                         {
                             return AssetBundleBuilder.CopyAllAssetBundleBuild();

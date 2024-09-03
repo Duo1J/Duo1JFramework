@@ -238,10 +238,14 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void GC()
         {
-            if (!Game.IsEditor)
+            if (loader != null)
             {
-                ABManager.Instance.GC();
+                if (loader is ABAssetLoader)
+                {
+                    ABManager.Instance.GC();
+                }
             }
+
             Resources.UnloadUnusedAssets();
         }
 
@@ -260,30 +264,6 @@ namespace Duo1JFramework.Asset
 
         private void CreateAssetLoader()
         {
-            void SetAssetLoader(EAssetLoaderType assetLoaderType)
-            {
-#if UNITY_EDITOR
-                GameOption.Editor.assetLoaderType = assetLoaderType;
-#else
-                GameOption.Runtime.assetLoaderType = assetLoaderType;
-#endif
-                switch (assetLoaderType)
-                {
-                    case EAssetLoaderType.AssetDatabase:
-                        Log.Info("使用`EditorAssetLoader`资源加载器");
-                        loader = new EditorAssetLoader();
-                        break;
-                    case EAssetLoaderType.AssetBundle:
-                        Log.Info("使用`ABAssetLoader`资源加载器");
-                        loader = new ABAssetLoader();
-                        break;
-                    case EAssetLoaderType.Addressables:
-                        Log.Info("使用`ABAssetLoader`资源加载器");
-                        loader = new ABAssetLoader();
-                        break;
-                }
-            }
-
             if (loader == null)
             {
                 try
@@ -323,6 +303,30 @@ namespace Duo1JFramework.Asset
                     SetAssetLoader(EAssetLoaderType.AssetBundle);
 #endif
                 }
+            }
+        }
+
+        private void SetAssetLoader(EAssetLoaderType assetLoaderType)
+        {
+#if UNITY_EDITOR
+            GameOption.Editor.assetLoaderType = assetLoaderType;
+#else
+                GameOption.Runtime.assetLoaderType = assetLoaderType;
+#endif
+            switch (assetLoaderType)
+            {
+                case EAssetLoaderType.AssetDatabase:
+                    Log.Info("使用`EditorAssetLoader`资源加载器");
+                    loader = new EditorAssetLoader();
+                    break;
+                case EAssetLoaderType.AssetBundle:
+                    Log.Info("使用`ABAssetLoader`资源加载器");
+                    loader = new ABAssetLoader();
+                    break;
+                case EAssetLoaderType.Addressables:
+                    Log.Info("使用`ABAssetLoader`资源加载器");
+                    loader = new ABAssetLoader();
+                    break;
             }
         }
 

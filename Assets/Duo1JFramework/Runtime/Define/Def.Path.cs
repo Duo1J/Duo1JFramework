@@ -21,6 +21,11 @@ namespace Duo1JFramework
             public const string META_SUFFIX = ".meta";
 
             /// <summary>
+            /// Manifest文件后缀
+            /// </summary>
+            public const string MANIFEST_SUFFIX = ".manifest";
+
+            /// <summary>
             /// 资源根文件夹名
             /// </summary>
             public const string ASSET_ROOT_FOLDER = "Res";
@@ -38,7 +43,7 @@ namespace Duo1JFramework
             /// <summary>
             /// 内部Resources资源路径前缀
             /// </summary>
-            public const string RES_PATH_PREFIX = Def.FRAME_WORK_NAME + "/";
+            public const string RES_PATH_PREFIX = FRAME_WORK_NAME + "/";
 
             /// <summary>
             /// AssetBundle主包、根文件夹名称
@@ -53,7 +58,7 @@ namespace Duo1JFramework
             /// <summary>
             /// AssetBundle映射文件名
             /// </summary>
-            public const string ASSET_BUNDLE_MAP_DATA_NAME = "ABMapData.json";
+            public const string ASSET_BUNDLE_MAP_DATA_NAME = "Data.dat";
         }
     }
 }

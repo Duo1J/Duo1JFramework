@@ -22,15 +22,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void Throw(string msg)
         {
-            throw CommonException.Create(msg);
-        }
-
-        /// <summary>
-        /// 获取当前调用栈
-        /// </summary>
-        public static string GetStackTrace()
-        {
-            return Log.GetStackTrace();
+            CommonException.Throw(msg);
         }
 
         /// <summary>

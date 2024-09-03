@@ -89,7 +89,7 @@ namespace Duo1JFramework.Build
             if (strategy != null)
             {
                 EditorUtility.SetDirty(strategy);
-                EditorUtil.SaveAndRefresh();
+                EditorUtil.SaveAndRefresh("AssetBundleBuildEditorWnd::SaveData");
             }
         }
     }

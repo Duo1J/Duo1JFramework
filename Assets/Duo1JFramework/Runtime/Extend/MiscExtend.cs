@@ -98,7 +98,7 @@ namespace Duo1JFramework
 
         #region Delegate
 
-        public static void SafeInvoke(this Action action)
+        public static void InvokeSafe(this Action action)
         {
             try
             {

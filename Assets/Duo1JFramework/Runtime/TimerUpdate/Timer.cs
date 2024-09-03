@@ -75,7 +75,7 @@ namespace Duo1JFramework.TimerUpdate
 
             if (Game.IsDebug)
             {
-                stackTrace_Debug = Log.GetStackTrace();
+                stackTrace_Debug = DbgUtil.GetStackTrace();
             }
 
             return this;

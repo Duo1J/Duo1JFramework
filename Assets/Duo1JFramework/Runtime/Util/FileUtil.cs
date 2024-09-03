@@ -19,7 +19,7 @@ namespace Duo1JFramework
             {
                 if (!File.Exists(filePath))
                 {
-                    Log.ErrorForce($"不存在文件: {filePath}");
+                    Log.ErrorForce($"不存在文件: `{filePath}`");
                     return "";
                 }
 
@@ -43,18 +43,55 @@ namespace Duo1JFramework
             }
             catch (Exception e)
             {
-                Assert.ExceptHandle(e, $"WriteAllText(path=`{filePath}`, txt)/ntxt=`{txt}`");
+                Assert.ExceptHandle(e, $"WriteAllText(path=`{filePath}`)");
             }
         }
 
         /// <summary>
-        /// 检查文件是否创建，未创建则创建
+        /// 读取所有byte
+        /// </summary>
+        public static byte[] ReadAllBytes(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    Log.ErrorForce($"不存在文件: `{filePath}`");
+                    return new byte[0];
+                }
+
+                return File.ReadAllBytes(filePath);
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"ReadAllBytes(path=`{filePath}`)");
+                return new byte[0];
+            }
+        }
+
+        /// <summary>
+        /// 写入所有byte
+        /// </summary>
+        public static void WriteAllBytes(string filePath, byte[] bytes)
+        {
+            try
+            {
+                File.WriteAllBytes(filePath.CheckFile(), bytes);
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"WriteAllBytes(path=`{filePath}`)");
+            }
+        }
+
+        /// <summary>
+        /// 检查文件是否存在，不存在则创建
         /// </summary>
         public static bool CheckFile(string filePath)
         {
             try
             {
-                if (!File.Exists(filePath))
+                if (!filePath.ExistFile())
                 {
                     File.Create(filePath).Dispose();
                     return true;
@@ -70,13 +107,13 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 检查文件夹是否创建，未创建则创建
+        /// 检查文件夹是否存在，不存在则创建
         /// </summary>
         public static bool CheckDir(string dirPath)
         {
             try
             {
-                if (!Directory.Exists(dirPath))
+                if (!dirPath.ExistDir())
                 {
                     Directory.CreateDirectory(dirPath);
                     return true;
@@ -189,11 +226,17 @@ namespace Duo1JFramework
         /// 默认获取所有层级的所有文件
         /// </summary>
         /// <param name="pathModifier">路径修改钩子，返回null表示跳过</param>
+        /// <param name="searchPattern">路径匹配符</param>
         public static List<string> GetFileInDir(string dirPath, Func<string, string> pathModifier = null, string searchPattern = "*", SearchOption option = SearchOption.AllDirectories)
         {
             List<string> ret = new List<string>();
 
             DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+            if (!dirInfo.Exists)
+            {
+                return ret;
+            }
+
             FileInfo[] fileInfos = dirInfo.GetFiles(searchPattern, option);
             foreach (FileInfo fileInfo in fileInfos)
             {

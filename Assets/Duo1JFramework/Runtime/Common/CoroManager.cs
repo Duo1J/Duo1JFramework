@@ -8,6 +8,10 @@ namespace Duo1JFramework
     /// </summary>
     public class CoroManager : MonoSingleton<CoroManager>
     {
+        public static readonly YieldInstruction WaitForEndOfFrame = new WaitForEndOfFrame();
+
+        public static readonly YieldInstruction WaitForFixedUpdate = new WaitForFixedUpdate();
+
         public static Coroutine StartCoro(IEnumerator e)
         {
             return Instance.StartCoroutine(e);

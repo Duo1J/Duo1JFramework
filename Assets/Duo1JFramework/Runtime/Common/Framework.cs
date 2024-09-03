@@ -1,4 +1,5 @@
 using Duo1JFramework.Asset;
+using Duo1JFramework.PlatformAPI;
 using System;
 
 namespace Duo1JFramework
@@ -15,10 +16,10 @@ namespace Duo1JFramework
         /// </summary>
         public static void GC()
         {
-            AssetManager.Instance.GC();
             System.GC.Collect();
+            AssetManager.Instance.GC();
 
-            Log.Info("GC调用");
+            Log.Info($"GC调用\n{DbgUtil.GetMemoryInfo()}");
         }
 
         /// <summary>
@@ -27,7 +28,6 @@ namespace Duo1JFramework
         public static void Init()
         {
             Log4Net.Init();
-            PrintLogo();
 
             if (Initialized)
             {
@@ -36,8 +36,9 @@ namespace Duo1JFramework
             }
             Initialized = true;
 
-            Log.Info($"{Def.FRAME_WORK_NAME} 初始化开始");
+            PrintLogo();
 
+            Log.Info($"{Def.FRAME_WORK_NAME} 初始化开始");
             try
             {
                 InitInner();
@@ -91,6 +92,7 @@ namespace Duo1JFramework
 
         private static void InitInner()
         {
+            Platform.Init();
             SingletonTrigger.Trigger();
         }
 

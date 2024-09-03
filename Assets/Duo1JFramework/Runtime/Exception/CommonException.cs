@@ -10,5 +10,10 @@ namespace Duo1JFramework
         {
             return new CommonException(message);
         }
+
+        public static void Throw(string message)
+        {
+            throw Create(message);
+        }
     }
 }

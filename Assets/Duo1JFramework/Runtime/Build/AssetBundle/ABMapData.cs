@@ -1,6 +1,6 @@
-using Duo1JFramework.Asset;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Duo1JFramework.Build
 {
@@ -38,6 +38,8 @@ namespace Duo1JFramework.Build
         /// </summary>
         public void Parse(string jsonStr)
         {
+            Assert.NotNull(jsonStr, "ABMapData::Parse参数jsonStr为空");
+
             ab2AssetMap = JsonUtil.ToObject<Dictionary<string, List<string>>>(jsonStr);
             if (asset2ABMap == null)
             {
@@ -75,7 +77,12 @@ namespace Duo1JFramework.Build
             }
         }
 
-        public static void Save(Dictionary<string, List<string>> _abAssetList, string path = null)
+        /// <summary>
+        /// 保存到文件
+        /// </summary>
+        /// <param name="encrypt">是否加密, {Def.Asset.EncryptABMapData}</param>
+        /// <param name="path">文件路径, 默认值 {PathUtil.GetABMapDataPath()}</param>
+        public static void Save(Dictionary<string, List<string>> _abAssetList, bool encrypt, string path = null)
         {
             Assert.GuardEditor("非Editor下不可保存ABMapData");
 
@@ -91,18 +98,39 @@ namespace Duo1JFramework.Build
             }
 
             string jsonStr = JsonUtil.ToJson(_abAssetList);
-            FileUtil.WriteAllText(path, jsonStr);
+            byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonStr);
+            if (encrypt)
+            {
+                jsonBytes = CryptoUtil.AesEncrypt(jsonBytes, Def.AesKeyByte);
+            }
+
+            FileUtil.WriteAllBytes(path, jsonBytes);
         }
 
-        public static ABMapData Load(string path = null)
+        /// <summary>
+        /// 从文件读取
+        /// </summary>
+        /// <param name="encrypt">是否加密, {Def.Asset.EncryptABMapData}</param>
+        /// <param name="path">文件路径, 默认值 {PathUtil.GetABMapDataPath()}</param>
+        public static ABMapData Load(bool encrypt, string path = null)
         {
             if (string.IsNullOrEmpty(path))
             {
                 path = PathUtil.GetABMapDataPath();
             }
 
-            string cfg = FileUtil.ReadAllText(path);
-            return new ABMapData(cfg);
+            byte[] jsonBytes = null;
+            if (encrypt)
+            {
+                jsonBytes = CryptoUtil.AesDecrypt(path, Def.AesKeyByte);
+            }
+            else
+            {
+                jsonBytes = FileUtil.ReadAllBytes(path);
+            }
+
+            string jsonStr = Encoding.UTF8.GetString(jsonBytes);
+            return new ABMapData(jsonStr);
         }
 
         public ABMapData()

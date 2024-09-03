@@ -22,35 +22,35 @@ namespace Duo1JFramework
         public static void Vertical(Action action, params GUILayoutOption[] options)
         {
             GUILayout.BeginVertical(options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndVertical();
         }
 
         public static void Vertical(Action action, GUIStyle style, params GUILayoutOption[] options)
         {
             GUILayout.BeginVertical(style, options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndVertical();
         }
 
         public static void Horizontal(Action action, params GUILayoutOption[] options)
         {
             GUILayout.BeginHorizontal(options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndHorizontal();
         }
 
         public static void Horizontal(Action action, GUIStyle style, params GUILayoutOption[] options)
         {
             GUILayout.BeginHorizontal(style, options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndHorizontal();
         }
 
         public static Vector2 Scroll(Vector2 scrollPos, Action action, params GUILayoutOption[] options)
         {
             Vector2 ret = GUILayout.BeginScrollView(scrollPos, options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndScrollView();
             return ret;
         }
@@ -58,14 +58,14 @@ namespace Duo1JFramework
         public static void Scroll(ref Vector2 scrollPos, Action action, params GUILayoutOption[] options)
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos, options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndScrollView();
         }
 
         public static Vector2 Scroll(Vector2 scrollPos, Action action, GUIStyle style, params GUILayoutOption[] options)
         {
             Vector2 ret = GUILayout.BeginScrollView(scrollPos, style, options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndScrollView();
             return ret;
         }
@@ -73,28 +73,28 @@ namespace Duo1JFramework
         public static void Scroll(ref Vector2 scrollPos, Action action, GUIStyle style, params GUILayoutOption[] options)
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos, style, options);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndScrollView();
         }
 
         public static void Area(Rect rect, Action action)
         {
             GUILayout.BeginArea(rect);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndArea();
         }
 
         public static void Area(Rect rect, Action action, GUIStyle style)
         {
             GUILayout.BeginArea(rect, style);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.EndArea();
         }
 
         public static void SurrondSpace(float space, Action action)
         {
             GUILayout.Space(space);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUILayout.Space(space);
         }
 
@@ -102,7 +102,7 @@ namespace Duo1JFramework
         {
             Color oriColor = GUI.color;
             GUI.color = color;
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             GUI.color = oriColor;
         }
 
@@ -114,7 +114,7 @@ namespace Duo1JFramework
             }
             else
             {
-                action?.SafeInvoke();
+                action?.InvokeSafe();
             }
         }
 
@@ -122,7 +122,7 @@ namespace Duo1JFramework
         {
 #if UNITY_EDITOR
             EditorGUI.BeginDisabledGroup(disabled);
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             EditorGUI.EndDisabledGroup();
 #else
             action?.Invoke();

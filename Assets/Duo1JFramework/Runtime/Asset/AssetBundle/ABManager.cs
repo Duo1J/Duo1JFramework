@@ -96,7 +96,7 @@ namespace Duo1JFramework.Asset
 
         protected override void OnInit()
         {
-            abMapData = ABMapData.Load();
+            abMapData = ABMapData.Load(Def.Asset.EncryptABMapData);
             abDataDict = new Dictionary<string, ABData>();
             InitMainAssetBundle();
 

@@ -70,7 +70,7 @@ namespace Duo1JFramework.Build
                     buildTarget
                 );
 
-                ABMapData.Save(ab2AssetMap);
+                ABMapData.Save(ab2AssetMap, Def.Asset.EncryptABMapData);
                 Log.EditorInfo($"构建{buildTarget.GetName()}平台的AssetBndle成功");
             }
             catch (Exception e)
@@ -80,7 +80,7 @@ namespace Duo1JFramework.Build
             finally
             {
                 EditorUtility.ClearProgressBar();
-                EditorUtil.SaveAndRefresh();
+                EditorUtil.SaveAndRefresh("AssetBundleBuilder::BuildAllAssetBundle");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Duo1JFramework.Build
         public static void ClearAllAssetBundleBuild()
         {
             FileUtil.DeleteDir(PathUtil.GetAssetBundleEditorRoot());
-            EditorUtil.SaveAndRefresh();
+            EditorUtil.SaveAndRefresh("AssetBundleBuilder::ClearAllAssetBundleBuild");
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Duo1JFramework.Build
         {
             FileUtil.DeleteDir(PathUtil.GetAssetBundleRuntimeRoot());
             FileUtil.DeleteFile(PathUtil.GetAssetBundleRuntimeRootMeta());
-            EditorUtil.SaveAndRefresh();
+            EditorUtil.SaveAndRefresh("AssetBundleBuilder::ClearAllAssetBundleCopy");
         }
 
         /// <summary>
@@ -132,8 +132,32 @@ namespace Duo1JFramework.Build
             finally
             {
                 AssetDatabase.StopAssetEditing();
-                EditorUtil.SaveAndRefresh();
+                EditorUtil.SaveAndRefresh("AssetBundleBuilder::CopyAllAssetBundleBuild");
             }
+        }
+
+        /// <summary>
+        /// 删除所有运行时文件夹拷贝的Manifest文件
+        /// </summary>
+        public static void DeleteAllManifestCopy()
+        {
+            EditorUtil.AssetEditing(() =>
+            {
+                try
+                {
+                    string runtimeRoot = PathUtil.GetAssetBundleRuntimeRoot();
+                    List<string> fileList = FileUtil.GetFileInDir(runtimeRoot, null, $"*{Def.Path.MANIFEST_SUFFIX}");
+                    List<string> metaFileList = FileUtil.GetFileInDir(runtimeRoot, null, $"*{Def.Path.MANIFEST_SUFFIX}{Def.Path.META_SUFFIX}");
+                    fileList.ForEach(file => FileUtil.DeleteFile(file));
+                    metaFileList.ForEach(file => FileUtil.DeleteFile(file));
+                }
+                catch (Exception e)
+                {
+                    Assert.ExceptHandle(e, "删除所有运行时文件夹拷贝的Manifest文件时异常");
+                }
+            }, "AssetBundleBuilder::DeleteAllManifestCopy");
+
+            EditorUtil.SaveAndRefresh("AssetBundleBuilder::DeleteAllManifestCopy");
         }
 
         /// <summary>

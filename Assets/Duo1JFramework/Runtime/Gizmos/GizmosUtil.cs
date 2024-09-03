@@ -12,7 +12,7 @@ namespace Duo1JFramework
         {
             Color oriColor = Gizmos.color;
             Gizmos.color = color;
-            action?.SafeInvoke();
+            action?.InvokeSafe();
             Gizmos.color = oriColor;
         }
 
@@ -24,7 +24,7 @@ namespace Duo1JFramework
             }
             else
             {
-                action?.SafeInvoke();
+                action?.InvokeSafe();
             }
         }
 

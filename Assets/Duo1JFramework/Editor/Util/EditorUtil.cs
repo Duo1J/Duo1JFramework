@@ -66,17 +66,33 @@ namespace Duo1JFramework
         /// <summary>
         /// 编辑器资源编辑
         /// </summary>
-        public static void AssetEditing(Action callback)
+        public static void AssetEditing(Action callback, string msg = null)
         {
             try
             {
-                Log.EditorInfo("编辑器开始资源编辑");
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.EditorInfo("编辑器开始资源编辑");
+                }
+                else
+                {
+                    Log.EditorInfo($"编辑器开始资源编辑: {msg}");
+                }
+
                 AssetDatabase.StartAssetEditing();
                 callback?.Invoke();
             }
             finally
             {
-                Log.EditorInfo("编辑器结束资源编辑");
+                if (string.IsNullOrEmpty(msg))
+                {
+                    Log.EditorInfo("编辑器结束资源编辑");
+                }
+                else
+                {
+                    Log.EditorInfo($"编辑器结束资源编辑: {msg}");
+                }
+
                 AssetDatabase.StopAssetEditing();
             }
         }
@@ -84,9 +100,17 @@ namespace Duo1JFramework
         /// <summary>
         /// 编辑器保存并刷新
         /// </summary>
-        public static void SaveAndRefresh()
+        public static void SaveAndRefresh(string msg = null)
         {
-            Log.EditorInfo("编辑器保存并刷新");
+            if (string.IsNullOrEmpty(msg))
+            {
+                Log.EditorInfo("编辑器保存并刷新");
+            }
+            else
+            {
+                Log.EditorInfo($"编辑器保存并刷新: {msg}");
+            }
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

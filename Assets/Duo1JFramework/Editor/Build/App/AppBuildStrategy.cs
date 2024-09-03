@@ -34,6 +34,9 @@ namespace Duo1JFramework.Build
         [Label("拷贝资源到运行时目录")]
         public bool copyAsset = true;
 
+        [Label("删除Manifest文件")]
+        public bool deleteManifest = true;
+
         [Label("资源加载器类型 (与GameOption对应)")]
         public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;
     }

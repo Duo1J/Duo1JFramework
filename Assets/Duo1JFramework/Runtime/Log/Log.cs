@@ -1,14 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.Text;
-using Duo1JFramework.ObjectPool;
 
-using Debug = UnityEngine.Debug;
+using UDebug = UnityEngine.Debug;
 
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 日志
+    /// 日志和信息
     /// </summary>
     public static class Log
     {
@@ -33,7 +32,7 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(ELogLevel.Info))
             {
-                Debug.Log(Concat(INFO_TAG, msg));
+                UDebug.Log(Concat(INFO_TAG, msg));
             }
         }
 
@@ -44,7 +43,7 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(ELogLevel.Warn))
             {
-                Debug.LogWarning(Concat(WARN_TAG, msg));
+                UDebug.LogWarning(Concat(WARN_TAG, msg));
             }
         }
 
@@ -55,7 +54,7 @@ namespace Duo1JFramework
         {
             if (CheckLogLevelOpen(ELogLevel.Error))
             {
-                Debug.LogError(Concat(ERROR_TAG, msg));
+                UDebug.LogError(Concat(ERROR_TAG, msg));
             }
         }
 
@@ -64,7 +63,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void ErrorForce(params object[] msg)
         {
-            Debug.LogError(Concat(ERROR_TAG, msg));
+            UDebug.LogError(Concat(ERROR_TAG, msg));
         }
 
         /// <summary>
@@ -73,9 +72,9 @@ namespace Duo1JFramework
         public static void Exception(Exception e, params object[] msg)
         {
 #if UNITY_EDITOR
-            Debug.LogError(Concat($"<color=red>{EXCEPT_TAG}</color>", msg) + $"\n<color=yellow>{EXCEPT_INFO_TAG}</color>{e.Message}\n\n{e.StackTrace}\n");
+            UDebug.LogError(Concat($"<color=red>{EXCEPT_TAG}</color>", msg) + $"\n<color=yellow>{EXCEPT_INFO_TAG}</color>{e.Message}\n\n{e.StackTrace}\n");
 #else
-            Debug.LogError(Concat(EXCEPT_TAG, msg) + $"\n{EXCEPT_INFO_TAG}{e.Message}\n\n{e.StackTrace}\n");
+            UDebug.LogError(Concat(EXCEPT_TAG, msg) + $"\n{EXCEPT_INFO_TAG}{e.Message}\n\n{e.StackTrace}\n");
 #endif
         }
 
@@ -114,9 +113,9 @@ namespace Duo1JFramework
             if (CheckLogLevelOpen(_logLevel))
             {
 #if UNITY_EDITOR
-                Debug.Log(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
+                UDebug.Log(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
 #else
-                Debug.Log(Concat($"[{_logLevel.GetName()}] ", msg));
+                UDebug.Log(Concat($"[{_logLevel.GetName()}] ", msg));
 #endif
             }
         }
@@ -129,9 +128,9 @@ namespace Duo1JFramework
             if (CheckLogLevelOpen(_logLevel))
             {
 #if UNITY_EDITOR
-                Debug.LogWarning(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
+                UDebug.LogWarning(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
 #else
-                Debug.LogWarning(Concat($"[{_logLevel.GetName()}] ", msg));
+                UDebug.LogWarning(Concat($"[{_logLevel.GetName()}] ", msg));
 #endif
             }
         }
@@ -144,9 +143,9 @@ namespace Duo1JFramework
             if (CheckLogLevelOpen(_logLevel))
             {
 #if UNITY_EDITOR
-                Debug.LogError(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
+                UDebug.LogError(Concat($"<color=green>[{_logLevel.GetName()}]</color> ", msg));
 #else
-                Debug.LogError(Concat($"[{_logLevel.GetName()}] ", msg));
+                UDebug.LogError(Concat($"[{_logLevel.GetName()}] ", msg));
 #endif
             }
         }
@@ -225,26 +224,6 @@ namespace Duo1JFramework
                 }
             }
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// 获取当前调用栈
-        /// </summary>
-        public static string GetStackTrace()
-        {
-            string ret = null;
-
-            StackTrace strackTrace = new StackTrace();
-            Pool.StringBuilderPool.Using((sb) =>
-            {
-                foreach (StackFrame frame in strackTrace.GetFrames())
-                {
-                    sb.AppendLine($"{frame.GetMethod()} - {frame.GetFileColumnNumber()}");
-                }
-                ret = sb.ToString();
-            });
-
-            return ret ?? string.Empty;
         }
     }
 }
