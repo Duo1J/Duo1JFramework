@@ -32,8 +32,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取当前内存信息
         /// </summary>
-        /// <returns></returns>
-        public static string GetMemoryInfo()
+        public static string GetMemoryInfoStr()
         {
             return $"Heap: {Platform.Current.GetUsedHeapSize().B2MB().Limit(2)}/{Platform.Current.GetTotalHeapSize().B2MB().Limit(2)} MB\n" +
                    $"Reserved: {Platform.Current.GetTotalReservedMemory().B2MB().Limit(2)} MB\n" +

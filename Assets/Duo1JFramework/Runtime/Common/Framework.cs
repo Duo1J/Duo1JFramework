@@ -19,7 +19,7 @@ namespace Duo1JFramework
             System.GC.Collect();
             AssetManager.Instance.GC();
 
-            Log.Info($"GC调用\n{DbgUtil.GetMemoryInfo()}");
+            Log.Info($"GC调用\n{DbgUtil.GetMemoryInfoStr()}");
         }
 
         /// <summary>
