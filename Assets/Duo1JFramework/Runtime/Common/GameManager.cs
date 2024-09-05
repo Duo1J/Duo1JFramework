@@ -1,4 +1,5 @@
 using Duo1JFramework.Event;
+using UnityEngine;
 
 namespace Duo1JFramework
 {
@@ -38,12 +39,19 @@ namespace Duo1JFramework
                 EventManager.Instance.Broadcast(eEvent.APP_RESUME);
         }
 
+        private void OnLowMemory()
+        {
+            Log.Info("LowMemory");
+        }
+
         protected override void OnInit()
         {
+            Application.lowMemory += OnLowMemory;
         }
 
         protected override void OnDispose()
         {
+            Application.lowMemory -= OnLowMemory;
         }
     }
 }

@@ -7,7 +7,7 @@ using UDebug = UnityEngine.Debug;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 日志和信息
+    /// 日志
     /// </summary>
     public static class Log
     {

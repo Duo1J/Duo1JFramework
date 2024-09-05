@@ -60,5 +60,25 @@ namespace Duo1JFramework
         }
 
         #endregion FileSystem
+
+        #region Encoding
+
+        /// <summary>
+        /// 转为Base64字符串
+        /// </summary>
+        public static string ToBase64(this string str)
+        {
+            return CryptoUtil.Base64Encode(str);
+        }
+
+        /// <summary>
+        /// 从Base64字符串转为UTF-8字符串
+        /// </summary>
+        public static string FromBase64(this string str)
+        {
+            return CryptoUtil.Base64Decode(str);
+        }
+
+        #endregion Encoding
     }
 }

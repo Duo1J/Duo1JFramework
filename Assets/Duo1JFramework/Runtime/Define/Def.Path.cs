@@ -9,11 +9,13 @@ namespace Duo1JFramework
         /// </summary>
         public static partial class Path
         {
-            public static string STREAMING => Application.streamingAssetsPath;
+            public static string Streaming => Application.streamingAssetsPath;
 
-            public static string PERSISTENT => Application.persistentDataPath;
+            public static string Persistent => Application.persistentDataPath;
 
-            public static string DATA_PATH => Application.dataPath;
+            public static string DataPath => Application.dataPath;
+
+            public static string TempCache => Application.temporaryCachePath;
 
             /// <summary>
             /// meta文件后缀
@@ -38,7 +40,7 @@ namespace Duo1JFramework
             /// <summary>
             /// 资源全路径前缀
             /// </summary>
-            public static readonly string ASSET_FULL_PATH_PREFIX = $"{DATA_PATH}/{ASSET_ROOT_FOLDER}/";
+            public static readonly string ASSET_FULL_PATH_PREFIX = $"{DataPath}/{ASSET_ROOT_FOLDER}/";
 
             /// <summary>
             /// 内部Resources资源路径前缀

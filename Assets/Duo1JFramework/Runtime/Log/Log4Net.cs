@@ -49,7 +49,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 覆写配置文件夹
         /// </summary>
-        public static readonly string LOG_CONFIG_OVERRIDE_FOLDER = Path.Combine(Def.Path.STREAMING, Def.FRAME_WORK_NAME);
+        public static readonly string LOG_CONFIG_OVERRIDE_FOLDER = Path.Combine(Def.Path.Streaming, Def.FRAME_WORK_NAME);
 
         /// <summary>
         /// 覆写配置文件路径

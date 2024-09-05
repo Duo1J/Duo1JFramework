@@ -49,7 +49,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundleEditorRoot()
         {
-            return $"{Def.Path.DATA_PATH}/../{Def.Path.ASSET_BUNDLE_BUILD_FOLDER}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}/";
+            return $"{Def.Path.DataPath}/../{Def.Path.ASSET_BUNDLE_BUILD_FOLDER}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}/";
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundleRuntimeRoot()
         {
-            return $"{Def.Path.STREAMING}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}/";
+            return $"{Def.Path.Streaming}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}/";
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundleRuntimeRootMeta()
         {
-            return $"{Def.Path.STREAMING}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}{Def.Path.META_SUFFIX}";
+            return $"{Def.Path.Streaming}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}{Def.Path.META_SUFFIX}";
         }
 
         /// <summary>

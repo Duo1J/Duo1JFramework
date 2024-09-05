@@ -1,15 +1,38 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Security.Cryptography;
 
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 加密工具类
+    /// 加密、编码工具类
     /// </summary>
     public static class CryptoUtil
     {
         #region AES
+
+        /// <summary>
+        /// AES加密, 输入流
+        /// </summary>
+        public static byte[] AesEncrypt(ICryptoTransform cryptoTransform, Stream inputStream)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Write))
+                {
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = inputStream.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        cryptoStream.Write(buffer, 0, len);
+                    }
+
+                    cryptoStream.FlushFinalBlock();
+                    return memoryStream.ToArray();
+                }
+            }
+        }
 
         /// <summary>
         /// AES加密, 输入流
@@ -28,30 +51,15 @@ namespace Duo1JFramework
                     }
                 }
 
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    aes.Key = key;
-                    aes.IV = iv;
+                aes.Key = key;
+                aes.IV = iv;
 
-                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = inputStream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            cryptoStream.Write(buffer, 0, len);
-                        }
+                byte[] encrypted = AesEncrypt(aes.CreateEncryptor(), inputStream);
+                byte[] result = new byte[iv.Length + encrypted.Length];
+                Array.Copy(iv, 0, result, 0, iv.Length);
+                Array.Copy(encrypted, 0, result, iv.Length, encrypted.Length);
 
-                        cryptoStream.FlushFinalBlock();
-
-                        byte[] encrypted = memoryStream.ToArray();
-                        byte[] result = new byte[iv.Length + encrypted.Length];
-                        Array.Copy(iv, 0, result, 0, iv.Length);
-                        Array.Copy(encrypted, 0, result, iv.Length, encrypted.Length);
-
-                        return result;
-                    }
-                }
+                return result;
             }
         }
 
@@ -86,6 +94,21 @@ namespace Duo1JFramework
         /// <summary>
         /// AES解密, 输入流
         /// </summary>
+        public static byte[] AesDecrypt(ICryptoTransform cryptoTransform, Stream inputStream)
+        {
+            using (CryptoStream cryptoStream = new CryptoStream(inputStream, cryptoTransform, CryptoStreamMode.Read))
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    cryptoStream.CopyTo(memoryStream);
+                    return memoryStream.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
+        /// AES解密, 输入流
+        /// </summary>
         /// <param name="iv">初始向量，若为空则会从头部读取</param>
         public static byte[] AesDecrypt(Stream inputStream, byte[] key, byte[] iv = null)
         {
@@ -103,14 +126,7 @@ namespace Duo1JFramework
                 aes.Key = key;
                 aes.IV = iv;
 
-                using (CryptoStream cryptoStream = new CryptoStream(inputStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
-                {
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        cryptoStream.CopyTo(memoryStream);
-                        return memoryStream.ToArray();
-                    }
-                }
+                return AesDecrypt(aes.CreateDecryptor(), inputStream);
             }
         }
 
@@ -143,5 +159,48 @@ namespace Duo1JFramework
         }
 
         #endregion AES
+
+        #region Base64
+
+        /// <summary>
+        /// Base64编码
+        /// </summary>
+        public static string Base64Encode(string str)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            return Convert.ToBase64String(bytes);
+        }
+
+        /// <summary>
+        /// Base64解码
+        /// </summary>
+        public static string Base64Decode(string str)
+        {
+            byte[] bytes = Convert.FromBase64String(str);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        #endregion Base64
+
+        /// <summary>
+        /// 字符串分割并Trim
+        /// </summary>
+        public static string[] SplitTrim(this string str, params char[] separator)
+        {
+            return str.Split(separator).Trim();
+        }
+
+        /// <summary>
+        /// 字符串数组Trim
+        /// </summary>
+        public static string[] Trim(this string[] strArr)
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                strArr[i] = strArr[i].Trim();
+            }
+
+            return strArr;
+        }
     }
 }
