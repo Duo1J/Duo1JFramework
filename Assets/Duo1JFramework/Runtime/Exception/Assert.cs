@@ -28,17 +28,17 @@ namespace Duo1JFramework
         /// <summary>
         /// 断言不为空
         /// </summary>
-        public static void NotNull(object o, string message = null)
+        public static void NotNull(object o, string msg = null)
         {
             if (o == null)
             {
-                if (message == null)
+                if (msg == null)
                 {
                     Throw("<空指针异常>");
                 }
                 else
                 {
-                    Throw($"<空指针异常>: {message}");
+                    Throw($"<空指针异常>: {msg}");
                 }
             }
         }
@@ -46,17 +46,17 @@ namespace Duo1JFramework
         /// <summary>
         /// 断言字符串是否不为null以及""，否则抛出异常
         /// </summary>
-        public static void NotNullOrEmpty(string str, string message = "")
+        public static void NotNullOrEmpty(string str, string msg = null)
         {
             if (string.IsNullOrEmpty(str))
             {
-                if (message == null)
+                if (msg == null)
                 {
                     Throw("<字符串异常>");
                 }
                 else
                 {
-                    Throw($"<字符串异常>: {message}");
+                    Throw($"<字符串异常>: {msg}");
                 }
             }
         }
@@ -64,17 +64,17 @@ namespace Duo1JFramework
         /// <summary>
         /// 判断是否为真，否则抛出异常
         /// </summary>
-        public static void Guard(bool b, string message)
+        public static void Guard(bool b, string msg = null)
         {
             if (!b)
             {
-                if (message == null)
+                if (msg == null)
                 {
                     Throw("<Guard异常>");
                 }
                 else
                 {
-                    Throw($"<Guard异常>: {message}");
+                    Throw($"<Guard异常>: {msg}");
                 }
             }
         }

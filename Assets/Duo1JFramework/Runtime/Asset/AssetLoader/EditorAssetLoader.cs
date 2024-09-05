@@ -38,7 +38,7 @@ namespace Duo1JFramework.Asset
             T asset = AssetDatabase.LoadAssetAtPath<T>(targetPath);
             if (asset == null)
             {
-                Log.Error($"无法加载到资源`{targetPath}`");
+                Log.ErrorForce($"无法加载到资源`{targetPath}`");
                 return null;
             }
             return asset;

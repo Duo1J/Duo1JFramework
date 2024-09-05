@@ -115,6 +115,12 @@ namespace Duo1JFramework.Asset
             if (!AssetLoaded)
             {
                 asset = assetBundle.LoadAsset(assetPath);
+
+                if (!AssetLoaded)
+                {
+                    Log.ErrorForce($"{ToString()} 资源加载失败");
+                }
+
                 asyncLoadedCallback?.Invoke();
                 asyncLoadedCallback = null;
             }
