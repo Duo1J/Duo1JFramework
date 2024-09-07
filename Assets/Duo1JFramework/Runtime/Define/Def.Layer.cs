@@ -17,5 +17,21 @@ namespace Duo1JFramework
             /// </summary>
             public const int WORLD = 6;
         }
+
+        /// <summary>
+        /// 层级遮罩定义
+        /// </summary>
+        public static partial class LayerMask
+        {
+            /// <summary>
+            /// 无层级
+            /// </summary>
+            public const int NONE = 0;
+
+            /// <summary>
+            /// 全部层级
+            /// </summary>
+            public const int ALL = -1;
+        }
     }
 }

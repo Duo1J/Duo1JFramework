@@ -3,10 +3,18 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Unity Object扩展方法
+    /// Unity Object 相关扩展
     /// </summary>
     public static class ObjectExtend
     {
+        /// <summary>
+        /// 获取名字和InstanceID字符串用于调试输出
+        /// </summary>
+        public static string GetNameInsID(this UObject obj)
+        {
+            return $"[{obj.name}#{obj.GetInstanceID()}]";
+        }
+
         /// <summary>
         /// 立即销毁
         /// </summary>
@@ -15,10 +23,15 @@ namespace Duo1JFramework
             UObject.DestroyImmediate(obj, allowDestroyingAssets);
         }
 
+        /// <summary>
+        /// 销毁
+        /// </summary>
         public static void Destroy(this UObject obj, float t = 0)
         {
             UObject.Destroy(obj, t);
         }
+
+        #region Convert
 
         /// <summary>
         /// UObject类型转换，转换失败打印错误
@@ -43,5 +56,7 @@ namespace Duo1JFramework
         {
             return Assert.StructConvert<T>(obj, msg);
         }
+
+        #endregion Convert
     }
 }

@@ -11,38 +11,54 @@ namespace Duo1JFramework
     {
         #region Button
 
-        public static void OnClick(this GameObject go, UnityAction action)
+        public static void OnUIClick(this GameObject go, UnityAction action)
         {
-            go.GetAndAssertComponent<Button>().OnClick(action);
+            go.GetOrAddComponent<Button>().OnUIClick(action);
         }
 
-        public static void OnClick(this Button button, UnityAction action)
+        public static void OnUIClick(this Button button, UnityAction action)
         {
-            Assert.NotNull(action, "`Button::OnClick()`参数`action`为空");
+            Assert.NotNull(action, "`Button::OnUIClick()` 参数 `action` 为空");
             button.onClick.AddListener(action);
         }
 
-        public static void RemoveOnClick(this GameObject go, UnityAction action)
+        public static void RemoveOnUIClick(this GameObject go, UnityAction action)
         {
-            go.GetAndAssertComponent<Button>().RemoveOnClick(action);
+            go.GetComponent<Button>()?.RemoveOnUIClick(action);
         }
 
-        public static void RemoveOnClick(this Button button, UnityAction action)
+        public static void RemoveOnUIClick(this Button button, UnityAction action)
         {
-            Assert.NotNull(action, "`Button::RemoveOnClick()`参数`action`为空");
+            Assert.NotNull(action, "`Button::RemoveOnUIClick()` 参数 `action`为空");
             button.onClick.RemoveListener(action);
         }
 
-        public static void RemoveAllOnclick(this GameObject go)
+        public static void RemoveAllOnUIClick(this GameObject go)
         {
-            go.GetAndAssertComponent<Button>().RemoveAllOnclick();
+            go.GetComponent<Button>()?.RemoveAllOnUIClick();
         }
 
-        public static void RemoveAllOnclick(this Button button)
+        public static void RemoveAllOnUIClick(this Button button)
         {
             button.onClick.RemoveAllListeners();
         }
 
         #endregion Button
+
+        /// <summary>
+        /// 设置CanvasGroup的Alpha值
+        /// </summary>
+        public static void SetCanvasGroupAlpha(this GameObject go, float alpha)
+        {
+            go.GetOrAddComponent<CanvasGroup>().alpha = alpha;
+        }
+
+        /// <summary>
+        /// 设置CanvasGroup的Alpha值
+        /// </summary>
+        public static void SetCanvasGroupAlpha(this Component component, float alpha)
+        {
+            component.gameObject.SetCanvasGroupAlpha(alpha);
+        }
     }
 }

@@ -1,4 +1,3 @@
-using Duo1JFramework.Asset;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -243,7 +242,7 @@ namespace Duo1JFramework
                 if (fileInfo.Exists)
                 {
                     string path = fileInfo.FullName;
-                    path = PathUtil.UnifySplit(path);
+                    path = path.SplitUnify();
 
                     if (pathModifier != null)
                     {

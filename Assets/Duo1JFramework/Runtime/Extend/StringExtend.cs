@@ -3,11 +3,27 @@ using System.IO;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// String扩展
+    /// String 相关扩展
     /// </summary>
     public static class StringExtend
     {
         #region FileSystem
+
+        /// <summary>
+        /// 统一路径分隔符
+        /// </summary>
+        public static string SplitUnify(this string str)
+        {
+            return PathUtil.SplitUnify(str);
+        }
+
+        /// <summary>
+        /// 移除文件类型后缀
+        /// </summary>
+        public static string RemoveTypeSuffix(string str)
+        {
+            return PathUtil.RemoveTypeSuffix(str);
+        }
 
         /// <summary>
         /// 检查文件是否存在，不存在则创建
@@ -35,6 +51,14 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 删除文件
+        /// </summary>
+        public static bool DeleteFile(this string str)
+        {
+            return FileUtil.DeleteFile(str);
+        }
+
+        /// <summary>
         /// 检查文件夹是否存在，不存在则创建
         /// </summary>
         public static string CheckDir(this string str)
@@ -59,6 +83,14 @@ namespace Duo1JFramework
             Assert.Guard(str.ExistDir(), $"文件夹不存在: `{str}`  {msg}");
         }
 
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        public static bool DeleteDir(this string str)
+        {
+            return FileUtil.DeleteDir(str);
+        }
+
         #endregion FileSystem
 
         #region Encoding
@@ -80,5 +112,54 @@ namespace Duo1JFramework
         }
 
         #endregion Encoding
+
+        /// <summary>
+        /// 字符串分割并Trim
+        /// </summary>
+        public static string[] SplitTrim(this string str, params char[] separator)
+        {
+            return str.Split(separator).Trim();
+        }
+
+        /// <summary>
+        /// 字符串数组Trim
+        /// </summary>
+        public static string[] Trim(this string[] strArr)
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                strArr[i] = strArr[i].Trim();
+            }
+
+            return strArr;
+        }
+
+        #region Json
+
+        /// <summary>
+        /// 对象转Json
+        /// </summary>
+        public static string ToJson(this object o)
+        {
+            return JsonUtil.ToJson(o);
+        }
+
+        /// <summary>
+        /// Json转泛型对象
+        /// </summary>
+        public static T FromJson<T>(this string str)
+        {
+            return JsonUtil.ToObject<T>(str);
+        }
+
+        /// <summary>
+        /// Json转对象
+        /// </summary>
+        public static object FromJson(this string str)
+        {
+            return JsonUtil.ToObject(str);
+        }
+
+        #endregion Json
     }
 }

@@ -6,16 +6,45 @@ namespace Duo1JFramework
     public static class LayerUtil
     {
         /// <summary>
-        /// 开启层级列表
+        /// 开启层级
         /// </summary>
-        public static int OnlyLayer(params int[] layerList)
+        public static int OpenLayer(int curLayer, params int[] layerList)
         {
-            int ret = 0;
             foreach (int layer in layerList)
             {
-                ret |= 1 << layer;
+                curLayer |= 1 << layer;
             }
-            return ret;
+
+            return curLayer;
+        }
+
+        /// <summary>
+        /// 仅开启层级
+        /// </summary>
+        public static int OnlyOpenLayer(params int[] layerList)
+        {
+            return OpenLayer(Def.LayerMask.NONE, layerList);
+        }
+
+        /// <summary>
+        /// 关闭层级
+        /// </summary>
+        public static int CloseLayer(int curLayer, params int[] layerList)
+        {
+            foreach (int layer in layerList)
+            {
+                curLayer &= ~(1 << layer);
+            }
+
+            return curLayer;
+        }
+
+        /// <summary>
+        /// 仅关闭层级
+        /// </summary>
+        public static int OnlyCloseLayer(params int[] layerList)
+        {
+            return CloseLayer(Def.LayerMask.ALL, layerList);
         }
     }
 }

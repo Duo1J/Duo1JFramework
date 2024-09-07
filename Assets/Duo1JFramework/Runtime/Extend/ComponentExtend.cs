@@ -3,10 +3,25 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Component扩展方法
+    /// Unity Component 相关扩展
     /// </summary>
     public static class ComponentExtend
     {
+        /// <summary>
+        /// 获取或添加组件
+        /// </summary>
+        public static T GetOrAddComponent<T>(this GameObject go) where T : Component
+        {
+            T com = go.GetComponent<T>();
+
+            if (com == null)
+            {
+                com = go.AddComponent<T>();
+            }
+
+            return com;
+        }
+
         /// <summary>
         /// 获取或添加组件
         /// </summary>
@@ -18,29 +33,25 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取并断言组件
         /// </summary>
+        public static T GetAndAssertComponent<T>(this GameObject go, string msg = null)
+        {
+            if (msg == null)
+            {
+                msg = $"{go.GetNameInsID()} 未持有组件 `{typeof(T).FullName}`";
+            }
+
+            T ret = go.GetComponent<T>();
+            Assert.NotNull(ret, msg);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 获取并断言组件
+        /// </summary>
         public static T GetAndAssertComponent<T>(this Component com, string msg = null) where T : Component
         {
             return com.gameObject.GetAndAssertComponent<T>(msg);
         }
-
-        /// <summary>
-        /// 设置显隐
-        /// </summary>
-        public static void SetActive(this Component com, bool active)
-        {
-            com.gameObject.SetActive(active);
-        }
-
-        #region UI
-
-        /// <summary>
-        /// 设置CanvasGroup的Alpha值
-        /// </summary>
-        public static void SetCanvasGroupAlpha(this Component component, float alpha)
-        {
-            component.gameObject.SetCanvasGroupAlpha(alpha);
-        }
-
-        #endregion UI
     }
 }

@@ -566,7 +566,7 @@ namespace Duo1JFramework.Actor
                 Vector3.down,
                 out RaycastHit hitInfo,
                 param.rayGroundLen,
-                LayerUtil.OnlyLayer(Def.Layer.WORLD)
+                LayerUtil.OnlyOpenLayer(Def.Layer.WORLD)
             );
 
             Normal = Grounded ? hitInfo.normal : Vector3.up;

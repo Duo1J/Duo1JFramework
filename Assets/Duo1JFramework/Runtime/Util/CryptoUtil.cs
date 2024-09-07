@@ -160,6 +160,22 @@ namespace Duo1JFramework
 
         #endregion AES
 
+        #region MD5
+
+        public static readonly MD5 MD5 = MD5.Create();
+
+        public static byte[] MD5ComputeHash(byte[] bytes)
+        {
+            return MD5.ComputeHash(bytes);
+        }
+
+        public static byte[] MD5ComputeHash(Stream stream)
+        {
+            return MD5.ComputeHash(stream);
+        }
+
+        #endregion MD5
+
         #region Base64
 
         /// <summary>
@@ -181,26 +197,5 @@ namespace Duo1JFramework
         }
 
         #endregion Base64
-
-        /// <summary>
-        /// 字符串分割并Trim
-        /// </summary>
-        public static string[] SplitTrim(this string str, params char[] separator)
-        {
-            return str.Split(separator).Trim();
-        }
-
-        /// <summary>
-        /// 字符串数组Trim
-        /// </summary>
-        public static string[] Trim(this string[] strArr)
-        {
-            for (int i = 0; i < strArr.Length; i++)
-            {
-                strArr[i] = strArr[i].Trim();
-            }
-
-            return strArr;
-        }
     }
 }

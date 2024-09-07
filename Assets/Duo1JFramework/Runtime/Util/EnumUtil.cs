@@ -7,20 +7,12 @@ namespace Duo1JFramework
     /// </summary>
     public static class EnumUtil
     {
+        /// <summary>
+        /// 获取枚举名
+        /// </summary>
         public static string GetName(Enum e)
         {
             return Enum.GetName(e.GetType(), e);
-        }
-    }
-
-    /// <summary>
-    /// 枚举扩展
-    /// </summary>
-    public static class EnumExtend
-    {
-        public static string GetName(this Enum e)
-        {
-            return EnumUtil.GetName(e);
         }
     }
 }

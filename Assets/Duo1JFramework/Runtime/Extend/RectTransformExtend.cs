@@ -4,19 +4,26 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// RectTransform扩展方法
+    /// Unity RectTransform 相关扩展
     /// </summary>
     public static class RectTransformExtend
     {
-        #region Transform
+        #region RectTransform
 
         /// <summary>
-        /// 重置旋转、缩放、坐标
+        /// 获取RectTransform
         /// </summary>
-        public static void ResetSRT(this RectTransform rectTf)
+        public static RectTransform RectTF(this Transform tf)
         {
-            rectTf.transform.ResetSRT();
-            rectTf.anchoredPosition = Vector3.zero;
+            return tf as RectTransform;
+        }
+
+        /// <summary>
+        /// 获取RectTransform
+        /// </summary>
+        public static RectTransform RectTF(this GameObject go)
+        {
+            return go.transform.RectTF();
         }
 
         /// <summary>
@@ -53,7 +60,7 @@ namespace Duo1JFramework
             rectTf.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, height);
         }
 
-        #endregion Transform
+        #endregion RectTransform
 
         /// <summary>
         /// 绑定可拖拽面板

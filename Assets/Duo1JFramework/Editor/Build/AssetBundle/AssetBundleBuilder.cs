@@ -193,7 +193,7 @@ namespace Duo1JFramework.Build
 
                 foreach (string path in strategyData.pathList)
                 {
-                    string path_ = PathUtil.UnifySplit(path);
+                    string path_ = path.SplitUnify();
                     List<string> resultList = FileUtil.GetFileInDir(pathPrefix + path_, (p) =>
                     {
                         if (p.EndsWith(Def.Path.META_SUFFIX))

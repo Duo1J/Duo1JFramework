@@ -1,5 +1,3 @@
-using UnityEditor;
-
 namespace Duo1JFramework
 {
     /// <summary>
@@ -10,7 +8,8 @@ namespace Duo1JFramework
         /// <summary>
         /// 统一路径分隔符
         /// </summary>
-        public static string UnifySplit(string path)
+        /// <see cref="StringExtend.SplitUnify(string)"/>
+        public static string SplitUnify(string path)
         {
             return path.Replace("\\", "/");
         }
@@ -18,6 +17,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 移除文件类型后缀
         /// </summary>
+        /// <see cref="StringExtend.RemoveTypeSuffix(string)"/>
         public static string RemoveTypeSuffix(string path)
         {
             int idx = path.LastIndexOf('.');

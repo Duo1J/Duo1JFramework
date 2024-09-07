@@ -9,10 +9,13 @@ namespace Duo1JFramework
     /// </summary>
     public static class ColorUtil
     {
-        private static Dictionary<string, Color> hexColorCache = new Dictionary<string, Color>(System.StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, Color> hexColorCache = new Dictionary<string, Color>(StringComparer.OrdinalIgnoreCase);
 
         private static Dictionary<Color32, string> colorHexCache = new Dictionary<Color32, string>();
 
+        /// <summary>
+        /// 16进制色值转Color
+        /// </summary>
         public static Color HexToColor(string hex)
         {
             if (hexColorCache.TryGetValue(hex, out Color ret))
@@ -42,6 +45,9 @@ namespace Duo1JFramework
             }
         }
 
+        /// <summary>
+        /// Color转16进制色值
+        /// </summary>
         public static string ColorToHex(Color32 color)
         {
             if (colorHexCache.TryGetValue(color, out string ret))
@@ -53,11 +59,19 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 以255数值创建颜色
+        /// 以0~255数值创建颜色
         /// </summary>
         public static Color Create(int r, int g, int b, int a = 255)
         {
-            return new Color(r / 255f, g / 255f, b / 255f, a / 255f);
+            return Create(r / 255f, g / 255f, b / 255f, a / 255f);
+        }
+
+        /// <summary>
+        /// 以0~1数值创建颜色
+        /// </summary>
+        public static Color Create(float r, float g, float b, float a = 1)
+        {
+            return new Color(r, g, b, a);
         }
 
         /// <summary>

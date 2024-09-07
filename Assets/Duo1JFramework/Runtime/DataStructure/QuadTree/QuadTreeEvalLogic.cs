@@ -15,7 +15,7 @@ namespace Duo1JFramework.DataStructure
         /// </summary>
         public static bool EvalByConeOfVision(IQuadTreeNode node, object param)
         {
-            return node.Bounds.CheckBoundsIsInCamera(CameraManager.Instance.EvalCamera);
+            return node.Bounds.IsInCamera(CameraManager.Instance.EvalCamera);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Duo1JFramework.DataStructure
                 return true;
             }
 
-            return bounds.CheckBoundsIsInCameraIgnoreY(camera);
+            return bounds.IsInCameraIgnoreY(camera);
         }
 
         /// <summary>
