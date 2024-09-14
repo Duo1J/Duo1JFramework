@@ -71,15 +71,21 @@ namespace Duo1JFramework.ExcelAPI
             return GetSheet(sheetName);
         }
 
-        public Sheet this[int sheetIdx]
-        {
-            get => GetSheet(sheetIdx);
-        }
-
+        /// <summary>
+        /// 通过表名获取工作表
+        /// </summary>
         public Sheet this[string sheetName]
         {
             get => GetSheet(sheetName);
             set => AddSheet(sheetName);
+        }
+
+        /// <summary>
+        /// 通过索引获取工作表, 索引由0开始
+        /// </summary>
+        public Sheet this[int sheetIdx]
+        {
+            get => GetSheet(sheetIdx);
         }
 
         #endregion Sheet
@@ -151,6 +157,9 @@ namespace Duo1JFramework.ExcelAPI
 
         #region Inner
 
+        /// <summary>
+        /// 内部初始化
+        /// </summary>
         private void InitInner()
         {
             SetLicense(LicenseContext.NonCommercial);

@@ -42,6 +42,9 @@ namespace Duo1JFramework.ExcelAPI
             return Cell.Create(cell);
         }
 
+        /// <summary>
+        /// 获取单元格
+        /// </summary>
         public Cell this[int row, int col]
         {
             get => GetCell(row, col);
@@ -70,6 +73,24 @@ namespace Duo1JFramework.ExcelAPI
         public string GetValue(int row, int col)
         {
             return GetValue<string>(row, col);
+        }
+
+        /// <summary>
+        /// 设置单元格公式值
+        /// </summary>
+        public Sheet SetFormula(int row, int col, string formula)
+        {
+            Cell cell = GetCell(row, col);
+            cell.Formula = formula;
+            return this;
+        }
+
+        /// <summary>
+        /// 获取单元格公式值
+        /// </summary>
+        public string GetFormula(int row, int col)
+        {
+            return GetCell(row, col).Formula;
         }
 
         #region Iterator
@@ -152,6 +173,9 @@ namespace Duo1JFramework.ExcelAPI
 
         #endregion Iterator
 
+        /// <summary>
+        /// 创建工作表
+        /// </summary>
         public static Sheet Create(Excel excel, ExcelWorksheet worksheet)
         {
             return new Sheet(excel, worksheet);

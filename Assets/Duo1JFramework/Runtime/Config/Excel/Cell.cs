@@ -29,6 +29,27 @@ namespace Duo1JFramework.ExcelAPI
                 object val = Range.Value;
                 return val == null ? string.Empty : val.ToString();
             }
+            set
+            {
+                Range.Value = value;
+            }
+        }
+
+        /// <summary>
+        /// 单元格公式值
+        /// </summary>
+        public string Formula
+        {
+
+            get
+            {
+                object formula = Range.Formula;
+                return formula == null ? string.Empty : formula.ToString();
+            }
+            set
+            {
+                Range.Formula = value;
+            }
         }
 
         #region Color
@@ -50,6 +71,9 @@ namespace Duo1JFramework.ExcelAPI
 
         #endregion Color
 
+        /// <summary>
+        /// 创建单元格
+        /// </summary>
         public static Cell Create(ExcelRange range)
         {
             return new Cell(range);
