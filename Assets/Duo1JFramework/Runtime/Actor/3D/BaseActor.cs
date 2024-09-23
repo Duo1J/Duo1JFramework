@@ -125,15 +125,15 @@ namespace Duo1JFramework.Actor
         {
             if (Data.Sync)
             {
-                GameObject asset = AssetManager.Instance.LoadInsByTypeSync<GameObject>(Data.LoadType, Data.Path);
+                GameObject asset = AssetManager.Instance.LoadInsByTypeSync<GameObject>(Data.Path, Data.LoadType);
                 LoadAssetPostprocess(asset);
             }
             else
             {
-                AssetManager.Instance.LoadInsByType<GameObject>(Data.LoadType, Data.Path, (asset) =>
+                AssetManager.Instance.LoadInsByType<GameObject>(Data.Path, (asset) =>
                 {
                     LoadAssetPostprocess(asset);
-                });
+                }, Data.LoadType);
             }
         }
 

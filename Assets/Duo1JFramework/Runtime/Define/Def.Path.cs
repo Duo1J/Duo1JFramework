@@ -27,6 +27,8 @@ namespace Duo1JFramework
             /// </summary>
             public const string MANIFEST_SUFFIX = ".manifest";
 
+            #region Assset
+
             /// <summary>
             /// 资源根文件夹名
             /// </summary>
@@ -47,6 +49,10 @@ namespace Duo1JFramework
             /// </summary>
             public const string RES_PATH_PREFIX = FRAME_WORK_NAME + "/";
 
+            #endregion Asset
+
+            #region AssetBundle
+
             /// <summary>
             /// AssetBundle主包、根文件夹名称
             /// </summary>
@@ -61,6 +67,8 @@ namespace Duo1JFramework
             /// AssetBundle映射文件名
             /// </summary>
             public const string ASSET_BUNDLE_MAP_DATA_NAME = "Data.dat";
+
+            #endregion AssetBundle
         }
     }
 }

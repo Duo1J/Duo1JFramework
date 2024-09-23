@@ -9,6 +9,26 @@ namespace Duo1JFramework
     /// </summary>
     public class ProjectSettingsProvider : SettingsProvider
     {
+        private Vector2 scollPos;
+
+        public override void OnGUI(string searchContext)
+        {
+            ES.SetRichText(true);
+
+            ED.Scroll(ref scollPos, () =>
+            {
+                DrawEditor();
+            });
+        }
+
+        private void DrawEditor()
+        {
+            GUILayout.Label("<size=16>Editor Setting</size>");
+            EditorProjectSettings.Draw();
+        }
+
+        #region Inner
+
         public ProjectSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         {
         }
@@ -19,8 +39,6 @@ namespace Duo1JFramework
             return new ProjectSettingsProvider($"Project/{Def.FRAME_WORK_NAME}", SettingsScope.Project, null);
         }
 
-        public override void OnGUI(string searchContext)
-        {
-        }
+        #endregion Inner
     }
 }

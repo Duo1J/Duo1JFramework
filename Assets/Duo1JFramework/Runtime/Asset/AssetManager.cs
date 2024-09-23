@@ -24,11 +24,7 @@ namespace Duo1JFramework.Asset
             {
                 if (bundleLoadType == EAssetLoadType.Bundle)
                 {
-#if UNITY_EDITOR
-                    switch (GameOption.Editor.assetLoaderType)
-#else
-                    switch (GameOption.Runtime.assetLoaderType)
-#endif
+                    switch (GameOption.AssetLoaderType)
                     {
                         case EAssetLoaderType.AssetDatabase:
                         case EAssetLoaderType.AssetBundle:
@@ -47,7 +43,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式加载
         /// </summary>
-        public void LoadByType<T>(EAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
+        public void LoadByType<T>(string assetPath, Action<T> callback, EAssetLoadType loadType = EAssetLoadType.Bundle) where T : UObject
         {
             PreprocessLoadType(ref loadType);
             switch (loadType)
@@ -74,7 +70,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式加载实例
         /// </summary>
-        public void LoadInsByType<T>(EAssetLoadType loadType, string assetPath, Action<T> callback) where T : UObject
+        public void LoadInsByType<T>(string assetPath, Action<T> callback, EAssetLoadType loadType = EAssetLoadType.Bundle) where T : UObject
         {
             PreprocessLoadType(ref loadType);
             switch (loadType)
@@ -101,7 +97,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式同步加载
         /// </summary>
-        public T LoadByTypeSync<T>(EAssetLoadType loadType, string assetPath) where T : UObject
+        public T LoadByTypeSync<T>(string assetPath, EAssetLoadType loadType = EAssetLoadType.Bundle) where T : UObject
         {
             PreprocessLoadType(ref loadType);
             switch (loadType)
@@ -125,7 +121,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过加载方式同步加载
         /// </summary>
-        public T LoadInsByTypeSync<T>(EAssetLoadType loadType, string assetPath) where T : UObject
+        public T LoadInsByTypeSync<T>(string assetPath, EAssetLoadType loadType = EAssetLoadType.Bundle) where T : UObject
         {
             PreprocessLoadType(ref loadType);
             switch (loadType)
@@ -268,11 +264,7 @@ namespace Duo1JFramework.Asset
             {
                 try
                 {
-#if UNITY_EDITOR
-                    switch (GameOption.Editor.assetLoaderType)
-#else
-                    switch (GameOption.Runtime.assetLoaderType)
-#endif
+                    switch (GameOption.AssetLoaderType)
                     {
                         case EAssetLoaderType.AssetDatabase:
 #if UNITY_EDITOR
@@ -288,9 +280,9 @@ namespace Duo1JFramework.Asset
                             throw CommonException.Create("Addressables资源加载器未实现");
                         default:
 #if UNITY_EDITOR
-                            throw CommonException.Create($"GameOption.editor.assetLoaderType类型错误: {GameOption.Editor.assetLoaderType}");
+                            throw CommonException.Create($"GameOption.editor.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
 #else
-                        throw CommonException.Create($"GameOption.runtime.assetLoaderType类型错误: {GameOption.Runtime.assetLoaderType}");
+                            throw CommonException.Create($"GameOption.runtime.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
 #endif
                     }
                 }
@@ -308,11 +300,7 @@ namespace Duo1JFramework.Asset
 
         private void SetAssetLoader(EAssetLoaderType assetLoaderType)
         {
-#if UNITY_EDITOR
-            GameOption.Editor.assetLoaderType = assetLoaderType;
-#else
-                GameOption.Runtime.assetLoaderType = assetLoaderType;
-#endif
+            GameOption.AssetLoaderType = assetLoaderType;
             switch (assetLoaderType)
             {
                 case EAssetLoaderType.AssetDatabase:

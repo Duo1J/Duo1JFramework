@@ -59,17 +59,17 @@ namespace Duo1JFramework.AudioAPI
 
             if (audioData.Sync)
             {
-                AudioClip clip = AssetManager.Instance.LoadByTypeSync<AudioClip>(audioData.LoadType, audioData.AudioPath);
+                AudioClip clip = AssetManager.Instance.LoadByTypeSync<AudioClip>(audioData.AudioPath, audioData.LoadType);
                 AudioClipLoadedPostprocess(clip);
                 finCall?.Invoke();
             }
             else
             {
-                AssetManager.Instance.LoadByType<AudioClip>(audioData.LoadType, audioData.AudioPath, (clip) =>
+                AssetManager.Instance.LoadByType<AudioClip>(audioData.AudioPath, (clip) =>
                 {
                     AudioClipLoadedPostprocess(clip);
                     finCall?.Invoke();
-                });
+                }, audioData.LoadType);
             }
         }
 

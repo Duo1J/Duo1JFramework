@@ -9,6 +9,26 @@ namespace Duo1JFramework
     /// </summary>
     public class UserSettingsProvider : SettingsProvider
     {
+        private Vector2 scollPos;
+
+        public override void OnGUI(string searchContext)
+        {
+            ES.SetRichText(true);
+
+            ED.Scroll(ref scollPos, () =>
+            {
+                DrawEditor();
+            });
+        }
+
+        private void DrawEditor()
+        {
+            GUILayout.Label("<size=16>Editor Setting</size>");
+            EditorUserSettings.Draw();
+        }
+
+        #region Inner
+
         public UserSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         {
         }
@@ -19,8 +39,6 @@ namespace Duo1JFramework
             return new UserSettingsProvider($"Preferences/{Def.FRAME_WORK_NAME}", SettingsScope.User, null);
         }
 
-        public override void OnGUI(string searchContext)
-        {
-        }
+        #endregion Inner
     }
 }

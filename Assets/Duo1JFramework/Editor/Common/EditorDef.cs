@@ -4,7 +4,6 @@ using Duo1JFramework.Build;
 using Duo1JFramework.TimerUpdate;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 
 namespace Duo1JFramework
 {
@@ -17,7 +16,6 @@ namespace Duo1JFramework
         /// 编辑器配置路径
         /// </summary>
         public const string EDITOR_CONFIG_PATH = "Assets/" + Def.FRAME_WORK_NAME + "/EditorConfig/";
-
 
         /// <summary>
         /// 工具栏菜单相关定义

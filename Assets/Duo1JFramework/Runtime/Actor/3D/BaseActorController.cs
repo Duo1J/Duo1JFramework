@@ -311,8 +311,8 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public bool CheckAxis(float h, float v)
         {
-            return Mathf.Abs(h) > Def.Actor.MIN_HAXIS_MOVE ||
-                   Mathf.Abs(v) > Def.Actor.MIN_VAXIS_MOVE;
+            return Mathf.Abs(h) > Def.Actor.MIN_H_AXIS_MOVE ||
+                   Mathf.Abs(v) > Def.Actor.MIN_V_AXIS_MOVE;
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Duo1JFramework.Asset
         {
             Assert.NotNull(callback, "回调不可为空");
 
-            AssetManager.Instance.LoadByType<SpriteAtlas>(loadType, atlasPath, (atlas) =>
+            AssetManager.Instance.LoadByType<SpriteAtlas>(atlasPath, (atlas) =>
             {
                 if (atlas == null)
                 {
@@ -35,7 +35,7 @@ namespace Duo1JFramework.Asset
                 }
 
                 callback(sprite);
-            });
+            }, loadType);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public static Sprite LoadAtlasSpriteSync(EAssetLoadType loadType, string atlasPath, string spritePath)
         {
-            SpriteAtlas atlas = AssetManager.Instance.LoadByTypeSync<SpriteAtlas>(loadType, atlasPath);
+            SpriteAtlas atlas = AssetManager.Instance.LoadByTypeSync<SpriteAtlas>(atlasPath, loadType);
 
             if (atlas == null)
             {

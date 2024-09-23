@@ -23,11 +23,7 @@ namespace Duo1JFramework.Asset
         {
             get
             {
-#if UNITY_EDITOR
-                return GameOption.Editor.assetLoaderType == EAssetLoaderType.AssetBundle;
-#else
-                return GameOption.Runtime.assetLoaderType == EAssetLoaderType.AssetBundle;
-#endif
+                return GameOption.AssetLoaderType == EAssetLoaderType.AssetBundle;
             }
         }
 

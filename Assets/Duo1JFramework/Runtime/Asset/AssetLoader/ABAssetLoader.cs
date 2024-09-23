@@ -96,7 +96,7 @@ namespace Duo1JFramework.Asset
         private bool CheckEditorAssetLoaderType()
         {
 #if UNITY_EDITOR
-            if (GameOption.Editor.assetLoaderType != EAssetLoaderType.AssetBundle)
+            if (GameOption.AssetLoaderType != EAssetLoaderType.AssetBundle)
             {
                 Log.EditorError("编辑器下使用ABAssetLoader请设置GameOption.Editor.assetLoaderType为AssetBundle类型");
                 return false;

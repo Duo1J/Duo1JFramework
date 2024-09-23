@@ -5,12 +5,12 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器配置ScriptableObject
     /// </summary>
-    public class EditorConfigSO<T> : ScriptableObject where T : ScriptableObject
+    public abstract class EditorConfigSO<T> : ScriptableObject where T : ScriptableObject
     {
         private static T instance;
 
         /// <summary>
-        /// 编辑器配置实例
+        /// 配置实例
         /// </summary>
         public static T Instance
         {
@@ -25,7 +25,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 编辑器配置实例保存路径
+        /// 配置实例保存路径
         /// </summary>
         public static string AssetPath => EditorUtil.GetEditorCfgSOPath<T>();
 

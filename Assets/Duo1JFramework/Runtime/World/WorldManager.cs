@@ -70,15 +70,15 @@ namespace Duo1JFramework.World
         {
             if (worldData.Sync)
             {
-                GameObject go = AssetManager.Instance.LoadInsByTypeSync<GameObject>(worldData.LoadType, worldData.Path);
+                GameObject go = AssetManager.Instance.LoadInsByTypeSync<GameObject>(worldData.Path, worldData.LoadType);
                 LoadWorldAssetPostProcess(go, worldData, callback);
             }
             else
             {
-                AssetManager.Instance.LoadInsByType<GameObject>(worldData.LoadType, worldData.Path, (go) =>
+                AssetManager.Instance.LoadInsByType<GameObject>(worldData.Path, (go) =>
                 {
                     LoadWorldAssetPostProcess(go, worldData, callback);
-                });
+                }, worldData.LoadType);
             }
         }
 

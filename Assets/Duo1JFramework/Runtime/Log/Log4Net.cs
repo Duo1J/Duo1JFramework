@@ -59,7 +59,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 输出文件夹
         /// </summary>
-        public static readonly string LOG_FOLDER_PATH = Path.Combine(LOG_CONFIG_OVERRIDE_FOLDER, "Log");
+        public static readonly string LOG_FOLDER_PATH = Path.Combine(Def.Path.Persistent, Def.FRAME_WORK_NAME, "Log");
 
         /// <summary>
         /// 输出文件名
@@ -73,17 +73,10 @@ namespace Duo1JFramework
 
         public static void Init()
         {
-#if UNITY_EDITOR
-            if (!GameOption.Editor.useLog4Net)
+            if (!GameOption.UseLog4Net)
             {
                 return;
             }
-#else
-            if (!GameOption.Runtime.useLog4Net)
-            {
-                return;
-            }
-#endif
 
             if (initialized)
             {

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Duo1JFramework
 {
     /// <summary>
@@ -12,12 +10,12 @@ namespace Duo1JFramework
             /// <summary>
             /// H轴最小移动盲区
             /// </summary>
-            public const float MIN_HAXIS_MOVE = 0.1f;
+            public const float MIN_H_AXIS_MOVE = 0.1f;
 
             /// <summary>
             /// V轴最小移动盲区
             /// </summary>
-            public const float MIN_VAXIS_MOVE = 0.1f;
+            public const float MIN_V_AXIS_MOVE = 0.1f;
         }
     }
 }

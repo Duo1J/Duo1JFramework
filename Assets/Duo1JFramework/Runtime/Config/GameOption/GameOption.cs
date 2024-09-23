@@ -1,3 +1,4 @@
+using Duo1JFramework.Asset;
 using UnityEngine;
 
 namespace Duo1JFramework.Config
@@ -10,12 +11,12 @@ namespace Duo1JFramework.Config
         /// <summary>
         /// 运行时游戏配置选项
         /// </summary>
-        public static RuntimeGameOption Runtime => Instance.runtime;
+        private static RuntimeGameOption Runtime => Instance.runtime;
 
         /// <summary>
         /// 编辑器下游戏配置选项
         /// </summary>
-        public static EditorGameOption Editor => Instance.editor;
+        private static EditorGameOption Editor => Instance.editor;
 
         [Header("运行时")]
         [SerializeField]
@@ -24,6 +25,48 @@ namespace Duo1JFramework.Config
         [Header("编辑器")]
         [SerializeField]
         private EditorGameOption editor;
+
+        #region API
+
+        /// <summary>
+        /// 资源加载器
+        /// </summary>
+        public static EAssetLoaderType AssetLoaderType
+        {
+            get
+            {
+#if UNITY_EDITOR
+                return Editor.assetLoaderType;
+#else
+                return Runtime.assetLoaderType;
+#endif
+            }
+            set
+            {
+#if UNITY_EDITOR
+                Editor.assetLoaderType = value;
+#else
+                Runtime.assetLoaderType = value;
+#endif
+            }
+        }
+
+        /// <summary>
+        /// 使用Log4Net日志
+        /// </summary>
+        public static bool UseLog4Net
+        {
+            get
+            {
+#if UNITY_EDITOR
+                return Editor.useLog4Net;
+#else
+                return Runtime.useLog4Net;
+#endif
+            }
+        }
+
+        #endregion API
 
         protected override void OnInit()
         {

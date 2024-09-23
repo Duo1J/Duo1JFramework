@@ -29,6 +29,11 @@ namespace Duo1JFramework
             public const int NONE = 0;
 
             /// <summary>
+            /// UI
+            /// </summary>
+            public const int UI = 1 << Layer.UI;
+
+            /// <summary>
             /// 全部层级
             /// </summary>
             public const int ALL = -1;
