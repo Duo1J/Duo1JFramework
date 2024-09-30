@@ -8,17 +8,54 @@ namespace Duo1JFramework.UI
     [DisallowMultipleComponent]
     public class UIRoot : BaseMono
     {
+        /// <summary>
+        /// 底层层级
+        /// </summary>
         public static Transform BottomLayer => Root.UIRoot.bottomLayer;
+
+        /// <summary>
+        /// 普通层层级
+        /// </summary>
         public static Transform NormalLayer => Root.UIRoot.normalLayer;
+
+        /// <summary>
+        /// 顶层层级
+        /// </summary>
         public static Transform TopLayer => Root.UIRoot.topLayer;
+
+        /// <summary>
+        /// 常驻层层级
+        /// </summary>
         public static Transform ConstLayer => Root.UIRoot.constLayer;
 
+        /// <summary>
+        /// UI相机
+        /// </summary>
         public static Camera UICamera => Root.UIRoot.uiCamera;
 
+        /// <summary>
+        /// UI画布
+        /// </summary>
         public static Canvas UICanvas => Root.UIRoot.uiCanvas;
+
+        /// <summary>
+        /// 底层UI画布
+        /// </summary>
         public static Canvas BottomCanvas => Root.UIRoot.bottomCanvas;
+
+        /// <summary>
+        /// 普通层UI画布
+        /// </summary>
         public static Canvas NormalCanvas => Root.UIRoot.normalCanvas;
+
+        /// <summary>
+        /// 顶层UI画布
+        /// </summary>
         public static Canvas TopCanvas => Root.UIRoot.topCanvas;
+
+        /// <summary>
+        /// 常驻层UI画布
+        /// </summary>
         public static Canvas ConstCanvas => Root.UIRoot.constCanvas;
 
         [SerializeField]
@@ -123,8 +160,8 @@ namespace Duo1JFramework.UI
             {
                 throw CommonException.Create("UICamera为空");
             }
-            uiCamera.depth = Def.UI.UI_CAMERA_DEPTH;
-            uiCamera.cullingMask = Def.UI.UI_CULLING_MASK;
+            uiCamera.depth = Def.UI.CAMERA_DEPTH;
+            uiCamera.cullingMask = Def.UI.CULLING_MASK;
             uiCamera.gameObject.layer = Def.Layer.UI;
             uiCamera.name = "[Render]UICamera";
         }

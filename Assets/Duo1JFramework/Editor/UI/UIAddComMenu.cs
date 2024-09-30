@@ -34,7 +34,7 @@ namespace Duo1JFramework.UI
             EditorUtil.SetActiveGo(go);
         }
 
-        [MenuItem(Prefix + "Button", priority = 4)]
+        [MenuItem(Prefix + "Button", priority = 14)]
         public static void AddButton()
         {
             GameObject go = new GameObject("Button");
@@ -43,7 +43,7 @@ namespace Duo1JFramework.UI
             EditorUtil.SetActiveGo(go);
         }
 
-        [MenuItem(Prefix + "TMP", priority = 5)]
+        [MenuItem(Prefix + "TMP", priority = 25)]
         public static void AddTMP()
         {
             GameObject go = new GameObject("TMP");
@@ -52,7 +52,7 @@ namespace Duo1JFramework.UI
             EditorUtil.SetActiveGo(go);
         }
 
-        [MenuItem(Prefix + "Text", priority = 6)]
+        [MenuItem(Prefix + "Text", priority = 26)]
         public static void AddText()
         {
             GameObject go = new GameObject("Text");

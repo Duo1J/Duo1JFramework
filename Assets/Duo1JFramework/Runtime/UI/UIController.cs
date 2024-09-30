@@ -11,13 +11,26 @@ namespace Duo1JFramework.UI
     {
         #region Field
 
+        /// <summary>
+        /// 画布
+        /// </summary>
         private Canvas canvas;
 
+        /// <summary>
+        /// 节点列表
+        /// </summary>
         [SerializeField]
         private List<Transform> nodeList;
+
+        /// <summary>
+        /// 节点字典
+        /// </summary>
         private Dictionary<string, Transform> nodeDict;
+
+        /// <summary>
+        /// 组件字典
+        /// </summary>
         private Dictionary<string, MonoBehaviour> comDict;
-        public const string NodePrefix = "@_";
 
         /// <summary>
         /// 排序层级
@@ -32,15 +45,9 @@ namespace Duo1JFramework.UI
             }
         }
 
-        #endregion
+        #endregion Field
 
-        private void Awake()
-        {
-            BuildNodeDict();
-            canvas = GetComponent<Canvas>();
-        }
-
-        #region Public
+        #region Public Method
 
         /// <summary>
         /// 获取GameObject
@@ -89,8 +96,13 @@ namespace Duo1JFramework.UI
             return com;
         }
 
-        #endregion Public
+        #endregion Public Method
 
+        private void Awake()
+        {
+            BuildNodeDict();
+            canvas = GetComponent<Canvas>();
+        }
 
         #region 节点收集
 
@@ -116,7 +128,7 @@ namespace Duo1JFramework.UI
             while (queue.Count > 0)
             {
                 Transform tf = queue.Dequeue();
-                if (tf.name.StartsWith(NodePrefix))
+                if (tf.name.StartsWith(Def.UI.NODE_PREFIX))
                 {
                     if (checkDict.ContainsKey(tf.name))
                     {

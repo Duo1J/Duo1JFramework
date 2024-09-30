@@ -15,6 +15,22 @@ namespace Duo1JFramework.UI
         public long ID { get; private set; }
 
         /// <summary>
+        /// UI配置数据
+        /// </summary>
+        public UIData Config
+        {
+            get
+            {
+                if (config == null)
+                {
+                    config = CreateUIConfig();
+                }
+                return config;
+            }
+        }
+        private UIData config;
+
+        /// <summary>
         /// UI物体
         /// </summary>
         public GameObject Go
@@ -30,22 +46,6 @@ namespace Duo1JFramework.UI
         private GameObject go;
 
         public RectTransform RectTF { get; private set; }
-
-        /// <summary>
-        /// UI配置
-        /// </summary>
-        public UIData Config
-        {
-            get
-            {
-                if (config == null)
-                {
-                    config = CreateUIConfig();
-                }
-                return config;
-            }
-        }
-        private UIData config;
 
         /// <summary>
         /// UI控制器
@@ -91,6 +91,9 @@ namespace Duo1JFramework.UI
         /// </summary>
         public int ParSortingOrder => Root.UIRoot.GetBaseSortingOrder(Config.Layer);
 
+        /// <summary>
+        /// 是否初始化
+        /// </summary>
         private bool init = false;
 
         #endregion Field
@@ -135,7 +138,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void MoveToFar()
         {
-            RectTF.localPosition = Def.UI.UI_FAR_POS;
+            RectTF.localPosition = Def.UI.FAR_POS;
         }
 
         /// <summary>
@@ -164,14 +167,10 @@ namespace Duo1JFramework.UI
 
         #endregion Public
 
-        #region Protected
-
-        #endregion Protected
-
         #region Lifecycle
 
         /// <summary>
-        /// 子类创建UI配置
+        /// 子类创建UI配置数据
         /// </summary>
         protected abstract UIData CreateUIConfig();
 

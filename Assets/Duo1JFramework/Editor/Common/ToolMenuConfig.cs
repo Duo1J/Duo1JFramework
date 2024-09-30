@@ -22,9 +22,9 @@ namespace Duo1JFramework
         {
             if (EditorUtil.GetActiveGo(out GameObject go))
             {
-                if (!go.name.StartsWith(UIController.NodePrefix))
+                if (!go.name.StartsWith(Def.UI.NODE_PREFIX))
                 {
-                    go.RecordObject("UI node rename").name = UIController.NodePrefix + go.name;
+                    go.RecordObject("UI node rename").name = Def.UI.NODE_PREFIX + go.name;
                 }
             }
         }
