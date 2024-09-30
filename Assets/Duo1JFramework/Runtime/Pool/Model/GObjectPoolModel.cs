@@ -17,7 +17,7 @@ namespace Duo1JFramework.ObjectPool
             GameObject templateGo = getTemplateCall();
             Assert.NotNull(templateGo, "GObjectPool::CreateNew 异常，`templateGo`为空");
 
-            ObjectPoolItem<GameObject> newItem = new ObjectPoolItem<GameObject>(UObject.Instantiate(templateGo));
+            ObjectPoolItem<GameObject> newItem = new ObjectPoolItem<GameObject>(this, UObject.Instantiate(templateGo));
             OnCreateNew?.Invoke(newItem);
             newItem.Using = true;
 

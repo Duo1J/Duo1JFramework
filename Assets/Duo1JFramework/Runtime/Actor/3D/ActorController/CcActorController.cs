@@ -65,7 +65,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public float GetJumpVeloByHeight()
         {
-            return Convert.ToSingle(Math.Sqrt(-2 * param.jumpHeight * RateGravity));
+            return Convert.ToSingle(Math.Sqrt(-2 * Param.jumpHeight * RateGravity));
         }
 
         #endregion Control
@@ -125,7 +125,7 @@ namespace Duo1JFramework.Actor
 
             if (velocity.y != 0)
             {
-                velocity.y -= param.fallSpeedUp * Time.deltaTime;
+                velocity.y -= Param.fallSpeedUp * Time.deltaTime;
             }
 
             if (OnUpdateVelocity != null)

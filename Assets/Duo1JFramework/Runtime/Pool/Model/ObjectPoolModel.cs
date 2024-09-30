@@ -90,7 +90,7 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public virtual ObjectPoolItem<T> CreateNew()
         {
-            ObjectPoolItem<T> newItem = new ObjectPoolItem<T>(new T());
+            ObjectPoolItem<T> newItem = new ObjectPoolItem<T>(this, new T());
             OnCreateNew?.Invoke(newItem);
             newItem.Using = true;
             return newItem;

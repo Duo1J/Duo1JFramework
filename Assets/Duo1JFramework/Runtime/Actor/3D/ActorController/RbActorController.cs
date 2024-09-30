@@ -25,7 +25,7 @@ namespace Duo1JFramework.Actor
             if (Normal != Vector3.up)
             {
                 Vector3 projectVec = Vector3.ProjectOnPlane(axisByEye, Normal).normalized;
-                if ((projectVec.y - axisByEye.y) > 0 && Vector3.Angle(Vector3.up, Normal) > param.maxSlopeAngle)
+                if ((projectVec.y - axisByEye.y) > 0 && Vector3.Angle(Vector3.up, Normal) > Param.maxSlopeAngle)
                 {
                     SetVelocity(new Vector2(0, 0));
                     return;
@@ -150,7 +150,7 @@ namespace Duo1JFramework.Actor
             {
                 rigidBody.velocity = new Vector3(
                     velocity.x,
-                    velocity.y - param.fallSpeedUp * Time.deltaTime,
+                    velocity.y - Param.fallSpeedUp * Time.deltaTime,
                     velocity.z
                 );
             }
@@ -188,7 +188,7 @@ namespace Duo1JFramework.Actor
 
             if (Application.isPlaying)
             {
-                Vector3 rootPos = point.Root.position;
+                Vector3 rootPos = Point.Root.position;
 
                 //受轴控制的目视前方
                 Gizmos.color = Color.blue;
