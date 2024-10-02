@@ -3,24 +3,24 @@ using System.Collections.Generic;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// µ¥Àı¹ÜÀíÆ÷
+    /// å•ä¾‹ç®¡ç†å™¨
     /// </summary>
     /// <see cref="Singleton{T}"/>
     /// <see cref="MonoSingleton{T}"/>
     public static class SingletonManager
     {
         /// <summary>
-        /// µ¥Àı¼¯ºÏ
+        /// å•ä¾‹é›†åˆ
         /// </summary>
         private static HashSet<ISingleton> singletonSet = new HashSet<ISingleton>();
 
         /// <summary>
-        /// Monoµ¥Àı¼¯ºÏ
+        /// Monoå•ä¾‹é›†åˆ
         /// </summary>
         private static HashSet<ISingleton> monoSingletonSet = new HashSet<ISingleton>();
 
         /// <summary>
-        /// ¼¯ºÏÖĞÌí¼Óµ¥Àı
+        /// é›†åˆä¸­æ·»åŠ å•ä¾‹
         /// </summary>
         public static void AddSingleton(ISingleton singleton)
         {
@@ -33,7 +33,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ¼¯ºÏÖĞÒÆ³ıµ¥Àı
+        /// é›†åˆä¸­ç§»é™¤å•ä¾‹
         /// </summary>
         public static void RemoveSingleton(ISingleton singleton)
         {
@@ -46,7 +46,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ¼¯ºÏÖĞÌí¼ÓMonoµ¥Àı
+        /// é›†åˆä¸­æ·»åŠ Monoå•ä¾‹
         /// </summary>
         public static void AddMonoSingleton(ISingleton MonoSingleton)
         {
@@ -59,7 +59,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ¼¯ºÏÖĞÒÆ³ıMonoµ¥Àı
+        /// é›†åˆä¸­ç§»é™¤Monoå•ä¾‹
         /// </summary>
         public static void RemoveMonoSingleton(ISingleton MonoSingleton)
         {
@@ -72,21 +72,21 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ´¥·¢ÄÚ²¿µ¥ÀıÀà
+        /// è§¦å‘å†…éƒ¨å•ä¾‹ç±»
         /// </summary>
         public static void TriggerInner()
         {
-            Log.Info("´¥·¢ÄÚ²¿µ¥Àı");
+            Log.Info("è§¦å‘å†…éƒ¨å•ä¾‹");
 
             GameManager.Instance.Trigger();
         }
 
         /// <summary>
-        /// Í£Ö¹ËùÓĞµ¥ÀıÀà
+        /// åœæ­¢æ‰€æœ‰å•ä¾‹ç±»
         /// </summary>
         public static void DisposeAll()
         {
-            Log.Info("Í£Ö¹ËùÓĞµ¥Àı");
+            Log.Info("åœæ­¢æ‰€æœ‰å•ä¾‹");
 
             if (singletonSet != null)
             {
