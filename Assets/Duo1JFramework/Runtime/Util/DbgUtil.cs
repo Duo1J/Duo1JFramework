@@ -36,7 +36,7 @@ namespace Duo1JFramework
         {
             return $"Heap: {Platform.Current.GetUsedHeapSize().B2MB().Limit(2)}/{Platform.Current.GetTotalHeapSize().B2MB().Limit(2)} MB\n" +
                    $"Reserved: {Platform.Current.GetTotalReservedMemory().B2MB().Limit(2)} MB\n" +
-                   $"Total: {Platform.Current.GetTotalMemory().MB2GB().Limit(2)} GB\n";
+                   $"Total: {Platform.Current.GetTotalMemory().MB2GB().Limit(2)} GB";
         }
     }
 }

@@ -1,13 +1,13 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 可销毁接口
+    /// 单例接口
     /// </summary>
-    public interface IDispose
+    public interface ISingleton : IDispose
     {
         /// <summary>
-        /// 销毁
+        /// 是否已销毁
         /// </summary>
-        void Dispose();
+        bool IsDisposed { get; }
     }
 }

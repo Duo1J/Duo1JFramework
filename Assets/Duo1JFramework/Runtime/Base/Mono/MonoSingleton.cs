@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// MonoBehaviour单例基类
     /// </summary>
-    public abstract class MonoSingleton<T> : MonoRegister, IDispose where T : BaseMono
+    public abstract class MonoSingleton<T> : MonoRegister, ISingleton where T : BaseMono
     {
         /// <summary>
         /// 单例
@@ -41,7 +41,7 @@ namespace Duo1JFramework
                         Log.ErrorForce($"游戏状态已退出，但仍在创建{typeof(T).FullName}，请使用 `Game.IsQuit` 判断处理");
                         return null;
                     }
-                    instance = FindObjectOfType<T>();
+                    Instance = FindObjectOfType<T>();
                     if (instance == null)
                     {
                         GameObject go = new GameObject(typeof(T).Name);
@@ -50,13 +50,34 @@ namespace Duo1JFramework
                 }
                 return instance;
             }
+            private set
+            {
+                T oldInstance = instance;
+                instance = value;
+
+                if (instance != null)
+                {
+                    SingletonManager.AddMonoSingleton(instance as ISingleton);
+                }
+
+                if (oldInstance != null)
+                {
+                    SingletonManager.RemoveMonoSingleton(oldInstance as ISingleton);
+                }
+            }
+        }
+
+        public bool IsDisposed
+        {
+            get => dispose;
+            protected set => dispose = value;
         }
 
         private void Awake()
         {
             if (instance == null)
             {
-                instance = this.Convert<T>();
+                Instance = this.Convert<T>();
                 DontDestroyOnLoad(gameObject);
                 if (AddToRoot && transform.parent != Root.SingletonRoot)
                 {
@@ -72,7 +93,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 销毁该单例
+        /// 销毁
         /// </summary>
         public void Dispose()
         {
@@ -89,6 +110,8 @@ namespace Duo1JFramework
                 goDestroyed = true;
                 DestroyImmediate(gameObject);
             }
+
+            Instance = null;
         }
 
         protected override void OnDestroy()

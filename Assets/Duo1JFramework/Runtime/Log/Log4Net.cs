@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Config;
+using Duo1JFramework.ObjectPool;
 using log4net;
 using log4net.Config;
 using UnityEngine;
@@ -71,6 +72,9 @@ namespace Duo1JFramework
 
         private static bool initialized = false;
 
+        /// <summary>
+        /// Log4Net初始化
+        /// </summary>
         public static void Init()
         {
             if (!GameOption.UseLog4Net)
@@ -91,6 +95,7 @@ namespace Duo1JFramework
                 Log.Info("Log4Net 初始化成功");
                 Application.logMessageReceived += OnLogMessageReceived;
 
+                PrintSpaceLineToLogFile(2);
                 initialized = true;
             }
             catch (Exception e)
@@ -100,35 +105,44 @@ namespace Duo1JFramework
             }
         }
 
+        /// <summary>
+        /// Log4Net关闭
+        /// </summary>
         public static void Shutdown()
         {
+            //PrintSpaceLineToLogFile(2);
             initialized = false;
+
             LogManager.Shutdown();
             Application.logMessageReceived -= OnLogMessageReceived;
+
             Log.Info("Log4Net 关闭");
         }
 
-        private static void OnLogMessageReceived(string condition, string stackTrace, LogType type)
+        /// <summary>
+        /// UnityLog接收
+        /// </summary>
+        private static void OnLogMessageReceived(string msg, string stackTrace, LogType type)
         {
             switch (type)
             {
                 case LogType.Log:
-                    logger.Info($"{condition}");
+                    logger.Info(msg);
                     break;
                 case LogType.Warning:
-                    logger.Warn($"{condition}\n{stackTrace}");
+                    logger.Warn($"{msg}\n{stackTrace}");
                     break;
                 case LogType.Error:
-                    logger.Error($"{condition}\n{stackTrace}");
+                    logger.Error($"{msg}\n{stackTrace}");
                     break;
                 case LogType.Assert:
-                    logger.Error($"{condition}\n{stackTrace}");
+                    logger.Error($"{msg}\n{stackTrace}");
                     break;
                 case LogType.Exception:
-                    logger.Fatal($"{condition}\n{stackTrace}");
+                    logger.Fatal($"{msg}\n{stackTrace}");
                     break;
                 default:
-                    logger.Info($"{condition}\n{stackTrace}");
+                    logger.Info($"{msg}\n{stackTrace}");
                     break;
             }
         }
@@ -186,5 +200,28 @@ namespace Duo1JFramework
     </root>
 </log4net>
 ";
+
+
+        /// <summary>
+        /// 向日志文件打印空行
+        /// </summary>
+        /// <param name="num"></param>
+        public static void PrintSpaceLineToLogFile(int num = 1)
+        {
+            if (num <= 0)
+            {
+                return;
+            }
+
+            Pool.StringBuilderPool.Using((sb) =>
+            {
+                for (int i = 0; i < num; ++i)
+                {
+                    sb.AppendLine();
+                }
+
+                logger.Info(sb.ToString());
+            });
+        }
     }
 }

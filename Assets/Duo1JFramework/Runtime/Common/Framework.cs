@@ -4,12 +4,28 @@ using System;
 
 namespace Duo1JFramework
 {
-    public class Framework : IDisposable
+    public static class Framework
     {
         /// <summary>
         /// 框架是否已初始化
         /// </summary>
         public static bool Initialized { get; private set; } = false;
+
+        /// <summary>
+        /// 框架初始化
+        /// </summary>
+        public static void Init()
+        {
+            _Init();
+        }
+
+        /// <summary>
+        /// 框架关闭
+        /// </summary>
+        public static void Shutdown()
+        {
+            _Shutdown();
+        }
 
         /// <summary>
         /// 内存清理
@@ -22,10 +38,41 @@ namespace Duo1JFramework
             Log.Info($"GC调用\n{DbgUtil.GetMemoryInfo()}");
         }
 
+        #region Inner
+
+        /// <summary>
+        /// 打印Logo
+        /// </summary>
+        private static void PrintLogo()
+        {
+#if UNITY_EDITOR
+            Log.Info($"<size=16><{Def.FRAME_WORK_NAME}></size>");
+#else
+            Log.Info($"<{Def.FRAME_WORK_NAME}>");
+#endif
+        }
+
+        /// <summary>
+        /// 内部初始化逻辑
+        /// </summary>
+        private static void InitInner()
+        {
+            Platform.Init();
+            SingletonManager.TriggerInner();
+        }
+
+        /// <summary>
+        /// 内部关闭逻辑
+        /// </summary>
+        private static void ShutdownInner()
+        {
+            SingletonManager.DisposeAll();
+        }
+
         /// <summary>
         /// 框架初始化
         /// </summary>
-        public static void Init()
+        private static void _Init()
         {
             Log4Net.Init();
 
@@ -55,50 +102,29 @@ namespace Duo1JFramework
         /// <summary>
         /// 框架关闭
         /// </summary>
-        public static void Shutdown()
+        private static void _Shutdown()
         {
             if (!Initialized)
             {
                 return;
             }
-
-            Log.Info($"{Def.FRAME_WORK_NAME} 关闭");
             Initialized = false;
 
-            GC();
-            ShutdownInner();
+            Log.Info($"{Def.FRAME_WORK_NAME} 开始关闭");
+            try
+            {
+                GC();
+                ShutdownInner();
+
+                Log.Info($"{Def.FRAME_WORK_NAME} 关闭成功");
+            }
+            catch (Exception e)
+            {
+                Log.ErrorForce($"{Def.FRAME_WORK_NAME} 关闭异常");
+                Assert.ExceptHandle(e);
+            }
+
             Log4Net.Shutdown();
-        }
-
-        public void Dispose()
-        {
-            Shutdown();
-        }
-
-        #region Inner
-
-        private Framework()
-        {
-        }
-
-        private static void PrintLogo()
-        {
-#if UNITY_EDITOR
-            Log.Info($"<size=16><{Def.FRAME_WORK_NAME}></size>");
-#else
-            Log.Info($"<{Def.FRAME_WORK_NAME}>");
-#endif
-        }
-
-        private static void InitInner()
-        {
-            Platform.Init();
-            SingletonTrigger.Trigger();
-        }
-
-        private static void ShutdownInner()
-        {
-            SingletonTrigger.Shutdown();
         }
 
         #endregion Inner
