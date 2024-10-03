@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// »ù´¡½ÇÉ«Âß¼­
+    /// åŸºç¡€è§’è‰²é€»è¾‘
     /// </summary>
     public class Actor : BaseActor
     {

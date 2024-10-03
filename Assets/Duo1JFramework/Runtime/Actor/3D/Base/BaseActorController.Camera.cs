@@ -3,32 +3,32 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«¿ØÖÆÆ÷»ùÀà - Camera
+    /// è§’è‰²æ§åˆ¶å™¨åŸºç±» - Camera
     /// </summary>
     public abstract partial class BaseActorController
     {
         /// <summary>
-        /// ÊÇ·ñ°ó¶¨ÁËÏà»ú
+        /// æ˜¯å¦ç»‘å®šäº†ç›¸æœº
         /// </summary>
         public bool CameraBinded => Logic == null ? false : Logic.CameraBinded;
 
         /// <summary>
-        /// Ïà»úXÖá×óÓÒÆ«ÒÆ
+        /// ç›¸æœºXè½´å·¦å³åç§»
         /// </summary>
         public float CameraOffsetX { get; set; }
 
         /// <summary>
-        /// Ïà»úYÖáÉÏÏÂÆ«ÒÆ
+        /// ç›¸æœºYè½´ä¸Šä¸‹åç§»
         /// </summary>
         public float CameraOffsetY { get; set; }
 
         /// <summary>
-        /// Ïà»úZÖáÇ°ºóÆ«ÒÆ
+        /// ç›¸æœºZè½´å‰ååç§»
         /// </summary>
         public float CameraOffsetZ { get; set; }
 
         /// <summary>
-        /// Ğı×ªÏà»ú¹Òµã
+        /// æ—‹è½¬ç›¸æœºæŒ‚ç‚¹
         /// </summary>
         public void RotateCameraPoint(float mx, float my)
         {
@@ -52,7 +52,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ¸üĞÂÏà»ú×ø±ê (Ğı×ªºó¸üĞÂ)
+        /// æ›´æ–°ç›¸æœºåæ ‡ (æ—‹è½¬åæ›´æ–°)
         /// </summary>
         public void UpdateCameraPointPos()
         {

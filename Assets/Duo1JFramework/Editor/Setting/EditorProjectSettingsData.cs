@@ -1,7 +1,7 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器下项目设置数据
+    /// 缂栬緫鍣ㄤ笅椤圭洰璁剧疆鏁版嵁
     /// </summary>
     public class EditorProjectSettingsData : EditorConfigSO<EditorProjectSettingsData>
     {

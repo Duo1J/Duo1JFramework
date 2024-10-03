@@ -5,27 +5,27 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«Âß¼­»ùÀà - Camera
+    /// è§’è‰²é€»è¾‘åŸºç±» - Camera
     /// </summary>
     public abstract partial class BaseActor
     {
         /// <summary>
-        /// ÊÇ·ñ°ó¶¨ÁËÏà»ú
+        /// æ˜¯å¦ç»‘å®šäº†ç›¸æœº
         /// </summary>
         public bool CameraBinded { get; private set; }
 
         /// <summary>
-        /// Ïà»ú¸úËæµã
+        /// ç›¸æœºè·Ÿéšç‚¹
         /// </summary>
         public virtual Transform CameraFollowPoint => GetCameraPoint();
 
         /// <summary>
-        /// Ïà»ú×¢ÊÓµã
+        /// ç›¸æœºæ³¨è§†ç‚¹
         /// </summary>
         public virtual Transform CameraLookAtPoint => GetCameraPoint();
 
         /// <summary>
-        /// ¸üĞÂÏà»ú
+        /// æ›´æ–°ç›¸æœº
         /// </summary>
         protected virtual void UpdateCamera()
         {
@@ -36,7 +36,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// »ñÈ¡Ïà»ú°ó¶¨µã
+        /// è·å–ç›¸æœºç»‘å®šç‚¹
         /// </summary>
         public Transform GetCameraPoint()
         {
@@ -48,7 +48,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// °ó¶¨Ïà»ú
+        /// ç»‘å®šç›¸æœº
         /// </summary>
         public virtual void BindCamera()
         {
@@ -58,7 +58,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ½â°óÏà»ú
+        /// è§£ç»‘ç›¸æœº
         /// </summary>
         public virtual void UnBindCamera()
         {

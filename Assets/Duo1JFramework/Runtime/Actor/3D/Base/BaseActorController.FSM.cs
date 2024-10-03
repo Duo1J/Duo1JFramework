@@ -3,22 +3,22 @@ using Duo1JFramework.FSM;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«¿ØÖÆÆ÷»ùÀà - FSM
+    /// è§’è‰²æ§åˆ¶å™¨åŸºç±» - FSM
     /// </summary>
     public abstract partial class BaseActorController
     {
         /// <summary>
-        /// ÓĞÏŞ×´Ì¬»ú
+        /// æœ‰é™çŠ¶æ€æœº
         /// </summary>
         protected StateMachine fsm;
 
         /// <summary>
-        /// µ±Ç°×´Ì¬»ú×´Ì¬
+        /// å½“å‰çŠ¶æ€æœºçŠ¶æ€
         /// </summary>
         public string CurState { get; private set; }
 
         /// <summary>
-        /// ³õÊ¼»¯×´Ì¬»ú
+        /// åˆå§‹åŒ–çŠ¶æ€æœº
         /// </summary>
         public void InitFSM(string curStateName, params IStateNode[] stateList)
         {
@@ -27,13 +27,13 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// Ìí¼Ó×´Ì¬½Úµã
+        /// æ·»åŠ çŠ¶æ€èŠ‚ç‚¹
         /// </summary>
         public bool AddFSMNode(IStateNode stateNode)
         {
             if (!CheckFSM())
             {
-                Log.ErrorForce($"{ToString()} ×´Ì¬»úÎ´³õÊ¼»¯");
+                Log.ErrorForce($"{ToString()} çŠ¶æ€æœºæœªåˆå§‹åŒ–");
                 return false;
             }
 
@@ -41,13 +41,13 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÒÆ³ı×´Ì¬½Úµã
+        /// ç§»é™¤çŠ¶æ€èŠ‚ç‚¹
         /// </summary>
         public bool RemoveFSMNode(string stateName)
         {
             if (!CheckFSM())
             {
-                Log.ErrorForce($"{ToString()} ×´Ì¬»úÎ´³õÊ¼»¯");
+                Log.ErrorForce($"{ToString()} çŠ¶æ€æœºæœªåˆå§‹åŒ–");
                 return false;
             }
 
@@ -55,13 +55,13 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÇĞ»»×´Ì¬
+        /// åˆ‡æ¢çŠ¶æ€
         /// </summary>
         public void SwitchState(string stateName, bool ignoreNextTick = true)
         {
             if (!CheckFSM())
             {
-                Log.ErrorForce($"{ToString()} ×´Ì¬»úÎ´³õÊ¼»¯");
+                Log.ErrorForce($"{ToString()} çŠ¶æ€æœºæœªåˆå§‹åŒ–");
                 return;
             }
 
@@ -72,13 +72,13 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// Ç¿ÖÆÇĞ»»×´Ì¬
+        /// å¼ºåˆ¶åˆ‡æ¢çŠ¶æ€
         /// </summary>
         public void ForceSwitchState(string stateName, bool ignoreNextTick = true)
         {
             if (!CheckFSM())
             {
-                Log.ErrorForce($"{ToString()} ×´Ì¬»úÎ´³õÊ¼»¯");
+                Log.ErrorForce($"{ToString()} çŠ¶æ€æœºæœªåˆå§‹åŒ–");
                 return;
             }
 
@@ -89,13 +89,13 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÊÇ·ñ´¦ÔÚ×´Ì¬
+        /// æ˜¯å¦å¤„åœ¨çŠ¶æ€
         /// </summary>
         public bool InState(string stateName)
         {
             if (!CheckFSM())
             {
-                Log.ErrorForce($"{ToString()} ×´Ì¬»úÎ´³õÊ¼»¯");
+                Log.ErrorForce($"{ToString()} çŠ¶æ€æœºæœªåˆå§‹åŒ–");
                 return false;
             }
 
@@ -103,7 +103,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ¼ì²é×´Ì¬»úÊÇ·ñ³õÊ¼»¯
+        /// æ£€æŸ¥çŠ¶æ€æœºæ˜¯å¦åˆå§‹åŒ–
         /// </summary>
         public bool CheckFSM()
         {
@@ -111,7 +111,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ¸üĞÂ×´Ì¬»ú
+        /// æ›´æ–°çŠ¶æ€æœº
         /// </summary>
         private void UpdateFSM()
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// PreferencesÉèÖÃ
+    /// Preferencesè®¾ç½®
     /// </summary>
     public class UserSettingsProvider : SettingsProvider
     {

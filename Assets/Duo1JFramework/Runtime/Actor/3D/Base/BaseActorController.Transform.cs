@@ -5,12 +5,12 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«¿ØÖÆÆ÷»ùÀà - Transform
+    /// è§’è‰²æ§åˆ¶å™¨åŸºç±» - Transform
     /// </summary>
     public abstract partial class BaseActorController
     {
         /// <summary>
-        /// ½ÇÉ«Ä£ĞÍ
+        /// è§’è‰²æ¨¡å‹
         /// </summary>
         public GameObject Model => model;
 
@@ -18,17 +18,17 @@ namespace Duo1JFramework.Actor
         private GameObject model;
 
         /// <summary>
-        /// ¸ù½ÚµãGo
+        /// æ ¹èŠ‚ç‚¹Go
         /// </summary>
         public GameObject Root => gameObjectCache;
 
         /// <summary>
-        /// Ğı×ª¶ÔÏó
+        /// æ—‹è½¬å¯¹è±¡
         /// </summary>
         public GameObject RotateGo => Model;
 
         /// <summary>
-        /// Ä¿ÊÓForward
+        /// ç›®è§†Forward
         /// </summary>
         public Vector3 EyeForward
         {
@@ -43,7 +43,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// Ä¿ÊÓRight
+        /// ç›®è§†Right
         /// </summary>
         public Vector3 EyeRight
         {
@@ -58,7 +58,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// Ä¿ÊÓUp
+        /// ç›®è§†Up
         /// </summary>
         public Vector3 EyeUp
         {
@@ -69,37 +69,37 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÓëµØÃæÏà½»µÄ·¨ÏßÏòÁ¿
+        /// ä¸åœ°é¢ç›¸äº¤çš„æ³•çº¿å‘é‡
         /// </summary>
         protected Vector3 Normal { get; private set; } = Vector3.up;
 
         /// <summary>
-        /// ÊÇ·ñ×ÅµØ
+        /// æ˜¯å¦ç€åœ°
         /// </summary>
         public bool Grounded { get; private set; }
 
         /// <summary>
-        /// ÊÇ·ñ¸üĞÂ×ÅµØ×´Ì¬
+        /// æ˜¯å¦æ›´æ–°ç€åœ°çŠ¶æ€
         /// </summary>
         public bool UpdateGrounded { get; set; } = true;
 
         /// <summary>
-        /// ÂäµØ×´Ì¬¸Ä±ä»Øµ÷
+        /// è½åœ°çŠ¶æ€æ”¹å˜å›è°ƒ
         /// </summary>
         public Action<bool> OnGroundedChange;
 
         /// <summary>
-        /// ÊÇ·ñÏÂÂäËÙ¶ÈÔö¼Ó
+        /// æ˜¯å¦ä¸‹è½é€Ÿåº¦å¢åŠ 
         /// </summary>
         public bool FallSpeedUp { get; set; } = false;
 
         /// <summary>
-        /// ×ÓÀàÊµÏÖÏÂÂä¼ÓËÙ
+        /// å­ç±»å®ç°ä¸‹è½åŠ é€Ÿ
         /// </summary>
         protected abstract void UpdateFallSpeedUp();
 
         /// <summary>
-        /// Í¨¹ıÄ¿ÊÓ·½Ïò»ñÈ¡Öá
+        /// é€šè¿‡ç›®è§†æ–¹å‘è·å–è½´
         /// </summary>
         public Vector3 GetAxisByEye(float h, float v)
         {
@@ -107,7 +107,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÖáÃ¤Çø¼ìÑé
+        /// è½´ç›²åŒºæ£€éªŒ
         /// </summary>
         public bool CheckAxisBlind(float h, float v)
         {
@@ -115,7 +115,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÖáÎª0¼ìÑé
+        /// è½´ä¸º0æ£€éªŒ
         /// </summary>
         public bool CheckAxisZero(float h, float v)
         {
@@ -123,7 +123,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ¸üĞÂÊÇ·ñ×ÅµØ×´Ì¬
+        /// æ›´æ–°æ˜¯å¦ç€åœ°çŠ¶æ€
         /// </summary>
         private void UpdateGroundedState()
         {
@@ -150,7 +150,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// Í¨¹ıÖáÉèÖÃĞı×ª (ÒÔÄ¿ÊÓForwardÎª²Î¿¼ÏµĞı×ª³¯Ç°)
+        /// é€šè¿‡è½´è®¾ç½®æ—‹è½¬ (ä»¥ç›®è§†Forwardä¸ºå‚è€ƒç³»æ—‹è½¬æœå‰)
         /// </summary>
         public void RotateByAxis(float h, float v)
         {

@@ -1,47 +1,47 @@
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«Âß¼­»ùÀà - ×ÓÀàÊµÏÖ
+    /// è§’è‰²é€»è¾‘åŸºç±» - å­ç±»å®ç°
     /// </summary>
     public abstract partial class BaseActor
     {
         /// <summary>
-        /// ×ÓÀà³õÊ¼»¯
+        /// å­ç±»åˆå§‹åŒ–
         /// </summary>
         protected virtual void OnInit()
         {
         }
 
         /// <summary>
-        /// ´´½¨Ç°
+        /// åˆ›å»ºå‰
         /// </summary>
         protected virtual void BeforeCreate()
         {
         }
 
         /// <summary>
-        /// ´´½¨Íê³Éºó
+        /// åˆ›å»ºå®Œæˆå
         /// </summary>
         protected virtual void OnCreated()
         {
         }
 
         /// <summary>
-        /// Ğ¶ÔØ×ÊÔ´Ç°
+        /// å¸è½½èµ„æºå‰
         /// </summary>
         protected virtual void BeforeUnLoadAsset()
         {
         }
 
         /// <summary>
-        /// Ğ¶ÔØ×ÊÔ´ºó
+        /// å¸è½½èµ„æºå
         /// </summary>
         protected virtual void AfterUnLoadAsset()
         {
         }
 
         /// <summary>
-        /// Ïú»Ù
+        /// é”€æ¯
         /// </summary>
         protected override void OnDispose()
         {

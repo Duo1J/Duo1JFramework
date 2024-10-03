@@ -3,36 +3,36 @@ using System.Text;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«¿ØÖÆÆ÷»ùÀà - ×ÓÀàÊµÏÖ
+    /// è§’è‰²æ§åˆ¶å™¨åŸºç±» - å­ç±»å®ç°
     /// </summary>
     public abstract partial class BaseActorController
     {
         /// <summary>
-        /// ×ÓÀàÊµÏÖ³õÊ¼»¯×é¼ş
+        /// å­ç±»å®ç°åˆå§‹åŒ–ç»„ä»¶
         /// </summary>
         protected abstract void OnInitComponent();
 
         /// <summary>
-        /// ×ÓÀàÊµÏÖÊÕ¼¯×é¼ş
+        /// å­ç±»å®ç°æ”¶é›†ç»„ä»¶
         /// </summary>
         protected abstract void OnCollectComponent();
 
         /// <summary>
-        /// ×ÓÀàÊµÏÖUpdate
+        /// å­ç±»å®ç°Update
         /// </summary>
         protected virtual void OnUpdateSub()
         {
         }
 
         /// <summary>
-        /// ×ÓÀàÊµÏÖFixedUpdate
+        /// å­ç±»å®ç°FixedUpdate
         /// </summary>
         protected virtual void OnFixedUpdateSub()
         {
         }
 
         /// <summary>
-        /// ×ÓÀàÊµÏÖ»ñÈ¡HierarchyÏÔÊ¾ĞÅÏ¢
+        /// å­ç±»å®ç°è·å–Hierarchyæ˜¾ç¤ºä¿¡æ¯
         /// </summary>
         protected virtual void GetHierarchyInfoSub(StringBuilder sb)
         {

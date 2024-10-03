@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ProjectÉèÖÃ
+    /// Projectè®¾ç½®
     /// </summary>
     public class ProjectSettingsProvider : SettingsProvider
     {

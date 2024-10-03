@@ -1,7 +1,7 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器下用户设置数据
+    /// 缂栬緫鍣ㄤ笅鐢ㄦ埛璁剧疆鏁版嵁
     /// </summary>
     public class EditorUserSettingsData : EditorConfigSO<EditorUserSettingsData>
     {

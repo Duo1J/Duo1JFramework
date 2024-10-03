@@ -1,7 +1,7 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器下用户设置
+    /// 缂栬緫鍣ㄤ笅鐢ㄦ埛璁剧疆
     /// </summary>
     public class EditorUserSettings
     {

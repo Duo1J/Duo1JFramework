@@ -3,47 +3,47 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«Âß¼­»ùÀà - Transform
+    /// è§’è‰²é€»è¾‘åŸºç±» - Transform
     /// </summary>
     public abstract partial class BaseActor
     {
         /// <summary>
-        /// ×ø±ê
+        /// åæ ‡
         /// </summary>
         public Vector3 Pos => AssetTf.position;
 
         /// <summary>
-        /// ±¾µØ×ø±ê
+        /// æœ¬åœ°åæ ‡
         /// </summary>
         public Vector3 LocPos => AssetTf.localPosition;
 
         /// <summary>
-        /// Ğı×ªËÄÔªÊı
+        /// æ—‹è½¬å››å…ƒæ•°
         /// </summary>
         public Quaternion Rot => AssetTf.rotation;
 
         /// <summary>
-        /// ±¾µØĞı×ªËÄÔªÊı
+        /// æœ¬åœ°æ—‹è½¬å››å…ƒæ•°
         /// </summary>
         public Quaternion LocRot => AssetTf.localRotation;
 
         /// <summary>
-        /// Ğı×ªÅ·À­½Ç
+        /// æ—‹è½¬æ¬§æ‹‰è§’
         /// </summary>
         public Vector3 Angle => AssetTf.eulerAngles;
 
         /// <summary>
-        /// ±¾µØĞı×ªÅ·À­½Ç
+        /// æœ¬åœ°æ—‹è½¬æ¬§æ‹‰è§’
         /// </summary>
         public Vector3 LocAngle => AssetTf.localEulerAngles;
 
         /// <summary>
-        /// Ëõ·Å
+        /// ç¼©æ”¾
         /// </summary>
         public Vector3 Scale => AssetTf.lossyScale;
 
         /// <summary>
-        /// ±¾µØËõ·Å
+        /// æœ¬åœ°ç¼©æ”¾
         /// </summary>
         public Vector3 LocScale => AssetTf.localScale;
     }

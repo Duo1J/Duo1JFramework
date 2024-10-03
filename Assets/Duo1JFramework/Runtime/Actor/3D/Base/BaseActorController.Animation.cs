@@ -5,29 +5,29 @@ using UnityEngine;
 namespace Duo1JFramework.Actor
 {
     /// <summary>
-    /// ½ÇÉ«¿ØÖÆÆ÷»ùÀà - Animation
+    /// è§’è‰²æ§åˆ¶å™¨åŸºç±» - Animation
     /// </summary>
     public abstract partial class BaseActorController
     {
         /// <summary>
-        /// ½ÇÉ«¶¯»­¿ØÖÆÆ÷
+        /// è§’è‰²åŠ¨ç”»æ§åˆ¶å™¨
         /// </summary>
         [SerializeField]
         protected Animator animator;
 
         /// <summary>
-        /// µ±Ç°²¥·ÅµÄ¶¯»­Ãû
+        /// å½“å‰æ’­æ”¾çš„åŠ¨ç”»å
         /// </summary>
         public string CurAniName { get; private set; }
 
         /// <summary>
-        /// ×ã²¿IK¿ØÖÆÆ÷
+        /// è¶³éƒ¨IKæ§åˆ¶å™¨
         /// </summary>
         [SerializeField]
         protected FootIKController footIKCon;
 
         /// <summary>
-        /// »ñÈ¡Animator
+        /// è·å–Animator
         /// </summary>
         public Animator GetAnimator()
         {
@@ -40,7 +40,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ¶¯»­×´Ì¬×ª»»
+        /// åŠ¨ç”»çŠ¶æ€è½¬æ¢
         /// </summary>
         public void AnimCrossFade(string stateName, float transitionRate = 0.2f, int layer = -1)
         {
@@ -54,18 +54,18 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// µ±Ç°ÊÇ·ñ¿ÉÒÔ×ª»»ÎªÄ¿±ê¶¯»­×´Ì¬
+        /// å½“å‰æ˜¯å¦å¯ä»¥è½¬æ¢ä¸ºç›®æ ‡åŠ¨ç”»çŠ¶æ€
         /// </summary>
         public bool AnimCanChangeState(string stateName)
         {
-            Assert.NotNullOrEmpty(stateName, "¶¯»­×´Ì¬Ãû²»¿ÉÎª¿Õ");
+            Assert.NotNullOrEmpty(stateName, "åŠ¨ç”»çŠ¶æ€åä¸å¯ä¸ºç©º");
             return !stateName.Equals(CurAniName);
         }
 
         #region IK
 
         /// <summary>
-        /// »ñÈ¡×ã²¿IK¿ØÖÆÆ÷
+        /// è·å–è¶³éƒ¨IKæ§åˆ¶å™¨
         /// </summary>
         public FootIKController GetFootIKCon()
         {
@@ -78,7 +78,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÉèÖÃ×ã²¿IKÈ¨ÖØ
+        /// è®¾ç½®è¶³éƒ¨IKæƒé‡
         /// </summary>
         public void SetFootIKGoal(float leftGoal, float rightGoal, bool immediately = false)
         {
@@ -86,7 +86,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÉèÖÃ×ó½ÅÈ¨ÖØ
+        /// è®¾ç½®å·¦è„šæƒé‡
         /// </summary>
         public void SetLeftFootIKGoal(float goal, bool immediately = false)
         {
@@ -94,7 +94,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÉèÖÃÓÒ½ÅÈ¨ÖØ
+        /// è®¾ç½®å³è„šæƒé‡
         /// </summary>
         public void SetRightFootIKGoal(float goal, bool immediately = false)
         {
@@ -102,7 +102,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// Í¨¹ı¶¯»­ÇúÏßÉèÖÃ×ã²¿IKÈ¨ÖØ
+        /// é€šè¿‡åŠ¨ç”»æ›²çº¿è®¾ç½®è¶³éƒ¨IKæƒé‡
         /// </summary>
         public void SetFootIKGoalByCurve()
         {
@@ -115,7 +115,7 @@ namespace Duo1JFramework.Actor
         #endregion IK
 
         /// <summary>
-        /// ÉèÖÃOnAnimatorMove»Øµ÷
+        /// è®¾ç½®OnAnimatorMoveå›è°ƒ
         /// </summary>
         public void SetOnAnimatorMove(Action onAnimatorMove)
         {
@@ -130,7 +130,7 @@ namespace Duo1JFramework.Actor
         }
 
         /// <summary>
-        /// ÉèÖÃOnAnimatorMove»Øµ÷
+        /// è®¾ç½®OnAnimatorMoveå›è°ƒ
         /// </summary>
         public void SetOnAnimatorMove(Action<Animator> onAnimatorMove)
         {
