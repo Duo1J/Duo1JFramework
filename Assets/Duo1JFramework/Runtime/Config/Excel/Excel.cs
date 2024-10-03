@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
-using OfficeOpenXml;
+using System.IO;
 
 namespace Duo1JFramework.ExcelAPI
 {

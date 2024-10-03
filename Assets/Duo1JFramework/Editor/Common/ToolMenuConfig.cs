@@ -1,12 +1,10 @@
-using Duo1JFramework.UI;
-using UnityEditor;
-using UnityEngine;
+using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
 using Duo1JFramework.TimerUpdate;
-
+using UnityEditor;
+using UnityEngine;
 using UObject = UnityEngine.Object;
-using Duo1JFramework.AnimationAPI;
 
 namespace Duo1JFramework
 {

@@ -1,4 +1,3 @@
-using Duo1JFramework.TimerUpdate;
 using UnityEngine;
 
 namespace Duo1JFramework.TimerUpdate

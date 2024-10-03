@@ -1,5 +1,4 @@
 using Cinemachine;
-using UnityEngine;
 
 namespace Duo1JFramework.CameraAPI
 {

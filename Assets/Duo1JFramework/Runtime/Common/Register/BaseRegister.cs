@@ -1,7 +1,7 @@
 using Duo1JFramework.Event;
 using Duo1JFramework.TimerUpdate;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace Duo1JFramework
 {

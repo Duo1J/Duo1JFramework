@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Duo1JFramework.Actor.Actor2D
 {
     /// <summary>

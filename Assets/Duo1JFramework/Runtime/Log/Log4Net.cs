@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using Duo1JFramework.Asset;
+﻿using Duo1JFramework.Asset;
 using Duo1JFramework.Config;
 using Duo1JFramework.ObjectPool;
 using log4net;
 using log4net.Config;
+using System;
+using System.IO;
+using System.Text;
 using UnityEngine;
-
 using TextAsset = UnityEngine.TextAsset;
 
 namespace Duo1JFramework

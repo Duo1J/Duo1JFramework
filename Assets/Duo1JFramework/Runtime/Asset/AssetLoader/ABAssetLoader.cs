@@ -1,8 +1,6 @@
 using Duo1JFramework.Config;
 using System;
 
-using UObject = UnityEngine.Object;
-
 namespace Duo1JFramework.Asset
 {
     /// <summary>

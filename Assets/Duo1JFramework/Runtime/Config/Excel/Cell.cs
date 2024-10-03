@@ -1,6 +1,6 @@
 ﻿using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using OfficeOpenXml.Drawing;
+using OfficeOpenXml.Style;
 
 namespace Duo1JFramework.ExcelAPI
 {

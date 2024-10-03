@@ -1,5 +1,5 @@
-using Duo1JFramework.ObjectPool;
 using Duo1JFramework.Ext.RX;
+using Duo1JFramework.ObjectPool;
 
 namespace Duo1JFramework.Ext.ObjectPool
 {

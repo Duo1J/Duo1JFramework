@@ -1,5 +1,5 @@
-﻿using System;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
+using System;
 
 namespace Duo1JFramework.ExcelAPI
 {
