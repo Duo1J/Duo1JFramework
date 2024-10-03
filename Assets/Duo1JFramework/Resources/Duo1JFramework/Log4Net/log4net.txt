@@ -1,4 +1,3 @@
-
 <log4net>
     <appender name="UnityAppender" type="log4net.Appender.FileAppender">
         <file type="log4net.Util.PatternString" value="%property{ApplicationLogPath}\\%property{LogFileName}.log" />

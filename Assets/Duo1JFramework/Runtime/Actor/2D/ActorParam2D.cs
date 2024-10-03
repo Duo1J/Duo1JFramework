@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor.Actor2D
 {
     /// <summary>
-    /// 2D角色Inspector面板控制参数
+    /// 2D瑙掕壊Inspector闈㈡澘鎺у埗鍙傛暟
     /// </summary>
     public class ActorParam2D : BaseMono
     {

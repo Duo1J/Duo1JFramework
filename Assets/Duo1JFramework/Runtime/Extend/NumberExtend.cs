@@ -3,7 +3,7 @@ using System;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 数字相关扩展
+    /// 鏁板瓧鐩稿叧鎵╁睍
     /// </summary>
     public static class NumberExtend
     {

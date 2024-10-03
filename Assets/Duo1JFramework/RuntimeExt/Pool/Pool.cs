@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Ext.ObjectPool
 {
     /// <summary>
-    /// ³ØÀ©Õ¹
+    /// æ± æ‰©å±•
     /// </summary>
     public static class Pool
     {

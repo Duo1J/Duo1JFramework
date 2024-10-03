@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor.Actor2D
 {
     /// <summary>
-    /// 2D½ÇÉ«¹ÜÀíÆ÷
+    /// 2Dè§’è‰²ç®¡ç†å™¨
     /// </summary>
     public class ActorManager2D : MonoSingleton<ActorManager2D>
     {

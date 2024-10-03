@@ -1,7 +1,7 @@
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// 基础2D世界场景物体
+    /// 鍩虹2D涓栫晫鍦烘櫙鐗╀綋
     /// </summary>
     public class WorldItem2D : BaseWorldItem
     {

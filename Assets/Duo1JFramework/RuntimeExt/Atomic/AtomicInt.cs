@@ -3,7 +3,7 @@ using System.Threading;
 namespace Duo1JFramework.Ext.Atomic
 {
     /// <summary>
-    /// Ô­×ÓĞÔInt
+    /// åŸå­æ€§Int
     /// </summary>
     public class AtomicInt
     {

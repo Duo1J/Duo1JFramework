@@ -3,12 +3,12 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ÑÕÉ«Ïà¹ØÀ©Õ¹
+    /// é¢œè‰²ç›¸å…³æ‰©å±•
     /// </summary>
     public static class ColorExtend
     {
         /// <summary>
-        /// ÑÕÉ«×ª16½øÖÆÉ«Öµ
+        /// é¢œè‰²è½¬16è¿›åˆ¶è‰²å€¼
         /// </summary>
         public static string ToHex(this Color color)
         {
@@ -16,7 +16,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 16½øÖÆÉ«Öµ×ªÑÕÉ«
+        /// 16è¿›åˆ¶è‰²å€¼è½¬é¢œè‰²
         /// </summary>
         public static Color ToColor(this string hex)
         {
@@ -24,7 +24,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÓÃcolor±êÇ©°ü¹ü×Ö·û´®
+        /// ç”¨coloræ ‡ç­¾åŒ…è£¹å­—ç¬¦ä¸²
         /// </summary>
         public static string WithColor(this string str, Color color)
         {
@@ -32,7 +32,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÓÃcolor±êÇ©°ü¹ü×Ö·û´®
+        /// ç”¨coloræ ‡ç­¾åŒ…è£¹å­—ç¬¦ä¸²
         /// </summary>
         public static string WithColor(this string str, string hex)
         {
@@ -40,7 +40,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃRÖµ
+        /// è®¾ç½®Rå€¼
         /// </summary>
         public static Color R(this Color color, float r)
         {
@@ -49,7 +49,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃGÖµ
+        /// è®¾ç½®Gå€¼
         /// </summary>
         public static Color G(this Color color, float g)
         {
@@ -58,7 +58,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃBÖµ
+        /// è®¾ç½®Bå€¼
         /// </summary>
         public static Color B(this Color color, float b)
         {
@@ -67,7 +67,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃAlphaÖµ
+        /// è®¾ç½®Alphaå€¼
         /// </summary>
         public static Color A(this Color color, float a)
         {
@@ -76,7 +76,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃRGBÖµ
+        /// è®¾ç½®RGBå€¼
         /// </summary>
         public static Color RGB(this Color color, float r, float g, float b)
         {
@@ -87,7 +87,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃRGBAÖµ
+        /// è®¾ç½®RGBAå€¼
         /// </summary>
         public static Color RGBA(this Color color, float r, float g, float b, float a)
         {

@@ -1,7 +1,7 @@
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// »ù´¡3DÊÀ½ç³¡¾°¿ØÖÆÆ÷
+    /// åŸºç¡€3Dä¸–ç•Œåœºæ™¯æŽ§åˆ¶å™¨
     /// </summary>
     public class WorldController : BaseWorldController
     {

@@ -1,7 +1,7 @@
 namespace Duo1JFramework.World
 {
     /// <summary>
-    /// 世界场景环境
+    /// 涓栫晫鍦烘櫙鐜
     /// </summary>
     public class Environment : BaseMono
     {

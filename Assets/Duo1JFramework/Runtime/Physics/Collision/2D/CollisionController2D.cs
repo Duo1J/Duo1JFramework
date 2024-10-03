@@ -5,17 +5,17 @@ using UnityEngine;
 namespace Duo1JFramework.PhysicsAPI.Physics2D
 {
     /// <summary>
-    /// 2DÅö×²¡¢´¥·¢¿ØÖÆÆ÷
+    /// 2Dç¢°æ’ã€è§¦å‘æ§åˆ¶å™¨
     /// </summary>
     [DisallowMultipleComponent]
     public class CollisionController2D : WorldItem2D, ICollisionController
     {
-        [Label("Åö×²ÌåÀàĞÍ")]
+        [Label("ç¢°æ’ä½“ç±»å‹")]
         [SerializeField]
         private ECollisionType collisionType = ECollisionType.Trigger;
 
         /// <summary>
-        /// Åö×²Ìå
+        /// ç¢°æ’ä½“
         /// </summary>
         private Collider2D collision;
 
@@ -28,20 +28,20 @@ namespace Duo1JFramework.PhysicsAPI.Physics2D
         public Action<CollisionController2D, Collider2D> TriggerExit;
 
         /// <summary>
-        /// »ñÈ¡Åö×²Ìå
+        /// è·å–ç¢°æ’ä½“
         /// </summary>
-        /// <param name="refresh">ÊÇ·ñË¢ĞÂ»º´æ</param>
+        /// <param name="refresh">æ˜¯å¦åˆ·æ–°ç¼“å­˜</param>
         public Collider2D GetCollider2D(bool refresh = false)
         {
             if (collision == null || refresh)
             {
-                collision = this.GetAndAssertComponent<Collider2D>($"{ToString()}CollisionController2DÉÏ±ØĞë¹ÒÔØCollider2DÀàĞÍ×é¼ş");
+                collision = this.GetAndAssertComponent<Collider2D>($"{ToString()}CollisionController2Dä¸Šå¿…é¡»æŒ‚è½½Collider2Dç±»å‹ç»„ä»¶");
             }
             return collision;
         }
 
         /// <summary>
-        /// ÉèÖÃÅö×²¡¢´¥·¢ÀàĞÍ
+        /// è®¾ç½®ç¢°æ’ã€è§¦å‘ç±»å‹
         /// </summary>
         public void SetCollisionType(ECollisionType collisionType)
         {
@@ -120,7 +120,7 @@ namespace Duo1JFramework.PhysicsAPI.Physics2D
                 Collider2D col = GetCollider2D();
                 if (col == null)
                 {
-                    GUILayout.Label("Collider2DÎª¿Õ");
+                    GUILayout.Label("Collider2Dä¸ºç©º");
                     return;
                 }
 

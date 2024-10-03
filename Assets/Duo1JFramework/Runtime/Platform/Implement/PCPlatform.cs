@@ -1,7 +1,7 @@
 namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
-    /// PC平台实现
+    /// PC骞冲彴瀹炵幇
     /// </summary>
     public class PCPlatform : BasePlatform
     {

@@ -5,17 +5,17 @@ using UnityEngine;
 namespace Duo1JFramework.DataStructure
 {
     /// <summary>
-    /// ËÄ²æÊ÷»ùÀà
+    /// å››å‰æ ‘åŸºç±»
     /// </summary>
     public abstract class BaseQuadTree : IQuadTreeNode, IGizmosDrawer
     {
         /// <summary>
-        /// ¸ù½Úµã
+        /// æ ¹èŠ‚ç‚¹
         /// </summary>
         protected IQuadTreeNode root;
 
         /// <summary>
-        /// °üÎ§ºĞ
+        /// åŒ…å›´ç›’
         /// </summary>
         public Bounds Bounds
         {
@@ -23,7 +23,7 @@ namespace Duo1JFramework.DataStructure
             {
                 if (root == null)
                 {
-                    Log.ErrorForce("ËÄ²æÊ÷¸ù½ÚµãÎ´³õÊ¼»¯");
+                    Log.ErrorForce("å››å‰æ ‘æ ¹èŠ‚ç‚¹æœªåˆå§‹åŒ–");
                     return new Bounds();
                 }
 
@@ -32,7 +32,7 @@ namespace Duo1JFramework.DataStructure
         }
 
         /// <summary>
-        /// ÆÀ¹À¼ì²âËã·¨
+        /// è¯„ä¼°æ£€æµ‹ç®—æ³•
         /// </summary>
         public virtual Func<IQuadTreeNode, object, bool> EvalLogic
         {
@@ -42,22 +42,22 @@ namespace Duo1JFramework.DataStructure
         protected Func<IQuadTreeNode, object, bool> evalLogic;
 
         /// <summary>
-        /// ×î´óÉî¶È
+        /// æœ€å¤§æ·±åº¦
         /// </summary>
         public int MaxDepth { get; protected set; } = 5;
 
         /// <summary>
-        /// ×Ó½ÚµãÊıÁ¿
+        /// å­èŠ‚ç‚¹æ•°é‡
         /// </summary>
         public const int CHILD_COUNT = 4;
 
         /// <summary>
-        /// ¹ÜÀí¶ÔÏóÁĞ±í
+        /// ç®¡ç†å¯¹è±¡åˆ—è¡¨
         /// </summary>
         protected List<IQuadTreeItem> itemList = new List<IQuadTreeItem>();
 
         /// <summary>
-        /// Ìí¼Ó¶ÔÏó
+        /// æ·»åŠ å¯¹è±¡
         /// </summary>
         public void AddItem(IQuadTreeItem item)
         {
@@ -66,7 +66,7 @@ namespace Duo1JFramework.DataStructure
         }
 
         /// <summary>
-        /// ÒÆ³ı¶ÔÏó
+        /// ç§»é™¤å¯¹è±¡
         /// </summary>
         public bool RemoveItem(IQuadTreeItem item)
         {
@@ -75,17 +75,17 @@ namespace Duo1JFramework.DataStructure
         }
 
         /// <summary>
-        /// ¼ì²âÆÀ¹À
+        /// æ£€æµ‹è¯„ä¼°
         /// </summary>
         public abstract void Evaluate(object param = null);
 
         /// <summary>
-        /// »æÖÆGizmosĞÅÏ¢
+        /// ç»˜åˆ¶Gizmosä¿¡æ¯
         /// </summary>
         public abstract void DrawGizmos();
 
         /// <summary>
-        /// Çå³ı
+        /// æ¸…é™¤
         /// </summary>
         public virtual void Clear()
         {

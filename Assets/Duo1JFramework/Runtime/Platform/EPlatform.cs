@@ -1,7 +1,7 @@
 namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
-    /// 平台类型枚举
+    /// 骞冲彴绫诲瀷鏋氫妇
     /// </summary>
     public enum EPlatform
     {

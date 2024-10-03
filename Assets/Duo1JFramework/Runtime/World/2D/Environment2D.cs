@@ -1,7 +1,7 @@
 namespace Duo1JFramework.World.World2D
 {
     /// <summary>
-    /// 2D世界场景环境
+    /// 2D涓栫晫鍦烘櫙鐜
     /// </summary>
     public class Environment2D : BaseMono
     {

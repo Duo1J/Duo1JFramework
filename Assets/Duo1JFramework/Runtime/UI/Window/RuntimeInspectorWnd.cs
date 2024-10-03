@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// 运行时Inspector和Hierarchy调试窗口
+    /// 杩愯鏃禝nspector鍜孒ierarchy璋冭瘯绐楀彛
     /// </summary>
     public class RuntimeInspectorWnd : GenericWindow<RuntimeInspectorWnd>
     {

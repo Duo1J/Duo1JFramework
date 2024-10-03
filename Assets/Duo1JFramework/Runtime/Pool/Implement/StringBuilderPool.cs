@@ -3,7 +3,7 @@ using System.Text;
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// StringBuilder¶ÔÏó³ØÊµÀý
+    /// StringBuilderå¯¹è±¡æ± å®žä¾‹
     /// </summary>
     public class StringBuilderPool : BaseObjectPool<StringBuilder>
     {

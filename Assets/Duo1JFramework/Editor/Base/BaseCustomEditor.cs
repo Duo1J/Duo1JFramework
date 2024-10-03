@@ -3,17 +3,17 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 自定义Inspector面板基类
+    /// 鑷畾涔塈nspector闈㈡澘鍩虹被
     /// </summary>
     public abstract class BaseCustomEditor<T> : BaseEditor where T : MonoBehaviour
     {
         /// <summary>
-        /// 目标实例
+        /// 鐩爣瀹炰緥
         /// </summary>
         protected T instance;
 
         /// <summary>
-        /// 显示原始面板
+        /// 鏄剧ず鍘熷闈㈡澘
         /// </summary>
         private bool showOrigin;
 
@@ -24,7 +24,7 @@ namespace Duo1JFramework
 
         public override void OnInspectorGUI()
         {
-            showOrigin = GUILayout.Toggle(showOrigin, "显示原始面板");
+            showOrigin = GUILayout.Toggle(showOrigin, "鏄剧ず鍘熷闈㈡澘");
             GUILayout.Space(5);
 
             if (showOrigin)

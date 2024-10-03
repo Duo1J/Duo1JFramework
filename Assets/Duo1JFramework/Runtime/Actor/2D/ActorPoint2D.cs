@@ -1,7 +1,7 @@
 namespace Duo1JFramework.Actor.Actor2D
 {
     /// <summary>
-    /// ½ÇÉ«¹Òµã
+    /// è§’è‰²æŒ‚ç‚¹
     /// </summary>
     public class ActorPoint2D : BaseMono
     {

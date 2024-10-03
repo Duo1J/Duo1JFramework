@@ -4,13 +4,13 @@ using UnityEngine.EventSystems;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// UI¿ÉÍÏ×§Ãæ°å
+    /// UIå¯æ‹–æ‹½é¢æ¿
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
     public class UIDragPanel : BaseMono, IBeginDragHandler, IDragHandler
     {
         /// <summary>
-        /// ¶¯Ì¬°ó¶¨ÍÏ×§Ãæ°å
+        /// åŠ¨æ€ç»‘å®šæ‹–æ‹½é¢æ¿
         /// </summary>
         public static UIDragPanel Bind(RectTransform rectTF)
         {
@@ -18,32 +18,32 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// Ãæ°å¸ù½Úµã
+        /// é¢æ¿æ ¹èŠ‚ç‚¹
         /// </summary>
         private RectTransform canvasRectTF;
 
         /// <summary>
-        /// Ãæ°å¸ùCanvas
+        /// é¢æ¿æ ¹Canvas
         /// </summary>
         private Canvas rootCanvas;
 
         /// <summary>
-        /// UIÏà»ú
+        /// UIç›¸æœº
         /// </summary>
         private Camera uiCamera;
 
         /// <summary>
-        /// ÊÇ·ñÔÊĞíÍÏ×§
+        /// æ˜¯å¦å…è®¸æ‹–æ‹½
         /// </summary>
         private bool allowDrag;
 
         /// <summary>
-        /// Êó±ê°´ÏÂ×ø±ê
+        /// é¼ æ ‡æŒ‰ä¸‹åæ ‡
         /// </summary>
         private Vector3 mouseDownPos;
 
         /// <summary>
-        /// Ãæ°åÔ­Ê¼×ø±ê
+        /// é¢æ¿åŸå§‹åæ ‡
         /// </summary>
         private Vector3 oriPanelPos;
 
@@ -59,7 +59,7 @@ namespace Duo1JFramework.UI
             allowDrag = rootCanvas != null;
             if (!allowDrag)
             {
-                Debug.LogError($"{ToString()}Î´ÕÒµ½RootCanvas£¬²»¿ÉÍÏ×§");
+                Debug.LogError($"{ToString()}æœªæ‰¾åˆ°RootCanvasï¼Œä¸å¯æ‹–æ‹½");
                 enabled = false;
             }
         }

@@ -4,32 +4,32 @@ using UnityEngine.UI;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// ContentSizeFitterÀ©Õ¹
+    /// ContentSizeFitteræ‰©å±•
     /// </summary>
     public class ContentSizeFitterExt : ContentSizeFitter
     {
         /// <summary>
-        /// Ç¿ÖÆÖØ½¨Layout
+        /// å¼ºåˆ¶é‡å»ºLayout
         /// </summary>
         public bool forceRebuild = false;
 
         /// <summary>
-        /// ÑÓ³Ù
+        /// å»¶è¿Ÿ
         /// </summary>
         public bool delay = true;
 
         /// <summary>
-        /// ÑÓ³ÙÖ¡Êı
+        /// å»¶è¿Ÿå¸§æ•°
         /// </summary>
         public int delayFrame = 1;
 
         /// <summary>
-        /// Ö¡¼ÆÊı
+        /// å¸§è®¡æ•°
         /// </summary>
         private int frameCnt = 2;
 
         /// <summary>
-        /// ±êÔà
+        /// æ ‡è„
         /// </summary>
         public void SetDirtyDelay()
         {
@@ -45,7 +45,7 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// Ç¿ÖÆÖØ½¨Layout
+        /// å¼ºåˆ¶é‡å»ºLayout
         /// </summary>
         public void ForceRebuildLayout()
         {
@@ -57,7 +57,7 @@ namespace Duo1JFramework.UI
             RectTransform rectTF = transform as RectTransform;
             if (rectTF == null)
             {
-                Log.ErrorForce($"<ContentSizeFitterExt-{name}: {GetInstanceID()}> Î´³ÖÓĞ`RectTransform`×é¼ş, ÎŞ·¨ÖØ½¨²¼¾Ö");
+                Log.ErrorForce($"<ContentSizeFitterExt-{name}: {GetInstanceID()}> æœªæŒæœ‰`RectTransform`ç»„ä»¶, æ— æ³•é‡å»ºå¸ƒå±€");
                 return;
             }
 

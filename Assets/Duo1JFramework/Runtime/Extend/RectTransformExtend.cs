@@ -4,14 +4,14 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Unity RectTransform Ïà¹ØÀ©Õ¹
+    /// Unity RectTransform ç›¸å…³æ‰©å±•
     /// </summary>
     public static class RectTransformExtend
     {
         #region RectTransform
 
         /// <summary>
-        /// »ñÈ¡RectTransform
+        /// è·å–RectTransform
         /// </summary>
         public static RectTransform RectTF(this Transform tf)
         {
@@ -19,7 +19,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// »ñÈ¡RectTransform
+        /// è·å–RectTransform
         /// </summary>
         public static RectTransform RectTF(this GameObject go)
         {
@@ -27,7 +27,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÆÌ¿ªAnchor
+        /// é“ºå¼€Anchor
         /// </summary>
         public static void ExpandAnchor(this RectTransform rectTf)
         {
@@ -36,7 +36,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃAnchored¿í¶È
+        /// è®¾ç½®Anchoredå®½åº¦
         /// </summary>
         public static void SetWidth(this RectTransform rectTf, float width)
         {
@@ -44,7 +44,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃAnchored¸ß¶È
+        /// è®¾ç½®Anchoredé«˜åº¦
         /// </summary>
         public static void SetHeight(this RectTransform rectTf, float height)
         {
@@ -52,7 +52,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// ÉèÖÃAnchored¿í¸ß
+        /// è®¾ç½®Anchoredå®½é«˜
         /// </summary>
         public static void SetRectSize(this RectTransform rectTf, float width, float height)
         {
@@ -63,7 +63,7 @@ namespace Duo1JFramework
         #endregion RectTransform
 
         /// <summary>
-        /// °ó¶¨¿ÉÍÏ×§Ãæ°å
+        /// ç»‘å®šå¯æ‹–æ‹½é¢æ¿
         /// </summary>
         public static void BindDragPanel(this RectTransform rectTf)
         {

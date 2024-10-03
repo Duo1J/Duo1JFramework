@@ -1,7 +1,7 @@
 namespace Duo1JFramework.AudioAPI
 {
     /// <summary>
-    /// ¹ÒÔØÇı¶¯ÒôÆµ¿ØÖÆÆ÷
+    /// æŒ‚è½½é©±åŠ¨éŸ³é¢‘æ§åˆ¶å™¨
     /// </summary>
     public class AudioController : BaseAudioController
     {
@@ -20,7 +20,7 @@ namespace Duo1JFramework.AudioAPI
                     PlayKeep(data);
                     break;
                 default:
-                    Log.ErrorForce($"AudioController::OnAwake Î´´¦ÀíµÄÒôÆµ²¥·ÅÀàĞÍ: `{audioPlayType}`");
+                    Log.ErrorForce($"AudioController::OnAwake æœªå¤„ç†çš„éŸ³é¢‘æ’­æ”¾ç±»å‹: `{audioPlayType}`");
                     break;
             }
         }

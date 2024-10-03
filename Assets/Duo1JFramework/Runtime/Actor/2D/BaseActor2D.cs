@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework.Actor.Actor2D
 {
     /// <summary>
-    /// 2D角色逻辑基类
+    /// 2D瑙掕壊閫昏緫鍩虹被
     /// </summary>
     [Serializable]
     public abstract class BaseActor2D : BaseRegister,
@@ -13,12 +13,12 @@ namespace Duo1JFramework.Actor.Actor2D
             ICameraLookAt
     {
         /// <summary>
-        /// 相机跟随挂点
+        /// 鐩告満璺熼殢鎸傜偣
         /// </summary>
         public Transform CameraFollowPoint => null;
 
         /// <summary>
-        /// 相机注视挂点
+        /// 鐩告満娉ㄨ鎸傜偣
         /// </summary>
         public Transform CameraLookAtPoint => null;
 

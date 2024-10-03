@@ -5,22 +5,22 @@ using UnityEngine.U2D;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// ×ÊÔ´¹¤¾ßÀà
+    /// èµ„æºå·¥å…·ç±»
     /// </summary>
     public static class AssetUtil
     {
         /// <summary>
-        /// Òì²½¼ÓÔØÍ¼¼¯Sprite
+        /// å¼‚æ­¥åŠ è½½å›¾é›†Sprite
         /// </summary>
         public static void LoadAtlasSprite(EAssetLoadType loadType, string atlasPath, string spritePath, Action<Sprite> callback)
         {
-            Assert.NotNull(callback, "»Øµ÷²»¿ÉÎª¿Õ");
+            Assert.NotNull(callback, "å›è°ƒä¸å¯ä¸ºç©º");
 
             AssetManager.Instance.LoadByType<SpriteAtlas>(atlasPath, (atlas) =>
             {
                 if (atlas == null)
                 {
-                    Log.ErrorForce($"¼ÓÔØÍ¼¼¯Ê§°Ü: `{atlasPath}`");
+                    Log.ErrorForce($"åŠ è½½å›¾é›†å¤±è´¥: `{atlasPath}`");
                     callback(null);
                     return;
                 }
@@ -29,7 +29,7 @@ namespace Duo1JFramework.Asset
 
                 if (sprite == null)
                 {
-                    Log.ErrorForce($"¼ÓÔØÍ¼¼¯SpriteÊ§°Ü: `{atlasPath}` - `{spritePath}`");
+                    Log.ErrorForce($"åŠ è½½å›¾é›†Spriteå¤±è´¥: `{atlasPath}` - `{spritePath}`");
                     callback(null);
                     return;
                 }
@@ -39,7 +39,7 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// Í¬²½¼ÓÔØÍ¼¼¯Sprite
+        /// åŒæ­¥åŠ è½½å›¾é›†Sprite
         /// </summary>
         public static Sprite LoadAtlasSpriteSync(EAssetLoadType loadType, string atlasPath, string spritePath)
         {
@@ -47,7 +47,7 @@ namespace Duo1JFramework.Asset
 
             if (atlas == null)
             {
-                Log.ErrorForce($"¼ÓÔØÍ¼¼¯Ê§°Ü: `{atlasPath}`");
+                Log.ErrorForce($"åŠ è½½å›¾é›†å¤±è´¥: `{atlasPath}`");
                 return null;
             }
 
@@ -55,7 +55,7 @@ namespace Duo1JFramework.Asset
 
             if (sprite == null)
             {
-                Log.ErrorForce($"¼ÓÔØÍ¼¼¯SpriteÊ§°Ü: `{atlasPath}` - `{spritePath}`");
+                Log.ErrorForce($"åŠ è½½å›¾é›†Spriteå¤±è´¥: `{atlasPath}` - `{spritePath}`");
                 return null;
             }
 

@@ -7,19 +7,19 @@ using UnityEditor;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Unity Editor 相关扩展
+    /// Unity Editor 鐩稿叧鎵╁睍
     /// </summary>
     public static class UnityEditorExtend
     {
         /// <summary>
-        /// 记录物体撤销
+        /// 璁板綍鐗╀綋鎾ら攢
         /// </summary>
         public static GameObject RecordObject(this GameObject go, string msg)
         {
 #if UNITY_EDITOR
             Undo.RecordObject(go, msg);
 #else
-            Log.ErrorForce($"非编辑器下不可调用GameObject:RecordObject(), {msg}");
+            Log.ErrorForce($"闈炵紪杈戝櫒涓嬩笉鍙皟鐢℅ameObject:RecordObject(), {msg}");
 #endif
             return go;
         }

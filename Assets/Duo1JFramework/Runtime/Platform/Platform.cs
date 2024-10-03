@@ -1,12 +1,12 @@
 namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
-    /// ƽ̨
+    /// 平台
     /// </summary>
     public static class Platform
     {
         /// <summary>
-        /// ��ǰƽ̨�ӿ�
+        /// 当前平台接口
         /// </summary>
         public static IPlatform Current
         {
@@ -25,7 +25,7 @@ namespace Duo1JFramework.PlatformAPI
         public static EPlatform Type => Current.Type;
 
         /// <summary>
-        /// ��ʼ��
+        /// 初始化
         /// </summary>
         public static void Init()
         {
@@ -42,7 +42,7 @@ namespace Duo1JFramework.PlatformAPI
             current = new DefaultPlatform();
 #endif
 
-            Log.Info($"��ʼ��ƽ̨`{current.GetType().Name}`");
+            Log.Info($"初始化平台`{current.GetType().Name}`");
         }
     }
 }

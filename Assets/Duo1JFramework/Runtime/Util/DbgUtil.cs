@@ -5,12 +5,12 @@ using System.Diagnostics;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Debug¹¤¾ßÀà
+    /// Debugå·¥å…·ç±»
     /// </summary>
     public static class DbgUtil
     {
         /// <summary>
-        /// »ñÈ¡µ±Ç°µ÷ÓÃÕ»
+        /// è·å–å½“å‰è°ƒç”¨æ ˆ
         /// </summary>
         public static string GetStackTrace()
         {
@@ -30,7 +30,7 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// »ñÈ¡µ±Ç°ÄÚ´æĞÅÏ¢
+        /// è·å–å½“å‰å†…å­˜ä¿¡æ¯
         /// </summary>
         public static string GetMemoryInfo()
         {

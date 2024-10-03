@@ -1,12 +1,12 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ¿ÉÏú»Ù½Ó¿Ú
+    /// å¯é”€æ¯æ¥å£
     /// </summary>
     public interface IDispose
     {
         /// <summary>
-        /// Ïú»Ù
+        /// é”€æ¯
         /// </summary>
         void Dispose();
     }

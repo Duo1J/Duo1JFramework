@@ -1,4 +1,4 @@
-﻿using Duo1JFramework.Asset;
+using Duo1JFramework.Asset;
 using Duo1JFramework.Config;
 using Duo1JFramework.ObjectPool;
 using log4net;

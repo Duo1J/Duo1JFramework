@@ -5,7 +5,7 @@ using UnityEngine.Profiling;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// ·ÖÎö¹¤¾ßÀà
+    /// åˆ†æå·¥å…·ç±»
     /// </summary>
     public static class ProfileUtil
     {

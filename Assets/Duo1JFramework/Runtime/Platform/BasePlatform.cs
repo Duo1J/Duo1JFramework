@@ -4,7 +4,7 @@ using UnityEngine.Profiling;
 namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
-    /// 平台基础实现
+    /// 骞冲彴鍩虹瀹炵幇
     /// </summary>
     public abstract class BasePlatform : IPlatform
     {

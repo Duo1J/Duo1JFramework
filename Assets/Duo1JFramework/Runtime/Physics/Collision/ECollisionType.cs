@@ -1,17 +1,17 @@
 namespace Duo1JFramework.PhysicsAPI
 {
     /// <summary>
-    /// Åö×²¡¢´¥·¢ÀàĞÍ
+    /// ç¢°æ’ã€è§¦å‘ç±»å‹
     /// </summary>
     public enum ECollisionType
     {
         /// <summary>
-        /// Åö×²
+        /// ç¢°æ’
         /// </summary>
         Collider,
 
         /// <summary>
-        /// ´¥·¢Æ÷
+        /// è§¦å‘å™¨
         /// </summary>
         Trigger
     }

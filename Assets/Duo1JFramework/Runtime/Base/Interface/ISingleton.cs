@@ -1,12 +1,12 @@
 namespace Duo1JFramework
 {
     /// <summary>
-    /// µ¥Àı½Ó¿Ú
+    /// å•ä¾‹æ¥å£
     /// </summary>
     public interface ISingleton : IDispose
     {
         /// <summary>
-        /// ÊÇ·ñÒÑÏú»Ù
+        /// æ˜¯å¦å·²é”€æ¯
         /// </summary>
         bool IsDisposed { get; }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// UIÌí¼Ó×é¼şÂß¼­£¬²»¿ÉÖØ¸´¹ÒÔØ
+    /// UIæ·»åŠ ç»„ä»¶é€»è¾‘ï¼Œä¸å¯é‡å¤æŒ‚è½½
     /// </summary>
     public static class UIAddComponent
     {

@@ -1,22 +1,22 @@
 namespace Duo1JFramework.ObjectPool
 {
     /// <summary>
-    /// ¶ÔÏó³Ø¶ÔÏó°ü×°
+    /// å¯¹è±¡æ± å¯¹è±¡åŒ…è£…
     /// </summary>
     public class ObjectPoolItem<T> where T : class, new()
     {
         /// <summary>
-        /// ËùÊô¶ÔÏó³Ø
+        /// æ‰€å±å¯¹è±¡æ± 
         /// </summary>
         public ObjectPoolModel<T> Pool { get; private set; }
 
         /// <summary>
-        /// ¶ÔÏóÖµ
+        /// å¯¹è±¡å€¼
         /// </summary>
         public T Value { get; private set; }
 
         /// <summary>
-        /// ÊÇ·ñÊ¹ÓÃÖĞ
+        /// æ˜¯å¦ä½¿ç”¨ä¸­
         /// </summary>
         public bool Using { get; set; }
 
@@ -27,7 +27,7 @@ namespace Duo1JFramework.ObjectPool
         }
 
         /// <summary>
-        /// ·µ»Ø¶ÔÏó³Ø
+        /// è¿”å›å¯¹è±¡æ± 
         /// </summary>
         public void Return()
         {

@@ -1,34 +1,34 @@
 namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
-    /// Æ½Ì¨½Ó¿Ú
+    /// å¹³å°æ¥å£
     /// </summary>
     public interface IPlatform
     {
         /// <summary>
-        /// Æ½Ì¨ÀàĞÍÃ¶¾Ù
+        /// å¹³å°ç±»å‹æšä¸¾
         /// </summary>
         EPlatform Type { get; }
 
         #region Memory
 
         /// <summary>
-        /// »ñÈ¡×ÜÄÚ´æ (MB)
+        /// è·å–æ€»å†…å­˜ (MB)
         /// </summary>
         int GetTotalMemory();
 
         /// <summary>
-        /// »ñÈ¡×Ü±£ÁôÄÚ´æ (B)
+        /// è·å–æ€»ä¿ç•™å†…å­˜ (B)
         /// </summary>
         long GetTotalReservedMemory();
 
         /// <summary>
-        /// »ñÈ¡ÒÑÊ¹ÓÃ¶ÑÄÚ´æ (B)
+        /// è·å–å·²ä½¿ç”¨å †å†…å­˜ (B)
         /// </summary>
         long GetUsedHeapSize();
 
         /// <summary>
-        /// »ñÈ¡×Ü¶ÑÄÚ´æ (B)
+        /// è·å–æ€»å †å†…å­˜ (B)
         /// </summary>
         long GetTotalHeapSize();
 

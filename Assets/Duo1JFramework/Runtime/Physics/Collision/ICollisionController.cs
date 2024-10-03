@@ -1,22 +1,22 @@
 namespace Duo1JFramework.PhysicsAPI
 {
     /// <summary>
-    /// Åö×²¿ØÖÆÆ÷½Ó¿Ú
+    /// ç¢°æ’æ§åˆ¶å™¨æ¥å£
     /// </summary>
     public interface ICollisionController : IEditorDrawer
     {
         /// <summary>
-        /// »ñÈ¡GoÊµÀıID
+        /// è·å–Goå®ä¾‹ID
         /// </summary>
         int GetInstanceID();
 
         /// <summary>
-        /// ÉèÖÃÊÇ·ñ¿ÉÓÃ
+        /// è®¾ç½®æ˜¯å¦å¯ç”¨
         /// </summary>
         void SetEnable(bool enable);
 
         /// <summary>
-        /// ÉèÖÃÅö×²¡¢´¥·¢ÀàĞÍ
+        /// è®¾ç½®ç¢°æ’ã€è§¦å‘ç±»å‹
         /// </summary>
         void SetCollisionType(ECollisionType collisionType);
     }

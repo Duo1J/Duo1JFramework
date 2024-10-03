@@ -1,12 +1,12 @@
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// ·ºĞÍUI´°¿ÚÂß¼­
+    /// æ³›å‹UIçª—å£é€»è¾‘
     /// </summary>
     public abstract class GenericWindow<T> : Window where T : Window, new()
     {
         /// <summary>
-        /// ´ò¿ª´°¿Ú
+        /// æ‰“å¼€çª—å£
         /// </summary>
         public static T Open()
         {
@@ -14,7 +14,7 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// ¹Ø±Õ´°¿Ú
+        /// å…³é—­çª—å£
         /// </summary>
         public static bool Close()
         {
@@ -22,7 +22,7 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// ÇĞ»»´ò¿ªºÍ¹Ø±Õ×´Ì¬
+        /// åˆ‡æ¢æ‰“å¼€å’Œå…³é—­çŠ¶æ€
         /// </summary>
         public static void Switch()
         {
@@ -37,7 +37,7 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// »ØÍËµ½´Ë´°¿Ú
+        /// å›é€€åˆ°æ­¤çª—å£
         /// </summary>
         public static Window BackToThis()
         {
@@ -45,7 +45,7 @@ namespace Duo1JFramework.UI
         }
 
         /// <summary>
-        /// ´Ë´°¿ÚÊÇ·ñÒÑ´ò¿ª
+        /// æ­¤çª—å£æ˜¯å¦å·²æ‰“å¼€
         /// </summary>
         public static bool IsOpened()
         {
