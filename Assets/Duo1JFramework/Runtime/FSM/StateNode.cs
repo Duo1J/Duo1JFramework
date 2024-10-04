@@ -34,8 +34,19 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public string MaxTimeChgStateName { get; private set; }
 
+        /// <summary>
+        /// 状态进入外部回调
+        /// </summary>
         private Action<object> stateEnter;
+
+        /// <summary>
+        /// 状态更新外部回调
+        /// </summary>
         private Action stateTick;
+
+        /// <summary>
+        /// 状态退出外部回调
+        /// </summary>
         private Action<object> stateExit;
 
         /// <summary>
@@ -46,7 +57,9 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 内部计算时间获取
         /// </summary>
-        protected float CurTime => Time.time;
+        protected float CurTime => TimeUtil.CurTime;
+
+        #region public Method
 
         /// <summary>
         /// 创建
@@ -108,7 +121,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 检查是否已满足可切换条件
         /// </summary>
-        public override bool CheckSwitchCon()
+        public override bool CheckSwitchCondition()
         {
             if ((CurTime - StartTime) < MinTime)
             {
@@ -119,16 +132,21 @@ namespace Duo1JFramework.FSM
         }
 
         /// <summary>
-        /// 是否可切换状态至
+        /// 是否可切换状态至`tarStateName`状态
         /// </summary>
         public override bool CanSwitchTo(string tarStateName)
         {
             if (switchList == null || switchList.Length == 0)
+            {
                 return true;
+            }
+
             return switchList.Contains(tarStateName);
         }
 
-        #region Inner
+        #endregion public Method
+
+        #region Inner Method
 
         /// <summary>
         /// 状态进入
@@ -160,8 +178,6 @@ namespace Duo1JFramework.FSM
             stateExit?.Invoke(param);
         }
 
-        #endregion Inner
-
         private StateNode(string stateName, Action<object> stateEnter = null, Action stateTick = null, Action<object> stateExit = null)
         {
             this.StateName = stateName;
@@ -169,6 +185,8 @@ namespace Duo1JFramework.FSM
             this.stateTick = stateTick;
             this.stateExit = stateExit;
         }
+
+        #endregion Inner Method
 
         public override string ToString()
         {

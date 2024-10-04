@@ -133,7 +133,7 @@ namespace Duo1JFramework.FSM
                 {
                     return false;
                 }
-                if (!curState.CheckSwitchCon())
+                if (!curState.CheckSwitchCondition())
                 {
                     return false;
                 }
@@ -182,12 +182,16 @@ namespace Duo1JFramework.FSM
         public void Tick()
         {
             if (curState == null)
+            {
                 return;
+            }
+
             if (ignoreNextTick)
             {
                 ignoreNextTick = false;
                 return;
             }
+
             curState.StateTick();
         }
 

@@ -1,7 +1,7 @@
 namespace Duo1JFramework.FSM
 {
     /// <summary>
-    /// 基础有限状态机节点
+    /// 有限状态机基础节点
     /// </summary>
     public abstract class BaseStateNode : IStateNode
     {
@@ -37,7 +37,7 @@ namespace Duo1JFramework.FSM
         }
 
         /// <summary>
-        /// 是否可切换状态至
+        /// 是否可切换状态至`tarStateName`状态
         /// </summary>
         public virtual bool CanSwitchTo(string tarStateName)
         {
@@ -47,7 +47,7 @@ namespace Duo1JFramework.FSM
         /// <summary>
         /// 检查是否已满足可切换条件
         /// </summary>
-        public virtual bool CheckSwitchCon()
+        public virtual bool CheckSwitchCondition()
         {
             return true;
         }

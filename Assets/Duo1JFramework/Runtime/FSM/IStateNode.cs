@@ -31,13 +31,13 @@ namespace Duo1JFramework.FSM
         void StateTick();
 
         /// <summary>
-        /// 是否可切换状态至
+        /// 是否可切换状态至`tarStateName`状态
         /// </summary>
         bool CanSwitchTo(string tarStateName);
 
         /// <summary>
         /// 检查是否已满足可切换条件
         /// </summary>
-        bool CheckSwitchCon();
+        bool CheckSwitchCondition();
     }
 }

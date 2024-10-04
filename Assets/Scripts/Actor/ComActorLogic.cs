@@ -1,12 +1,9 @@
 using Duo1JFramework.Actor;
-using Duo1JFramework.AudioAPI;
 using Duo1JFramework.FSM;
 using Duo1JFramework.GamerInput;
 
 public class ComActorLogic : CcControlableActor
 {
-    private AudioData boxAudioData = new AudioData("Audio/coin_14.wav");
-
     protected override void OnCreated()
     {
         base.OnCreated();
