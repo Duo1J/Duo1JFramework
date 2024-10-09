@@ -2,6 +2,8 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
+using UObject = UnityEngine.Object;
+
 namespace Duo1JFramework
 {
     /// <summary>
@@ -128,6 +130,35 @@ namespace Duo1JFramework
             return EditorUtility.DisplayDialog("提示",
                 $"平台将从{EditorUserBuildSettings.activeBuildTarget.GetName()}切换为{buildTarget.GetName()}, 是否继续?",
                 "是", "否");
+        }
+
+        /// <summary>
+        /// 创建临时实例
+        /// </summary>
+        public static void CreateTempInstance(GameObject template, Action<GameObject> action)
+        {
+            if (template == null || action == null)
+            {
+                return;
+            }
+
+            GameObject instance = null;
+            try
+            {
+                instance = UObject.Instantiate(template);
+                action(instance);
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e);
+            }
+            finally
+            {
+                if (instance != null)
+                {
+                    instance.DestroyImmediate(false);
+                }
+            }
         }
 
         #endregion 资源编辑
