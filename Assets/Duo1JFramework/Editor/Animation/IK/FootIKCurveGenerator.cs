@@ -12,30 +12,12 @@ namespace Duo1JFramework.AnimationAPI
     public class FootIKCurveGenerator : BaseEditorWindow<FootIKCurveGenerator>
     {
         /// <summary>
-        /// 工具模式
-        /// </summary>
-        public enum Mode
-        {
-            /// <summary>
-            /// 使用Asset中的引用
-            /// </summary>
-            ByAsset,
-
-            /// <summary>
-            /// 使用Hierarchy的实例
-            /// </summary>
-            ByHierarchy
-        }
-
-        private Mode mode = Mode.ByAsset;
-
-        /// <summary>
-        /// 采样目标
+        /// 当前采样目标
         /// </summary>
         private GameObject sampleGo;
 
         /// <summary>
-        /// 采样目标Animator
+        /// 当前采样目标的Animator
         /// </summary>
         private Animator animator;
 
@@ -73,12 +55,12 @@ namespace Duo1JFramework.AnimationAPI
         private float rightBottomHeight;
 
         /// <summary>
-        /// ByAsset模式的资产数
+        /// 目标对象数
         /// </summary>
         private int assetCnt = 0;
 
         /// <summary>
-        /// ByAsset模式的资产引用列表
+        /// 目标对象列表
         /// </summary>
         private GameObject[] assets;
 
@@ -94,35 +76,20 @@ namespace Duo1JFramework.AnimationAPI
             RichText = true;
             DrawErrMsg();
 
-            ED.Horizontal(() =>
-            {
-                GUILayout.Label("模式");
-                mode = (Mode)EditorGUILayout.EnumPopup(mode);
-            });
-
+            ED.HelpBox_Editor("目标物体或子物体应挂载Animator组件\n组件拥有AnimatorController资产且具备人形骨骼", MessageType.Info);
+            ED.HelpBox_Editor("将要自动计算曲线的动画Clip都放到AnimatorController中", MessageType.Info);
             GUILayout.Space(5);
 
             ED.Scroll(ref scrollPos, () =>
             {
-                DrawCommonParam();
+                DrawParam();
                 GUILayout.Space(5);
 
-                switch (mode)
-                {
-                    case Mode.ByAsset:
-                        DrawMode_ByAsset();
-                        break;
-                    case Mode.ByHierarchy:
-                        DrawMode_ByHierarchy();
-                        break;
-                }
+                DrawAssets();
             });
         }
 
-        /// <summary>
-        /// 绘制通用参数
-        /// </summary>
-        private void DrawCommonParam()
+        private void DrawParam()
         {
             sampleRate = EditorGUILayout.IntSlider("采样率", sampleRate, 2, 60);
             foot2GroundThreshold = EditorGUILayout.FloatField("脚离地面阈值", foot2GroundThreshold);
@@ -130,11 +97,11 @@ namespace Duo1JFramework.AnimationAPI
             rightFootIKCurveName = EditorGUILayout.TextField("右脚IK曲线名", rightFootIKCurveName);
         }
 
-        private void DrawMode_ByAsset()
+        private void DrawAssets()
         {
             ED.Horizontal(() =>
             {
-                assetCnt = EditorGUILayout.IntField("资产数目", assetCnt);
+                assetCnt = EditorGUILayout.IntField("目标数量", assetCnt);
                 if (GUILayout.Button(assets == null ? "创建" : "设置", GUILayout.Width(60)))
                 {
                     if (assetCnt > 0)
@@ -148,75 +115,41 @@ namespace Duo1JFramework.AnimationAPI
             {
                 for (int i = 0; i < assets.Length; i++)
                 {
-                    assets[i] = (GameObject)EditorGUILayout.ObjectField(assets[i], typeof(GameObject), false);
+                    assets[i] = (GameObject)EditorGUILayout.ObjectField(assets[i], typeof(GameObject), true);
                 }
             }
 
             GUILayout.FlexibleSpace();
 
-            if (GUILayout.Button("生成脚部IK动画曲线"))
+            if (GUILayout.Button("生成足部IK动画曲线"))
             {
                 if (assets == null || assets.Length == 0)
                 {
-                    SetErrMsg("资产采样列表为空, 请设置`资产数目`并拖入目标");
+                    SetErrMsg("采样目标列表为空, 请设置`目标数目`并拖入目标");
                     return;
                 }
 
-                if (CheckCommonParam())
+                if (CheckParam())
                 {
-                    for (int i = 0; i < assets.Length; i++)
+                    if (EditorUtility.DisplayDialog("", "是否生成足部IK动画曲线?", "确定", "取消"))
                     {
-                        EditorUtil.CreateTempInstance(assets[i], (instance) =>
+                        for (int i = 0; i < assets.Length; i++)
                         {
-                            if (InitSample(instance, true))
+                            EditorUtil.CreateTempInstance(assets[i], (instance) =>
                             {
-                                BakeAnimationFootIKCurve();
-                            }
-                        });
+                                if (InitSample(instance, true))
+                                {
+                                    BakeAnimationFootIKCurve();
+                                }
+                            });
+                        }
                     }
                 }
             }
         }
 
-        private void DrawMode_ByHierarchy()
-        {
-            if (GUILayout.Button("设置采样目标为当前选中"))
-            {
-                SetErrMsg(null);
-                if (EditorUtil.GetActiveGo(out GameObject _sampleGo, false))
-                {
-                    InitSample(_sampleGo, true);
-                    Repaint();
-                }
-                else
-                {
-                    SetErrMsg("未在Hierarchy窗口里选中物体");
-                }
-            }
-
-            if (sampleGo == null)
-            {
-                ED.HelpBox_Editor("请在Hierarchy窗口选择要生成的物体", MessageType.Info);
-                ED.HelpBox_Editor("目标物体或子物体应拥有Animator组件\n组件拥有AnimatorController资产且具备人形骨骼", MessageType.Info);
-                ED.HelpBox_Editor("将要自动计算曲线的动画Clip都放到AnimatorController中", MessageType.Info);
-                return;
-            }
-
-            GUILayout.Label($"采样目标：{sampleGo.name}");
-
-            GUILayout.FlexibleSpace();
-
-            if (GUILayout.Button("生成脚部IK动画曲线"))
-            {
-                if (CheckCommonParam())
-                {
-                    BakeAnimationFootIKCurve();
-                }
-            }
-        }
-
         /// <summary>
-        /// 初始化采样对象
+        /// 初始化采样目标
         /// </summary>
         private bool InitSample(GameObject _sampleGo, bool searchChild = true)
         {
@@ -247,7 +180,7 @@ namespace Duo1JFramework.AnimationAPI
 
             if (animator.avatar == null)
             {
-                SetErrMsg($"采样目标`{sampleGo.name}`错误，没有avatar资产");
+                SetErrMsg($"采样目标`{sampleGo.name}`错误，没有Avatar资产");
                 ClearData();
                 return false;
             }
@@ -273,9 +206,9 @@ namespace Duo1JFramework.AnimationAPI
         }
 
         /// <summary>
-        /// 检查通用参数
+        /// 检查参数
         /// </summary>
-        private bool CheckCommonParam()
+        private bool CheckParam()
         {
             if (string.IsNullOrEmpty(leftFootIKCurveName))
             {
@@ -376,7 +309,7 @@ namespace Duo1JFramework.AnimationAPI
                     importer.SaveAndReimport();
                 }
 
-                Log.EditorInfo($"`{sampleGo.name}`的IK动画曲线生成完毕");
+                Log.EditorInfo($"`{sampleGo.name}`的足部IK动画曲线生成完毕");
             });
         }
 
