@@ -5,7 +5,7 @@ namespace Duo1JFramework.ObjectPool
     /// <summary>
     /// 池
     /// </summary>
-    public static class Pool
+    public class Pool
     {
         /// <summary>
         /// 创建通用对象池
@@ -24,5 +24,9 @@ namespace Duo1JFramework.ObjectPool
         /// Timer池
         /// </summary>
         public static TimerPool TimerPool = new TimerPool();
+
+        private Pool()
+        {
+        }
     }
 }

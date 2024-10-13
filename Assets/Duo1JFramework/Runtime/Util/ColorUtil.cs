@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 颜色工具类
     /// </summary>
-    public static class ColorUtil
+    public class ColorUtil
     {
         private static Dictionary<string, Color> hexColorCache = new Dictionary<string, Color>(StringComparer.OrdinalIgnoreCase);
 
@@ -80,6 +80,10 @@ namespace Duo1JFramework
         public static Color Create(string hexColor)
         {
             return HexToColor(hexColor);
+        }
+
+        private ColorUtil()
+        {
         }
     }
 }

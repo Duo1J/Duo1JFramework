@@ -6,7 +6,7 @@ namespace Duo1JFramework
     /// <summary>
     /// Gizmos工具类
     /// </summary>
-    public static class GizmosUtil
+    public class GizmosUtil
     {
         public static void SurrondColor(Color color, Action action)
         {
@@ -36,6 +36,10 @@ namespace Duo1JFramework
             Gizmos.DrawWireSphere(point1, radius);
             Gizmos.DrawWireSphere(point2, radius);
             Gizmos.DrawLine(point1, point2);
+        }
+
+        private GizmosUtil()
+        {
         }
     }
 }

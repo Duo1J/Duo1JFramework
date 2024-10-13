@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// </summary>
     /// <see cref="Singleton{T}"/>
     /// <see cref="MonoSingleton{T}"/>
-    public static class SingletonManager
+    public class SingletonManager
     {
         /// <summary>
         /// 单例集合
@@ -107,6 +107,10 @@ namespace Duo1JFramework
 
                 monoSingletonSet.Clear();
             }
+        }
+
+        private SingletonManager()
+        {
         }
     }
 }

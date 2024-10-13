@@ -6,7 +6,7 @@ namespace Duo1JFramework.UI
     /// <summary>
     /// UI工具类
     /// </summary>
-    public static class UIUtil
+    public class UIUtil
     {
         /// <summary>
         /// 深度细分三角形
@@ -64,6 +64,10 @@ namespace Duo1JFramework.UI
             ret.uv3 = Vector2.Lerp(a.uv3, b.uv3, t);
 
             return ret;
+        }
+
+        private UIUtil()
+        {
         }
     }
 }

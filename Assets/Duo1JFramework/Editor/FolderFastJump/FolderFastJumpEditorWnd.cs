@@ -121,7 +121,7 @@ namespace Duo1JFramework
                     FolderFastJumpData data = defaultDataList[i];
                     if (GUILayout.Button("选中", GUILayout.Width(45)))
                     {
-                        ProjectViewUtil.SelectProjectAsset(data.path);
+                        ProjectUtil.SelectProjectAsset(data.path);
                     }
 
                     GUILayout.Label(data.name);
@@ -162,7 +162,7 @@ namespace Duo1JFramework
                         {
                             if (GUILayout.Button("选中", GUILayout.Width(45)))
                             {
-                                ProjectViewUtil.SelectProjectAsset(data.path);
+                                ProjectUtil.SelectProjectAsset(data.path);
                             }
                         });
 

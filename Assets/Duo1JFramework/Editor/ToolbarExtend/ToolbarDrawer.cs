@@ -35,7 +35,7 @@ namespace Duo1JFramework
 
             rightBtnList.Add(new DrawItem(EditorGUIUtility.TrTextContentWithIcon("", "", "d_FolderEmpty Icon"), () =>
             {
-                ProjectViewUtil.OpenExplorer(Def.Path.DataPath);
+                ProjectUtil.OpenExplorer(Def.Path.DataPath);
             }));
         }
 

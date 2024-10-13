@@ -3,7 +3,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 时间工具
     /// </summary>
-    public static class TimeUtil
+    public class TimeUtil
     {
         /// <summary>
         /// 时间方法实现
@@ -27,5 +27,9 @@ namespace Duo1JFramework
         /// 当前时间
         /// </summary>
         public static float CurTime => Impl.CurTime;
+
+        private TimeUtil()
+        {
+        }
     }
 }

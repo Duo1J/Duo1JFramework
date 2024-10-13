@@ -8,7 +8,7 @@ namespace Duo1JFramework.Build
     /// <summary>
     /// AssetBundle构建器
     /// </summary>
-    public static class AssetBundleBuilder
+    public class AssetBundleBuilder
     {
         /// <summary>
         /// 使用ABBuildStrategy配置的目标构建所有AssetBundle
@@ -222,6 +222,10 @@ namespace Duo1JFramework.Build
             }
 
             return ret.ToArray();
+        }
+
+        private AssetBundleBuilder()
+        {
         }
     }
 }

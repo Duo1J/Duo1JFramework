@@ -5,7 +5,7 @@ namespace Duo1JFramework.TimelineAPI
     /// <summary>
     /// Timeline工具类
     /// </summary>
-    public static class TimelineUtil
+    public class TimelineUtil
     {
         /// <summary>
         /// 通过Playable获取其依赖的PlayableDirector
@@ -19,6 +19,10 @@ namespace Duo1JFramework.TimelineAPI
             }
 
             return director;
+        }
+
+        private TimelineUtil()
+        {
         }
     }
 }

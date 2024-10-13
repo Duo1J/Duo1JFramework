@@ -6,7 +6,7 @@ namespace Duo1JFramework.DataStructure
     /// <summary>
     /// 四叉树评估检测算法
     /// </summary>
-    public static class QuadTreeEvalLogic
+    public class QuadTreeEvalLogic
     {
         #region 3D
 
@@ -68,5 +68,9 @@ namespace Duo1JFramework.DataStructure
         }
 
         #endregion 3D
+
+        private QuadTreeEvalLogic()
+        {
+        }
     }
 }

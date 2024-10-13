@@ -3,7 +3,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 层级工具
     /// </summary>
-    public static class LayerUtil
+    public class LayerUtil
     {
         /// <summary>
         /// 开启层级
@@ -45,6 +45,10 @@ namespace Duo1JFramework
         public static int OnlyCloseLayer(params int[] layerList)
         {
             return CloseLayer(Def.LayerMask.ALL, layerList);
+        }
+
+        private LayerUtil()
+        {
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Duo1JFramework.Build
     /// <summary>
     /// App构建器
     /// </summary>
-    public static class AppBuilder
+    public class AppBuilder
     {
         /// <summary>
         /// App构建目标文件夹名
@@ -71,7 +71,7 @@ namespace Duo1JFramework.Build
                 List<EditorBuildSettingsScene> buildSettingSceneList = GetBuildSettingSceneList();
                 BuildPipeline.BuildPlayer(buildSettingSceneList.ToArray(), tarPlayerPath, data.buildTarget, data.buildOptions);
 
-                ProjectViewUtil.OpenExplorer(tarPath);
+                ProjectUtil.OpenExplorer(tarPath);
                 Log.EditorInfo($"Player构建成功: {tarPath}");
             }
             catch (Exception e)
@@ -187,5 +187,9 @@ namespace Duo1JFramework.Build
         }
 
         #endregion Tool
+
+        private AppBuilder()
+        {
+        }
     }
 }

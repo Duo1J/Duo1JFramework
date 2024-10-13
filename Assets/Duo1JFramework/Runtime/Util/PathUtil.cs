@@ -3,7 +3,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 路径工具类
     /// </summary>
-    public static class PathUtil
+    public class PathUtil
     {
         /// <summary>
         /// 统一路径分隔符
@@ -74,6 +74,10 @@ namespace Duo1JFramework
         public static string GetABMapDataPath()
         {
             return $"{GetAssetBundleRoot()}/{Def.Path.ASSET_BUNDLE_MAP_DATA_NAME}";
+        }
+
+        private PathUtil()
+        {
         }
     }
 }

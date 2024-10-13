@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 文件工具类
     /// </summary>
-    public static class FileUtil
+    public class FileUtil
     {
         /// <summary>
         /// 读取所有字符串
@@ -257,6 +257,10 @@ namespace Duo1JFramework
             }
 
             return ret;
+        }
+
+        private FileUtil()
+        {
         }
     }
 }

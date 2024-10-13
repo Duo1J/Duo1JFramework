@@ -9,7 +9,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器工具类
     /// </summary>
-    public static class EditorUtil
+    public class EditorUtil
     {
         #region 选中
 
@@ -330,5 +330,9 @@ namespace Duo1JFramework
         }
 
         #endregion ScriptableObject
+
+        private EditorUtil()
+        {
+        }
     }
 }

@@ -3,7 +3,7 @@ namespace Duo1JFramework.PlatformAPI
     /// <summary>
     /// 平台
     /// </summary>
-    public static class Platform
+    public class Platform
     {
         /// <summary>
         /// 当前平台接口
@@ -22,6 +22,9 @@ namespace Duo1JFramework.PlatformAPI
         }
         private static IPlatform current;
 
+        /// <summary>
+        /// 当前平台类型
+        /// </summary>
         public static EPlatform Type => Current.Type;
 
         /// <summary>
@@ -43,6 +46,10 @@ namespace Duo1JFramework.PlatformAPI
 #endif
 
             Log.Info($"初始化平台`{current.GetType().Name}`");
+        }
+
+        private Platform()
+        {
         }
     }
 }

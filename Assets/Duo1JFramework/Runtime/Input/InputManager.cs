@@ -6,7 +6,7 @@ namespace Duo1JFramework.GamerInput
     /// <summary>
     /// 输入管理器
     /// </summary>
-    public static class InputManager
+    public class InputManager
     {
         public const string HORIZONTAL = "Horizontal";
         public const string VERTICAL = "Vertical";
@@ -280,6 +280,10 @@ namespace Duo1JFramework.GamerInput
         public static bool CheckLimit(EInputLimit _limit)
         {
             return (limit & _limit) > 0;
+        }
+
+        private InputManager()
+        {
         }
     }
 }

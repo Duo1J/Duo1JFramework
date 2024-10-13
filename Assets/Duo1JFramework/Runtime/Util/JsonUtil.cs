@@ -6,7 +6,7 @@ namespace Duo1JFramework
     /// <summary>
     /// Json工具
     /// </summary>
-    public static class JsonUtil
+    public class JsonUtil
     {
         /// <summary>
         /// object转Json
@@ -68,6 +68,10 @@ namespace Duo1JFramework
                 Assert.ExceptHandle(e, "Json转object异常");
                 return null;
             }
+        }
+
+        private JsonUtil()
+        {
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器定义
     /// </summary>
-    public static class EditorDef
+    public class EditorDef
     {
         /// <summary>
         /// 编辑器配置路径
@@ -20,7 +20,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 工具栏菜单相关定义
         /// </summary>
-        public static class Menu
+        public class Menu
         {
             #region 工具栏路径前缀
 
@@ -124,6 +124,14 @@ namespace Duo1JFramework
             };
 
             #endregion 工具窗口名称
+
+            private Menu()
+            {
+            }
+        }
+
+        private EditorDef()
+        {
         }
     }
 }

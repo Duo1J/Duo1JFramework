@@ -7,7 +7,7 @@ namespace Duo1JFramework.Asset
     /// <summary>
     /// 资源工具类
     /// </summary>
-    public static class AssetUtil
+    public class AssetUtil
     {
         /// <summary>
         /// 异步加载图集Sprite
@@ -60,6 +60,10 @@ namespace Duo1JFramework.Asset
             }
 
             return sprite;
+        }
+
+        private AssetUtil()
+        {
         }
     }
 }

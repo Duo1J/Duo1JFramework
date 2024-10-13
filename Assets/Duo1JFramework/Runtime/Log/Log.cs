@@ -9,7 +9,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 日志
     /// </summary>
-    public static class Log
+    public class Log
     {
         /// <summary>
         /// 日志等级
@@ -224,6 +224,10 @@ namespace Duo1JFramework
                 }
             }
             return sb.ToString();
+        }
+
+        private Log()
+        {
         }
     }
 }

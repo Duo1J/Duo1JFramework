@@ -34,7 +34,7 @@ namespace Duo1JFramework
         /// </summary>
         public void SelectAsset()
         {
-            ProjectViewUtil.SelectProjectAsset(AssetPath);
+            ProjectUtil.SelectProjectAsset(AssetPath);
         }
 
         /// <summary>

@@ -8,9 +8,9 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// Project视图工具
+    /// Project工具
     /// </summary>
-    public static class ProjectViewUtil
+    public class ProjectUtil
     {
         /// <summary>
         /// 聚焦到Project窗口
@@ -49,6 +49,10 @@ namespace Duo1JFramework
             Assert.NotNullOrEmpty(path, "待打开的系统资源管理器路径为空");
             //Process.Start("explorer.exe", path);
             Application.OpenURL(path);
+        }
+
+        private ProjectUtil()
+        {
         }
     }
 }

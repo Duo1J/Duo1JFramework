@@ -5,7 +5,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 游戏状态静态类
     /// </summary>
-    public static class Game
+    public class Game
     {
         /// <summary>
         /// 是否在编辑器下
@@ -33,6 +33,10 @@ namespace Duo1JFramework
         public static void GC()
         {
             Framework.GC();
+        }
+
+        private Game()
+        {
         }
     }
 }

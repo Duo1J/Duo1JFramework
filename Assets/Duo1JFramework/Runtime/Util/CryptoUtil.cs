@@ -8,7 +8,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 加密、编码工具类
     /// </summary>
-    public static class CryptoUtil
+    public class CryptoUtil
     {
         #region AES
 
@@ -197,5 +197,9 @@ namespace Duo1JFramework
         }
 
         #endregion Base64
+
+        private CryptoUtil()
+        {
+        }
     }
 }

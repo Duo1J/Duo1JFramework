@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 断言
     /// </summary>
-    public static class Assert
+    public class Assert
     {
         /// <summary>
         /// 通用异常处理
@@ -220,6 +220,10 @@ namespace Duo1JFramework
             }
 
             return ret;
+        }
+
+        private Assert()
+        {
         }
     }
 }

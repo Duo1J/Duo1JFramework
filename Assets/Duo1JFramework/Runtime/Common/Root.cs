@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 节点管理
     /// </summary>
-    public static class Root
+    public class Root
     {
         /// <summary>
         /// 单例物体根节点
@@ -134,5 +134,9 @@ namespace Duo1JFramework
             }
         }
         private static GameObject goPoolRoot;
+
+        private Root()
+        {
+        }
     }
 }

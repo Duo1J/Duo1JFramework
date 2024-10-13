@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// <summary>
     /// Debug工具类
     /// </summary>
-    public static class DbgUtil
+    public class DbgUtil
     {
         /// <summary>
         /// 获取当前调用栈
@@ -37,6 +37,10 @@ namespace Duo1JFramework
             return $"Heap: {Platform.Current.GetUsedHeapSize().B2MB().Limit(2)}/{Platform.Current.GetTotalHeapSize().B2MB().Limit(2)} MB\n" +
                    $"Reserved: {Platform.Current.GetTotalReservedMemory().B2MB().Limit(2)} MB\n" +
                    $"Total: {Platform.Current.GetTotalMemory().MB2GB().Limit(2)} GB";
+        }
+
+        private DbgUtil()
+        {
         }
     }
 }

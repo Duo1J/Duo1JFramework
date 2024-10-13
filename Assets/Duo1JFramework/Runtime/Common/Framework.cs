@@ -4,7 +4,7 @@ using System;
 
 namespace Duo1JFramework
 {
-    public static class Framework
+    public class Framework
     {
         /// <summary>
         /// 框架是否已初始化
@@ -128,5 +128,9 @@ namespace Duo1JFramework
         }
 
         #endregion Inner
+
+        private Framework()
+        {
+        }
     }
 }

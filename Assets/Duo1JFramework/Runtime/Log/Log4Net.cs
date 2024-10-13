@@ -11,7 +11,7 @@ using TextAsset = UnityEngine.TextAsset;
 
 namespace Duo1JFramework
 {
-    public static class Log4Net
+    public class Log4Net
     {
         private static ILog logger = GetLogger("D");
 
@@ -221,6 +221,10 @@ namespace Duo1JFramework
 
                 logger.Info(sb.ToString());
             });
+        }
+
+        private Log4Net()
+        {
         }
     }
 }

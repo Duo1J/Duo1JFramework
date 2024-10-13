@@ -7,7 +7,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 分析工具类
     /// </summary>
-    public static class ProfileUtil
+    public class ProfileUtil
     {
         [Conditional(Def.Symbol.ENABLE_PROFILE)]
         public static void BeginSample(string name)
@@ -25,6 +25,10 @@ namespace Duo1JFramework
         public static void EndSample()
         {
             Profiler.EndSample();
+        }
+
+        private ProfileUtil()
+        {
         }
     }
 }

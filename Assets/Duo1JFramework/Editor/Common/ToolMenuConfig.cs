@@ -11,7 +11,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器工具栏菜单配置
     /// </summary>
-    public static class ToolMenuConfig
+    public class ToolMenuConfig
     {
         #region Path 10
 
@@ -124,5 +124,9 @@ namespace Duo1JFramework
         }
 
         #endregion Animation 50
+
+        private ToolMenuConfig()
+        {
+        }
     }
 }
