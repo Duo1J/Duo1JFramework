@@ -21,7 +21,19 @@ namespace Duo1JFramework
             /// <summary>
             /// 加密ABMapData
             /// </summary>
-            public static bool EncryptABMapData = true;
+            public static bool EncryptABMapData = false;
+#endif
+
+#if NOT_BUILD_AB_CRC
+            /// <summary>
+            /// 构建AssetBundle的CRC校验
+            /// </summary>
+            public static bool BuildABCRC = false;
+#else
+            /// <summary>
+            /// 构建AssetBundle的CRC校验
+            /// </summary>
+            public static bool BuildABCRC = true;
 #endif
         }
     }

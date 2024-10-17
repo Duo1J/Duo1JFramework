@@ -8,22 +8,41 @@ namespace Duo1JFramework.Build
     /// </summary>
     public class ABBuildData
     {
-        public string abName;
+        /// <summary>
+        /// AssetBundle名, 全小写
+        /// </summary>
+        public string ABName => PathUtil.ABNameUnify(abName);
 
-        public List<string> assetPathList;
+        private string abName;
 
+        /// <summary>
+        /// 资源路径列表
+        /// </summary>
+        public List<string> AssetPathList { get; set; }
+
+        /// <summary>
+        /// 转AssetBundleBuild结构
+        /// </summary>
         public AssetBundleBuild ToAssetBundleBuild()
         {
             return new AssetBundleBuild()
             {
-                assetBundleName = abName,
-                assetNames = assetPathList == null ? new string[0] : assetPathList.ToArray()
+                assetBundleName = ABName,
+                assetNames = AssetPathList == null ? new string[0] : AssetPathList.ToArray()
             };
+        }
+
+        /// <summary>
+        /// 资源列表是否为空
+        /// </summary>
+        public bool IsEmpty()
+        {
+            return AssetPathList == null || AssetPathList.Count == 0;
         }
 
         public ABBuildData(string abName)
         {
-            this.abName = abName;
+            this.abName = PathUtil.ABNameUnify(abName);
         }
     }
 }

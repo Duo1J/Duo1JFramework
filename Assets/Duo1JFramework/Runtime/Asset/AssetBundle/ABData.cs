@@ -18,9 +18,19 @@ namespace Duo1JFramework.Asset
         private AssetBundle assetBundle;
 
         /// <summary>
-        /// 待加载的AssetBundle包名
+        /// AssetBundle包名
         /// </summary>
         private string assetBundleName;
+
+        /// <summary>
+        /// CRC校验码
+        /// </summary>
+        private uint crc;
+
+        /// <summary>
+        /// Hash值
+        /// </summary>
+        private string hash;
 
         /// <summary>
         /// 待加载的AssetBundle文件路径
@@ -63,6 +73,8 @@ namespace Duo1JFramework.Asset
         {
             this.assetBundleName = assetBundleName;
             assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
+            crc = ABManager.Instance.GetCRCByABName(assetBundleName);
+            hash = ABManager.Instance.GetHashStrByABName(assetBundleName);
 
             refABList = ABManager.Instance.GetRefABDataList(assetBundleName);
             refThisABSet = new HashSet<ABData>();
@@ -277,7 +289,7 @@ namespace Duo1JFramework.Asset
             LoadAllDependenciesAB(false, () =>
             {
                 loading = true;
-                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(assetBundlePath);
+                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(assetBundleName, crc);
                 UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
                 {
                     AssetBundleCreateRequest _request = req as AssetBundleCreateRequest;
@@ -315,7 +327,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
-            assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+            assetBundle = AssetBundle.LoadFromFile(assetBundleName, crc);
             if (assetBundle == null)
             {
                 Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");

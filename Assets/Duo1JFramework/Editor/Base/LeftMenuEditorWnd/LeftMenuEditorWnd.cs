@@ -61,6 +61,11 @@ namespace Duo1JFramework
         {
             ES.SetRichText();
 
+            if (CheckCompiling())
+            {
+                return;
+            }
+
             float width = Width;
             MenuWidth = Mathf.Clamp(MenuWidth, MinMenuWidth, width);
 

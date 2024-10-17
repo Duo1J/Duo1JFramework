@@ -32,8 +32,8 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public ABData GetABDataByAsset(string assetPath)
         {
-            string assetBundleName = GetAssetBundleNameByAsset(assetPath);
-            return GetABDataByName(assetBundleName);
+            string abName = GetABNameByAsset(assetPath);
+            return GetABDataByName(abName);
         }
 
         /// <summary>
@@ -57,9 +57,25 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 通过资源路径获取对应AssetBunble名
         /// </summary>
-        public string GetAssetBundleNameByAsset(string assetPath)
+        public string GetABNameByAsset(string assetPath)
         {
-            return abMapData.GetAssetBundleNameByAsset(assetPath);
+            return abMapData.GetABNameByAsset(assetPath);
+        }
+
+        /// <summary>
+        /// 通过AssetBundle名获取CRC
+        /// </summary>
+        public uint GetCRCByABName(string abName)
+        {
+            return abMapData.GetCRCByABName(abName);
+        }
+
+        /// <summary>
+        /// 通过AssetBundle名获取Hash字符串
+        /// </summary>
+        public string GetHashStrByABName(string abName)
+        {
+            return abMapData.GetHashStrByABName(abName);
         }
 
         /// <summary>
@@ -92,7 +108,7 @@ namespace Duo1JFramework.Asset
 
         protected override void OnInit()
         {
-            abMapData = ABMapData.Load(Def.Asset.EncryptABMapData);
+            abMapData = ABMapData.LoadFromFile(Def.Asset.EncryptABMapData);
             abDataDict = new Dictionary<string, ABData>();
             InitMainAssetBundle();
 

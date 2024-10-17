@@ -17,6 +17,11 @@ namespace Duo1JFramework
             /// </summary>
             public const string NOT_ENCRYPT_AB_MAP_DATA = "NOT_ENCRYPT_AB_MAP_DATA";
 
+            /// <summary>
+            /// 不构建AssetBundle的CRC校验
+            /// </summary>
+            public const string NOT_BUILD_AB_CRC = "NOT_BUILD_AB_CRC";
+
             private Symbol()
             {
             }

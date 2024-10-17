@@ -113,6 +113,29 @@ namespace Duo1JFramework
             }
         }
 
+        /// <summary>
+        /// 检查是否编译中
+        /// </summary>
+        protected bool CheckCompiling(bool close = false, bool drawTip = true)
+        {
+            if (!EditorApplication.isCompiling)
+            {
+                return false;
+            }
+
+            if (close)
+            {
+                Close();
+            }
+
+            if (drawTip)
+            {
+                ED.HelpBox_Editor("COMPILING");
+            }
+
+            return true;
+        }
+
         #endregion Tool Function
 
         #region Lifecycle

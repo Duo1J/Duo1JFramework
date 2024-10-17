@@ -76,6 +76,19 @@ namespace Duo1JFramework
             return $"{GetAssetBundleRoot()}/{Def.Path.ASSET_BUNDLE_MAP_DATA_NAME}";
         }
 
+        /// <summary>
+        /// 统一AssetBundle名为全小写
+        /// </summary>
+        public static string ABNameUnify(string abName)
+        {
+            if (string.IsNullOrEmpty(abName))
+            {
+                return "";
+            }
+
+            return abName.ToLower();
+        }
+
         private PathUtil()
         {
         }

@@ -4467,7 +4467,7 @@ MonoBehaviour:
     assetLoaderType: 1
     useLog4Net: 1
   editor:
-    assetLoaderType: 0
+    assetLoaderType: 1
     useLog4Net: 1
 --- !u!1 &1862948123
 GameObject:

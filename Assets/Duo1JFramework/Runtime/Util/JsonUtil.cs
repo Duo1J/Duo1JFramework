@@ -11,11 +11,11 @@ namespace Duo1JFramework
         /// <summary>
         /// object转Json
         /// </summary>
-        public static string ToJson(object o)
+        public static string ToJson(object o, Formatting formatting = Formatting.None)
         {
             try
             {
-                return JsonConvert.SerializeObject(o);
+                return JsonConvert.SerializeObject(o, formatting);
             }
             catch (Exception e)
             {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 namespace Duo1JFramework.Build
 {
@@ -49,12 +50,17 @@ namespace Duo1JFramework.Build
 
             foreach (ABBuildData buildData in buildDatas)
             {
-                if (ab2AssetMap.ContainsKey(buildData.abName))
+                if (ab2AssetMap.ContainsKey(buildData.ABName))
                 {
-                    Log.EditorError($"AssetBundle包名重复: {buildData.abName}");
+                    Log.EditorError($"AssetBundle包名重复: {buildData.ABName}");
                     continue;
                 }
-                ab2AssetMap.Add(buildData.abName, buildData.assetPathList);
+                ab2AssetMap.Add(buildData.ABName, buildData.AssetPathList);
+
+                if (buildData.IsEmpty())
+                {
+                    continue;
+                }
 
                 buildList.Add(buildData.ToAssetBundleBuild());
             }
@@ -70,7 +76,16 @@ namespace Duo1JFramework.Build
                     buildTarget
                 );
 
-                ABMapData.Save(ab2AssetMap, Def.Asset.EncryptABMapData);
+                Dictionary<string, uint> ab2CrcMap = null;
+                if (Def.Asset.BuildABCRC)
+                {
+                    ab2CrcMap = BuildAB2CRCMap(buildDatas);
+                }
+
+                Dictionary<string, string> ab2HashMap = BuildAB2HashMap(buildDatas);
+
+                ABMapData.SaveToFile(ab2AssetMap, ab2HashMap, ab2CrcMap, Def.Asset.EncryptABMapData);
+
                 Log.EditorInfo($"构建{buildTarget.GetName()}平台的AssetBndle成功");
             }
             catch (Exception e)
@@ -193,8 +208,8 @@ namespace Duo1JFramework.Build
 
                 foreach (string path in strategyData.pathList)
                 {
-                    string path_ = path.SplitUnify();
-                    List<string> resultList = FileUtil.GetFileInDir(pathPrefix + path_, (p) =>
+                    string _path = path.SplitUnify();
+                    List<string> resultList = FileUtil.GetFileInDir(pathPrefix + _path, (p) =>
                     {
                         if (p.EndsWith(Def.Path.META_SUFFIX))
                         {
@@ -204,13 +219,13 @@ namespace Duo1JFramework.Build
                         return p.Replace(pathPrefix, Def.Path.ASSET_PATH_PREFIX);
                     });
 
-                    if (buildData.assetPathList == null || buildData.assetPathList.Count == 0)
+                    if (buildData.AssetPathList == null || buildData.AssetPathList.Count == 0)
                     {
-                        buildData.assetPathList = resultList;
+                        buildData.AssetPathList = resultList;
                     }
                     else
                     {
-                        List<string> assetPathList = buildData.assetPathList;
+                        List<string> assetPathList = buildData.AssetPathList;
                         foreach (string item in resultList)
                         {
                             assetPathList.Add(item);
@@ -222,6 +237,78 @@ namespace Duo1JFramework.Build
             }
 
             return ret.ToArray();
+        }
+
+        /// <summary>
+        /// 构建AssetBundle与CRC映射
+        /// </summary>
+        public static Dictionary<string, uint> BuildAB2CRCMap(ABBuildData[] buildDatas)
+        {
+            Dictionary<string, uint> ab2CrcMap = new Dictionary<string, uint>();
+
+            foreach (ABBuildData buildData in buildDatas)
+            {
+                if (buildData.IsEmpty())
+                {
+                    continue;
+                }
+
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                if (!File.Exists(abPath))
+                {
+                    Log.EditorError($"构建CRC时未找到AssetBundle文件: `{abPath}`");
+                    ab2CrcMap.Add(buildData.ABName, 0);
+                    continue;
+                }
+
+                if (BuildPipeline.GetCRCForAssetBundle(abPath, out uint crc))
+                {
+                    ab2CrcMap.Add(buildData.ABName, crc);
+                }
+                else
+                {
+                    Log.EditorError($"构建CRC失败, AssetBundle: `{abPath}`");
+                    ab2CrcMap.Add(buildData.ABName, 0);
+                }
+            }
+
+            return ab2CrcMap;
+        }
+
+        /// <summary>
+        /// 构建AssetBundle与Hash映射
+        /// </summary>
+        public static Dictionary<string, string> BuildAB2HashMap(ABBuildData[] buildDatas)
+        {
+            Dictionary<string, string> ab2HashMap = new Dictionary<string, string>();
+
+            foreach (ABBuildData buildData in buildDatas)
+            {
+                if (buildData.IsEmpty())
+                {
+                    continue;
+                }
+
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                if (!File.Exists(abPath))
+                {
+                    Log.EditorError($"构建Hash时未找到AssetBundle文件: `{abPath}`");
+                    ab2HashMap.Add(buildData.ABName, "");
+                    continue;
+                }
+
+                if (BuildPipeline.GetHashForAssetBundle(abPath, out Hash128 hash))
+                {
+                    ab2HashMap.Add(buildData.ABName, hash.ToString());
+                }
+                else
+                {
+                    Log.EditorError($"构建Hash失败, AssetBundle: `{abPath}`");
+                    ab2HashMap.Add(buildData.ABName, "");
+                }
+            }
+
+            return ab2HashMap;
         }
 
         private AssetBundleBuilder()

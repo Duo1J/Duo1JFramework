@@ -15,6 +15,11 @@ namespace Duo1JFramework.Build
 
         private void OnGUI()
         {
+            if (CheckCompiling(true, true))
+            {
+                return;
+            }
+
             DrawBuildInfo();
             DrawBottomButton();
         }

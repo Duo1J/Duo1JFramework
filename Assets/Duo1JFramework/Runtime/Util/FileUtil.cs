@@ -174,6 +174,26 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 剪切文件 (或重命名)
+        /// </summary>
+        public static void Move(string srcPath, string destPath)
+        {
+            if (!File.Exists(srcPath))
+            {
+                return;
+            }
+
+            try
+            {
+                File.Move(srcPath, destPath);
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, $"剪切文件异常: {srcPath}到{destPath}");
+            }
+        }
+
+        /// <summary>
         /// 拷贝文件夹
         /// 若存在相同文件则跳过
         /// </summary>

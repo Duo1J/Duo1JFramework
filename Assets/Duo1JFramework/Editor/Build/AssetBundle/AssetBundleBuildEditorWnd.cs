@@ -16,6 +16,11 @@ namespace Duo1JFramework.Build
         {
             RichText = true;
 
+            if (CheckCompiling(true, true))
+            {
+                return;
+            }
+
             DrawBuildInfo();
             DrawBottomButton();
         }
