@@ -70,6 +70,15 @@ namespace Duo1JFramework.Config
 
         protected override void OnInit()
         {
+            if (runtime == null)
+            {
+                runtime = new RuntimeGameOption();
+            }
+
+            if (editor == null)
+            {
+                editor = new EditorGameOption();
+            }
         }
 
         protected override void OnDispose()

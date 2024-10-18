@@ -20,12 +20,13 @@ namespace Duo1JFramework
                 {
                     instance = EditorUtil.GetOrCreateEditorCfgSO<T>();
                 }
+
                 return instance;
             }
         }
 
         /// <summary>
-        /// 配置实例保存路径
+        /// 配置实例路径
         /// </summary>
         public static string AssetPath => EditorUtil.GetEditorCfgSOPath<T>();
 
@@ -42,6 +43,11 @@ namespace Duo1JFramework
         /// </summary>
         public void Trigger()
         {
+        }
+
+        public override string ToString()
+        {
+            return $"<{AssetPath}>";
         }
     }
 }

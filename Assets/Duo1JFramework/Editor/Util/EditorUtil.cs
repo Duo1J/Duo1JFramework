@@ -306,9 +306,13 @@ namespace Duo1JFramework
             T so = AssetDatabase.LoadAssetAtPath<T>(path);
             if (so == null)
             {
+                Log.ErrorForce($"创建默认编辑器下配置: `{path}`");
                 so = ScriptableObject.CreateInstance<T>();
                 AssetDatabase.CreateAsset(so, path);
+                EditorUtility.SetDirty(so);
+                SaveAndRefresh("EditorUtil::GetOrCreateSO");
             }
+
             return so;
         }
 

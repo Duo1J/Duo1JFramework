@@ -27,7 +27,7 @@ namespace Duo1JFramework
             /// </summary>
             public const string MANIFEST_SUFFIX = ".manifest";
 
-            #region Assset
+            #region Asset
 
             /// <summary>
             /// 资源根文件夹名
@@ -48,6 +48,21 @@ namespace Duo1JFramework
             /// 内部Resources资源路径前缀
             /// </summary>
             public const string RES_PATH_PREFIX = FRAME_WORK_NAME + "/";
+
+            /// <summary>
+            /// 内部Resources资源全路径前缀
+            /// </summary>
+            public const string RES_FULL_PATH_PREFIX = "Assets/" + Def.FRAME_WORK_NAME + "/Resources/" + Def.FRAME_WORK_NAME + "/";
+
+            /// <summary>
+            /// 运行时配置加载路径前缀
+            /// </summary>
+            public const string RUNTIME_CONFIG_LOAD_PATH_PREFIX = RES_PATH_PREFIX + "RuntimeConfig/";
+
+            /// <summary>
+            /// 运行时配置保存路径前缀
+            /// </summary>
+            public const string RUNTIME_CONFIG_SAVE_PATH_PREFIX = RES_FULL_PATH_PREFIX + "RuntimeConfig/";
 
             #endregion Asset
 

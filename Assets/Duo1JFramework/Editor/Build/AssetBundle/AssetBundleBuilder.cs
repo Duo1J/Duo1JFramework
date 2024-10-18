@@ -15,15 +15,15 @@ namespace Duo1JFramework.Build
         /// 使用ABBuildStrategy配置的目标构建所有AssetBundle
         /// </summary>
         /// <see cref="ABBuildStrategy"/>
-        public static void BuildAllAssetBundle()
+        public static bool BuildAllAssetBundle()
         {
-            BuildAllAssetBundle(ABBuildStrategy.Instance.BuildTarget);
+            return BuildAllAssetBundle(ABBuildStrategy.Instance.BuildTarget);
         }
 
         /// <summary>
         /// 构建所有AssetBundle
         /// </summary>
-        public static void BuildAllAssetBundle(BuildTarget buildTarget)
+        public static bool BuildAllAssetBundle(BuildTarget buildTarget)
         {
             ClearAllAssetBundleBuild();
 
@@ -33,7 +33,7 @@ namespace Duo1JFramework.Build
             {
                 Log.EditorError($"AB构建策略配置为空: `{ABBuildStrategy.AssetPath}`");
                 ABBuildStrategy.Instance.SelectAsset();
-                return;
+                return false;
             }
 
             ABBuildData[] buildDatas = StrategyToBuildData(strategyDatas);
@@ -42,7 +42,7 @@ namespace Duo1JFramework.Build
             {
                 Log.EditorError($"AB构建数据为空，请检查策略配置: `{ABBuildStrategy.AssetPath}`");
                 ABBuildStrategy.Instance.SelectAsset();
-                return;
+                return false;
             }
 
             List<AssetBundleBuild> buildList = new List<AssetBundleBuild>();
@@ -67,14 +67,20 @@ namespace Duo1JFramework.Build
 
             try
             {
-                EditorUtility.DisplayProgressBar("构建AssetBndle", "正在构建AssetBundle...", 0.3f);
+                EditorUtility.DisplayProgressBar("构建AssetBundle", "正在构建AssetBundle...", 0.3f);
 
-                BuildPipeline.BuildAssetBundles(
+                AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
                     PathUtil.GetAssetBundleEditorRoot().CheckDir(),
                     buildList.ToArray(),
                     ABBuildStrategy.Instance.BuildOptions,
                     buildTarget
                 );
+
+                if (manifest == null)
+                {
+                    Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBndle失败");
+                    return false;
+                }
 
                 Dictionary<string, string> ab2HashMap = BuildAB2HashMap(buildDatas);
 
@@ -99,11 +105,13 @@ namespace Duo1JFramework.Build
                 ABMapData abMapData = ABMapData.Create(ab2AssetMap, ab2HashMap, ab2CrcMap, ab2MD5Map);
                 abMapData.SaveToFile(Def.Asset.EncryptABMapData);
 
-                Log.EditorInfo($"构建{buildTarget.GetName()}平台的AssetBndle成功");
+                Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBndle成功");
+                return true;
             }
             catch (Exception e)
             {
                 Assert.ExceptHandle(e, "AssetBundle构建异常");
+                return false;
             }
             finally
             {

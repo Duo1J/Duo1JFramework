@@ -248,7 +248,7 @@ namespace Duo1JFramework
                 }
 
                 EditorUtility.SetDirty(So);
-                AssetDatabase.SaveAssets();
+                EditorUtil.SaveAndRefresh("FolderFastJumpEditorWnd::SaveSoData");
                 System.GC.Collect();
             }
             finally
