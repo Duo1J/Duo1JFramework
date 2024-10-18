@@ -27,9 +27,6 @@ MonoBehaviour:
   - abName: Timeline
     pathList:
     - Timeline
-  - abName: UI
-    pathList:
-    - UI
   - abName: World
     pathList:
     - World

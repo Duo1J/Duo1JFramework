@@ -63,6 +63,14 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
+        /// 通过AssetBundle名获取Hash字符串
+        /// </summary>
+        public string GetHashStrByABName(string abName)
+        {
+            return abMapData.GetHashByABName(abName);
+        }
+
+        /// <summary>
         /// 通过AssetBundle名获取CRC
         /// </summary>
         public uint GetCRCByABName(string abName)
@@ -71,11 +79,11 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// 通过AssetBundle名获取Hash字符串
+        /// 通过AssetBundle名获取MD5
         /// </summary>
-        public string GetHashStrByABName(string abName)
+        public string GetMD5ByABName(string abName)
         {
-            return abMapData.GetHashStrByABName(abName);
+            return abMapData.GetMD5ByABName(abName);
         }
 
         /// <summary>

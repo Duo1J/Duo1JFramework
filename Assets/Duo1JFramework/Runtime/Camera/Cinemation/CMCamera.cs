@@ -13,7 +13,10 @@ namespace Duo1JFramework.CameraAPI
             private set
             {
                 virtualCamera = value;
-                Priority = virtualCamera.Priority;
+                if (virtualCamera != null)
+                {
+                    Priority = virtualCamera.Priority;
+                }
             }
         }
         private CinemachineVirtualCamera virtualCamera;

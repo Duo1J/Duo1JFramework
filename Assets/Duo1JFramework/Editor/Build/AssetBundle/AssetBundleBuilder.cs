@@ -76,15 +76,28 @@ namespace Duo1JFramework.Build
                     buildTarget
                 );
 
+                Dictionary<string, string> ab2HashMap = BuildAB2HashMap(buildDatas);
+
                 Dictionary<string, uint> ab2CrcMap = null;
                 if (Def.Asset.BuildABCRC)
                 {
                     ab2CrcMap = BuildAB2CRCMap(buildDatas);
                 }
 
-                Dictionary<string, string> ab2HashMap = BuildAB2HashMap(buildDatas);
+                Dictionary<string, string> ab2MD5Map = BuildAB2MD5Map(buildDatas);
 
-                ABMapData.SaveToFile(ab2AssetMap, ab2HashMap, ab2CrcMap, Def.Asset.EncryptABMapData);
+                switch (Def.Asset.ABNameType)
+                {
+                    case EABNameType.Hash:
+                        RenameAllAssetBundle(buildDatas, ab2HashMap);
+                        break;
+                    case EABNameType.MD5:
+                        RenameAllAssetBundle(buildDatas, ab2MD5Map);
+                        break;
+                }
+
+                ABMapData abMapData = ABMapData.Create(ab2AssetMap, ab2HashMap, ab2CrcMap, ab2MD5Map);
+                abMapData.SaveToFile(Def.Asset.EncryptABMapData);
 
                 Log.EditorInfo($"构建{buildTarget.GetName()}平台的AssetBndle成功");
             }
@@ -299,7 +312,15 @@ namespace Duo1JFramework.Build
 
                 if (BuildPipeline.GetHashForAssetBundle(abPath, out Hash128 hash))
                 {
-                    ab2HashMap.Add(buildData.ABName, hash.ToString());
+                    string hashStr = hash.ToString();
+
+                    if (ab2HashMap.ContainsValue(hashStr))
+                    {
+                        Log.EditorError($"构建Hash重复, AssetBundle: `{abPath}`, Hash: `{hashStr}`");
+                        continue;
+                    }
+
+                    ab2HashMap.Add(buildData.ABName, hashStr);
                 }
                 else
                 {
@@ -309,6 +330,89 @@ namespace Duo1JFramework.Build
             }
 
             return ab2HashMap;
+        }
+
+        /// <summary>
+        /// 构建AssetBundle与MD5映射
+        /// </summary>
+        public static Dictionary<string, string> BuildAB2MD5Map(ABBuildData[] buildDatas)
+        {
+            Dictionary<string, string> ab2MD5Map = new Dictionary<string, string>();
+
+            foreach (ABBuildData buildData in buildDatas)
+            {
+                if (buildData.IsEmpty())
+                {
+                    continue;
+                }
+
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                if (!File.Exists(abPath))
+                {
+                    Log.EditorError($"构建MD5时未找到AssetBundle文件: `{abPath}`");
+                    continue;
+                }
+
+                try
+                {
+                    using (Stream stream = File.OpenRead(abPath))
+                    {
+                        string md5Str = CryptoUtil.MD5ComputeHashStr(stream);
+
+                        if (string.IsNullOrEmpty(md5Str))
+                        {
+                            Log.EditorError($"构建MD5异常为空, AssetBundle: `{abPath}`");
+                            continue;
+                        }
+
+                        if (ab2MD5Map.ContainsValue(md5Str))
+                        {
+                            Log.EditorError($"构建MD5重复, AssetBundle: `{abPath}`, MD5: `{md5Str}`");
+                            continue;
+                        }
+
+                        ab2MD5Map.Add(buildData.ABName, md5Str);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Assert.ExceptHandle(e, $"构建MD5失败, AssetBundle: `{abPath}`");
+                }
+            }
+
+            return ab2MD5Map;
+        }
+
+        /// <summary>
+        /// 使用映射表重命名AssetBundle
+        /// </summary>
+        public static void RenameAllAssetBundle(ABBuildData[] buildDatas, Dictionary<string, string> ab2NameMap)
+        {
+            foreach (ABBuildData buildData in buildDatas)
+            {
+                if (buildData.IsEmpty())
+                {
+                    continue;
+                }
+
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                if (!File.Exists(abPath))
+                {
+                    Log.EditorError($"重命名AssetBundle时未找到目标文件: `{abPath}`");
+                    continue;
+                }
+
+                if (ab2NameMap.TryGetValue(buildData.ABName, out string md5))
+                {
+                    string renamePath = PathUtil.GetAssetBundlePath(md5);
+                    FileUtil.Move(abPath, renamePath);
+                }
+                else
+                {
+                    Log.EditorError($"重命名AssetBundle时映射表中未找到名称, AB: `{abPath}`");
+                    continue;
+                }
+            }
         }
 
         private AssetBundleBuilder()

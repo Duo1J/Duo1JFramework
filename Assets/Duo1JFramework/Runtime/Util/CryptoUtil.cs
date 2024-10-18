@@ -1,3 +1,4 @@
+using Duo1JFramework.ObjectPool;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -169,9 +170,52 @@ namespace Duo1JFramework
             return MD5.ComputeHash(bytes);
         }
 
+        public static byte[] MD5ComputeHash(string str)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            return MD5ComputeHash(bytes);
+        }
+
         public static byte[] MD5ComputeHash(Stream stream)
         {
             return MD5.ComputeHash(stream);
+        }
+
+        public static string MD5ComputeHashStr(byte[] bytes)
+        {
+            byte[] md5Hash = MD5ComputeHash(bytes);
+            return MD5HashToString(md5Hash);
+        }
+
+        public static string MD5ComputeHashStr(string str)
+        {
+            byte[] md5Hash = MD5ComputeHash(str);
+            return MD5HashToString(md5Hash);
+        }
+
+        public static string MD5ComputeHashStr(Stream stream)
+        {
+            byte[] md5Hash = MD5ComputeHash(stream);
+            return MD5HashToString(md5Hash);
+        }
+
+        public static string MD5HashToString(byte[] md5Hash)
+        {
+            return BitConverter.ToString(md5Hash).Replace("-", "").ToLowerInvariant();
+
+            //string ret = null;
+
+            //Pool.StringBuilderPool.Using((sb) =>
+            //{
+            //    foreach (byte b in md5Hash)
+            //    {
+            //        sb.Append(b.ToHexStr());
+            //    }
+
+            //    ret = sb.ToString();
+            //});
+
+            //return ret;
         }
 
         #endregion MD5

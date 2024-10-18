@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -50,6 +51,19 @@ namespace Duo1JFramework.Build
             ED.Vertical(() =>
             {
                 GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button("打开构建目标文件夹"))
+                {
+                    string abRoot = PathUtil.GetAssetBundleRoot();
+                    if (!string.IsNullOrEmpty(abRoot) && Directory.Exists(abRoot))
+                    {
+                        ProjectUtil.OpenExplorer(abRoot);
+                    }
+                    else
+                    {
+                        Log.EditorError("AssetBundle未构建，无法打开目标文件夹");
+                    }
+                }
 
                 if (GUILayout.Button("定位到构建策略文件"))
                 {

@@ -1,3 +1,4 @@
+using Duo1JFramework.Build;
 using Duo1JFramework.TimerUpdate;
 using System;
 using System.Collections.Generic;
@@ -23,14 +24,19 @@ namespace Duo1JFramework.Asset
         private string assetBundleName;
 
         /// <summary>
+        /// Hash值
+        /// </summary>
+        private string hash;
+
+        /// <summary>
         /// CRC校验码
         /// </summary>
         private uint crc;
 
         /// <summary>
-        /// Hash值
+        /// MD5值
         /// </summary>
-        private string hash;
+        private string md5;
 
         /// <summary>
         /// 待加载的AssetBundle文件路径
@@ -72,9 +78,25 @@ namespace Duo1JFramework.Asset
         public ABData(string assetBundleName)
         {
             this.assetBundleName = assetBundleName;
-            assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
-            crc = ABManager.Instance.GetCRCByABName(assetBundleName);
             hash = ABManager.Instance.GetHashStrByABName(assetBundleName);
+            crc = ABManager.Instance.GetCRCByABName(assetBundleName);
+            md5 = ABManager.Instance.GetMD5ByABName(assetBundleName);
+
+            switch (Def.Asset.ABNameType)
+            {
+                case EABNameType.Origin:
+                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
+                    break;
+                case EABNameType.Hash:
+                    assetBundlePath = PathUtil.GetAssetBundlePath(hash);
+                    break;
+                case EABNameType.MD5:
+                    assetBundlePath = PathUtil.GetAssetBundlePath(md5);
+                    break;
+                default:
+                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
+                    break;
+            }
 
             refABList = ABManager.Instance.GetRefABDataList(assetBundleName);
             refThisABSet = new HashSet<ABData>();
@@ -92,6 +114,12 @@ namespace Duo1JFramework.Asset
             CheckABLoaded(false, () =>
             {
                 ABAssetData abAssetData = GetABAssetData(assetPath);
+                if (abAssetData == null)
+                {
+                    callback?.Invoke(null);
+                    return;
+                }
+
                 abAssetData.Load<T>(callback);
             });
         }
@@ -105,6 +133,11 @@ namespace Duo1JFramework.Asset
 
             CheckABLoaded(true);
             ABAssetData abAssetData = GetABAssetData(assetPath);
+            if (abAssetData == null)
+            {
+                return null;
+            }
+
             return abAssetData.LoadSync<T>();
         }
 
@@ -184,8 +217,11 @@ namespace Duo1JFramework.Asset
                     abData.RemoveRefThis(this);
                 }
 
-                assetBundle.Unload(force);
-                assetBundle = null;
+                if (assetBundle != null)
+                {
+                    assetBundle.Unload(force);
+                    assetBundle = null;
+                }
 
                 return true;
             }
@@ -289,7 +325,7 @@ namespace Duo1JFramework.Asset
             LoadAllDependenciesAB(false, () =>
             {
                 loading = true;
-                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(assetBundleName, crc);
+                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(assetBundlePath, crc);
                 UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
                 {
                     AssetBundleCreateRequest _request = req as AssetBundleCreateRequest;
@@ -327,7 +363,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
-            assetBundle = AssetBundle.LoadFromFile(assetBundleName, crc);
+            assetBundle = AssetBundle.LoadFromFile(assetBundlePath, crc);
             if (assetBundle == null)
             {
                 Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
@@ -405,11 +441,11 @@ namespace Duo1JFramework.Asset
         {
             if (loading)
             {
-                return $"<{assetBundleName}-Loading>";
+                return $"<{assetBundlePath}-Loading>";
             }
             else
             {
-                return $"<{assetBundleName}>";
+                return $"<{assetBundlePath}>";
             }
         }
 

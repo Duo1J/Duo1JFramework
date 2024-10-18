@@ -96,5 +96,14 @@ namespace Duo1JFramework
         }
 
         #endregion Double
+
+        #region Byte
+
+        public static string ToHexStr(this byte b)
+        {
+            return b.ToString("X2");
+        }
+
+        #endregion Byte
     }
 }

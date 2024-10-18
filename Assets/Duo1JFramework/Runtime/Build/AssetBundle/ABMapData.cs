@@ -17,16 +17,22 @@ namespace Duo1JFramework.Build
         private Dictionary<string, string> asset2ABMap;
 
         /// <summary>
+        /// AssetBundle与Hash映射
+        /// </summary>
+        [JsonProperty]
+        private Dictionary<string, string> ab2HashMap;
+
+        /// <summary>
         /// AssetBundle与CRC映射
         /// </summary>
         [JsonProperty]
         private Dictionary<string, uint> ab2CrcMap;
 
         /// <summary>
-        /// AssetBundle与Hash映射
+        /// AssetBundle与MD5映射
         /// </summary>
         [JsonProperty]
-        private Dictionary<string, string> ab2HashMap;
+        private Dictionary<string, string> ab2MD5Map;
 
         /// <summary>
         /// 通过资源路径获取对应AssetBunble名
@@ -40,6 +46,27 @@ namespace Duo1JFramework.Build
 
             Log.ErrorForce($"未在asset2ABMap中找到资源 `{assetPath}`");
             return null;
+        }
+
+        /// <summary>
+        /// 通过AssetBundle名获取Hash
+        /// </summary>
+        public string GetHashByABName(string abName)
+        {
+            if (ab2HashMap == null)
+            {
+                return null;
+            }
+
+            if (ab2HashMap.TryGetValue(PathUtil.ABNameUnify(abName), out string hash))
+            {
+                return hash;
+            }
+            else
+            {
+                Log.ErrorForce($"无法获取到Hash, abName: `{PathUtil.ABNameUnify(abName)}`");
+                return null;
+            }
         }
 
         /// <summary>
@@ -64,22 +91,22 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// 通过AssetBundle名获取Hash字符串
+        /// 通过AssetBundle名获取MD5
         /// </summary>
-        public string GetHashStrByABName(string abName)
+        public string GetMD5ByABName(string abName)
         {
-            if (ab2HashMap == null)
+            if (ab2MD5Map == null)
             {
                 return null;
             }
 
-            if (ab2HashMap.TryGetValue(PathUtil.ABNameUnify(abName), out string hash))
+            if (ab2MD5Map.TryGetValue(PathUtil.ABNameUnify(abName), out string md5))
             {
-                return hash;
+                return md5;
             }
             else
             {
-                Log.ErrorForce($"无法获取到Hash, abName: `{PathUtil.ABNameUnify(abName)}`");
+                Log.ErrorForce($"无法获取到MD5, abName: `{PathUtil.ABNameUnify(abName)}`");
                 return null;
             }
         }
@@ -98,66 +125,19 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static ABMapData Create(
             Dictionary<string, List<string>> ab2AssetMap,
-            Dictionary<string, string> ab2HashMap,
-            Dictionary<string, uint> ab2CrcMap = null)
+            Dictionary<string, string> ab2HashMap = null,
+            Dictionary<string, uint> ab2CrcMap = null,
+            Dictionary<string, string> ab2MD5Map = null
+            )
         {
             Assert.NotNull(ab2AssetMap, "ABMapData::Create参数ab2AssetMap为空");
 
-            Dictionary<string, string> asset2ABMap = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, List<string>> kv in ab2AssetMap)
-            {
-                if (kv.Value == null)
-                {
-                    continue;
-                }
+            ABMapData abMapData = new ABMapData(ab2AssetMap);
+            abMapData.ab2HashMap = ab2HashMap;
+            abMapData.ab2CrcMap = ab2CrcMap;
+            abMapData.ab2MD5Map = ab2MD5Map;
 
-                string key = kv.Key;
-                foreach (string asset in kv.Value)
-                {
-                    try
-                    {
-#if UNITY_EDITOR
-                        if (asset2ABMap.ContainsKey(asset))
-                        {
-                            Log.Error($"asset2ABMap中已包含`{asset}`, 其值为`{asset2ABMap[asset]}`");
-                            continue;
-                        }
-#endif
-
-                        asset2ABMap.Add(asset, key);
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.ExceptHandle(e);
-                    }
-                }
-            }
-
-            ABMapData abMapData = new ABMapData(asset2ABMap, ab2HashMap, ab2CrcMap);
             return abMapData;
-        }
-
-        /// <summary>
-        /// 保存ABMapData对象到文件
-        /// </summary>
-        /// <param name="encrypt">是否加密, {Def.Asset.EncryptABMapData}</param>
-        /// <param name="path">文件路径, 默认值 {PathUtil.GetABMapDataPath()}</param>
-        public static void SaveToFile(
-            Dictionary<string, List<string>> ab2AssetMap,
-            Dictionary<string, string> ab2HashMap,
-            Dictionary<string, uint> ab2CrcMap,
-            bool encrypt, string path = null)
-        {
-            Assert.GuardEditor("非Editor下不可保存ABMapData");
-
-            if (ab2AssetMap == null || ab2AssetMap.Count == 0)
-            {
-                Log.ErrorForce("ABMapData::Save参数abAssetList为空，无法保存");
-                return;
-            }
-
-            ABMapData abMapData = Create(ab2AssetMap, ab2HashMap, ab2CrcMap);
-            abMapData.SaveToFile(encrypt, path);
         }
 
         /// <summary>
@@ -210,14 +190,37 @@ namespace Duo1JFramework.Build
             return Parse(jsonStr);
         }
 
-        private ABMapData(
-            Dictionary<string, string> asset2ABMap,
-            Dictionary<string, string> ab2HashMap,
-            Dictionary<string, uint> ab2CrcMap = null)
+        private ABMapData(Dictionary<string, List<string>> ab2AssetMap)
         {
-            this.asset2ABMap = asset2ABMap;
-            this.ab2HashMap = ab2HashMap;
-            this.ab2CrcMap = ab2CrcMap;
+            asset2ABMap = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, List<string>> kv in ab2AssetMap)
+            {
+                if (kv.Value == null)
+                {
+                    continue;
+                }
+
+                string key = kv.Key;
+                foreach (string asset in kv.Value)
+                {
+                    try
+                    {
+#if UNITY_EDITOR
+                        if (asset2ABMap.ContainsKey(asset))
+                        {
+                            Log.Error($"asset2ABMap中已包含`{asset}`, 其值为`{asset2ABMap[asset]}`");
+                            continue;
+                        }
+#endif
+
+                        asset2ABMap.Add(asset, key);
+                    }
+                    catch (Exception e)
+                    {
+                        Assert.ExceptHandle(e);
+                    }
+                }
+            }
         }
 
         private ABMapData()
