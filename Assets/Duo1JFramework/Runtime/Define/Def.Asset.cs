@@ -14,36 +14,20 @@ namespace Duo1JFramework
             /// </summary>
             public const float MAX_AB_FREE_TIME = 5;
 
-#if NOT_ENCRYPT_AB_MAP_DATA
-            /// <summary>
-            /// 是否加密ABMapData
-            /// </summary>
-            public static bool EncryptABMapData = false;
-#else
             /// <summary>
             /// 是否加密ABMapData
             /// </summary>
             public static bool EncryptABMapData = true;
-#endif
 
-#if NOT_BUILD_AB_CRC
-            /// <summary>
-            /// 是否构建AssetBundle的CRC校验
-            /// </summary>
-            public static bool BuildABCRC = false;
-#else
             /// <summary>
             /// 是否构建AssetBundle的CRC校验
             /// </summary>
             public static bool BuildABCRC = true;
-#endif
 
             /// <summary>
             /// AssetBundle文件命名方式
             /// </summary>
-            public static EABNameType ABNameType => abNameType;
-
-            private const EABNameType abNameType = EABNameType.MD5;
+            public static EABNameType ABNameType { get; set; } = EABNameType.MD5;
         }
     }
 }

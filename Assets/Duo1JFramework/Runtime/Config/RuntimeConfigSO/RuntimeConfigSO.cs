@@ -48,7 +48,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 配置实例保存路径
         /// </summary>
-        public static string AssetSavePath => Path.Combine(Def.Path.RUNTIME_CONFIG_SAVE_PATH_PREFIX.CheckDir(), typeof(T).Name, ".asset");
+        public static string AssetSavePath => Path.Combine(Def.Path.RUNTIME_CONFIG_SAVE_PATH_PREFIX.CheckDir(), $"{typeof(T).Name}.asset");
 
         /// <summary>
         /// 实例触发

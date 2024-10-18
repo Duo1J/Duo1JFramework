@@ -78,7 +78,7 @@ namespace Duo1JFramework.Build
 
                 if (manifest == null)
                 {
-                    Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBndle失败");
+                    Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBundle失败");
                     return false;
                 }
 
@@ -105,7 +105,7 @@ namespace Duo1JFramework.Build
                 ABMapData abMapData = ABMapData.Create(ab2AssetMap, ab2HashMap, ab2CrcMap, ab2MD5Map);
                 abMapData.SaveToFile(Def.Asset.EncryptABMapData);
 
-                Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBndle成功");
+                Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBundle成功");
                 return true;
             }
             catch (Exception e)

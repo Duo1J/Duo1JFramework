@@ -17,20 +17,14 @@ namespace Duo1JFramework
         /// <summary>
         /// AES加密私钥
         /// </summary>
-        public static string AesKey
-        {
-            get => AES_KEY;
-        }
+        public static string AesKey => AES_KEY;
 
         private const string AES_KEY = "Duo1JFrameworkAK";
 
         /// <summary>
         /// AES加密私钥byte数组
         /// </summary>
-        public static byte[] AesKeyByte
-        {
-            get => AES_KEY_BYTE;
-        }
+        public static byte[] AesKeyByte => AES_KEY_BYTE;
 
         private static readonly byte[] AES_KEY_BYTE = Encoding.UTF8.GetBytes(AesKey);
 
