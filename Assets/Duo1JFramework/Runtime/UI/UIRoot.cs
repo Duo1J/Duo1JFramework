@@ -108,7 +108,7 @@ namespace Duo1JFramework.UI
                     }
                 default:
                     {
-                        Log.Error($"未处理的层级 `{wnd.Layer}`");
+                        Log.ErrorForce($"未处理的层级 `{wnd.Layer}`");
                         break;
                     }
             }
@@ -139,7 +139,7 @@ namespace Duo1JFramework.UI
                     }
                 default:
                     {
-                        Log.Error($"未处理的层级 `{layer}`");
+                        Log.ErrorForce($"未处理的层级 `{layer}`");
                         return 0;
                     }
             }

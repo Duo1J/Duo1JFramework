@@ -23,8 +23,9 @@ namespace Duo1JFramework.UI
             {
                 if (config == null)
                 {
-                    config = CreateUIConfig();
+                    config = GetUIConfig();
                 }
+
                 return config;
             }
         }
@@ -39,8 +40,17 @@ namespace Duo1JFramework.UI
             set
             {
                 go = value;
-                RectTF = go.GetAndAssertComponent<RectTransform>($"{ToString()} 未包含RectTransform组件");
-                Controller = go.GetAndAssertComponent<UIController>($"{ToString()} 未包含UIController组件");
+
+                if (go == null)
+                {
+                    RectTF = null;
+                    Controller = null;
+                }
+                else
+                {
+                    RectTF = go.GetAndAssertComponent<RectTransform>($"{ToString()} 未包含RectTransform组件");
+                    Controller = go.GetAndAssertComponent<UIController>($"{ToString()} 未包含UIController组件");
+                }
             }
         }
         private GameObject go;
@@ -98,7 +108,7 @@ namespace Duo1JFramework.UI
 
         #endregion Field
 
-        #region Public
+        #region Public Method
 
         /// <summary>
         /// 设置父节点
@@ -106,12 +116,13 @@ namespace Duo1JFramework.UI
         public void SetParent(Transform par)
         {
             Assert.NotNull(par, "参数par为空");
-            if (Go == null)
+            if (RectTF == null)
             {
-                Log.Error($"窗口`{GetType().FullName}`未加载资源，无法设置父节点");
+                Log.ErrorForce($"{ToString()} RectTF为空，无法设置其父节点");
                 return;
             }
-            Go.transform.SetParent(par);
+
+            RectTF.SetParent(par);
             ResetRectTransform();
         }
 
@@ -120,6 +131,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public virtual void SetActive(bool active)
         {
+            if (Go == null)
+            {
+                return;
+            }
+
             Go.SetActive(active);
         }
 
@@ -128,6 +144,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void ResetRectTransform()
         {
+            if (RectTF == null)
+            {
+                return;
+            }
+
             RectTF.ExpandAnchor();
             RectTF.ResetSRT();
             RectTF.sizeDelta = Vector2.zero;
@@ -138,6 +159,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void MoveToFar()
         {
+            if (RectTF == null)
+            {
+                return;
+            }
+
             RectTF.localPosition = Def.UI.FAR_POS;
         }
 
@@ -146,6 +172,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public GameObject GetGo(string goName)
         {
+            if (Controller == null)
+            {
+                return null;
+            }
+
             return Controller.GetGo(goName);
         }
 
@@ -154,6 +185,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         public T GetCom<T>(string goName) where T : MonoBehaviour
         {
+            if (Controller == null)
+            {
+                return null;
+            }
+
             return Controller.GetCom<T>(goName);
         }
 
@@ -165,14 +201,14 @@ namespace Duo1JFramework.UI
             UIManager.Instance.CloseWindow(this);
         }
 
-        #endregion Public
+        #endregion Public Method
 
         #region Lifecycle
 
         /// <summary>
         /// 子类创建UI配置数据
         /// </summary>
-        protected abstract UIData CreateUIConfig();
+        protected abstract UIData GetUIConfig();
 
         /// <summary>
         /// 初始化
@@ -183,6 +219,7 @@ namespace Duo1JFramework.UI
             {
                 return;
             }
+
             init = true;
             OnInit();
         }
@@ -197,7 +234,11 @@ namespace Duo1JFramework.UI
         /// </summary>
         protected override void OnDispose()
         {
-            Go?.DestroyImmediate();
+            if (Go != null)
+            {
+                Go.DestroyImmediate();
+                Go = null;
+            }
         }
 
         public Window()

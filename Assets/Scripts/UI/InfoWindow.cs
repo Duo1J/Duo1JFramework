@@ -8,7 +8,7 @@ public class InfoWindow : Window
 {
     TextExt buttomInfoText;
 
-    protected override UIData CreateUIConfig()
+    protected override UIData GetUIConfig()
     {
         return new UIData("UI/InfoWindow")
             .SetLoadType(EAssetLoadType.Resources)

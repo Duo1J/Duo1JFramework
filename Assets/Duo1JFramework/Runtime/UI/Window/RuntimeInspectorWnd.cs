@@ -8,7 +8,7 @@ namespace Duo1JFramework.UI
     /// </summary>
     public class RuntimeInspectorWnd : GenericWindow<RuntimeInspectorWnd>
     {
-        protected override UIData CreateUIConfig()
+        protected override UIData GetUIConfig()
         {
             return new UIData($"{Def.Path.RES_PATH_PREFIX}UI/_RuntimeInspectorWnd")
                 .SetLoadType(EAssetLoadType.Resources)

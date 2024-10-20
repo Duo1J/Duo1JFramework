@@ -19,6 +19,8 @@ namespace Duo1JFramework.UI
         /// <summary>
         /// 节点列表
         /// </summary>
+        public List<Transform> NodeList => nodeList;
+
         [SerializeField]
         private List<Transform> nodeList;
 
@@ -64,7 +66,7 @@ namespace Duo1JFramework.UI
                 return tf.gameObject;
             }
 
-            Log.Error($"未找到名称为: {goName} 的Go");
+            Log.ErrorForce($"{ToString()} 未找到名称为: `{goName}` 的Go");
             return null;
         }
 
@@ -88,7 +90,7 @@ namespace Duo1JFramework.UI
             T com = go.GetComponent<T>();
             if (com == null)
             {
-                Log.Error($"未在 {goName} 找到类型为: {typeof(T)} 的Com");
+                Log.ErrorForce($"{ToString()} 未在 `{goName}` 找到类型为: `{typeof(T)}` 的Com");
                 return default(T);
             }
 
@@ -100,19 +102,11 @@ namespace Duo1JFramework.UI
 
         private void Awake()
         {
-            BuildNodeDict();
             canvas = GetComponent<Canvas>();
+            BuildNodeDict();
         }
 
-        #region 节点收集
-
-        /// <summary>
-        /// 获取节点列表
-        /// </summary>
-        public List<Transform> GetNodeList()
-        {
-            return nodeList;
-        }
+        #region UI Node
 
         /// <summary>
         /// 收集节点
@@ -132,7 +126,7 @@ namespace Duo1JFramework.UI
                 {
                     if (checkDict.ContainsKey(tf.name))
                     {
-                        Log.Error($"重复名称的节点: {tf.name}");
+                        Log.ErrorForce($"重复名称的节点: `{tf.name}`");
                     }
                     else
                     {
@@ -155,11 +149,14 @@ namespace Duo1JFramework.UI
             nodeDict = new Dictionary<string, Transform>();
             comDict = new Dictionary<string, MonoBehaviour>();
 
-            if (nodeList == null) return;
-
-            for (int i = 0; i < nodeList.Count; i++)
+            if (NodeList == null)
             {
-                Transform node = nodeList[i];
+                return;
+            }
+
+            for (int i = 0; i < NodeList.Count; i++)
+            {
+                Transform node = NodeList[i];
                 if (node != null)
                 {
                     nodeDict.Add(node.name.Substring(2), node);
@@ -167,6 +164,6 @@ namespace Duo1JFramework.UI
             }
         }
 
-        #endregion 节点收集
+        #endregion UI Node
     }
 }

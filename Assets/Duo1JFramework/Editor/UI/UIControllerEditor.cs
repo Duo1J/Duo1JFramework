@@ -24,7 +24,7 @@ namespace Duo1JFramework.UI
 
         private void DrawNodeList()
         {
-            List<Transform> nodeList = instance.GetNodeList();
+            List<Transform> nodeList = instance.NodeList;
             if (nodeList != null)
             {
                 ED.Vertical(() =>
