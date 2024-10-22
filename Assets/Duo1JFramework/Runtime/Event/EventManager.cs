@@ -25,7 +25,7 @@ namespace Duo1JFramework.Event
         /// </summary>
         public void Register(eEvent e, Action<object> callback)
         {
-            Register(e, callback);
+            Register((object)e, callback);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Duo1JFramework.Event
         /// </summary>
         public bool UnRegister(eEvent e, Action<object> callback)
         {
-            return UnRegister(e, callback);
+            return UnRegister((object)e, callback);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Duo1JFramework.Event
         /// </summary>
         public bool UnRegister(eEvent e)
         {
-            return UnRegister(e);
+            return UnRegister((object)e);
         }
 
         /// <summary>
