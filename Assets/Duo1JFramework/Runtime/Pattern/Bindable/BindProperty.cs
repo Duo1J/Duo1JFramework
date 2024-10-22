@@ -1,6 +1,6 @@
 using System;
 
-namespace Duo1JFramework.Pattern
+namespace Duo1JFramework.Pattern.Bindable
 {
     /// <summary>
     /// 可绑定变量
