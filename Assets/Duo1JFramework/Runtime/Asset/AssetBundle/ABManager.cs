@@ -120,7 +120,7 @@ namespace Duo1JFramework.Asset
             abDataDict = new Dictionary<string, ABData>();
             InitMainAssetBundle();
 
-            Register.RegisterLateUpdate(OnLateUpdate);
+            Reg.RegisterLateUpdate(OnLateUpdate);
         }
 
         private void OnLateUpdate()

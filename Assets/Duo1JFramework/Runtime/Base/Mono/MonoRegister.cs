@@ -8,7 +8,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 注册器
         /// </summary>
-        protected Register Register
+        protected Register Reg
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Duo1JFramework
         /// </summary>
         protected void ResetRegister()
         {
-            Register.Reset();
+            Reg.Reset();
         }
 
         /// <summary>

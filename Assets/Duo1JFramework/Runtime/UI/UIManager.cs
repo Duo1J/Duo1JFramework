@@ -37,7 +37,7 @@ namespace Duo1JFramework.UI
         {
             Window wnd = OpenWindow(new T());
             T ret = wnd as T;
-            Assert.NotNull(ret, $"Window转换`{typeof(T).FullName}`失败");
+            Assert.NotNull(ret, $"Window转换 `{typeof(T).FullName}` 失败");
 
             return ret;
         }
@@ -49,7 +49,7 @@ namespace Duo1JFramework.UI
         {
             try
             {
-                Assert.NotNull(wnd, "窗口对象为空");
+                Assert.NotNullArg(wnd, "wnd");
 
                 Type wndType = wnd.GetType();
                 if (IsWindowOpened(wndType))
@@ -141,7 +141,7 @@ namespace Duo1JFramework.UI
         {
             try
             {
-                Assert.NotNull(wnd, "窗口对象为空");
+                Assert.NotNullArg(wnd, "wnd");
 
                 wnd.Dispose();
                 bool ret = wndList.Remove(wnd);
@@ -204,11 +204,11 @@ namespace Duo1JFramework.UI
         private void LoadWindowAsset(Window wnd, Action callback)
         {
             UIData cfg = wnd.Config;
-            Assert.NotNull(cfg, $"窗口`{wnd.GetType().Name}`配置为空");
+            Assert.NotNull(cfg, $"窗口 `{wnd.GetType().Name}` 配置为空");
 
             GameObject uiGo;
             uiGo = AssetManager.Instance.LoadInsByTypeSync<GameObject>(cfg.Path, cfg.LoadType);
-            Assert.NotNull(uiGo, $"无法加载到窗口资源`{cfg.Path}`");
+            Assert.NotNull(uiGo, $"无法加载到窗口资源 `{cfg.Path}`");
             LoadWindowAssetPostProcess(wnd, uiGo);
             callback?.Invoke();
         }

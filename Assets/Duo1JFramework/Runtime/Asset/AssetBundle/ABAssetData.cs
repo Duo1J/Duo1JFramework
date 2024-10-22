@@ -49,7 +49,7 @@ namespace Duo1JFramework.Asset
             get
             {
                 AssetBundle assetBundle = abData.AB;
-                Assert.NotNull(assetBundle, "访问AssetBundle时，其值为空");
+                Assert.NotNull(assetBundle, "访问AssetBundle时为空");
                 return assetBundle;
             }
         }
@@ -64,7 +64,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void Load<T>(Action<T> callback) where T : UObject
         {
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(callback, "callback");
 
             if (AssetLoaded)
             {

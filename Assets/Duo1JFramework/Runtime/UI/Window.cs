@@ -115,7 +115,7 @@ namespace Duo1JFramework.UI
         /// </summary>
         public void SetParent(Transform par)
         {
-            Assert.NotNull(par, "参数par为空");
+            Assert.NotNullArg(par, "par");
             if (RectTF == null)
             {
                 Log.ErrorForce($"{ToString()} RectTF为空，无法设置其父节点");

@@ -84,7 +84,7 @@ namespace Duo1JFramework.World
 
         protected override void OnInit()
         {
-            Register.RegisterPreUpdate(OnPreUpdate);
+            Reg.RegisterPreUpdate(OnPreUpdate);
         }
 
 #if UNITY_EDITOR

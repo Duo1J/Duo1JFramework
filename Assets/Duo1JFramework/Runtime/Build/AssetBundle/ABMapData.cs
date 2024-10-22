@@ -116,7 +116,7 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static ABMapData Parse(string jsonStr)
         {
-            Assert.NotNull(jsonStr, "ABMapData::Parse参数jsonStr为空");
+            Assert.NotNullArg(jsonStr, "jsonStr");
             return JsonUtil.ToObject<ABMapData>(jsonStr);
         }
 
@@ -130,7 +130,7 @@ namespace Duo1JFramework.Build
             Dictionary<string, string> ab2MD5Map = null
             )
         {
-            Assert.NotNull(ab2AssetMap, "ABMapData::Create参数ab2AssetMap为空");
+            Assert.NotNullArg(ab2AssetMap, "ab2AssetMap");
 
             ABMapData abMapData = new ABMapData(ab2AssetMap);
             abMapData.ab2HashMap = ab2HashMap;

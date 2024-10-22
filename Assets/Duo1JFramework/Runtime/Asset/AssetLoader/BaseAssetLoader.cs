@@ -64,7 +64,7 @@ namespace Duo1JFramework.Asset
         public virtual void LoadResource<T>(string assetPath, Action<T> callback) where T : UObject
         {
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(callback, "callback");
 
             ResourceRequest request = Resources.LoadAsync<T>(assetPath);
             UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
@@ -87,7 +87,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public virtual T LoadResourceSync<T>(string assetPath) where T : UObject
         {
-            Assert.NotNull(assetPath, "资源路径不可为空");
+            Assert.NotNullArg(assetPath, "assetPath");
 
             T asset = Resources.Load<T>(assetPath);
             if (asset == null)

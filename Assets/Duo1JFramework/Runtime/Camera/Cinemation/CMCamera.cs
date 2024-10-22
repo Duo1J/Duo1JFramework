@@ -99,11 +99,8 @@ namespace Duo1JFramework.CameraAPI
         public void InitCamera(params object[] param)
         {
             DestroyCamera();
+            Assert.GuardArg(param.Length != 0, "param.Length");
 
-            if (param.Length == 0)
-            {
-                throw CommonException.Create("CMCamera初始化参数错误");
-            }
             string prefabPath = param[0] as string;
             Assert.NotNullOrEmpty(prefabPath, "主虚拟相机路径不可为空");
 

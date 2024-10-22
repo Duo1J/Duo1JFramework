@@ -124,7 +124,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         private void LoadAssetPostprocess(GameObject asset)
         {
-            Assert.NotNull(asset, $"{ToString()}资源加载失败:{Data.Path}");
+            Assert.NotNull(asset, $"{ToString()} 资源加载失败: `{Data.Path}`");
 
             Asset = asset;
             Asset.name = $"{Data.Name}-{ID} ({Asset.name})";

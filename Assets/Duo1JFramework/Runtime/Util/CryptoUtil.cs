@@ -84,7 +84,7 @@ namespace Duo1JFramework
         /// <param name="iv">初始向量，若为空则会随机生成，并放在头部</param>
         public static byte[] AesEncrypt(byte[] bytes, byte[] key, byte[] iv = null)
         {
-            Assert.NotNull(bytes);
+            Assert.NotNullArg(bytes, "bytes");
 
             using (MemoryStream ms = new MemoryStream(bytes))
             {
@@ -120,7 +120,7 @@ namespace Duo1JFramework
                     iv = new byte[aes.BlockSize / 8];
                     if (inputStream.Read(iv, 0, iv.Length) != iv.Length)
                     {
-                        Assert.Throw("读取IV失败");
+                        throw Except.Create("读取IV失败");
                     }
                 }
 
@@ -151,7 +151,7 @@ namespace Duo1JFramework
         /// <param name="iv">初始向量，若为空则会从头部读取</param>
         public static byte[] AesDecrypt(byte[] bytes, byte[] key, byte[] iv = null)
         {
-            Assert.NotNull(bytes);
+            Assert.NotNullArg(bytes, "bytes");
 
             using (MemoryStream ms = new MemoryStream(bytes))
             {

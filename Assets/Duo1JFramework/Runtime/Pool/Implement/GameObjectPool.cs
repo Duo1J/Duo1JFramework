@@ -33,7 +33,7 @@ namespace Duo1JFramework.ObjectPool
 
         public GameObjectPool(GameObject templateGo, Func<GameObject, GameObject> initCall, Transform parentOverride = null) : base(initCall)
         {
-            Assert.NotNull(templateGo, "GameObjectPool构造参数错误，`templateGo`为空");
+            Assert.NotNullArg(templateGo, "templateGo");
 
             this.templateGo = templateGo;
             this.parentOverride = parentOverride;

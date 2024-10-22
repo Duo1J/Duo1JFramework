@@ -15,7 +15,7 @@ namespace Duo1JFramework.ObjectPool
         public override ObjectPoolItem<GameObject> CreateNew()
         {
             GameObject templateGo = getTemplateCall();
-            Assert.NotNull(templateGo, "GObjectPool::CreateNew 异常，`templateGo`为空");
+            Assert.NotNull(templateGo, "ObjectPoolItem::CreateNew异常, `templateGo` 为空");
 
             ObjectPoolItem<GameObject> newItem = new ObjectPoolItem<GameObject>(this, UObject.Instantiate(templateGo));
             OnCreateNew?.Invoke(newItem);
@@ -26,7 +26,7 @@ namespace Duo1JFramework.ObjectPool
 
         public GObjectPoolModel(Func<GameObject> getTemplateCall)
         {
-            Assert.NotNull(getTemplateCall, "GObjectPool 构造参数错误，`getTemplateCall`为空");
+            Assert.NotNullArg(getTemplateCall, "getTemplateCall");
             this.getTemplateCall = getTemplateCall;
         }
     }

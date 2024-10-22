@@ -109,7 +109,7 @@ namespace Duo1JFramework.Asset
         public void Load<T>(string assetPath, Action<T> callback) where T : UObject
         {
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(callback, "callback");
 
             CheckABLoaded(false, () =>
             {

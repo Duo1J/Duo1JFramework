@@ -161,5 +161,13 @@ namespace Duo1JFramework
         }
 
         #endregion Json
+
+        /// <summary>
+        /// 创建一般异常
+        /// </summary>
+        public static Except CreateExcept(this string str)
+        {
+            return Except.Create(str);
+        }
     }
 }

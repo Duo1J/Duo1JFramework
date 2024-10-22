@@ -30,7 +30,7 @@ namespace Duo1JFramework
                 }
                 if (hex.Length != 6)
                 {
-                    throw CommonException.Create($"Hex color length error: {hex}");
+                    throw Except.Create($"Hex color length error: {hex}");
                 }
                 byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
                 byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);

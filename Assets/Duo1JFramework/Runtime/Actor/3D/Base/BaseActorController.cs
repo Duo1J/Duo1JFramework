@@ -92,8 +92,8 @@ namespace Duo1JFramework.Actor
             InitMonoData();
             InitComponent();
 
-            Register.RegisterUpdate(OnUpdate);
-            Register.RegisterFixedUpdate(OnFixedUpdate);
+            Reg.RegisterUpdate(OnUpdate);
+            Reg.RegisterFixedUpdate(OnFixedUpdate);
         }
 
         /// <summary>

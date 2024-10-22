@@ -106,9 +106,9 @@ namespace Duo1JFramework.Ext.RX
             observerList = new List<RxObserver>();
             removeList = new List<int>();
 
-            Register.RegisterUpdate(OnUpdate);
-            Register.RegisterFixedUpdate(OnFixedUpdate);
-            Register.RegisterLateUpdate(OnLateUpdate);
+            Reg.RegisterUpdate(OnUpdate);
+            Reg.RegisterFixedUpdate(OnFixedUpdate);
+            Reg.RegisterLateUpdate(OnLateUpdate);
         }
 
         #endregion Inner

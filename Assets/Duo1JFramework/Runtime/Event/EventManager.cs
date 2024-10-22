@@ -2,58 +2,88 @@ using System;
 
 namespace Duo1JFramework.Event
 {
+    /// <summary>
+    /// 事件管理器
+    /// </summary>
     public class EventManager : MonoSingleton<EventManager>, IEventModel
     {
+        /// <summary>
+        /// 事件模型
+        /// </summary>
         private IEventModel eventModel;
 
         /// <summary>
         /// 订阅事件
         /// </summary>
-        public void AddEvent(eEvent e, Action<object> callback)
+        public void Register(object e, Action<object> callback)
         {
-            GetEventModel().AddEvent(e, callback);
+            GetEventModel().Register(e, callback);
+        }
+
+        /// <summary>
+        /// 订阅事件
+        /// </summary>
+        public void Register(eEvent e, Action<object> callback)
+        {
+            Register(e, callback);
         }
 
         /// <summary>
         /// 取消订阅事件
         /// </summary>
-        public bool RemoveEvent(eEvent e, Action<object> callback)
+        public bool UnRegister(object e, Action<object> callback)
         {
-            return GetEventModel().RemoveEvent(e, callback);
+            return GetEventModel().UnRegister(e, callback);
+        }
+
+        /// <summary>
+        /// 取消订阅事件
+        /// </summary>
+        public bool UnRegister(eEvent e, Action<object> callback)
+        {
+            return UnRegister(e, callback);
         }
 
         /// <summary>
         /// 取消订阅事件下所有注册
         /// </summary>
-        public bool RemoveEvent(eEvent e)
+        public bool UnRegister(object e)
         {
-            return GetEventModel().RemoveEvent(e);
+            return GetEventModel().UnRegister(e);
+        }
+
+        /// <summary>
+        /// 取消订阅事件下所有注册
+        /// </summary>
+        public bool UnRegister(eEvent e)
+        {
+            return UnRegister(e);
         }
 
         /// <summary>
         /// 取消订阅所有事件
         /// </summary>
-        public void RemoveAllEvent()
+        public void UnRegisterAll()
         {
-            GetEventModel().RemoveAllEvent();
+            GetEventModel().UnRegisterAll();
         }
 
         /// <summary>
         /// 发布事件
         /// </summary>
-        public void Broadcast(eEvent e, object args = null)
+        public void Broadcast(object e, object args = null)
         {
             GetEventModel().Broadcast(e, args);
         }
 
         /// <summary>
-        /// 添加事件模型
+        /// 设置事件模型
         /// </summary>
         public void SetEventModel(IEventModel eventModel)
         {
             if (this.eventModel != null)
             {
-                this.eventModel.RemoveAllEvent();
+                this.eventModel.UnRegisterAll();
             }
             this.eventModel = eventModel;
         }
@@ -67,6 +97,7 @@ namespace Duo1JFramework.Event
             {
                 SetEventModel(new EventModel());
             }
+
             return eventModel;
         }
 

@@ -40,7 +40,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 事件列表
         /// </summary>
-        private Dictionary<eEvent, List<Action<object>>> eventDict;
+        private Dictionary<object, List<Action<object>>> eventDict;
 
         /// <summary>
         /// 该类是否已准备销毁
@@ -267,7 +267,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 注册事件
         /// </summary>
-        public void RegisterEvent(eEvent e, Action<object> callback)
+        public void RegisterEvent(object e, Action<object> callback)
         {
             if (CheckDisposed())
             {
@@ -276,7 +276,7 @@ namespace Duo1JFramework
 
             if (eventDict == null)
             {
-                eventDict = new Dictionary<eEvent, List<Action<object>>>();
+                eventDict = new Dictionary<object, List<Action<object>>>();
             }
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
@@ -285,13 +285,21 @@ namespace Duo1JFramework
             }
             list.Add(callback);
 
-            EventManager.Instance.AddEvent(e, callback);
+            EventManager.Instance.Register(e, callback);
+        }
+
+        /// <summary>
+        /// 注册事件
+        /// </summary>
+        public void RegisterEvent(eEvent e, Action<object> callback)
+        {
+            RegisterEvent(e, callback);
         }
 
         /// <summary>
         /// 取消注册事件
         /// </summary>
-        public void UnRegisterEvent(eEvent e, Action<object> callback)
+        public void UnRegisterEvent(object e, Action<object> callback)
         {
             if (CheckDisposed())
             {
@@ -306,7 +314,15 @@ namespace Duo1JFramework
                 }
             }
 
-            EventManager.Instance.RemoveEvent(e, callback);
+            EventManager.Instance.UnRegister(e, callback);
+        }
+
+        /// <summary>
+        /// 取消注册事件
+        /// </summary>
+        public void UnRegisterEvent(eEvent e, Action<object> callback)
+        {
+            UnRegisterEvent(e, callback);
         }
 
         /// <summary>
@@ -324,11 +340,11 @@ namespace Duo1JFramework
                 return;
             }
 
-            foreach (KeyValuePair<eEvent, List<Action<object>>> kv in eventDict)
+            foreach (KeyValuePair<object, List<Action<object>>> kv in eventDict)
             {
                 foreach (Action<object> callback in kv.Value)
                 {
-                    EventManager.Instance.RemoveEvent(kv.Key, callback);
+                    EventManager.Instance.UnRegister(kv.Key, callback);
                 }
             }
         }

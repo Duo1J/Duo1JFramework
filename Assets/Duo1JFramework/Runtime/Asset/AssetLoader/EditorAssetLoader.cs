@@ -14,7 +14,7 @@ namespace Duo1JFramework.Asset
         public override void Load<T>(string assetPath, Action<T> callback)
         {
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(callback, "callback");
 
 #if UNITY_EDITOR
             callback(LoadSync<T>(assetPath));
@@ -29,7 +29,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public override T LoadSync<T>(string assetPath)
         {
-            Assert.NotNull(assetPath, "资源路径不可为空");
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
 
 #if UNITY_EDITOR
             string targetPath = assetPath;

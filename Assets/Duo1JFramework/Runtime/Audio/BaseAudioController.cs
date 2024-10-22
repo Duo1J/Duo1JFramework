@@ -214,7 +214,7 @@ namespace Duo1JFramework.AudioAPI
             audioSource = this.GetOrAddComponent<AudioSource>();
             audioSource.playOnAwake = false;
 
-            Register.RegisterUpdate(OnUpdate);
+            Reg.RegisterUpdate(OnUpdate);
             Clear();
 
             OnAwake();

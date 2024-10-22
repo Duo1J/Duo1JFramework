@@ -227,7 +227,7 @@ namespace Duo1JFramework
                     string tempPath = Path.Combine(tarDir, subDirInfo.Name);
                     if (!CopyDirectory(subDirInfo.FullName, tempPath))
                     {
-                        throw CommonException.Create($"拷贝文件夹`{subDirInfo.FullName}`到`{tempPath}`失败");
+                        throw Except.Create($"拷贝文件夹`{subDirInfo.FullName}`到`{tempPath}`失败");
                     }
                 }
 

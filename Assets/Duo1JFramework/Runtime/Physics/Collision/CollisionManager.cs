@@ -39,8 +39,6 @@ namespace Duo1JFramework.PhysicsAPI
         /// </summary>
         public void AddToDict(ICollisionController con)
         {
-            Assert.NotNull(conDict, "conDict为空");
-
             int insID = con.GetInstanceID();
             if (conDict.ContainsKey(insID))
             {
@@ -59,8 +57,6 @@ namespace Duo1JFramework.PhysicsAPI
         /// <param name="con"></param>
         public void RemoveFromDict(ICollisionController con)
         {
-            Assert.NotNull(conDict, "conDict为空");
-
             int insID = con.GetInstanceID();
             if (conDict.ContainsKey(insID))
             {

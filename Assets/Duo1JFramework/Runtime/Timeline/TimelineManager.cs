@@ -109,7 +109,7 @@ namespace Duo1JFramework.TimelineAPI
         {
             resumableList = new List<ResumablePlayableWrap>();
 
-            Register.RegisterUpdate(OnUpdate);
+            Reg.RegisterUpdate(OnUpdate);
         }
 
         /// <summary>

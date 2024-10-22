@@ -277,7 +277,7 @@ namespace Duo1JFramework.AnimationAPI
                 return;
             }
 
-            Register.RegisterPreUpdate(OnPreUpdate);
+            Reg.RegisterPreUpdate(OnPreUpdate);
         }
     }
 }

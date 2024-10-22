@@ -20,7 +20,7 @@ namespace Duo1JFramework
 
         public static void OnUIClick(this Button button, UnityAction action)
         {
-            Assert.NotNull(action, "`Button::OnUIClick()` 参数 `action` 为空");
+            Assert.NotNullArg(action, "action");
             button.onClick.AddListener(action);
         }
 
@@ -31,7 +31,7 @@ namespace Duo1JFramework
 
         public static void RemoveOnUIClick(this Button button, UnityAction action)
         {
-            Assert.NotNull(action, "`Button::RemoveOnUIClick()` 参数 `action`为空");
+            Assert.NotNullArg(action, "action");
             button.onClick.RemoveListener(action);
         }
 

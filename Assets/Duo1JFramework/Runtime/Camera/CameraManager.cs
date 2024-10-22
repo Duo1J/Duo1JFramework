@@ -82,7 +82,7 @@ namespace Duo1JFramework.CameraAPI
 
         protected override void OnInit()
         {
-            Register.RegisterLateUpdate(OnUpdate);
+            Reg.RegisterLateUpdate(OnUpdate);
         }
 
         private void OnUpdate()

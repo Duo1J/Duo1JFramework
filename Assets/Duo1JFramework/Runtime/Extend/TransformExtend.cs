@@ -115,7 +115,7 @@ namespace Duo1JFramework
         /// </summary>
         public static void ChildForeach(this Transform tf, Action<GameObject> foreachAction)
         {
-            Assert.NotNull(foreachAction, "迭代函数不可为空");
+            Assert.NotNullArg(foreachAction, "foreachAction");
 
             for (int i = 0; i < tf.childCount; ++i)
             {

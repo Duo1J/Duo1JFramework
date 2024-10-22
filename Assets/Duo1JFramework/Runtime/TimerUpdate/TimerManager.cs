@@ -45,7 +45,7 @@ namespace Duo1JFramework.TimerUpdate
         /// <param name="interval">秒数</param>
         public void GetTimerFromPool(float interval, Action callback)
         {
-            Assert.NotNull(callback, "计时器回调不可为空");
+            Assert.NotNullArg(callback, "callback");
             Timer timer = Pool.TimerPool.Pop();
             timer.Init(interval, false, () =>
             {
@@ -69,7 +69,7 @@ namespace Duo1JFramework.TimerUpdate
         /// </summary>
         public void GetFrameTimerFromPool(int frame, Action callback)
         {
-            Assert.NotNull(callback, "计时器回调不可为空");
+            Assert.NotNullArg(callback, "callback");
             Timer timer = Pool.TimerPool.Pop();
             timer.Init(frame, true, () =>
             {
@@ -133,7 +133,7 @@ namespace Duo1JFramework.TimerUpdate
 
         private Timer _GetTimer(float interval, bool isFrameTimer, Action callback, int repeat)
         {
-            Assert.NotNull(callback, "计时器回调不可为空");
+            Assert.NotNullArg(callback, "callback");
             return new Timer(interval, isFrameTimer, callback, repeat);
         }
 

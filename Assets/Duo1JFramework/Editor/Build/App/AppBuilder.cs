@@ -23,7 +23,7 @@ namespace Duo1JFramework.Build
         /// </summary>
         public static void BuildApp(string tarPath)
         {
-            Assert.NotNull(tarPath, "App构建目标路径不可为空");
+            Assert.NotNullArg(tarPath, "tarPath");
             FileUtil.CheckDir(tarPath);
 
             AppBuildStrategyData data = AppBuildStrategy.Instance.Data;
@@ -59,7 +59,7 @@ namespace Duo1JFramework.Build
         {
             try
             {
-                Assert.NotNull(tarPath, "Player构建目标路径不可为空");
+                Assert.NotNullArg(tarPath, "tarPath");
                 FileUtil.CheckDir(tarPath);
                 string tarPlayerFolder = tarPath + $"/{Application.productName}/";
                 if (FileUtil.DeleteDir(tarPlayerFolder))

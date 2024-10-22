@@ -20,8 +20,8 @@ namespace Duo1JFramework.World
         /// </summary>
         public void LoadWorld(WorldData worldData, Action<BaseWorldController> callback)
         {
-            Assert.NotNull(worldData, "参数worldData不可为空");
-            Assert.NotNull(callback, "LoadWorld回调不可为空");
+            Assert.NotNullArg(worldData, "worldData");
+            Assert.NotNullArg(callback, "callback");
 
             if (worldDict.ContainsKey(worldData.Name))
             {

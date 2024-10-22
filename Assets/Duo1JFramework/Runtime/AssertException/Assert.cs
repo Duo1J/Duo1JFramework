@@ -18,28 +18,32 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 抛出一般异常
-        /// </summary>
-        public static void Throw(string msg)
-        {
-            CommonException.Throw(msg);
-        }
-
-        /// <summary>
         /// 断言不为空
         /// </summary>
         public static void NotNull(object o, string msg = null)
         {
             if (o == null)
             {
-                if (msg == null)
-                {
-                    Throw("<空指针异常>");
-                }
-                else
-                {
-                    Throw($"<空指针异常>: {msg}");
-                }
+                throw new NullExcept(msg);
+            }
+        }
+
+        /// <summary>
+        /// 断言参数不为空
+        /// </summary>
+        public static void NotNullArg(object o, string msg = null)
+        {
+            GuardArg(o != null, msg);
+        }
+
+        /// <summary>
+        /// 断言参数
+        /// </summary>
+        public static void GuardArg(bool b, string msg = null)
+        {
+            if (!b)
+            {
+                throw new ArgExcept(msg);
             }
         }
 
@@ -52,11 +56,11 @@ namespace Duo1JFramework
             {
                 if (msg == null)
                 {
-                    Throw("<字符串异常>");
+                    Throw("[字符串异常]");
                 }
                 else
                 {
-                    Throw($"<字符串异常>: {msg}");
+                    Throw($"[字符串异常]: {msg}");
                 }
             }
         }
@@ -70,11 +74,11 @@ namespace Duo1JFramework
             {
                 if (msg == null)
                 {
-                    Throw("<Guard异常>");
+                    Throw("[Guard异常]");
                 }
                 else
                 {
-                    Throw($"<Guard异常>: {msg}");
+                    Throw($"[Guard异常]: {msg}");
                 }
             }
         }
@@ -220,6 +224,14 @@ namespace Duo1JFramework
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// 抛出一般异常
+        /// </summary>
+        private static void Throw(string msg)
+        {
+            throw Except.Create(msg);
         }
 
         private Assert()

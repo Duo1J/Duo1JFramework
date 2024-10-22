@@ -183,7 +183,7 @@ namespace Duo1JFramework.TimelineAPI
 
         public TimelineData(GameObject go)
         {
-            Assert.NotNull(go, "Timeline预制体Go为空，无法创建TimelineData");
+            Assert.NotNullArg(go, "go");
             this.go = go;
             this.pd = go.GetAndAssertComponent<PlayableDirector>($"无法从{ToString()}上获取PlayableDirector");
 

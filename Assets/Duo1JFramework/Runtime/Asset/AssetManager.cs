@@ -271,18 +271,18 @@ namespace Duo1JFramework.Asset
                             SetAssetLoader(EAssetLoaderType.AssetDatabase);
                             break;
 #else
-                        throw CommonException.Create("运行时不可使用AssetDatabase类型资源加载器");
+                        throw Except.Create("运行时不可使用AssetDatabase类型资源加载器");
 #endif
                         case EAssetLoaderType.AssetBundle:
                             SetAssetLoader(EAssetLoaderType.AssetBundle);
                             break;
                         case EAssetLoaderType.Addressables:
-                            throw CommonException.Create("Addressables资源加载器未实现");
+                            throw Except.Create("Addressables资源加载器未实现");
                         default:
 #if UNITY_EDITOR
-                            throw CommonException.Create($"GameOption.editor.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
+                            throw Except.Create($"GameOption.editor.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
 #else
-                            throw CommonException.Create($"GameOption.runtime.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
+                            throw Except.Create($"GameOption.runtime.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
 #endif
                     }
                 }

@@ -355,8 +355,8 @@ namespace Duo1JFramework.TimerUpdate
 
         public void RegisterAsyncRequest(AsyncOperation operation, Action<AsyncOperation> callback)
         {
-            Assert.NotNull(operation, "AsyncOperation不可为空");
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(operation, "operation");
+            Assert.NotNullArg(callback, "callback");
 
             operation.completed += (req) =>
             {

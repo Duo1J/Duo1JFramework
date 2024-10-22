@@ -22,7 +22,7 @@ namespace Duo1JFramework.Asset
 #endif
 
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(callback, "callback");
 
             ABData abData = ABManager.Instance.GetABDataByAsset(assetPath);
             if (abData == null)
@@ -47,7 +47,7 @@ namespace Duo1JFramework.Asset
             }
 #endif
 
-            Assert.NotNull(assetPath, "资源路径不可为空");
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
 
             ABData abData = ABManager.Instance.GetABDataByAsset(assetPath);
             if (abData == null)

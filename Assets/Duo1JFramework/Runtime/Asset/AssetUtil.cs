@@ -14,7 +14,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public static void LoadAtlasSprite(EAssetLoadType loadType, string atlasPath, string spritePath, Action<Sprite> callback)
         {
-            Assert.NotNull(callback, "回调不可为空");
+            Assert.NotNullArg(callback, "callback");
 
             AssetManager.Instance.LoadByType<SpriteAtlas>(atlasPath, (atlas) =>
             {

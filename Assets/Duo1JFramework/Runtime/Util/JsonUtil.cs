@@ -29,7 +29,7 @@ namespace Duo1JFramework
         /// </summary>
         public static T ToObject<T>(string jsonStr)
         {
-            Assert.NotNull(jsonStr, "Json字符串不可为null");
+            Assert.NotNullArg(jsonStr, "jsonStr");
 
             try
             {
