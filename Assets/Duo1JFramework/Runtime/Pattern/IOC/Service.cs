@@ -1,5 +1,3 @@
-using Duo1JFramework.DataStructure;
-
 namespace Duo1JFramework.Pattern.IOC
 {
     /// <summary>

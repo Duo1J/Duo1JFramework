@@ -24,8 +24,10 @@ namespace Duo1JFramework.Event
         {
             if (!eventDict.TryGetValue(e, out List<Action<object>> list))
             {
-                throw Except.Create($"事件`{e.ToString()}`未找到任何订阅，无法取消订阅");
+                Log.ErrorForce($"事件 `{e.ToString()}` 未找到任何订阅，无法取消");
+                return false;
             }
+
             return list.Remove(callback);
         }
 
