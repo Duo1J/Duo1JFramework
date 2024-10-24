@@ -10,7 +10,7 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 管线任务列表
         /// </summary>
-        List<ITask> TastList { get; set; }
+        List<ITask> TaskList { get; set; }
 
         /// <summary>
         /// 管线运行

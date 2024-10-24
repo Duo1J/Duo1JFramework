@@ -11,33 +11,33 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 管线任务列表
         /// </summary>
-        public List<ITask> TastList { get; set; }
+        public List<ITask> TaskList { get; set; }
 
         /// <summary>
         /// 管线运行
         /// </summary>
         public virtual bool Run(IPipelineContext context)
         {
-            Assert.NotNull(TastList, "管线任务列表为空");
+            Assert.NotNull(TaskList, "管线任务列表为空");
 
-            return TastList.All(task => task.Run(context));
+            return TaskList.All(task => task.Run(context));
         }
 
         /// <summary>
         /// 管线运行
         /// </summary>
-        public static bool Run(IPipelineContext context, List<ITask> tastList)
+        public static bool Run(IPipelineContext context, List<ITask> taskList)
         {
-            return Create(tastList).Run(context);
+            return Create(taskList).Run(context);
         }
 
         /// <summary>
         /// 管线创建
         /// </summary>
-        public static Pipeline Create(List<ITask> tastList)
+        public static Pipeline Create(List<ITask> taskList)
         {
             Pipeline pipeline = new Pipeline();
-            pipeline.TastList = tastList;
+            pipeline.TaskList = taskList;
 
             return pipeline;
         }
