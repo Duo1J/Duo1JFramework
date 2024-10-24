@@ -34,17 +34,9 @@ namespace Duo1JFramework
         #region Convert
 
         /// <summary>
-        /// UObject类型转换，转换失败打印错误
-        /// </summary>
-        public static T Convert<T>(this UObject obj, string msg = null) where T : UObject
-        {
-            return Assert.Convert<T>(obj, msg);
-        }
-
-        /// <summary>
         /// object类型转换，转换失败打印错误
         /// </summary>
-        public static T Convert<T>(this object obj, string msg = null) where T : class
+        public static T Convert<T>(this object obj, string msg = null)
         {
             return Assert.Convert<T>(obj, msg);
         }

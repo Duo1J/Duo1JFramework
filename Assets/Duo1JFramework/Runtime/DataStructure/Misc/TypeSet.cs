@@ -16,7 +16,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 添加
         /// </summary>
-        public void Add<T>(T obj) where T : class
+        public void Add<T>(T obj)
         {
             Add(typeof(T), obj);
         }
@@ -39,7 +39,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 移除
         /// </summary>
-        public bool Remove<T>() where T : class
+        public bool Remove<T>()
         {
             return Remove(typeof(T));
         }
@@ -55,7 +55,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 是否包含类型
         /// </summary>
-        public bool ContainsKey<T>() where T : class
+        public bool ContainsKey<T>()
         {
             return ContainsKey(typeof(T));
         }
@@ -79,24 +79,24 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 获取值
         /// </summary>
-        public T Get<T>() where T : class
+        public T Get<T>()
         {
             if (TryGetValue<T>(out T value))
             {
                 return value;
             }
 
-            return null;
+            return default(T);
         }
 
         /// <summary>
         /// 尝试获取值
         /// </summary>
-        public bool TryGetValue<T>(out T value) where T : class
+        public bool TryGetValue<T>(out T value)
         {
             if (TryGetValue(typeof(T), out object obj))
             {
-                value = obj as T;
+                value = obj.Convert<T>();
                 return true;
             }
 

@@ -9,6 +9,11 @@ namespace Duo1JFramework.Build
     /// </summary>
     public class ABBuildStrategy : EditorConfigSO<ABBuildStrategy>
     {
+        [Label("管线类型")]
+        [SerializeField]
+        private EABPipelineType pipelineType = EABPipelineType.Builtin;
+        public EABPipelineType PipelineType { get => pipelineType; set => pipelineType = value; }
+
         [Label("构建目标")]
         [SerializeField]
         private BuildTarget buildTarget = BuildTarget.StandaloneWindows64;

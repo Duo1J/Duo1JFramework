@@ -20,7 +20,12 @@ namespace Duo1JFramework.Pattern.Pipeline
         {
             Assert.NotNull(TaskList, "管线任务列表为空");
 
-            return TaskList.All(task => task.Run(context));
+            return TaskList.All((task) =>
+            {
+                bool success = task.Run(context);
+                Log.Info($"执行管线任务: `{task.GetType().FullName}` {(success ? "成功" : "失败")}");
+                return success;
+            });
         }
 
         /// <summary>

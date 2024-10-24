@@ -30,6 +30,7 @@ namespace Duo1JFramework.Build
         {
             ED.Scroll(ref scrollPos, () =>
             {
+                strategy.PipelineType = (EABPipelineType)EditorGUILayout.EnumPopup("管线类型", strategy.PipelineType);
                 strategy.BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup("构建目标", strategy.BuildTarget);
                 strategy.BuildOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("构建选项", strategy.BuildOptions);
 

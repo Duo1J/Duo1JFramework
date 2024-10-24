@@ -1,8 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Security.Cryptography;
 
 namespace Duo1JFramework.Build
 {
@@ -12,105 +13,49 @@ namespace Duo1JFramework.Build
     public class AssetBundleBuilder
     {
         /// <summary>
-        /// 使用ABBuildStrategy配置的目标构建所有AssetBundle
+        /// 使用ABBuildStrategy配置构建所有AssetBundle
         /// </summary>
         /// <see cref="ABBuildStrategy"/>
         public static bool BuildAllAssetBundle()
         {
-            return BuildAllAssetBundle(ABBuildStrategy.Instance.BuildTarget);
+            return BuildAllAssetBundle(ABBuildStrategy.Instance.BuildTarget, ABBuildStrategy.Instance.PipelineType);
         }
 
         /// <summary>
         /// 构建所有AssetBundle
         /// </summary>
-        public static bool BuildAllAssetBundle(BuildTarget buildTarget)
+        public static bool BuildAllAssetBundle(BuildTarget buildTarget, EABPipelineType pipelineType)
         {
-            ClearAllAssetBundleBuild();
-
-            ABBuildStrategyData[] strategyDatas = ABBuildStrategy.Instance.Data;
-
-            if (strategyDatas == null || strategyDatas.Length == 0)
-            {
-                Log.EditorError($"AB构建策略配置为空: `{ABBuildStrategy.AssetPath}`");
-                ABBuildStrategy.Instance.SelectAsset();
-                return false;
-            }
-
-            ABBuildData[] buildDatas = StrategyToBuildData(strategyDatas);
-
-            if (buildDatas == null || buildDatas.Length == 0)
-            {
-                Log.EditorError($"AB构建数据为空，请检查策略配置: `{ABBuildStrategy.AssetPath}`");
-                ABBuildStrategy.Instance.SelectAsset();
-                return false;
-            }
-
-            List<AssetBundleBuild> buildList = new List<AssetBundleBuild>();
-            Dictionary<string, List<string>> ab2AssetMap = new Dictionary<string, List<string>>();
-
-            foreach (ABBuildData buildData in buildDatas)
-            {
-                if (ab2AssetMap.ContainsKey(buildData.ABName))
-                {
-                    Log.EditorError($"AssetBundle包名重复: {buildData.ABName}");
-                    continue;
-                }
-                ab2AssetMap.Add(buildData.ABName, buildData.AssetPathList);
-
-                if (buildData.IsEmpty())
-                {
-                    continue;
-                }
-
-                buildList.Add(buildData.ToAssetBundleBuild());
-            }
-
             try
             {
-                EditorUtility.DisplayProgressBar("构建AssetBundle", "正在构建AssetBundle...", 0.3f);
+                bool success = false;
 
-                AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
-                    PathUtil.GetAssetBundleEditorRoot().CheckDir(),
-                    buildList.ToArray(),
-                    ABBuildStrategy.Instance.BuildOptions,
-                    buildTarget
-                );
-
-                if (manifest == null)
+                switch (pipelineType)
                 {
-                    Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBundle失败");
-                    return false;
-                }
-
-                Dictionary<string, string> ab2HashMap = BuildAB2HashMap(buildDatas);
-
-                Dictionary<string, uint> ab2CrcMap = null;
-                if (Def.Asset.BuildABCRC)
-                {
-                    ab2CrcMap = BuildAB2CRCMap(buildDatas);
-                }
-
-                Dictionary<string, string> ab2MD5Map = BuildAB2MD5Map(buildDatas);
-
-                switch (Def.Asset.ABNameType)
-                {
-                    case EABNameType.Hash:
-                        RenameAllAssetBundle(buildDatas, ab2HashMap);
+                    case EABPipelineType.Builtin:
+                        ABBuiltinPipelineContext context = new ABBuiltinPipelineContext(buildTarget);
+                        success = ABBuiltinPipeline.Build(context);
                         break;
-                    case EABNameType.MD5:
-                        RenameAllAssetBundle(buildDatas, ab2MD5Map);
+                    default:
+                        Log.EditorError($"未处理的AssetBundle管线类型: `{pipelineType}`");
+                        success = false;
                         break;
                 }
 
-                ABMapData abMapData = ABMapData.Create(ab2AssetMap, ab2HashMap, ab2CrcMap, ab2MD5Map);
-                abMapData.SaveToFile(Def.Asset.EncryptABMapData);
+                if (success)
+                {
+                    Log.EditorInfo($"构建 `{buildTarget.GetName()}` 平台的AssetBundle成功");
+                }
+                else
+                {
+                    Log.EditorError($"构建 `{buildTarget.GetName()}` 平台的AssetBundle失败");
+                }
 
-                Log.EditorInfo($"构建`{buildTarget.GetName()}`平台的AssetBundle成功");
-                return true;
+                return success;
             }
             catch (Exception e)
             {
-                Assert.ExceptHandle(e, "AssetBundle构建异常");
+                Assert.ExceptHandle(e, $"构建 `{buildTarget.GetName()}` 平台的AssetBundle异常");
                 return false;
             }
             finally
@@ -197,14 +142,6 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// 命令行构建所有AssetBundle
-        /// </summary>
-        public static void CommandBuildAllAssetBundle()
-        {
-
-        }
-
-        /// <summary>
         /// 将策略数据转为构建数据
         /// </summary>
         public static ABBuildData[] StrategyToBuildData(ABBuildStrategyData[] strategyDatas)
@@ -274,7 +211,7 @@ namespace Duo1JFramework.Build
                     continue;
                 }
 
-                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName, true);
                 if (!File.Exists(abPath))
                 {
                     Log.EditorError($"构建CRC时未找到AssetBundle文件: `{abPath}`");
@@ -310,7 +247,7 @@ namespace Duo1JFramework.Build
                     continue;
                 }
 
-                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName, true);
                 if (!File.Exists(abPath))
                 {
                     Log.EditorError($"构建Hash时未找到AssetBundle文件: `{abPath}`");
@@ -354,7 +291,7 @@ namespace Duo1JFramework.Build
                     continue;
                 }
 
-                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName, true);
                 if (!File.Exists(abPath))
                 {
                     Log.EditorError($"构建MD5时未找到AssetBundle文件: `{abPath}`");
@@ -392,10 +329,21 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// 使用映射表重命名AssetBundle
+        /// 使用映射表重命名AssetBundle并添加后缀
         /// </summary>
-        public static void RenameAllAssetBundle(ABBuildData[] buildDatas, Dictionary<string, string> ab2NameMap)
+        /// <param name="ab2NameMap">ab与名称映射, 若为空则使用原名</param>
+        public static bool RenameAllAssetBundle(ABBuildData[] buildDatas, Dictionary<string, string> ab2NameMap = null)
         {
+            string mainABPath = PathUtil.GetAssetBundlePath(Def.Path.ASSET_BUNDLE_MAIN_NAME, true);
+            if (!File.Exists(mainABPath))
+            {
+                Log.EditorError($"重命名AssetBundle时未找到主包: `{mainABPath}`");
+                return false;
+            }
+
+            string mainABRenamePath = PathUtil.GetAssetBundlePath(Def.Path.ASSET_BUNDLE_MAIN_NAME, false);
+            FileUtil.Move(mainABPath, mainABRenamePath);
+
             foreach (ABBuildData buildData in buildDatas)
             {
                 if (buildData.IsEmpty())
@@ -403,24 +351,34 @@ namespace Duo1JFramework.Build
                     continue;
                 }
 
-                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName);
+                string abPath = PathUtil.GetAssetBundlePath(buildData.ABName, true);
                 if (!File.Exists(abPath))
                 {
                     Log.EditorError($"重命名AssetBundle时未找到目标文件: `{abPath}`");
-                    continue;
+                    return false;
                 }
 
-                if (ab2NameMap.TryGetValue(buildData.ABName, out string md5))
+                if (ab2NameMap == null)
                 {
-                    string renamePath = PathUtil.GetAssetBundlePath(md5);
+                    string renamePath = PathUtil.GetAssetBundlePath(buildData.ABName, false);
                     FileUtil.Move(abPath, renamePath);
                 }
                 else
                 {
-                    Log.EditorError($"重命名AssetBundle时映射表中未找到名称, AB: `{abPath}`");
-                    continue;
+                    if (ab2NameMap.TryGetValue(buildData.ABName, out string name))
+                    {
+                        string renamePath = PathUtil.GetAssetBundlePath(name, false);
+                        FileUtil.Move(abPath, renamePath);
+                    }
+                    else
+                    {
+                        Log.EditorError($"重命名AssetBundle时映射表中未找到名称, AB: `{abPath}`");
+                        return false;
+                    }
                 }
             }
+
+            return true;
         }
 
         private AssetBundleBuilder()

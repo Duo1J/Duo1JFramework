@@ -8,9 +8,9 @@ namespace Duo1JFramework
     public class Util
     {
         /// <summary>
-        /// 安全执行
+        /// TryCatch安全执行
         /// </summary>
-        public static bool SafeExecute(Action action)
+        public static bool TryCatch(Action action)
         {
             try
             {
@@ -23,6 +23,22 @@ namespace Duo1JFramework
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// TryCatch安全执行
+        /// </summary>
+        public static bool TryCatch(Func<bool> action)
+        {
+            try
+            {
+                return action == null || action.Invoke();
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e);
+                return false;
+            }
         }
 
         private Util()

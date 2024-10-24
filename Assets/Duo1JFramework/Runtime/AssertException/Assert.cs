@@ -120,59 +120,29 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// UObject类型转换，转换失败打印错误
-        /// </summary>
-        public static T Convert<T>(UObject target, string msg = null) where T : UObject
-        {
-            if (target == null)
-            {
-                if (string.IsNullOrEmpty(msg))
-                {
-                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}");
-                }
-                else
-                {
-                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}\n{msg}");
-                }
-                return null;
-            }
-
-            T ret = target as T;
-            if (ret == null)
-            {
-                if (string.IsNullOrEmpty(msg))
-                {
-                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}");
-                }
-                else
-                {
-                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
-                }
-            }
-
-            return ret;
-        }
-
-        /// <summary>
         /// object类型转换，转换失败打印错误
         /// </summary>
-        public static T Convert<T>(object target, string msg = null) where T : class
+        public static T Convert<T>(object target, string msg = null)
         {
             if (target == null)
             {
                 if (string.IsNullOrEmpty(msg))
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}");
+                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`");
                 }
                 else
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}\n{msg}");
+                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`\n{msg}");
                 }
-                return null;
+
+                return default(T);
             }
 
-            T ret = target as T;
-            if (ret == null)
+            if (target is T o)
+            {
+                return o;
+            }
+            else
             {
                 if (string.IsNullOrEmpty(msg))
                 {
@@ -182,9 +152,9 @@ namespace Duo1JFramework
                 {
                     Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
                 }
-            }
 
-            return ret;
+                return default(T);
+            }
         }
 
         /// <summary>
@@ -196,16 +166,18 @@ namespace Duo1JFramework
             {
                 if (string.IsNullOrEmpty(msg))
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}");
+                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`");
                 }
                 else
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转{typeof(T).FullName}\n{msg}");
+                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`\n{msg}");
                 }
+
                 return default(T);
             }
 
             T ret = default(T);
+
             try
             {
                 ret = (T)target;
@@ -214,11 +186,11 @@ namespace Duo1JFramework
             {
                 if (string.IsNullOrEmpty(msg))
                 {
-                    ExceptHandle(e, $"类型转换失败, {target}转{typeof(T).FullName}");
+                    ExceptHandle(e, $"类型转换失败, {target}转`{typeof(T).FullName}`");
                 }
                 else
                 {
-                    ExceptHandle(e, $"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
+                    ExceptHandle(e, $"类型转换失败, {target}转`{typeof(T).FullName}`\n{msg}");
 
                 }
             }

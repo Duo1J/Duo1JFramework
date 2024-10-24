@@ -133,7 +133,7 @@ namespace Duo1JFramework.Asset
 
         private void InitMainAssetBundle()
         {
-            string mainAssetBundlePath = PathUtil.GetAssetBundlePath(Def.Path.ASSET_BUNDLE_MAIN_NAME);
+            string mainAssetBundlePath = PathUtil.GetAssetBundlePath(Def.Path.ASSET_BUNDLE_MAIN_NAME, false);
             mainAB = AssetBundle.LoadFromFile(mainAssetBundlePath);
             manifest = mainAB.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
         }

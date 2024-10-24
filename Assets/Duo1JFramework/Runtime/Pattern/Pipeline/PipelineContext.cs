@@ -15,7 +15,7 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 通过类型设置参数
         /// </summary>
-        public void Set<T>(T obj) where T : class
+        public void Set<T>(T obj)
         {
             if (typeSet == null)
             {
@@ -28,7 +28,7 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 通过Key设置参数
         /// </summary>
-        public void Set<T>(string key, T obj) where T : class
+        public void Set<T>(string key, T obj)
         {
             if (keyDict == null)
             {
@@ -48,33 +48,30 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 尝试通过类型获取参数
         /// </summary>
-        public bool TryGet<T>(out T value) where T : class
+        public bool TryGet<T>(out T value)
         {
-            if (typeSet == null)
+            if (typeSet != null && typeSet.TryGetValue<T>(out value))
             {
-                typeSet = new TypeSet();
+                return true;
             }
 
-            return typeSet.TryGetValue<T>(out value);
+            Log.EditorError($"无法获取到管线环境上下文, Type: `{typeof(T).FullName}`");
+            value = default(T);
+            return false;
         }
 
         /// <summary>
         /// 尝试通过Key获取参数
         /// </summary>
-        public bool TryGet<T>(string key, out T value) where T : class
+        public bool TryGet<T>(string key, out T value)
         {
-            if (keyDict == null)
+            if (keyDict != null && keyDict.TryGetValue(key, out object obj))
             {
-                value = default(T);
-                return false;
-            }
-
-            if (keyDict.TryGetValue(key, out object obj))
-            {
-                value = obj as T;
+                value = obj.Convert<T>();
                 return true;
             }
 
+            Log.EditorError($"无法获取到管线环境上下文, Key: `{key}`");
             value = default(T);
             return false;
         }

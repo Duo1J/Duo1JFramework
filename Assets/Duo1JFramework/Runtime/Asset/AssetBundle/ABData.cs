@@ -85,16 +85,16 @@ namespace Duo1JFramework.Asset
             switch (Def.Asset.ABNameType)
             {
                 case EABNameType.Origin:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
+                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName, false);
                     break;
                 case EABNameType.Hash:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(hash);
+                    assetBundlePath = PathUtil.GetAssetBundlePath(hash, false);
                     break;
                 case EABNameType.MD5:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(md5);
+                    assetBundlePath = PathUtil.GetAssetBundlePath(md5, false);
                     break;
                 default:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName);
+                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName, false);
                     break;
             }
 

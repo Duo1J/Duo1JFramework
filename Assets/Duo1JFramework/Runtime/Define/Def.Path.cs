@@ -22,11 +22,6 @@ namespace Duo1JFramework
             /// </summary>
             public const string META_SUFFIX = ".meta";
 
-            /// <summary>
-            /// Manifest文件后缀
-            /// </summary>
-            public const string MANIFEST_SUFFIX = ".manifest";
-
             #region Asset
 
             /// <summary>
@@ -67,6 +62,16 @@ namespace Duo1JFramework
             #endregion Asset
 
             #region AssetBundle
+
+            /// <summary>
+            /// Manifest文件后缀
+            /// </summary>
+            public const string MANIFEST_SUFFIX = ".manifest";
+
+            /// <summary>
+            /// AssetBundle文件后缀
+            /// </summary>
+            public const string ASSET_BUNDLE_SUFFIX = ".block";
 
             /// <summary>
             /// AssetBundle主包、根文件夹名称

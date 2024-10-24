@@ -27,9 +27,16 @@ namespace Duo1JFramework
         /// <summary>
         /// 获取加载AssetBundle的文件路径
         /// </summary>
-        public static string GetAssetBundlePath(string assetBundleName)
+        public static string GetAssetBundlePath(string assetBundleName, bool ignoreSuffix = false)
         {
-            return $"{GetAssetBundleRoot()}{assetBundleName}";
+            if (ignoreSuffix)
+            {
+                return $"{GetAssetBundleRoot()}{assetBundleName}";
+            }
+            else
+            {
+                return $"{GetAssetBundleRoot()}{assetBundleName}{Def.Path.ASSET_BUNDLE_SUFFIX}";
+            }
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// App构建目标文件夹名
         /// </summary>
-        public static string BuildTarFolderName => $"{Application.productName}_Out";
+        public static readonly string BuildTarFolderName = $"{Application.productName}_Out";
 
         /// <summary>
         /// 以AppBuildStrategy参数构建App
@@ -61,10 +61,11 @@ namespace Duo1JFramework.Build
             {
                 Assert.NotNullArg(tarPath, "tarPath");
                 FileUtil.CheckDir(tarPath);
-                string tarPlayerFolder = tarPath + $"/{Application.productName}/";
+
+                string tarPlayerFolder = $"{tarPath}/{Application.productName}/";
                 if (FileUtil.DeleteDir(tarPlayerFolder))
                 {
-                    Log.EditorInfo($"Player构建时，删除已存在文件夹: {tarPlayerFolder}");
+                    Log.EditorInfo($"Player构建时，删除已存在的文件夹: `{tarPlayerFolder}`");
                 }
 
                 string tarPlayerPath = tarPlayerFolder + $"{Application.productName}.exe";
@@ -72,7 +73,7 @@ namespace Duo1JFramework.Build
                 BuildPipeline.BuildPlayer(buildSettingSceneList.ToArray(), tarPlayerPath, data.buildTarget, data.buildOptions);
 
                 ProjectUtil.OpenExplorer(tarPath);
-                Log.EditorInfo($"Player构建成功: {tarPath}");
+                Log.EditorInfo($"Player构建成功: `{tarPath}`");
             }
             catch (Exception e)
             {
@@ -92,7 +93,7 @@ namespace Duo1JFramework.Build
                 {
                     case EAssetLoaderType.AssetBundle:
                         {
-                            AssetBundleBuilder.BuildAllAssetBundle(buildTarget);
+                            AssetBundleBuilder.BuildAllAssetBundle(buildTarget, ABBuildStrategy.Instance.PipelineType);
                             return true;
                         }
                     case EAssetLoaderType.Addressables:
@@ -102,7 +103,7 @@ namespace Duo1JFramework.Build
                         }
                     default:
                         {
-                            Log.EditorError($"资源构建时，加载器类型错误: {assetLoaderType}");
+                            Log.EditorError($"资源构建时，加载器类型错误: `{assetLoaderType}`");
                             return false;
                         }
                 }
@@ -146,13 +147,6 @@ namespace Duo1JFramework.Build
                 Assert.ExceptHandle(e);
                 return false;
             }
-        }
-
-        /// <summary>
-        /// 命令行构建App
-        /// </summary>
-        public static void CommandBuildApp()
-        {
         }
 
         #region Tool
