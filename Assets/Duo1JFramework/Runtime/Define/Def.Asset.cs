@@ -1,5 +1,3 @@
-using Duo1JFramework.Build;
-
 namespace Duo1JFramework
 {
     public static partial class Def
@@ -20,14 +18,9 @@ namespace Duo1JFramework
             public static bool EncryptABMapData = true;
 
             /// <summary>
-            /// 是否构建AssetBundle的CRC校验
+            /// ABMapData加密AES私钥
             /// </summary>
-            public static bool BuildABCRC = true;
-
-            /// <summary>
-            /// AssetBundle文件命名方式
-            /// </summary>
-            public static EABNameType ABNameType { get; set; } = EABNameType.MD5;
+            public static byte[] ABMapDataAESKeyByte => AesKeyByte;
         }
     }
 }

@@ -18,11 +18,11 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 尝试通过类型获取参数
         /// </summary>
-        bool TryGet<T>(out T value);
+        bool TryGet<T>(out T value, bool suppressLog = false);
 
         /// <summary>
         /// 尝试通过Key获取参数
         /// </summary>
-        bool TryGet<T>(string key, out T value);
+        bool TryGet<T>(string key, out T value, bool suppressLog = false);
     }
 }

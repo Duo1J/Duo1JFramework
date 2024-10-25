@@ -19,9 +19,14 @@ namespace Duo1JFramework.Build
                         return false;
                     }
 
+                    if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
+                    {
+                        return false;
+                    }
+
                     bool success = false;
 
-                    switch (Def.Asset.ABNameType)
+                    switch (strategy.ABNameType)
                     {
                         case EABNameType.Hash:
                             if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_HASH_MAP, out Dictionary<string, string> ab2HashMap))

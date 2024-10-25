@@ -19,7 +19,12 @@ namespace Duo1JFramework.Build
                         return false;
                     }
 
-                    if (Def.Asset.BuildABCRC)
+                    if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
+                    {
+                        return false;
+                    }
+
+                    if (strategy.BuildABCRC)
                     {
                         Dictionary<string, uint> ab2CrcMap = AssetBundleBuilder.BuildAB2CRCMap(buildDatas);
                         context.Set<Dictionary<string, uint>>(ABBuiltinPipeline.ContextKey.AB_TO_CRC_MAP, ab2CrcMap);

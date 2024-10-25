@@ -48,14 +48,18 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 尝试通过类型获取参数
         /// </summary>
-        public bool TryGet<T>(out T value)
+        public bool TryGet<T>(out T value, bool suppressLog = false)
         {
             if (typeSet != null && typeSet.TryGetValue<T>(out value))
             {
                 return true;
             }
 
-            Log.EditorError($"无法获取到管线环境上下文, Type: `{typeof(T).FullName}`");
+            if (!suppressLog)
+            {
+                Log.EditorError($"无法获取到管线环境上下文, Type: `{typeof(T).FullName}`");
+            }
+
             value = default(T);
             return false;
         }
@@ -63,7 +67,7 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 尝试通过Key获取参数
         /// </summary>
-        public bool TryGet<T>(string key, out T value)
+        public bool TryGet<T>(string key, out T value, bool suppressLog = false)
         {
             if (keyDict != null && keyDict.TryGetValue(key, out object obj))
             {
@@ -71,7 +75,11 @@ namespace Duo1JFramework.Pattern.Pipeline
                 return true;
             }
 
-            Log.EditorError($"无法获取到管线环境上下文, Key: `{key}`");
+            if (!suppressLog)
+            {
+                Log.EditorError($"无法获取到管线环境上下文, Key: `{key}`");
+            }
+
             value = default(T);
             return false;
         }

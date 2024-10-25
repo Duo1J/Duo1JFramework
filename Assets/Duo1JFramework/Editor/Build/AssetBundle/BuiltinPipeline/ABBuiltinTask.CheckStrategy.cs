@@ -13,7 +13,8 @@ namespace Duo1JFramework.Build
             {
                 return Util.TryCatch(() =>
                 {
-                    ABBuildStrategyData[] strategyDatas = ABBuildStrategy.Instance.Data;
+                    ABBuildStrategy strategy = ABBuildStrategy.Instance;
+                    ABBuildStrategyData[] strategyDatas = strategy.Data;
 
                     if (strategyDatas == null || strategyDatas.Length == 0)
                     {
@@ -23,7 +24,7 @@ namespace Duo1JFramework.Build
                         return false;
                     }
 
-                    context.Set<ABBuildStrategyData[]>(ABBuiltinPipeline.ContextKey.STRATEGY_DATAS, strategyDatas);
+                    context.Set<ABBuildStrategy>(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, strategy);
 
                     return true;
                 });

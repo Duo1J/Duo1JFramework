@@ -36,12 +36,12 @@ namespace Duo1JFramework.Build
         public class ContextKey
         {
             /// <summary>
-            /// ABBuildStrategyData[]缓存
+            /// ABBuildStrategy 缓存
             /// </summary>
-            public const string STRATEGY_DATAS = "STRATEGY_DATAS";
+            public const string STRATEGY_DATA = "STRATEGY_DATA";
 
             /// <summary>
-            /// ABBuildData[]缓存
+            /// ABBuildData[] 缓存
             /// </summary>
             public const string BUILD_DATAS = "BUILD_DATAS";
 
@@ -51,22 +51,22 @@ namespace Duo1JFramework.Build
             public const string AB_TO_ASSET_MAP = "AB_TO_ASSET_MAP";
 
             /// <summary>
-            /// List<AssetBundleBuild>缓存
+            /// List<AssetBundleBuild> 缓存
             /// </summary>
             public const string BUILD_INPUT_LIST = "BUILD_INPUT_LIST";
 
             /// <summary>
-            /// Dictionary<string, string> ab2HashMap缓存
+            /// Dictionary<string, string> ab2HashMap 缓存
             /// </summary>
             public const string AB_TO_HASH_MAP = "AB_2_HASH_MAP";
 
             /// <summary>
-            /// Dictionary<string, uint> ab2CrcMap缓存
+            /// Dictionary<string, uint> ab2CrcMap 缓存
             /// </summary>
             public const string AB_TO_CRC_MAP = "AB_TO_CRC_MAP";
 
             /// <summary>
-            /// Dictionary<string, string> ab2MD5Map缓存
+            /// Dictionary<string, string> ab2MD5Map 缓存
             /// </summary>
             public const string AB_TO_MD5_MAP = "AB_TO_MD5_MAP";
         }

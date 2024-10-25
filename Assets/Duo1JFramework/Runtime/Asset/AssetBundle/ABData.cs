@@ -19,9 +19,14 @@ namespace Duo1JFramework.Asset
         private AssetBundle assetBundle;
 
         /// <summary>
-        /// AssetBundle包名
+        /// AssetBundle原始包名
         /// </summary>
-        private string assetBundleName;
+        private string abName;
+
+        /// <summary>
+        /// 待加载的AssetBundle文件路径
+        /// </summary>
+        private string abPath;
 
         /// <summary>
         /// Hash值
@@ -37,11 +42,6 @@ namespace Duo1JFramework.Asset
         /// MD5值
         /// </summary>
         private string md5;
-
-        /// <summary>
-        /// 待加载的AssetBundle文件路径
-        /// </summary>
-        private string assetBundlePath;
 
         /// <summary>
         /// 是否异步加载中
@@ -77,24 +77,24 @@ namespace Duo1JFramework.Asset
 
         public ABData(string assetBundleName)
         {
-            this.assetBundleName = assetBundleName;
+            this.abName = assetBundleName;
             hash = ABManager.Instance.GetHashStrByABName(assetBundleName);
             crc = ABManager.Instance.GetCRCByABName(assetBundleName);
             md5 = ABManager.Instance.GetMD5ByABName(assetBundleName);
 
-            switch (Def.Asset.ABNameType)
+            switch (ABManager.Instance.GetABNameType())
             {
                 case EABNameType.Origin:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName, false);
+                    abPath = PathUtil.GetAssetBundlePath(assetBundleName, false);
                     break;
                 case EABNameType.Hash:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(hash, false);
+                    abPath = PathUtil.GetAssetBundlePath(hash, false);
                     break;
                 case EABNameType.MD5:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(md5, false);
+                    abPath = PathUtil.GetAssetBundlePath(md5, false);
                     break;
                 default:
-                    assetBundlePath = PathUtil.GetAssetBundlePath(assetBundleName, false);
+                    abPath = PathUtil.GetAssetBundlePath(assetBundleName, false);
                     break;
             }
 
@@ -325,7 +325,7 @@ namespace Duo1JFramework.Asset
             LoadAllDependenciesAB(false, () =>
             {
                 loading = true;
-                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(assetBundlePath, crc);
+                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(abPath, crc);
                 UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
                 {
                     AssetBundleCreateRequest _request = req as AssetBundleCreateRequest;
@@ -363,7 +363,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
-            assetBundle = AssetBundle.LoadFromFile(assetBundlePath, crc);
+            assetBundle = AssetBundle.LoadFromFile(abPath, crc);
             if (assetBundle == null)
             {
                 Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
@@ -441,11 +441,11 @@ namespace Duo1JFramework.Asset
         {
             if (loading)
             {
-                return $"<{assetBundlePath}-Loading>";
+                return $"<{abPath}-Loading>";
             }
             else
             {
-                return $"<{assetBundlePath}>";
+                return $"<{abPath}>";
             }
         }
 
@@ -457,8 +457,8 @@ namespace Duo1JFramework.Asset
         {
             ED.Vertical(() =>
             {
-                GUILayout.Label($"AB包名: {assetBundleName.WithColor(ES.Blue)}");
-                GUILayout.Label($"AB路径: {assetBundlePath}");
+                GUILayout.Label($"AB包名: {abName.WithColor(ES.Blue)}");
+                GUILayout.Label($"AB路径: {abPath}");
                 GUILayout.Label($"加载中: {loading}{ED.S4}卸载空闲等待时间: {freeTime}{ED.S4}是否可以卸载: {CanUnload()}");
 
                 GUILayout.Space(10);

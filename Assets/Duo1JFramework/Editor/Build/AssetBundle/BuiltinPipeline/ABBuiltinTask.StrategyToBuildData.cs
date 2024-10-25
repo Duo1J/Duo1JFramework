@@ -13,12 +13,12 @@ namespace Duo1JFramework.Build
             {
                 return Util.TryCatch(() =>
                 {
-                    if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATAS, out ABBuildStrategyData[] strategyDatas))
+                    if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
                     {
                         return false;
                     }
 
-                    ABBuildData[] buildDatas = AssetBundleBuilder.StrategyToBuildData(strategyDatas);
+                    ABBuildData[] buildDatas = AssetBundleBuilder.StrategyToBuildData(strategy.Data);
 
                     if (buildDatas == null || buildDatas.Length == 0)
                     {

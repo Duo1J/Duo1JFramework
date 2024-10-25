@@ -34,8 +34,12 @@ namespace Duo1JFramework.Build
                 strategy.BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup("构建目标", strategy.BuildTarget);
                 strategy.BuildOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("构建选项", strategy.BuildOptions);
 
+                strategy.ABNameType = (EABNameType)EditorGUILayout.EnumFlagsField("AB包命名方式", strategy.ABNameType);
+                strategy.BuildABCRC = EditorGUILayout.Toggle("构建CRC校验", strategy.BuildABCRC);
+
                 GUILayout.Space(10);
 
+                GUILayout.Label("构建策略");
                 foreach (ABBuildStrategyData data in strategy.Data)
                 {
                     GUILayout.Label($"<color={ES.GreenSL}>{data.abName}包:</color>");

@@ -10,10 +10,24 @@ namespace Duo1JFramework.Asset
     /// </summary>
     public class ABManager : MonoSingleton<ABManager>, IEditorDrawer
     {
+        /// <summary>
+        /// AssetBundle主包
+        /// </summary>
         private AssetBundle mainAB;
+
+        /// <summary>
+        /// AssetBundle清单
+        /// </summary>
         private AssetBundleManifest manifest;
 
+        /// <summary>
+        /// AssetBundle映射数据
+        /// </summary>
         private ABMapData abMapData;
+
+        /// <summary>
+        /// ABData字典
+        /// </summary>
         private Dictionary<string, ABData> abDataDict;
 
         /// <summary>
@@ -37,19 +51,37 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
+        /// 获取依赖引用的ABData列表
+        /// </summary>
+        public List<ABData> GetRefABDataList(string abName)
+        {
+            List<ABData> abDataList = new List<ABData>();
+
+            string[] dependencies = manifest.GetAllDependencies(abName);
+            foreach (string dependency in dependencies)
+            {
+                abDataList.Add(GetABDataByName(dependency));
+            }
+
+            return abDataList;
+        }
+
+        #region ABMapData API
+
+        /// <summary>
         /// 通过AssetBundle名获取ABData
         /// </summary>
-        public ABData GetABDataByName(string assetBundleName)
+        public ABData GetABDataByName(string abName)
         {
-            if (string.IsNullOrEmpty(assetBundleName))
+            if (string.IsNullOrEmpty(abName))
             {
                 return null;
             }
 
-            if (!abDataDict.TryGetValue(assetBundleName, out ABData abData))
+            if (!abDataDict.TryGetValue(abName, out ABData abData))
             {
-                abData = new ABData(assetBundleName);
-                abDataDict.Add(assetBundleName, abData);
+                abData = new ABData(abName);
+                abDataDict.Add(abName, abData);
             }
             return abData;
         }
@@ -87,20 +119,22 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
-        /// 获取依赖引用的ABData列表
+        /// 获取AssetBundle包命名方式
         /// </summary>
-        public List<ABData> GetRefABDataList(string assetBundleName)
+        public EABNameType GetABNameType()
         {
-            List<ABData> abDataList = new List<ABData>();
-
-            string[] dependencies = manifest.GetAllDependencies(assetBundleName);
-            foreach (string dependency in dependencies)
-            {
-                abDataList.Add(GetABDataByName(dependency));
-            }
-
-            return abDataList;
+            return abMapData.GetABNameType();
         }
+
+        /// <summary>
+        /// 是否构建了CRC校验
+        /// </summary>
+        public bool IsBuildABCRC()
+        {
+            return abMapData.IsBuildABCRC();
+        }
+
+        #endregion ABMapData API
 
         public void GC()
         {
@@ -131,6 +165,9 @@ namespace Duo1JFramework.Asset
             }
         }
 
+        /// <summary>
+        /// 初始化AssetBundle主包
+        /// </summary>
         private void InitMainAssetBundle()
         {
             string mainAssetBundlePath = PathUtil.GetAssetBundlePath(Def.Path.ASSET_BUNDLE_MAIN_NAME, false);
