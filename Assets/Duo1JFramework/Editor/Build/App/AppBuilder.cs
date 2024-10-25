@@ -21,41 +21,41 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 以AppBuildStrategy参数构建App
         /// </summary>
-        public static void BuildApp(string tarPath)
+        public static bool BuildApp(string tarPath)
         {
             Assert.NotNullArg(tarPath, "tarPath");
             FileUtil.CheckDir(tarPath);
 
-            AppBuildStrategyData data = AppBuildStrategy.Instance.Data;
+            AppBuildStrategy strategy = AppBuildStrategy.Instance;
 
-            if (data.buildAsset)
+            if (strategy.buildAsset)
             {
-                if (!BuildAsset(data.buildTarget, data.assetLoaderType))
+                if (!BuildAsset(strategy.buildTarget, strategy.assetLoaderType))
                 {
-                    return;
+                    return false;
                 }
             }
 
-            if (data.copyAsset)
+            if (strategy.ABData.copyAsset)
             {
-                if (!CopyAsset(data.assetLoaderType))
+                if (!CopyAsset(strategy.assetLoaderType))
                 {
-                    return;
+                    return false;
                 }
 
-                if (data.assetLoaderType == EAssetLoaderType.AssetBundle && data.deleteManifest)
+                if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle && strategy.ABData.deleteManifest)
                 {
                     AssetBundleBuilder.DeleteAllManifestCopy();
                 }
             }
 
-            BuildPlayer(data, tarPath);
+            return BuildPlayer(strategy, tarPath);
         }
 
         /// <summary>
         /// 构建Player
         /// </summary>
-        private static void BuildPlayer(AppBuildStrategyData data, string tarPath)
+        private static bool BuildPlayer(AppBuildStrategy strategy, string tarPath)
         {
             try
             {
@@ -70,15 +70,18 @@ namespace Duo1JFramework.Build
 
                 string tarPlayerPath = tarPlayerFolder + $"{Application.productName}.exe";
                 List<EditorBuildSettingsScene> buildSettingSceneList = GetBuildSettingSceneList();
-                BuildPipeline.BuildPlayer(buildSettingSceneList.ToArray(), tarPlayerPath, data.buildTarget, data.buildOptions);
+                BuildPipeline.BuildPlayer(buildSettingSceneList.ToArray(), tarPlayerPath, strategy.buildTarget, strategy.buildOptions);
 
                 ProjectUtil.OpenExplorer(tarPath);
                 Log.EditorInfo($"Player构建成功: `{tarPath}`");
+
+                return true;
             }
             catch (Exception e)
             {
                 Log.EditorError($"Player构建失败");
                 Assert.ExceptHandle(e);
+                return false;
             }
         }
 

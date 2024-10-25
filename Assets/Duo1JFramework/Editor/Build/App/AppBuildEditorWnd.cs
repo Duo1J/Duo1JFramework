@@ -30,19 +30,23 @@ namespace Duo1JFramework.Build
             {
                 ED.Vertical(() =>
                 {
-                    AppBuildStrategyData data = strategy.Data;
-
-                    data.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("构建目标", data.buildTarget);
-                    data.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField("构建选项", data.buildOptions);
+                    strategy.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("构建目标", strategy.buildTarget);
+                    strategy.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField("构建选项", strategy.buildOptions);
 
                     GUILayout.Space(10);
-                    data.buildAsset = EditorGUILayout.Toggle("构建资源", data.buildAsset);
-                    data.assetLoaderType = (EAssetLoaderType)EditorGUILayout.EnumPopup("资源加载器类型", data.assetLoaderType);
-
-                    data.copyAsset = EditorGUILayout.Toggle("拷贝资源到运行时目录", data.copyAsset);
-                    if (data.assetLoaderType == EAssetLoaderType.AssetBundle)
+                    strategy.buildAsset = EditorGUILayout.Toggle("构建资源", strategy.buildAsset);
+                    if (strategy.buildAsset)
                     {
-                        data.deleteManifest = EditorGUILayout.Toggle("删除Manifest文件", data.deleteManifest);
+                        strategy.assetLoaderType = (EAssetLoaderType)EditorGUILayout.EnumPopup("资源加载器类型", strategy.assetLoaderType);
+
+                        if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle)
+                        {
+                            strategy.ABData.copyAsset = EditorGUILayout.Toggle("拷贝资源到运行时目录", strategy.ABData.copyAsset);
+                            if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle)
+                            {
+                                strategy.ABData.deleteManifest = EditorGUILayout.Toggle("删除Manifest文件", strategy.ABData.deleteManifest);
+                            }
+                        }
                     }
                 });
             });
@@ -54,17 +58,17 @@ namespace Duo1JFramework.Build
             {
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("打开资源构建面板"))
-                {
-                    OpenAssetBuildWnd(strategy.Data.assetLoaderType);
-                }
-
-                if (strategy.Data.assetLoaderType == EAssetLoaderType.AssetBundle && GUILayout.Button("清理Manifest文件"))
+                if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle && GUILayout.Button("清理Manifest文件"))
                 {
                     if (EditorUtility.DisplayDialog("", "是否执行清理清理Manifest文件", "确认", "取消"))
                     {
                         AssetBundleBuilder.DeleteAllManifestCopy();
                     }
+                }
+
+                if (GUILayout.Button("打开资源构建面板"))
+                {
+                    OpenAssetBuildWnd(strategy.assetLoaderType);
                 }
 
                 if (GUILayout.Button("定位到构建策略文件"))
@@ -76,7 +80,7 @@ namespace Duo1JFramework.Build
                 {
                     if (GUILayout.Button("构建App"))
                     {
-                        if (!EditorUtil.CheckPlatformChgAndAsk(AppBuildStrategy.Instance.Data.buildTarget))
+                        if (!EditorUtil.CheckPlatformChgAndAsk(AppBuildStrategy.Instance.buildTarget))
                         {
                             return;
                         }
@@ -115,6 +119,9 @@ namespace Duo1JFramework.Build
             }
         }
 
+        /// <summary>
+        /// 打开资源构建面板
+        /// </summary>
         private void OpenAssetBuildWnd(EAssetLoaderType assetLoaderType)
         {
             switch (assetLoaderType)

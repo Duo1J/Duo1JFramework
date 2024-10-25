@@ -10,34 +10,40 @@ namespace Duo1JFramework.Build
     /// </summary>
     public class AppBuildStrategy : EditorConfigSO<AppBuildStrategy>
     {
-        [SerializeField]
-        private AppBuildStrategyData data;
-
-        /// <summary>
-        /// App构建策略数据
-        /// </summary>
-        public AppBuildStrategyData Data => data;
-    }
-
-    [Serializable]
-    public class AppBuildStrategyData
-    {
         [Label("构建目标")]
         public BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
 
         [Label("构建选项")]
         public BuildOptions buildOptions;
 
+        [Space]
         [Label("构建资源")]
         public bool buildAsset = true;
 
+        [Label("资源加载器类型 (与GameOption对应)")]
+        public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;
+
+        [Space]
+        [Header("AssetBundle")]
+        [SerializeField]
+        private AppBuildStrategyABData abData;
+
+        /// <summary>
+        /// App构建AssetBundle策略数据
+        /// </summary>
+        public AppBuildStrategyABData ABData => abData;
+    }
+
+    /// <summary>
+    /// App构建AssetBundle策略数据
+    /// </summary>
+    [Serializable]
+    public class AppBuildStrategyABData
+    {
         [Label("拷贝资源到运行时目录")]
         public bool copyAsset = true;
 
         [Label("删除Manifest文件")]
         public bool deleteManifest = true;
-
-        [Label("资源加载器类型 (与GameOption对应)")]
-        public EAssetLoaderType assetLoaderType = EAssetLoaderType.AssetBundle;
     }
 }

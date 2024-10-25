@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0373e2d362e8a48863705e160c9579, type: 3}
   m_Name: AppBuildStrategy
   m_EditorClassIdentifier: 
-  data:
-    buildTarget: 19
-    buildOptions: 0
-    buildAsset: 1
+  buildTarget: 19
+  buildOptions: 0
+  buildAsset: 1
+  assetLoaderType: 1
+  abData:
     copyAsset: 1
     deleteManifest: 1
-    assetLoaderType: 1
