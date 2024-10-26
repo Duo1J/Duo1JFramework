@@ -33,8 +33,6 @@ namespace Duo1JFramework.Build
                         return false;
                     }
 
-                    EditorUtility.DisplayProgressBar("构建AssetBundle", "正在构建AssetBundle...", 0.3f);
-
                     AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
                         PathUtil.GetAssetBundleEditorRoot().CheckDir(),
                         buildInputList.ToArray(),

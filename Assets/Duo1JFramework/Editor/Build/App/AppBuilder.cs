@@ -21,6 +21,7 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 以AppBuildStrategy参数构建App
         /// </summary>
+        /// <param name="tarPath">目标文件夹, 需要在外层拼接上`/{AppBuilder.BuildTarFolderName}`</param>
         public static bool BuildApp(string tarPath)
         {
             Assert.NotNullArg(tarPath, "tarPath");

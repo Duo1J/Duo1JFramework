@@ -34,7 +34,7 @@ namespace Duo1JFramework.Build
                 strategy.BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup("构建目标", strategy.BuildTarget);
                 strategy.BuildOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("构建选项", strategy.BuildOptions);
 
-                strategy.ABNameType = (EABNameType)EditorGUILayout.EnumFlagsField("AB包命名方式", strategy.ABNameType);
+                strategy.ABNameType = (EABNameType)EditorGUILayout.EnumPopup("AB包命名方式", strategy.ABNameType);
                 strategy.BuildABCRC = EditorGUILayout.Toggle("构建CRC校验", strategy.BuildABCRC);
 
                 GUILayout.Space(10);
@@ -57,23 +57,51 @@ namespace Duo1JFramework.Build
             {
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("打开构建目标文件夹"))
+                if (GUILayout.Button($"解密 {Def.Path.ASSET_BUNDLE_MAP_DATA_NAME} (ABMapData)"))
                 {
-                    string abRoot = PathUtil.GetAssetBundleRoot();
-                    if (!string.IsNullOrEmpty(abRoot) && Directory.Exists(abRoot))
+                    string srcPath = EditorUtility.OpenFilePanel($"请选择 {Def.Path.ASSET_BUNDLE_MAP_DATA_NAME} (ABMapData) 文件", Def.Path.DataPath, "*");
+                    if (string.IsNullOrEmpty(srcPath))
                     {
-                        ProjectUtil.OpenExplorer(abRoot);
+                        return;
+                    }
+
+                    string tarPath = EditorUtility.SaveFilePanel($"请选择解密保存位置", null, "ABMapDataDecode.json", "json");
+                    if (string.IsNullOrEmpty(tarPath))
+                    {
+                        return;
+                    }
+
+                    bool success = ABMapData.DecodeToFile(srcPath, tarPath);
+                    if (success)
+                    {
+                        Log.Info($"解密ABMapData成功, 保存到: `{tarPath}`");
                     }
                     else
                     {
-                        Log.EditorError("AssetBundle未构建，无法打开目标文件夹");
+                        Log.ErrorForce($"解密ABMapData失败: `{srcPath}`");
                     }
                 }
 
-                if (GUILayout.Button("定位到构建策略文件"))
+                ED.Horizontal(() =>
                 {
-                    ABBuildStrategy.Instance.SelectAsset();
-                }
+                    if (GUILayout.Button("打开构建目标文件夹"))
+                    {
+                        string abRoot = PathUtil.GetAssetBundleRoot();
+                        if (!string.IsNullOrEmpty(abRoot) && Directory.Exists(abRoot))
+                        {
+                            ProjectUtil.OpenExplorer(abRoot);
+                        }
+                        else
+                        {
+                            Log.EditorError("AssetBundle未构建，无法打开目标文件夹");
+                        }
+                    }
+
+                    if (GUILayout.Button("定位到构建策略文件"))
+                    {
+                        ABBuildStrategy.Instance.SelectAsset();
+                    }
+                });
 
                 if (GUILayout.Button("清理构建的AssetBundle"))
                 {

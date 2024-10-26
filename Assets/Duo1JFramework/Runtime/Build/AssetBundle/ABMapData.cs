@@ -13,10 +13,10 @@ namespace Duo1JFramework.Build
         #region Field
 
         /// <summary>
-        /// 资源与AssetBundle映射
+        /// 资源数据映射
         /// </summary>
         [JsonProperty]
-        private Dictionary<string, string> asset2ABMap;
+        private Dictionary<string, ABMapAssetData> assetDataMap;
 
         /// <summary>
         /// AssetBundle与Hash映射
@@ -57,12 +57,26 @@ namespace Duo1JFramework.Build
         /// </summary>
         public string GetABNameByAsset(string assetPath)
         {
-            if (asset2ABMap.TryGetValue(assetPath, out string abName))
+            if (assetDataMap.TryGetValue(assetPath, out ABMapAssetData assetData))
             {
-                return abName;
+                return assetData.ABName;
             }
 
-            Log.ErrorForce($"未在asset2ABMap中找到资源 `{assetPath}`");
+            Log.ErrorForce($"未在assetDataMap中找到资源 `{assetPath}`");
+            return null;
+        }
+
+        /// <summary>
+        /// 通过资源路径获取资源数据
+        /// </summary>
+        public ABMapAssetData GetAssetData(string assetPath)
+        {
+            if (assetDataMap.TryGetValue(assetPath, out ABMapAssetData assetData))
+            {
+                return assetData;
+            }
+
+            Log.ErrorForce($"未在assetDataMap中找到资源 `{assetPath}`");
             return null;
         }
 
@@ -152,7 +166,7 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 创建ABMapData对象
         /// </summary>
-        public static ABMapData Create(Dictionary<string, List<string>> ab2AssetMap)
+        public static ABMapData Create(Dictionary<string, List<ABMapAssetData>> ab2AssetMap)
         {
             ABMapData abMapData = new ABMapData();
             return abMapData.SetAB2AssetMap(ab2AssetMap);
@@ -161,12 +175,12 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 设置资源与AssetBundle映射
         /// </summary>
-        public ABMapData SetAB2AssetMap(Dictionary<string, List<string>> ab2AssetMap)
+        public ABMapData SetAB2AssetMap(Dictionary<string, List<ABMapAssetData>> ab2AssetMap)
         {
             Assert.NotNullArg(ab2AssetMap, "ab2AssetMap");
 
-            asset2ABMap = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, List<string>> kv in ab2AssetMap)
+            assetDataMap = new Dictionary<string, ABMapAssetData>();
+            foreach (KeyValuePair<string, List<ABMapAssetData>> kv in ab2AssetMap)
             {
                 if (kv.Value == null)
                 {
@@ -174,19 +188,19 @@ namespace Duo1JFramework.Build
                 }
 
                 string key = kv.Key;
-                foreach (string asset in kv.Value)
+                foreach (ABMapAssetData assetData in kv.Value)
                 {
                     try
                     {
 #if UNITY_EDITOR
-                        if (asset2ABMap.ContainsKey(asset))
+                        if (assetDataMap.ContainsKey(assetData.AssetPath))
                         {
-                            Log.Error($"asset2ABMap中已包含`{asset}`, 其值为`{asset2ABMap[asset]}`");
+                            Log.Error($"asset2ABMap中已包含`{assetData.AssetPath}`, 其值为`{assetDataMap[assetData.AssetPath].AssetPath}`");
                             continue;
                         }
 #endif
 
-                        asset2ABMap.Add(asset, key);
+                        assetDataMap.Add(assetData.AssetPath, assetData);
                     }
                     catch (Exception e)
                     {
@@ -261,7 +275,7 @@ namespace Duo1JFramework.Build
         /// </summary>
         /// <param name="encrypt">是否加密, {Def.Asset.EncryptABMapData}</param>
         /// <param name="path">文件路径, 默认值 {PathUtil.GetABMapDataPath()}</param>
-        public void SaveToFile(bool encrypt, string path = null)
+        public void SaveToFile(bool encrypt, string path = null, Formatting formatting = Formatting.None)
         {
             Assert.GuardEditor("非Editor下不可保存ABMapData");
 
@@ -270,7 +284,7 @@ namespace Duo1JFramework.Build
                 path = PathUtil.GetABMapDataPath();
             }
 
-            string jsonStr = JsonUtil.ToJson(this);
+            string jsonStr = JsonUtil.ToJson(this, formatting);
             byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonStr);
             if (encrypt)
             {
@@ -304,6 +318,18 @@ namespace Duo1JFramework.Build
 
             string jsonStr = Encoding.UTF8.GetString(jsonBytes);
             return Parse(jsonStr);
+        }
+
+        /// <summary>
+        /// 解密并保存到文件
+        /// </summary>
+        public static bool DecodeToFile(string srcPath, string tarPath)
+        {
+            return Util.TryCatch(() =>
+            {
+                ABMapData abMapData = LoadFromFile(true, srcPath);
+                abMapData.SaveToFile(false, tarPath, Formatting.Indented);
+            });
         }
 
         #endregion Json

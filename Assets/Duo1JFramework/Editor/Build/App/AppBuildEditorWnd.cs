@@ -85,7 +85,7 @@ namespace Duo1JFramework.Build
                             return;
                         }
 
-                        string tarPath = EditorUtility.SaveFolderPanel("选择App构建目标路径", "", "");
+                        string tarPath = EditorUtility.SaveFolderPanel("选择App构建目标路径", null, "");
                         if (string.IsNullOrEmpty(tarPath))
                         {
                             Log.EditorError("App构建目标路径不可为空");

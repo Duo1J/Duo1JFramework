@@ -1,4 +1,4 @@
-﻿using Duo1JFramework.Pattern.Pipeline;
+using Duo1JFramework.Pattern.Pipeline;
 
 namespace Duo1JFramework.Build
 {

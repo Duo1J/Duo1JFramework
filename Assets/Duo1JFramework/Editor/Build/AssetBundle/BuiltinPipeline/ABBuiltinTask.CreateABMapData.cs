@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Duo1JFramework.Pattern.Pipeline;
+using Newtonsoft.Json;
 
 namespace Duo1JFramework.Build
 {
@@ -14,7 +15,7 @@ namespace Duo1JFramework.Build
             {
                 return Util.TryCatch(() =>
                 {
-                    if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_ASSET_MAP, out Dictionary<string, List<string>> ab2AssetMap))
+                    if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_ASSET_MAP, out Dictionary<string, List<ABMapAssetData>> ab2AssetMap))
                     {
                         return false;
                     }
@@ -43,7 +44,7 @@ namespace Duo1JFramework.Build
                         .SetAB2CRCMap(ab2CrcMap)
                         .SetAB2MD5Map(ab2MD5Map);
 
-                    abMapData.SaveToFile(Def.Asset.EncryptABMapData);
+                    abMapData.SaveToFile(Def.Asset.EncryptABMapData, null, Formatting.None);
 
                     return true;
                 });

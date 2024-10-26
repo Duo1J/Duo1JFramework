@@ -23,6 +23,7 @@ namespace Duo1JFramework.Build
             new ABBuiltinTask.StrategyToBuildData(),
             new ABBuiltinTask.BuildDataToBuildInputList(),
             new ABBuiltinTask.BuildAssetBundles(),
+            new ABBuiltinTask.BuildAB2AssetMap(),
             new ABBuiltinTask.BuildAB2HashMap(),
             new ABBuiltinTask.BuildAB2CRCMap(),
             new ABBuiltinTask.BuildAB2MD5Map(),
@@ -46,14 +47,14 @@ namespace Duo1JFramework.Build
             public const string BUILD_DATAS = "BUILD_DATAS";
 
             /// <summary>
-            /// Dictionary<string, List<string>> ab2AssetMap缓存
-            /// </summary>
-            public const string AB_TO_ASSET_MAP = "AB_TO_ASSET_MAP";
-
-            /// <summary>
             /// List<AssetBundleBuild> 缓存
             /// </summary>
             public const string BUILD_INPUT_LIST = "BUILD_INPUT_LIST";
+
+            /// <summary>
+            /// Dictionary<string, List<ABMapAssetData>> ab2AssetMap缓存
+            /// </summary>
+            public const string AB_TO_ASSET_MAP = "AB_TO_ASSET_MAP";
 
             /// <summary>
             /// Dictionary<string, string> ab2HashMap 缓存

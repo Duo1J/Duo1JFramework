@@ -124,15 +124,41 @@ namespace Duo1JFramework
         /// </summary>
         public static T Convert<T>(object target, string msg = null)
         {
+            return ConvertInner<T>(target, msg, false);
+        }
+
+        /// <summary>
+        /// object类型转换，转换失败抛出异常
+        /// </summary>
+        public static T ConvertGuard<T>(object target, string msg = null)
+        {
+            return ConvertInner<T>(target, msg, true);
+        }
+
+        /// <summary>
+        /// object类型转换
+        /// </summary>
+        private static T ConvertInner<T>(object target, string msg = null, bool guard = false)
+        {
             if (target == null)
             {
+                string m = null;
                 if (string.IsNullOrEmpty(msg))
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`");
+                    m = $"类型转换失败, 空值转`{typeof(T).FullName}`";
                 }
                 else
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`\n{msg}");
+                    m = $"类型转换失败, 空值转`{typeof(T).FullName}`\n{msg}";
+                }
+
+                if (guard)
+                {
+                    Throw(m);
+                }
+                else
+                {
+                    Log.ErrorForce(m);
                 }
 
                 return default(T);
@@ -144,13 +170,23 @@ namespace Duo1JFramework
             }
             else
             {
+                string m = null;
                 if (string.IsNullOrEmpty(msg))
                 {
-                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}");
+                    m = $"类型转换失败, {target}转{typeof(T).FullName}";
                 }
                 else
                 {
-                    Log.ErrorForce($"类型转换失败, {target}转{typeof(T).FullName}\n{msg}");
+                    m = $"类型转换失败, {target}转{typeof(T).FullName}\n{msg}";
+                }
+
+                if (guard)
+                {
+                    Throw(m);
+                }
+                else
+                {
+                    Log.ErrorForce(m);
                 }
 
                 return default(T);
@@ -162,15 +198,41 @@ namespace Duo1JFramework
         /// </summary>
         public static T StructConvert<T>(object target, string msg = null) where T : struct
         {
+            return StructConvertInner<T>(target, msg, false);
+        }
+
+        /// <summary>
+        /// object类型结构体转换，转换失败抛出异常
+        /// </summary>
+        public static T StructConvertGuard<T>(object target, string msg = null) where T : struct
+        {
+            return StructConvertInner<T>(target, msg, true);
+        }
+
+        /// <summary>
+        /// object类型结构体转换
+        /// </summary>
+        private static T StructConvertInner<T>(object target, string msg = null, bool guard = false) where T : struct
+        {
             if (target == null)
             {
+                string m = null;
                 if (string.IsNullOrEmpty(msg))
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`");
+                    m = $"类型转换失败, 空值转`{typeof(T).FullName}`";
                 }
                 else
                 {
-                    Log.ErrorForce($"类型转换失败, 空值转`{typeof(T).FullName}`\n{msg}");
+                    m = $"类型转换失败, 空值转`{typeof(T).FullName}`\n{msg}";
+                }
+
+                if (guard)
+                {
+                    Throw(m);
+                }
+                else
+                {
+                    Log.ErrorForce(m);
                 }
 
                 return default(T);
@@ -184,14 +246,23 @@ namespace Duo1JFramework
             }
             catch (Exception e)
             {
+                string m = null;
                 if (string.IsNullOrEmpty(msg))
                 {
-                    ExceptHandle(e, $"类型转换失败, {target}转`{typeof(T).FullName}`");
+                    m = $"类型转换失败, {target}转`{typeof(T).FullName}`";
                 }
                 else
                 {
-                    ExceptHandle(e, $"类型转换失败, {target}转`{typeof(T).FullName}`\n{msg}");
+                    m = $"类型转换失败, {target}转`{typeof(T).FullName}`\n{msg}";
+                }
 
+                if (guard)
+                {
+                    Throw(m);
+                }
+                else
+                {
+                    ExceptHandle(e, m);
                 }
             }
 

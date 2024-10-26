@@ -42,11 +42,27 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// object类型转换，转换失败抛出异常
+        /// </summary>
+        public static T ConvertGuard<T>(this object obj, string msg = null)
+        {
+            return Assert.ConvertGuard<T>(obj, msg);
+        }
+
+        /// <summary>
         /// object类型结构体转换，转换失败打印错误
         /// </summary>
         public static T StructConvert<T>(this object obj, string msg = null) where T : struct
         {
             return Assert.StructConvert<T>(obj, msg);
+        }
+
+        /// <summary>
+        /// object类型结构体转换，转换失败抛出异常
+        /// </summary>
+        public static T StructConvertGuard<T>(this object obj, string msg = null) where T : struct
+        {
+            return Assert.StructConvertGuard<T>(obj, msg);
         }
 
         #endregion Convert

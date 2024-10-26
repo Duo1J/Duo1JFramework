@@ -16,7 +16,7 @@ namespace Duo1JFramework.Build
         private string abName;
 
         /// <summary>
-        /// 资源路径列表
+        /// 资产路径列表
         /// </summary>
         public List<string> AssetPathList { get; set; }
 
@@ -33,7 +33,7 @@ namespace Duo1JFramework.Build
         }
 
         /// <summary>
-        /// 资源列表是否为空
+        /// 资产列表是否为空
         /// </summary>
         public bool IsEmpty()
         {

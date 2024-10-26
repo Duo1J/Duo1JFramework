@@ -95,6 +95,14 @@ namespace Duo1JFramework.Asset
         }
 
         /// <summary>
+        /// 通过资源路径获取资源数据
+        /// </summary>
+        public ABMapAssetData GetAssetData(string assetPath)
+        {
+            return abMapData.GetAssetData(assetPath);
+        }
+
+        /// <summary>
         /// 通过AssetBundle名获取Hash字符串
         /// </summary>
         public string GetHashStrByABName(string abName)
