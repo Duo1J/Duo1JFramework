@@ -23,7 +23,13 @@ namespace Duo1JFramework.Config
         {
             if (!soDict.TryGetValue(assetPath, out ScriptableObject so))
             {
-                so = AssetManager.Instance.LoadInsByTypeSync<ScriptableObject>(assetPath, loadType);
+                IAssetHandle<ScriptableObject> handle = Asset.LoadByTypeSync<ScriptableObject>(assetPath, loadType);
+                if (handle == null)
+                {
+                    return null;
+                }
+
+                so = handle.Instantiate();
                 if (so == null)
                 {
                     return null;

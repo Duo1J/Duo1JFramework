@@ -16,16 +16,17 @@ namespace Duo1JFramework.Asset
         {
             Assert.NotNullArg(callback, "callback");
 
-            AssetManager.Instance.LoadByType<SpriteAtlas>(atlasPath, (atlas) =>
+            AssetManager.Instance.LoadByType<SpriteAtlas>(atlasPath, (handle) =>
             {
-                if (atlas == null)
+                if (handle == null || handle.Error())
                 {
                     Log.ErrorForce($"加载图集失败: `{atlasPath}`");
                     callback(null);
                     return;
                 }
 
-                Sprite sprite = atlas.GetSprite(spritePath);
+                SpriteAtlas spriteAtlas = handle.Asset;
+                Sprite sprite = spriteAtlas.GetSprite(spritePath);
 
                 if (sprite == null)
                 {
@@ -43,14 +44,14 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public static Sprite LoadAtlasSpriteSync(EAssetLoadType loadType, string atlasPath, string spritePath)
         {
-            SpriteAtlas atlas = AssetManager.Instance.LoadByTypeSync<SpriteAtlas>(atlasPath, loadType);
-
-            if (atlas == null)
+            IAssetHandle<SpriteAtlas> handle = AssetManager.Instance.LoadByTypeSync<SpriteAtlas>(atlasPath, loadType);
+            if (handle == null || handle.Error())
             {
                 Log.ErrorForce($"加载图集失败: `{atlasPath}`");
                 return null;
             }
 
+            SpriteAtlas atlas = handle.Asset;
             Sprite sprite = atlas.GetSprite(spritePath);
 
             if (sprite == null)

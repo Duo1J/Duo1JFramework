@@ -3,7 +3,6 @@ using Duo1JFramework.TimerUpdate;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.Asset
@@ -75,17 +74,17 @@ namespace Duo1JFramework.Asset
 
         public AssetBundle AB => assetBundle;
 
-        public ABData(string assetBundleName)
+        public ABData(string abName)
         {
-            this.abName = assetBundleName;
-            hash = ABManager.Instance.GetHashStrByABName(assetBundleName);
-            crc = ABManager.Instance.GetCRCByABName(assetBundleName);
-            md5 = ABManager.Instance.GetMD5ByABName(assetBundleName);
+            this.abName = abName;
+            hash = ABManager.Instance.GetHashStrByABName(abName);
+            crc = ABManager.Instance.GetCRCByABName(abName);
+            md5 = ABManager.Instance.GetMD5ByABName(abName);
 
             switch (ABManager.Instance.GetABNameType())
             {
                 case EABNameType.Origin:
-                    abPath = PathUtil.GetAssetBundlePath(assetBundleName, false);
+                    abPath = PathUtil.GetAssetBundlePath(abName, false);
                     break;
                 case EABNameType.Hash:
                     abPath = PathUtil.GetAssetBundlePath(hash, false);
@@ -94,11 +93,11 @@ namespace Duo1JFramework.Asset
                     abPath = PathUtil.GetAssetBundlePath(md5, false);
                     break;
                 default:
-                    abPath = PathUtil.GetAssetBundlePath(assetBundleName, false);
+                    abPath = PathUtil.GetAssetBundlePath(abName, false);
                     break;
             }
 
-            refABList = ABManager.Instance.GetRefABDataList(assetBundleName);
+            refABList = ABManager.Instance.GetRefABDataList(abName);
             refThisABSet = new HashSet<ABData>();
             abAssetDataDict = new Dictionary<string, ABAssetData>();
         }
@@ -146,9 +145,11 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void UnloadAsset(string assetPath)
         {
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
+
             if (!abAssetDataDict.TryGetValue(assetPath, out ABAssetData abAssetData))
             {
-                Log.ErrorForce($"{ToString()} 未加载{assetPath}，无法卸载");
+                Log.ErrorForce($"{ToString()} 未加载 `{assetPath}`, 无法卸载");
                 return;
             }
 
@@ -242,6 +243,7 @@ namespace Duo1JFramework.Asset
                 abAssetData = new ABAssetData(this, assetPath);
                 abAssetDataDict.Add(assetPath, abAssetData);
             }
+
             return abAssetData;
         }
 
@@ -274,7 +276,6 @@ namespace Duo1JFramework.Asset
 
             LoadAssetBundle(sync, callback);
             return false;
-
         }
 
         /// <summary>
@@ -369,10 +370,7 @@ namespace Duo1JFramework.Asset
                 Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
             }
 
-            LoadAllDependenciesAB(true, () =>
-            {
-                callback?.Invoke();
-            });
+            LoadAllDependenciesAB(true, () => { callback?.Invoke(); });
         }
 
         /// <summary>
@@ -453,6 +451,7 @@ namespace Duo1JFramework.Asset
         private bool drawRefABList = false;
         private bool drawRefThisABSet = false;
         private bool drawABAssetDataDict = false;
+
         public void DrawEditorInfo()
         {
             ED.Vertical(() =>
@@ -463,7 +462,7 @@ namespace Duo1JFramework.Asset
 
                 GUILayout.Space(10);
 
-                if (ED.Toggle(ref drawRefABList, "显示引用的AssetBundle的列表".WithColor(ES.Green)))
+                if (ED.Toggle(ref drawRefABList, "该AB引用列表"))
                 {
                     ED.Vertical(() =>
                     {
@@ -483,7 +482,7 @@ namespace Duo1JFramework.Asset
                     GUILayout.Space(10);
                 }
 
-                if (ED.Toggle(ref drawRefThisABSet, "显示引用该AssetBundle的Set".WithColor(ES.Green)))
+                if (ED.Toggle(ref drawRefThisABSet, "引用该AB的列表"))
                 {
                     ED.Vertical(() =>
                     {
@@ -503,7 +502,7 @@ namespace Duo1JFramework.Asset
                     GUILayout.Space(10);
                 }
 
-                if (ED.Toggle(ref drawABAssetDataDict, "显示该AssetBundle加载出来的资源列表".WithColor(ES.Green)))
+                if (ED.Toggle(ref drawABAssetDataDict, "已加载资源列表"))
                 {
                     ED.Vertical(() =>
                     {

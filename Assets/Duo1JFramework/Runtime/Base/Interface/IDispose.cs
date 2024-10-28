@@ -1,13 +1,11 @@
+using System;
+
 namespace Duo1JFramework
 {
     /// <summary>
     /// 可销毁接口
     /// </summary>
-    public interface IDispose
+    public interface IDispose : IDisposable
     {
-        /// <summary>
-        /// 销毁
-        /// </summary>
-        void Dispose();
     }
 }

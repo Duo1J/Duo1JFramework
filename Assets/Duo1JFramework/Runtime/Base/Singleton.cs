@@ -3,7 +3,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 单例基类
     /// </summary>
-    public abstract class Singleton<T> : ISingleton where T : Singleton<T>, new()
+    public abstract class Singleton<T> : BaseObject, ISingleton where T : Singleton<T>, new()
     {
         private static object locker = new object();
 
@@ -32,6 +32,7 @@ namespace Duo1JFramework
                         instance.OnInit();
                     }
                 }
+
                 return instance;
             }
             private set
@@ -58,6 +59,11 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 是否是单例
+        /// </summary>
+        public override bool IsSingleton => true;
+
+        /// <summary>
         /// 子类初始化
         /// </summary>
         protected abstract void OnInit();
@@ -76,6 +82,7 @@ namespace Duo1JFramework
             {
                 return;
             }
+
             dispose = true;
 
             OnDispose();

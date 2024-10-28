@@ -1,5 +1,6 @@
 using Duo1JFramework.Config;
 using System;
+using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.Asset
 {
@@ -11,7 +12,7 @@ namespace Duo1JFramework.Asset
         /// <summary>
         /// 异步加载
         /// </summary>
-        public override void Load<T>(string assetPath, Action<T> callback)
+        public override void Load<T>(string assetPath, Action<IAssetHandle<T>> callback)
         {
 #if UNITY_EDITOR
             if (!CheckEditorAssetLoaderType())
@@ -32,13 +33,17 @@ namespace Duo1JFramework.Asset
                 return;
             }
 
-            abData.Load<T>(assetPath, callback);
+            abData.Load<T>(assetPath, (asset) =>
+            {
+                ABAssetHandle<T> handle = ABAssetHandle<T>.Create(asset, abData, assetPath);
+                callback(handle);
+            });
         }
 
         /// <summary>
         /// 同步加载
         /// </summary>
-        public override T LoadSync<T>(string assetPath)
+        public override IAssetHandle<T> LoadSync<T>(string assetPath)
         {
 #if UNITY_EDITOR
             if (!CheckEditorAssetLoaderType())
@@ -56,36 +61,9 @@ namespace Duo1JFramework.Asset
                 return null;
             }
 
-            return abData.LoadSync<T>(assetPath);
-        }
-
-        /// <summary>
-        /// 异步加载实例
-        /// </summary>
-        public override void LoadIns<T>(string assetPath, Action<T> callback)
-        {
-#if UNITY_EDITOR
-            if (!CheckEditorAssetLoaderType())
-            {
-                callback(null);
-                return;
-            }
-#endif
-            base.LoadIns<T>(assetPath, callback);
-        }
-
-        /// <summary>
-        /// 同步加载实例
-        /// </summary>
-        public override T LoadInsSync<T>(string assetPath)
-        {
-#if UNITY_EDITOR
-            if (!CheckEditorAssetLoaderType())
-            {
-                return null;
-            }
-#endif
-            return base.LoadInsSync<T>(assetPath);
+            T asset = abData.LoadSync<T>(assetPath);
+            ABAssetHandle<T> handle = ABAssetHandle<T>.Create(asset, abData, assetPath);
+            return handle;
         }
 
         /// <summary>
@@ -99,6 +77,7 @@ namespace Duo1JFramework.Asset
                 Log.EditorError("编辑器下使用ABAssetLoader请设置GameOption.Editor.assetLoaderType为AssetBundle类型");
                 return false;
             }
+
             return true;
 #else
             return true;

@@ -26,12 +26,12 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 角色预制体Go
         /// </summary>
-        public GameObject Asset { get; private set; }
+        public GameObject AssetGo { get; private set; }
 
         /// <summary>
         /// 角色预制体Tf
         /// </summary>
-        public Transform AssetTf => Asset.transform;
+        public Transform AssetTf => AssetGo.transform;
 
         /// <summary>
         /// 角色模型Go
@@ -107,14 +107,14 @@ namespace Duo1JFramework.Actor
         {
             if (Data.Sync)
             {
-                GameObject asset = AssetManager.Instance.LoadInsByTypeSync<GameObject>(Data.Path, Data.LoadType);
-                LoadAssetPostprocess(asset);
+                IAssetHandle<GameObject> handle = Asset.LoadByTypeSync<GameObject>(Data.Path, Data.LoadType);
+                LoadAssetPostprocess(handle);
             }
             else
             {
-                AssetManager.Instance.LoadInsByType<GameObject>(Data.Path, (asset) =>
+                Asset.LoadByType<GameObject>(Data.Path, (handle) =>
                 {
-                    LoadAssetPostprocess(asset);
+                    LoadAssetPostprocess(handle);
                 }, Data.LoadType);
             }
         }
@@ -122,16 +122,16 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 加载Actor预制体资源后处理
         /// </summary>
-        private void LoadAssetPostprocess(GameObject asset)
+        private void LoadAssetPostprocess(IAssetHandle<GameObject> handle)
         {
-            Assert.NotNull(asset, $"{ToString()} 资源加载失败: `{Data.Path}`");
+            Assert.NotNull(handle, $"{ToString()} 资源加载失败: `{Data.Path}`");
 
-            Asset = asset;
-            Asset.name = $"{Data.Name}-{ID} ({Asset.name})";
-            Asset.SetParent(Root.ActorRoot);
-            Asset.ResetSRT();
+            AssetGo = handle.Instantiate();
+            AssetGo.name = $"{Data.Name}-{ID} ({AssetGo.name})";
+            AssetGo.SetParent(Root.ActorRoot);
+            AssetGo.ResetSRT();
 
-            Controller = Asset.GetAndAssertComponent<BaseActorController>($"{ToString()}资源预制体上未挂载ActorController组件");
+            Controller = AssetGo.GetAndAssertComponent<BaseActorController>($"{ToString()}资源预制体上未挂载ActorController组件");
             Controller.Logic = this;
 
             Param = Controller.Param;
@@ -147,10 +147,10 @@ namespace Duo1JFramework.Actor
         {
             BeforeUnLoadAsset();
 
-            if (Asset != null)
+            if (AssetGo != null)
             {
-                Asset.DestroyImmediate();
-                Asset = null;
+                AssetGo.DestroyImmediate();
+                AssetGo = null;
             }
             Controller = null;
 

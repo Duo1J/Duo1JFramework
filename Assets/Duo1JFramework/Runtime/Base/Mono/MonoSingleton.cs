@@ -13,6 +13,11 @@ namespace Duo1JFramework
         private static T instance;
 
         /// <summary>
+        /// 是否是单例
+        /// </summary>
+        public override bool IsSingleton => true;
+
+        /// <summary>
         /// 是否已销毁
         /// </summary>
         private bool dispose = false;

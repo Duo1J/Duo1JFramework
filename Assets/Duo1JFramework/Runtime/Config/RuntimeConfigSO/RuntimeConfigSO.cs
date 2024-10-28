@@ -20,7 +20,12 @@ namespace Duo1JFramework
             {
                 if (instance == null)
                 {
-                    instance = AssetManager.Instance.LoadResourceInsSync<T>(AssetLoadPath);
+                    IAssetHandle<T> handle = AssetManager.Instance.LoadResourceSync<T>(AssetLoadPath);
+                    if (handle != null)
+                    {
+                        instance = handle.Instantiate();
+                    }
+
                     if (instance == null)
                     {
                         instance = CreateInstance<T>();

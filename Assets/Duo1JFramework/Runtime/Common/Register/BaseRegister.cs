@@ -10,7 +10,7 @@ namespace Duo1JFramework
     /// </summary>
     /// <see cref="Register"/>
     /// <see cref="MonoRegister"/>
-    public abstract class BaseRegister : IDispose
+    public abstract class BaseRegister : BaseObject, IDispose
     {
         /// <summary>
         /// PreUpdate注册的更新回调

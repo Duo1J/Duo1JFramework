@@ -58,15 +58,15 @@ namespace Duo1JFramework.AudioAPI
 
             if (audioData.Sync)
             {
-                AudioClip clip = AssetManager.Instance.LoadByTypeSync<AudioClip>(audioData.AudioPath, audioData.LoadType);
-                AudioClipLoadedPostprocess(clip);
+                IAssetHandle<AudioClip> handle = Asset.LoadByTypeSync<AudioClip>(audioData.AudioPath, audioData.LoadType);
+                AudioClipLoadedPostprocess(handle);
                 finCall?.Invoke();
             }
             else
             {
-                AssetManager.Instance.LoadByType<AudioClip>(audioData.AudioPath, (clip) =>
+                AssetManager.Instance.LoadByType<AudioClip>(audioData.AudioPath, (handle) =>
                 {
-                    AudioClipLoadedPostprocess(clip);
+                    AudioClipLoadedPostprocess(handle);
                     finCall?.Invoke();
                 }, audioData.LoadType);
             }
@@ -75,15 +75,15 @@ namespace Duo1JFramework.AudioAPI
         /// <summary>
         /// 音频片段加载完成后处理
         /// </summary>
-        protected void AudioClipLoadedPostprocess(AudioClip clip)
+        protected void AudioClipLoadedPostprocess(IAssetHandle<AudioClip> handle)
         {
-            if (clip == null)
+            if (handle == null || handle.Error())
             {
                 Log.ErrorForce($"{audioData} 加载失败");
                 return;
             }
 
-            audioSource.clip = clip;
+            audioSource.clip = handle.Asset;
             SetLoopByPlayType();
         }
 

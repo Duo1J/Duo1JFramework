@@ -70,14 +70,14 @@ namespace Duo1JFramework.World
         {
             if (worldData.Sync)
             {
-                GameObject go = AssetManager.Instance.LoadInsByTypeSync<GameObject>(worldData.Path, worldData.LoadType);
-                LoadWorldAssetPostProcess(go, worldData, callback);
+                IAssetHandle<GameObject> handle = AssetManager.Instance.LoadByTypeSync<GameObject>(worldData.Path, worldData.LoadType);
+                LoadWorldAssetPostProcess(handle, worldData, callback);
             }
             else
             {
-                AssetManager.Instance.LoadInsByType<GameObject>(worldData.Path, (go) =>
+                AssetManager.Instance.LoadByType<GameObject>(worldData.Path, (handle) =>
                 {
-                    LoadWorldAssetPostProcess(go, worldData, callback);
+                    LoadWorldAssetPostProcess(handle, worldData, callback);
                 }, worldData.LoadType);
             }
         }
@@ -85,15 +85,18 @@ namespace Duo1JFramework.World
         /// <summary>
         /// 加载世界资源后处理
         /// </summary>
-        private void LoadWorldAssetPostProcess(GameObject go, WorldData worldData, Action<BaseWorldController> callback)
+        private void LoadWorldAssetPostProcess(IAssetHandle<GameObject> handle, WorldData worldData, Action<BaseWorldController> callback)
         {
-            if (go == null)
+            if (handle == null)
             {
                 Log.ErrorForce($"加载世界`{worldData.Path}`失败");
                 callback(null);
                 return;
             }
 
+            GameObject go = handle.Instantiate();
+            handle.Release();
+            handle = null;
             go.SetParent(Root.WorldRoot);
 
             BaseWorldController controller = go.GetComponent<BaseWorldController>();

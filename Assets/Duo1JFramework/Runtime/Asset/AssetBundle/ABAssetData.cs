@@ -1,7 +1,8 @@
 using Duo1JFramework.TimerUpdate;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
 using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework.Asset
@@ -72,10 +73,7 @@ namespace Duo1JFramework.Asset
                 return;
             }
 
-            asyncLoadedCallback += () =>
-            {
-                callback(Alloc<T>());
-            };
+            asyncLoadedCallback += () => { callback(Alloc<T>()); };
 
             if (loading)
             {
@@ -187,7 +185,12 @@ namespace Duo1JFramework.Asset
                 loading = false;
                 asyncLoadedCallback = null;
 
-                Resources.UnloadAsset(asset);
+                Type assetType = asset.GetType();
+                if (!Def.Asset.UnloadIgnoreType.ContainsKey(assetType))
+                {
+                    Resources.UnloadAsset(asset);
+                }
+
                 asset = null;
                 return true;
             }

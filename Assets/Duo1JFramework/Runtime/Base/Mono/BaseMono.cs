@@ -3,10 +3,38 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 基础MonoBehaviour
+    /// 所有MonoBehaviour的基类
     /// </summary>
     public abstract class BaseMono : MonoBehaviour
     {
+        /// <summary>
+        /// 资源加载集合
+        /// </summary>
+        public AssetCollection Asset
+        {
+            get
+            {
+                if (assetCollection == null)
+                {
+                    assetCollection = new AssetCollection();
+                }
+
+                if (IsSingleton)
+                {
+                    Log.Warn("单例使用 `AssetManager` 进行资源加载");
+                }
+
+                return assetCollection;
+            }
+        }
+
+        private AssetCollection assetCollection;
+
+        /// <summary>
+        /// 是否是单例
+        /// </summary>
+        public virtual bool IsSingleton => false;
+
         /// <summary>
         /// 缓存transform
         /// </summary>
@@ -18,9 +46,11 @@ namespace Duo1JFramework
                 {
                     _transformCache = transform;
                 }
+
                 return _transformCache;
             }
         }
+
         private Transform _transformCache;
 
         /// <summary>
@@ -34,9 +64,11 @@ namespace Duo1JFramework
                 {
                     _gameObjectCache = gameObject;
                 }
+
                 return _gameObjectCache;
             }
         }
+
         private GameObject _gameObjectCache;
 
         /// <summary>
@@ -50,6 +82,15 @@ namespace Duo1JFramework
         public override string ToString()
         {
             return $"<Mono-{GetType().Name}-{name}: {GetInstanceID()}>";
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (assetCollection != null)
+            {
+                assetCollection.Dispose();
+                assetCollection = null;
+            }
         }
     }
 }

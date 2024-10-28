@@ -206,8 +206,15 @@ namespace Duo1JFramework.UI
             UIData cfg = wnd.Config;
             Assert.NotNull(cfg, $"窗口 `{wnd.GetType().Name}` 配置为空");
 
-            GameObject uiGo;
-            uiGo = AssetManager.Instance.LoadInsByTypeSync<GameObject>(cfg.Path, cfg.LoadType);
+            IAssetHandle<GameObject> handle = AssetManager.Instance.LoadByTypeSync<GameObject>(cfg.Path, cfg.LoadType);
+            GameObject uiGo = null;
+            if (handle != null)
+            {
+                uiGo = handle.Instantiate();
+                handle.Release();
+                handle = null;
+            }
+
             Assert.NotNull(uiGo, $"无法加载到窗口资源 `{cfg.Path}`");
             LoadWindowAssetPostProcess(wnd, uiGo);
             callback?.Invoke();

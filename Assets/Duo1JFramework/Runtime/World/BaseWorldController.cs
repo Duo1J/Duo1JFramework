@@ -15,7 +15,7 @@ namespace Duo1JFramework.World
         /// <summary>
         /// 世界场景预制体
         /// </summary>
-        public GameObject Asset
+        public GameObject AssetGo
         {
             get
             {
@@ -47,8 +47,8 @@ namespace Duo1JFramework.World
         /// </summary>
         public void Destroy()
         {
-            Asset?.DestroyImmediate();
-            Asset = null;
+            AssetGo?.DestroyImmediate();
+            AssetGo = null;
 
             OnSubDestroy();
         }

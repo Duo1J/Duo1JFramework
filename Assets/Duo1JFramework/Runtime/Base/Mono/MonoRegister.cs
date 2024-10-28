@@ -40,8 +40,9 @@ namespace Duo1JFramework
             }
         }
 
-        protected virtual void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             DisposeRegister();
         }
     }

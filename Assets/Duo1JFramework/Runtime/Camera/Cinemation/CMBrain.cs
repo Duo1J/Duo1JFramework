@@ -159,11 +159,15 @@ namespace Duo1JFramework.CameraAPI
         /// </summary>
         public CinemachineVirtualCamera LoadVirtualCamera(string prefabPath)
         {
-            GameObject cameraGo = AssetManager.Instance.LoadInsSync<GameObject>(prefabPath);
-            if (cameraGo == null)
+            IAssetHandle<GameObject> handle = AssetManager.Instance.LoadSync<GameObject>(prefabPath);
+            if (handle == null)
             {
                 return null;
             }
+
+            GameObject cameraGo = handle.Instantiate();
+            handle.Release();
+            handle = null;
             CinemachineVirtualCamera ret = cameraGo.GetComponent<CinemachineVirtualCamera>();
             if (ret == null)
             {
@@ -171,6 +175,7 @@ namespace Duo1JFramework.CameraAPI
                 cameraGo.DestroyImmediate();
                 return null;
             }
+
             cameraGo.SetParent(Root.VirtualCameraRoot);
             return ret;
         }

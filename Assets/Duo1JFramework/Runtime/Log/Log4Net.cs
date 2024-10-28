@@ -162,7 +162,15 @@ namespace Duo1JFramework
             }
             else
             {
-                TextAsset textAsset = AssetManager.Instance.LoadResourceSync<TextAsset>(LOG_CONFIG_PATH);
+                IAssetHandle<TextAsset> handle = AssetManager.Instance.LoadResourceSync<TextAsset>(LOG_CONFIG_PATH);
+                TextAsset textAsset = null;
+                if (handle != null)
+                {
+                    textAsset = handle.Instantiate();
+                    handle.Release();
+                    handle = null;
+                }
+
                 if (textAsset != null)
                 {
                     Log.Info("Log4Net使用Resources配置");

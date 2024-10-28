@@ -19,9 +19,9 @@ namespace Duo1JFramework.TimelineAPI
         /// </summary>
         public void LoadTimeline(string timelinePath, Action<TimelineData> callback = null, EAssetLoadType loadType = EAssetLoadType.Bundle)
         {
-            AssetManager.Instance.LoadInsByType<GameObject>(timelinePath, (go) =>
+            AssetManager.Instance.LoadByType<GameObject>(timelinePath, (handle) =>
             {
-                TimelineData td = WrapTimelinePrefab(go);
+                TimelineData td = WrapTimelinePrefab(handle);
                 callback?.Invoke(td);
             }, loadType);
         }
@@ -31,15 +31,21 @@ namespace Duo1JFramework.TimelineAPI
         /// </summary>
         public TimelineData LoadTimelineSync(string timelinePath, EAssetLoadType loadType = EAssetLoadType.Bundle)
         {
-            GameObject go = AssetManager.Instance.LoadInsByTypeSync<GameObject>(timelinePath, loadType);
-            return WrapTimelinePrefab(go);
+            IAssetHandle<GameObject> handle = AssetManager.Instance.LoadByTypeSync<GameObject>(timelinePath, loadType);
+            return WrapTimelinePrefab(handle);
         }
 
         /// <summary>
         /// 创建Timeline包装类
         /// </summary>
-        private TimelineData WrapTimelinePrefab(GameObject go)
+        private TimelineData WrapTimelinePrefab(IAssetHandle<GameObject> handle)
         {
+            if (handle == null)
+            {
+                return null;
+            }
+
+            GameObject go = handle.Instantiate();
             try
             {
                 return new TimelineData(go);

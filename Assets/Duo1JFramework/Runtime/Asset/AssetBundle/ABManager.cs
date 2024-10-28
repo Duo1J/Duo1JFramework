@@ -35,10 +35,7 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public bool UseAssetBundle
         {
-            get
-            {
-                return GameOption.AssetLoaderType == EAssetLoaderType.AssetBundle;
-            }
+            get { return GameOption.AssetLoaderType == EAssetLoaderType.AssetBundle; }
         }
 
         /// <summary>
@@ -83,6 +80,7 @@ namespace Duo1JFramework.Asset
                 abData = new ABData(abName);
                 abDataDict.Add(abName, abData);
             }
+
             return abData;
         }
 

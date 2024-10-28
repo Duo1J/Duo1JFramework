@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace Duo1JFramework
 {
     public static partial class Def
@@ -21,6 +25,15 @@ namespace Duo1JFramework
             /// ABMapData加密AES私钥
             /// </summary>
             public static byte[] ABMapDataAESKeyByte => AesKeyByte;
+
+            /// <summary>
+            /// Resources.UnloadAsset忽略资源类型
+            /// </summary>
+            public static readonly Dictionary<Type, bool> UnloadIgnoreType = new Dictionary<Type, bool>()
+            {
+                [typeof(GameObject)] = true,
+                [typeof(Component)] = true,
+            };
         }
     }
 }
