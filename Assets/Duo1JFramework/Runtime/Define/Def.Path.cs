@@ -86,7 +86,7 @@ namespace Duo1JFramework
             /// <summary>
             /// AssetBundle映射文件名
             /// </summary>
-            public const string ASSET_BUNDLE_MAP_DATA_NAME = "Data.dat";
+            public const string ASSET_BUNDLE_MAP_DATA_NAME = "Mapping.dat";
 
             #endregion AssetBundle
         }

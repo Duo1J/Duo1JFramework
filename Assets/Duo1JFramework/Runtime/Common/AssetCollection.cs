@@ -8,6 +8,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 资源集合
     /// </summary>
+    /// <see cref="AssetManager"/>
     public class AssetCollection : IAssetLoadable, IDispose
     {
         /// <summary>

@@ -24,6 +24,11 @@ namespace Duo1JFramework.Asset
         {
             base.Release();
 
+            if (Released)
+            {
+                return;
+            }
+
             if (ABData != null && AssetPath != null)
             {
                 ABData.UnloadAsset(AssetPath);

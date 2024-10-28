@@ -8,6 +8,7 @@ namespace Duo1JFramework.Asset
     /// <summary>
     /// 资源管理器
     /// </summary>
+    /// <see cref="AssetCollection"/>
     public class AssetManager : MonoSingleton<AssetManager>, IAssetLoadable
     {
         /// <summary>
@@ -51,21 +52,21 @@ namespace Duo1JFramework.Asset
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
-                {
-                    Load<T>(assetPath, callback);
-                    return;
-                }
+                    {
+                        Load<T>(assetPath, callback);
+                        return;
+                    }
                 case EAssetLoadType.Resources:
-                {
-                    LoadResource<T>(assetPath, callback);
-                    return;
-                }
+                    {
+                        LoadResource<T>(assetPath, callback);
+                        return;
+                    }
                 default:
-                {
-                    Log.ErrorForce($"LoadByType 未处理的加载方式: `{loadType}`");
-                    callback?.Invoke(null);
-                    return;
-                }
+                    {
+                        Log.ErrorForce($"LoadByType 未处理的加载方式: `{loadType}`");
+                        callback?.Invoke(null);
+                        return;
+                    }
             }
         }
 
@@ -78,18 +79,18 @@ namespace Duo1JFramework.Asset
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
-                {
-                    return LoadSync<T>(assetPath);
-                }
+                    {
+                        return LoadSync<T>(assetPath);
+                    }
                 case EAssetLoadType.Resources:
-                {
-                    return LoadResourceSync<T>(assetPath);
-                }
+                    {
+                        return LoadResourceSync<T>(assetPath);
+                    }
                 default:
-                {
-                    Log.ErrorForce($"LoadByTypeSync 未处理的加载方式: `{loadType}`");
-                    return null;
-                }
+                    {
+                        Log.ErrorForce($"LoadByTypeSync 未处理的加载方式: `{loadType}`");
+                        return null;
+                    }
             }
         }
 

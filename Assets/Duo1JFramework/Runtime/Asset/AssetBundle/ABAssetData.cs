@@ -1,7 +1,5 @@
 using Duo1JFramework.TimerUpdate;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UObject = UnityEngine.Object;
 

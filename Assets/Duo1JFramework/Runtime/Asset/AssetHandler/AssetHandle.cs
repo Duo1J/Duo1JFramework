@@ -13,6 +13,11 @@ namespace Duo1JFramework.Asset
         public T Asset { get; protected set; }
 
         /// <summary>
+        /// 是否已释放
+        /// </summary>
+        public bool Released { get; private set; }
+
+        /// <summary>
         /// 资源实例化
         /// </summary>
         public virtual T Instantiate()
@@ -39,6 +44,12 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public virtual void Release()
         {
+            if (Released)
+            {
+                return;
+            }
+
+            Released = true;
             Asset = null;
         }
 
