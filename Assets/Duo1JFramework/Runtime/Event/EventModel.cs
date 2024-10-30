@@ -8,50 +8,82 @@ namespace Duo1JFramework.Event
     /// </summary>
     public class EventModel : IEventModel
     {
-        private Dictionary<object, List<Action<object>>> eventDict;
+        /// <summary>
+        /// 事件字典
+        /// </summary>
+        private Dictionary<object, HashSet<Action<object>>> eventDict = null;
 
+        /// <summary>
+        /// 订阅事件
+        /// </summary>
         public void Register(object e, Action<object> callback)
         {
-            if (!eventDict.TryGetValue(e, out List<Action<object>> list))
+            Assert.NotNullArg(e, "e");
+            Assert.NotNullArg(callback, "callback");
+
+            if (!eventDict.TryGetValue(e, out HashSet<Action<object>> set))
             {
-                list = new List<Action<object>>();
-                eventDict.Add(e, list);
+                set = new HashSet<Action<object>>();
+                eventDict.Add(e, set);
             }
-            list.Add(callback);
+
+            set.Add(callback);
         }
 
+        /// <summary>
+        /// 取消订阅事件
+        /// </summary>
         public bool UnRegister(object e, Action<object> callback)
         {
-            if (!eventDict.TryGetValue(e, out List<Action<object>> list))
+            Assert.NotNullArg(e, "e");
+            Assert.NotNullArg(callback, "callback");
+
+            if (!eventDict.TryGetValue(e, out HashSet<Action<object>> set))
             {
                 Log.ErrorForce($"事件 `{e.ToString()}` 未找到任何订阅，无法取消");
                 return false;
             }
 
-            return list.Remove(callback);
+            return set.Remove(callback);
         }
 
+        /// <summary>
+        /// 取消订阅事件下所有注册
+        /// </summary>
         public bool UnRegister(object e)
         {
+            Assert.NotNullArg(e, "e");
+
             return eventDict.Remove(e);
         }
 
+        /// <summary>
+        /// 取消订阅所有事件
+        /// </summary>
         public void UnRegisterAll()
         {
             eventDict.Clear();
         }
 
+        /// <summary>
+        /// 广播事件
+        /// </summary>
         public void Broadcast(object e, object args = null)
         {
-            if (eventDict.TryGetValue(e, out List<Action<object>> list))
+            Assert.NotNullArg(e, "e");
+
+            if (eventDict.TryGetValue(e, out HashSet<Action<object>> set))
             {
-                list.ForEach(action => action(args));
+                foreach (Action<object> action in set)
+                {
+                    action(args);
+                }
             }
         }
 
         public EventModel()
         {
-            eventDict = new Dictionary<object, List<Action<object>>>();
+            eventDict = new Dictionary<object, HashSet<Action<object>>>();
         }
     }
 }

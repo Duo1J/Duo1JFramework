@@ -40,7 +40,12 @@ namespace Duo1JFramework
         /// <summary>
         /// 事件列表
         /// </summary>
-        private Dictionary<object, List<Action<object>>> eventDict;
+        private Dictionary<object, HashSet<Action<object>>> eventDict;
+
+        /// <summary>
+        /// 类型事件列表
+        /// </summary>
+        private Dictionary<Type, HashSet<object>> typeEventDict;
 
         /// <summary>
         /// 该类是否已准备销毁
@@ -196,11 +201,13 @@ namespace Duo1JFramework
             }
 
             Timer timer = TimerManager.Instance.GetTimer(interval, callback, repeat);
+
             if (timerList == null)
             {
                 timerList = new List<Timer>();
             }
             timerList.Add(timer);
+
             return timer;
         }
 
@@ -215,11 +222,13 @@ namespace Duo1JFramework
             }
 
             Timer timer = TimerManager.Instance.GetFrameTimer(frame, callback, repeat);
+
             if (timerList == null)
             {
                 timerList = new List<Timer>();
             }
             timerList.Add(timer);
+
             return timer;
         }
 
@@ -234,7 +243,12 @@ namespace Duo1JFramework
             }
 
             timer.Stop();
-            if (timerList == null) return;
+
+            if (timerList == null)
+            {
+                return;
+            }
+
             timerList.Remove(timer);
         }
 
@@ -257,6 +271,7 @@ namespace Duo1JFramework
             {
                 timer.Stop();
             }
+
             timerList = null;
         }
 
@@ -276,14 +291,16 @@ namespace Duo1JFramework
 
             if (eventDict == null)
             {
-                eventDict = new Dictionary<object, List<Action<object>>>();
+                eventDict = new Dictionary<object, HashSet<Action<object>>>();
             }
-            if (!eventDict.TryGetValue(e, out List<Action<object>> list))
+
+            if (!eventDict.TryGetValue(e, out HashSet<Action<object>> set))
             {
-                list = new List<Action<object>>();
-                eventDict.Add(e, list);
+                set = new HashSet<Action<object>>();
+                eventDict.Add(e, set);
             }
-            list.Add(callback);
+
+            set.Add(callback);
 
             EventManager.Instance.Register(e, callback);
         }
@@ -299,36 +316,36 @@ namespace Duo1JFramework
         /// <summary>
         /// 取消注册事件
         /// </summary>
-        public void UnRegisterEvent(object e, Action<object> callback)
+        public bool UnRegisterEvent(object e, Action<object> callback)
         {
             if (CheckDisposed())
             {
-                return;
+                return false;
             }
 
             if (eventDict != null)
             {
-                if (eventDict.TryGetValue(e, out List<Action<object>> list))
+                if (eventDict.TryGetValue(e, out HashSet<Action<object>> set))
                 {
-                    list.Remove(callback);
+                    set.Remove(callback);
                 }
             }
 
-            EventManager.Instance.UnRegister(e, callback);
+            return EventManager.Instance.UnRegister(e, callback);
         }
 
         /// <summary>
         /// 取消注册事件
         /// </summary>
-        public void UnRegisterEvent(eEvent e, Action<object> callback)
+        public bool UnRegisterEvent(eEvent e, Action<object> callback)
         {
-            UnRegisterEvent((object)e, callback);
+            return UnRegisterEvent((object)e, callback);
         }
 
         /// <summary>
         /// 取消注册所有事件
         /// </summary>
-        public void UnRegisterAllEvent()
+        public void UnRegisterEventAll()
         {
             if (CheckDisposed())
             {
@@ -340,7 +357,7 @@ namespace Duo1JFramework
                 return;
             }
 
-            foreach (KeyValuePair<object, List<Action<object>>> kv in eventDict)
+            foreach (KeyValuePair<object, HashSet<Action<object>>> kv in eventDict)
             {
                 foreach (Action<object> callback in kv.Value)
                 {
@@ -351,11 +368,93 @@ namespace Duo1JFramework
 
         #endregion Event
 
+        #region Type Event
+
+        /// <summary>
+        /// 注册类型事件
+        /// </summary>
+        public void RegisterTypeEvent<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            Assert.NotNullArg(callback, "callback");
+
+            if (typeEventDict == null)
+            {
+                typeEventDict = new Dictionary<Type, HashSet<object>>();
+            }
+
+            Type t = typeof(T);
+            if (!typeEventDict.TryGetValue(t, out HashSet<object> set))
+            {
+                set = new HashSet<object>();
+                typeEventDict.Add(t, set);
+            }
+
+            set.Add(callback);
+
+            EventManager.Instance.RegisterType<T>(callback);
+        }
+
+        /// <summary>
+        /// 取消注册类型事件
+        /// </summary>
+        public bool UnRegisterTypeEvent<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        {
+            if (CheckDisposed())
+            {
+                return false;
+            }
+
+            Assert.NotNullArg(callback, "callback");
+            TypeEventFunc<BaseTypeEvent> objCallback = callback.ConvertGuard<TypeEventFunc<BaseTypeEvent>>();
+
+            Type t = typeof(T);
+            if (typeEventDict != null)
+            {
+                if (typeEventDict.TryGetValue(t, out HashSet<object> set))
+                {
+                    set.Remove(objCallback);
+                }
+            }
+
+            return EventManager.Instance.UnRegisterType<T>(callback);
+        }
+
+        /// <summary>
+        /// 取消注册所有类型事件
+        /// </summary>
+        public void UnRegisterTypeEventAll()
+        {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (typeEventDict == null)
+            {
+                return;
+            }
+
+            foreach (KeyValuePair<Type, HashSet<object>> kv in typeEventDict)
+            {
+                foreach (object callback in kv.Value)
+                {
+                    EventManager.Instance.UnRegisterType(kv.Key, callback);
+                }
+            }
+        }
+
+        #endregion Type Event
+
         private bool CheckDisposed()
         {
             if (Disposed)
             {
-                Log.ErrorForce($"`{GetHashCode()}`计时器已销毁");
+                Log.ErrorForce($"`{GetHashCode()}` 注册器已销毁");
                 return true;
             }
 
@@ -394,7 +493,8 @@ namespace Duo1JFramework
                 UnRegisterLateUpdate();
                 UnRegisterFixedUpdate();
                 StopAllTimer();
-                UnRegisterAllEvent();
+                UnRegisterEventAll();
+                UnRegisterTypeEventAll();
 
                 OnDispose();
             }

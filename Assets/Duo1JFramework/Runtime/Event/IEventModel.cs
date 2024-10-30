@@ -2,6 +2,9 @@ using System;
 
 namespace Duo1JFramework.Event
 {
+    /// <summary>
+    /// 事件模型接口
+    /// </summary>
     public interface IEventModel
     {
         /// <summary>
@@ -25,7 +28,7 @@ namespace Duo1JFramework.Event
         void UnRegisterAll();
 
         /// <summary>
-        /// 发布事件
+        /// 广播事件
         /// </summary>
         void Broadcast(object e, object args = null);
     }

@@ -5,12 +5,19 @@ namespace Duo1JFramework.Event
     /// <summary>
     /// 事件管理器
     /// </summary>
-    public class EventManager : MonoSingleton<EventManager>, IEventModel
+    public class EventManager : MonoSingleton<EventManager>, IEventModel, ITypeEventModel
     {
         /// <summary>
         /// 事件模型
         /// </summary>
-        private IEventModel eventModel;
+        private IEventModel eventModel = null;
+
+        /// <summary>
+        /// 类型事件模型
+        /// </summary>
+        private ITypeEventModel typeEventModel = null;
+
+        #region Event
 
         /// <summary>
         /// 订阅事件
@@ -69,11 +76,19 @@ namespace Duo1JFramework.Event
         }
 
         /// <summary>
-        /// 发布事件
+        /// 广播事件
         /// </summary>
         public void Broadcast(object e, object args = null)
         {
             GetEventModel().Broadcast(e, args);
+        }
+
+        /// <summary>
+        /// 广播事件
+        /// </summary>
+        public void Broadcast(eEvent e, object args = null)
+        {
+            Broadcast((object)e, args);
         }
 
         /// <summary>
@@ -85,6 +100,7 @@ namespace Duo1JFramework.Event
             {
                 this.eventModel.UnRegisterAll();
             }
+
             this.eventModel = eventModel;
         }
 
@@ -101,6 +117,110 @@ namespace Duo1JFramework.Event
             return eventModel;
         }
 
+        #endregion Event
+
+        #region Type Event
+
+        /// <summary>
+        /// 订阅类型事件
+        /// </summary>
+        public void RegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        {
+            GetTypeEventModel().RegisterType<T>(callback);
+        }
+
+        /// <summary>
+        /// 订阅类型事件
+        /// </summary>
+        public void RegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback)
+        {
+            GetTypeEventModel().RegisterType(t, callback);
+        }
+
+        /// <summary>
+        /// 取消订阅类型事件
+        /// </summary>
+        public bool UnRegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        {
+            return GetTypeEventModel().UnRegisterType<T>(callback);
+        }
+
+        /// <summary>
+        /// 取消订阅类型事件
+        /// </summary>
+        public bool UnRegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback)
+        {
+            return GetTypeEventModel().UnRegisterType(t, callback);
+        }
+
+        /// <summary>
+        /// 取消订阅类型事件
+        /// </summary>
+        public bool UnRegisterType(Type t, object callback)
+        {
+            return GetTypeEventModel().UnRegisterType(t, callback);
+        }
+
+        /// <summary>
+        /// 取消订阅类型事件下所有注册
+        /// </summary>
+        public bool UnRegisterType<T>() where T : BaseTypeEvent
+        {
+            return GetTypeEventModel().UnRegisterType<T>();
+        }
+
+        /// <summary>
+        /// 取消订阅类型事件下所有注册
+        /// </summary>
+        public bool UnRegisterType(Type t)
+        {
+            return GetTypeEventModel().UnRegisterType(t);
+        }
+
+        /// <summary>
+        /// 取消订阅所有类型事件
+        /// </summary>
+        public void UnRegisterTypeAll()
+        {
+            GetTypeEventModel().UnRegisterTypeAll();
+        }
+
+        /// <summary>
+        /// 广播类型事件
+        /// </summary>
+        public void BroadcastType<T>(T e) where T : BaseTypeEvent
+        {
+            GetTypeEventModel().BroadcastType<T>(e);
+        }
+
+        /// <summary>
+        /// 设置类型事件模型
+        /// </summary>
+        public void SetTypeEventModel(ITypeEventModel typeEventModel)
+        {
+            if (this.typeEventModel != null)
+            {
+                this.typeEventModel.UnRegisterTypeAll();
+            }
+
+            this.typeEventModel = typeEventModel;
+        }
+
+        /// <summary>
+        /// 获取类型事件模型
+        /// </summary>
+        private ITypeEventModel GetTypeEventModel()
+        {
+            if (typeEventModel == null)
+            {
+                SetTypeEventModel(new TypeEventModel());
+            }
+
+            return typeEventModel;
+        }
+
+        #endregion Type Event
+
         protected override void OnInit()
         {
         }
@@ -108,6 +228,7 @@ namespace Duo1JFramework.Event
         protected override void OnDispose()
         {
             SetEventModel(null);
+            SetTypeEventModel(null);
         }
     }
 }

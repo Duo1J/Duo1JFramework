@@ -1,3 +1,4 @@
+using Duo1JFramework;
 using Duo1JFramework.Asset;
 using Duo1JFramework.ObjectPool;
 using Duo1JFramework.UI;
