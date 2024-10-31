@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Duo1JFramework.Event
 {
@@ -16,6 +17,11 @@ namespace Duo1JFramework.Event
         /// 类型事件模型
         /// </summary>
         private ITypeEventModel typeEventModel = null;
+
+        /// <summary>
+        /// 延迟事件集合
+        /// </summary>
+        private HashSet<object> delayEventSet = null;
 
         #region Event
 
@@ -92,6 +98,22 @@ namespace Duo1JFramework.Event
         }
 
         /// <summary>
+        /// 广播事件延迟到LateUpdate或下一帧
+        /// </summary>
+        public void BroadcastDelay(object e)
+        {
+            delayEventSet.Add(e);
+        }
+
+        /// <summary>
+        /// 广播事件延迟到LateUpdate或下一帧
+        /// </summary>
+        public void BroadcastDelay(eEvent e)
+        {
+            BroadcastDelay((object)e);
+        }
+
+        /// <summary>
         /// 设置事件模型
         /// </summary>
         public void SetEventModel(IEventModel eventModel)
@@ -124,7 +146,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅类型事件
         /// </summary>
-        public void RegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        public void RegisterType<T>(Action<T> callback) where T : BaseTypeEvent
         {
             GetTypeEventModel().RegisterType<T>(callback);
         }
@@ -132,7 +154,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅类型事件
         /// </summary>
-        public void RegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback)
+        public void RegisterType(Type t, Action<BaseTypeEvent> callback)
         {
             GetTypeEventModel().RegisterType(t, callback);
         }
@@ -140,7 +162,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
-        public bool UnRegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        public bool UnRegisterType<T>(Action<T> callback) where T : BaseTypeEvent
         {
             return GetTypeEventModel().UnRegisterType<T>(callback);
         }
@@ -148,7 +170,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
-        public bool UnRegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback)
+        public bool UnRegisterType(Type t, Action<BaseTypeEvent> callback)
         {
             return GetTypeEventModel().UnRegisterType(t, callback);
         }
@@ -221,14 +243,36 @@ namespace Duo1JFramework.Event
 
         #endregion Type Event
 
+        private void OnLateUpdate()
+        {
+            if (delayEventSet.Count > 0)
+            {
+                foreach (object e in delayEventSet)
+                {
+                    Broadcast(e);
+                }
+
+                delayEventSet.Clear();
+            }
+        }
+
         protected override void OnInit()
         {
+            delayEventSet = new HashSet<object>();
+
+            Reg.RegisterLateUpdate(OnLateUpdate);
         }
 
         protected override void OnDispose()
         {
             SetEventModel(null);
             SetTypeEventModel(null);
+
+            if (delayEventSet != null)
+            {
+                delayEventSet.Clear();
+                delayEventSet = null;
+            }
         }
     }
 }

@@ -10,26 +10,27 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅类型事件
         /// </summary>
-        void RegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent;
+        void RegisterType<T>(Action<T> callback) where T : BaseTypeEvent;
 
         /// <summary>
         /// 订阅类型事件
         /// </summary>
-        void RegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback);
+        void RegisterType(Type t, Action<BaseTypeEvent> callback);
 
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
-        bool UnRegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent;
+        bool UnRegisterType<T>(Action<T> callback) where T : BaseTypeEvent;
 
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
-        bool UnRegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback);
+        bool UnRegisterType(Type t, Action<BaseTypeEvent> callback);
 
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
+        /// <param name="callback">Action<BaseTypeEvent></param>
         bool UnRegisterType(Type t, object callback);
 
         /// <summary>

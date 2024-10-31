@@ -74,9 +74,20 @@ namespace Duo1JFramework.Event
 
             if (eventDict.TryGetValue(e, out HashSet<Action<object>> set))
             {
-                foreach (Action<object> action in set)
+                if (set.Count > 0)
                 {
-                    action(args);
+                    Action<object>[] actionArr = new Action<object>[set.Count];
+                    set.CopyTo(actionArr);
+
+                    foreach (Action<object> action in actionArr)
+                    {
+                        if (action == null)
+                        {
+                            continue;
+                        }
+
+                        action(e);
+                    }
                 }
             }
         }

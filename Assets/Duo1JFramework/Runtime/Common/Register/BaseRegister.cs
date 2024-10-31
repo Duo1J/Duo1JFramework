@@ -366,6 +366,30 @@ namespace Duo1JFramework
             }
         }
 
+        /// <summary>
+        /// 广播事件
+        /// </summary>
+        public void BroadcastEvent(object e, object args = null)
+        {
+            EventManager.Instance.Broadcast(e, args);
+        }
+
+        /// <summary>
+        /// 广播事件
+        /// </summary>
+        public void BroadcastEvent(eEvent e, object args = null)
+        {
+            BroadcastEvent((object)e, args);
+        }
+
+        /// <summary>
+        /// 广播事件延迟到LateUpdate或下一帧
+        /// </summary>
+        public void BroadcastEventDelay(object e)
+        {
+            EventManager.Instance.BroadcastDelay(e);
+        }
+
         #endregion Event
 
         #region Type Event
@@ -373,7 +397,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 注册类型事件
         /// </summary>
-        public void RegisterTypeEvent<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        public void RegisterTypeEvent<T>(Action<T> callback) where T : BaseTypeEvent
         {
             if (CheckDisposed())
             {
@@ -402,7 +426,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 取消注册类型事件
         /// </summary>
-        public bool UnRegisterTypeEvent<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        public bool UnRegisterTypeEvent<T>(Action<T> callback) where T : BaseTypeEvent
         {
             if (CheckDisposed())
             {
@@ -410,14 +434,13 @@ namespace Duo1JFramework
             }
 
             Assert.NotNullArg(callback, "callback");
-            TypeEventFunc<BaseTypeEvent> objCallback = callback.ConvertGuard<TypeEventFunc<BaseTypeEvent>>();
 
-            Type t = typeof(T);
             if (typeEventDict != null)
             {
+                Type t = typeof(T);
                 if (typeEventDict.TryGetValue(t, out HashSet<object> set))
                 {
-                    set.Remove(objCallback);
+                    set.Remove(callback);
                 }
             }
 
@@ -446,6 +469,14 @@ namespace Duo1JFramework
                     EventManager.Instance.UnRegisterType(kv.Key, callback);
                 }
             }
+        }
+
+        /// <summary>
+        /// 广播类型事件
+        /// </summary>
+        public void BroadcastTypeEvent<T>(T e) where T : BaseTypeEvent
+        {
+            EventManager.Instance.BroadcastType<T>(e);
         }
 
         #endregion Type Event

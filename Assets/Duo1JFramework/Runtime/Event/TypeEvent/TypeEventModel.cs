@@ -16,7 +16,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅类型事件
         /// </summary>
-        public void RegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        public void RegisterType<T>(Action<T> callback) where T : BaseTypeEvent
         {
             Assert.NotNullArg(callback, "callback");
 
@@ -26,7 +26,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 订阅类型事件
         /// </summary>
-        public void RegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback)
+        public void RegisterType(Type t, Action<BaseTypeEvent> callback)
         {
             Assert.NotNullArg(t, "t");
             Assert.NotNullArg(callback, "callback");
@@ -51,22 +51,22 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
-        public bool UnRegisterType<T>(TypeEventFunc<T> callback) where T : BaseTypeEvent
+        public bool UnRegisterType<T>(Action<T> callback) where T : BaseTypeEvent
         {
             Assert.NotNullArg(callback, "callback");
 
-            return UnRegisterType(typeof(T), callback);
+            return UnRegisterType(typeof(T), (object)callback);
         }
 
         /// <summary>
         /// 取消订阅类型事件
         /// </summary>
-        public bool UnRegisterType(Type t, TypeEventFunc<BaseTypeEvent> callback)
+        public bool UnRegisterType(Type t, Action<BaseTypeEvent> callback)
         {
             Assert.NotNullArg(t, "t");
             Assert.NotNullArg(callback, "callback");
 
-            return UnRegisterType(t, callback);
+            return UnRegisterType(t, (object)callback);
         }
 
         /// <summary>
@@ -121,9 +121,20 @@ namespace Duo1JFramework.Event
 
             if (typeEventDict.TryGetValue(typeof(T), out HashSet<object> set))
             {
-                foreach (object action in set)
+                if (set.Count > 0)
                 {
-                    action.Convert<TypeEventFunc<T>>()?.Invoke(e);
+                    object[] actionArr = new object[set.Count];
+                    set.CopyTo(actionArr);
+
+                    foreach (object action in actionArr)
+                    {
+                        if (action == null)
+                        {
+                            continue;
+                        }
+
+                        action.Convert<Action<T>>()?.Invoke(e);
+                    }
                 }
             }
         }
