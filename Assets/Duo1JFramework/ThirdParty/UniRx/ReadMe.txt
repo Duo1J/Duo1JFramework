@@ -1,4 +1,5 @@
 ﻿UniRx - Reactive Extensions for Unity / Ver 6.2.2
+Ver 7.1.0 ~ Duo1J
 ===
 Created by Yoshifumi Kawai(neuecc)
 
