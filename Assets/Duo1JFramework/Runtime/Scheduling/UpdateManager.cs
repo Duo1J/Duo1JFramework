@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework.Scheduling
 {
     /// <summary>
-    /// Mono-Update更新管理器
+    /// Mono Update更新管理器
     /// </summary>
     public class UpdateManager : MonoSingleton<UpdateManager>
     {

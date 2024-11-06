@@ -12,6 +12,18 @@ namespace Duo1JFramework.Scheduling
     /// </summary>
     public class Scheduler : MonoSingleton<Scheduler>
     {
+        private static readonly object locker = new object();
+
+        /// <summary>
+        /// 主线程任务列表
+        /// </summary>
+        private List<Action> mainThreadTaskList;
+
+        /// <summary>
+        /// 延迟一帧执行任务集合
+        /// </summary>
+        private HashSet<Action> delayOneFrameTaskSet;
+
         #region Delay
 
         /// <summary>
@@ -134,18 +146,6 @@ namespace Duo1JFramework.Scheduling
         #endregion Thread
 
         #region Inner
-
-        private static readonly object locker = new object();
-
-        /// <summary>
-        /// 主线程任务列表
-        /// </summary>
-        private List<Action> mainThreadTaskList;
-
-        /// <summary>
-        /// 延迟一帧执行任务集合
-        /// </summary>
-        private HashSet<Action> delayOneFrameTaskSet;
 
         private void OnPreUpdate()
         {

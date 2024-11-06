@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 namespace Duo1JFramework.Asset
 {
     /// <summary>
-    /// 资源集合
+    /// 资源管理集合
     /// </summary>
     /// <see cref="AssetManager"/>
     public class AssetCollection : IAssetLoadable, IDispose

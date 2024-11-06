@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 节点管理
+    /// 场景节点管理
     /// </summary>
     public class Root
     {

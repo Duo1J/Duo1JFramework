@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Duo1JFramework.Scheduling
 {
     /// <summary>
-    /// 协程管理器
+    /// Mono协程管理器
     /// </summary>
     public class CoroManager : MonoSingleton<CoroManager>
     {
@@ -13,7 +13,7 @@ namespace Duo1JFramework.Scheduling
         public static readonly YieldInstruction WaitForFixedUpdate = new WaitForFixedUpdate();
 
         /// <summary>
-        /// 开启协程
+        /// 开启Mono协程
         /// </summary>
         public static Coroutine StartCoro(IEnumerator e)
         {
@@ -21,7 +21,7 @@ namespace Duo1JFramework.Scheduling
         }
 
         /// <summary>
-        /// 停止协程
+        /// 停止Mono协程
         /// </summary>
         public static void StopCoro(IEnumerator e)
         {
@@ -29,7 +29,7 @@ namespace Duo1JFramework.Scheduling
         }
 
         /// <summary>
-        /// 停止协程
+        /// 停止Mono协程
         /// </summary>
         public static void StopCoro(Coroutine c)
         {
@@ -39,26 +39,29 @@ namespace Duo1JFramework.Scheduling
         #region Inner
 
         /// <summary>
-        /// 内部开启协程
+        /// 内部开启Mono协程
         /// </summary>
         private Coroutine StartCoroInner(IEnumerator e)
         {
+            Assert.NotNullArg(e, "e");
             return StartCoroutine(e);
         }
 
         /// <summary>
-        /// 内部停止协程
+        /// 内部停止Mono协程
         /// </summary>
         private void StopCoroInner(IEnumerator e)
         {
+            Assert.NotNullArg(e, "e");
             StopCoroutine(e);
         }
 
         /// <summary>
-        /// 内部停止协程
+        /// 内部停止Mono协程
         /// </summary>
         private void StopCoroInner(Coroutine c)
         {
+            Assert.NotNullArg(c, "c");
             StopCoroutine(c);
         }
 
