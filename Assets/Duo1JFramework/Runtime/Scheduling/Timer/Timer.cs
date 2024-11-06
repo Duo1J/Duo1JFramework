@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Duo1JFramework.TimerUpdate
+namespace Duo1JFramework.Scheduling
 {
     /// <summary>
     /// 计时器实体

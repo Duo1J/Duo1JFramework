@@ -1,4 +1,4 @@
-using Duo1JFramework.TimerUpdate;
+using Duo1JFramework.Scheduling;
 using System;
 using UnityEngine;
 using UObject = UnityEngine.Object;

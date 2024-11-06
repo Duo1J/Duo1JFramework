@@ -22,25 +22,6 @@ namespace Duo1JFramework
 
         #endregion Enum
 
-        #region Delegate
-
-        /// <summary>
-        /// 委托安全调用
-        /// </summary>
-        public static void InvokeSafe(this Action action)
-        {
-            try
-            {
-                action.Invoke();
-            }
-            catch (Exception e)
-            {
-                Assert.ExceptHandle(e);
-            }
-        }
-
-        #endregion Delegate
-
         #region Bounds
 
         /// <summary>

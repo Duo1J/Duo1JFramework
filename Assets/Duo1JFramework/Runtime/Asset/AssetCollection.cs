@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Duo1JFramework.Asset;
 using Object = UnityEngine.Object;
 
-namespace Duo1JFramework
+namespace Duo1JFramework.Asset
 {
     /// <summary>
     /// 资源集合

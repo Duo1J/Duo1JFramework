@@ -1,4 +1,4 @@
-using Duo1JFramework.TimerUpdate;
+using Duo1JFramework.Scheduling;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -166,7 +166,7 @@ namespace Duo1JFramework.DataStructure
 
             if (delay)
             {
-                UpdateManager.Instance.DelayOneFrame(_AdjustBoundsHeightByItem);
+                Scheduler.DelayOneFrame(_AdjustBoundsHeightByItem);
             }
             else
             {

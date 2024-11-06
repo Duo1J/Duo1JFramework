@@ -1,5 +1,5 @@
 using Duo1JFramework.Event;
-using Duo1JFramework.TimerUpdate;
+using Duo1JFramework.Scheduling;
 using System;
 using System.Collections.Generic;
 
@@ -212,6 +212,19 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 开启一个计时器
+        /// </summary>
+        public Timer StartTimer(float interval, Action callback, int repeat = 1)
+        {
+            if (CheckDisposed())
+            {
+                return null;
+            }
+
+            return GetTimer(interval, callback, repeat).Start();
+        }
+
+        /// <summary>
         /// 获取一个帧计时器
         /// </summary>
         public Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
@@ -230,6 +243,19 @@ namespace Duo1JFramework
             timerList.Add(timer);
 
             return timer;
+        }
+
+        /// <summary>
+        /// 开启一个帧计时器
+        /// </summary>
+        public Timer StartFrameTimer(int frame, Action callback, int repeat = 1)
+        {
+            if (CheckDisposed())
+            {
+                return null;
+            }
+
+            return GetFrameTimer(frame, callback, repeat).Start();
         }
 
         /// <summary>

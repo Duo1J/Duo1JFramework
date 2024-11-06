@@ -1,3 +1,4 @@
+using Duo1JFramework.Asset;
 using UnityEngine;
 
 namespace Duo1JFramework

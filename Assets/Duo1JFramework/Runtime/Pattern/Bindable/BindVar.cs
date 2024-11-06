@@ -5,7 +5,7 @@ namespace Duo1JFramework.Pattern.Bindable
     /// <summary>
     /// 可绑定变量
     /// </summary>
-    public class BindProperty<T>
+    public class BindVar<T>
     {
         /// <summary>
         /// 变量值
@@ -49,7 +49,7 @@ namespace Duo1JFramework.Pattern.Bindable
         /// <summary>
         /// 注册变量值改变回调
         /// </summary>
-        public BindProperty<T> Register(Action<T> onValueChange)
+        public BindVar<T> Register(Action<T> onValueChange)
         {
             this.onValueChange += onValueChange;
             return this;
@@ -58,7 +58,7 @@ namespace Duo1JFramework.Pattern.Bindable
         /// <summary>
         /// 取消注册变量值改变回调
         /// </summary>
-        public BindProperty<T> UnRegister(Action<T> onValueChange)
+        public BindVar<T> UnRegister(Action<T> onValueChange)
         {
             this.onValueChange -= onValueChange;
             return this;
@@ -67,13 +67,13 @@ namespace Duo1JFramework.Pattern.Bindable
         /// <summary>
         /// 设置相同变量值比较器
         /// </summary>
-        public BindProperty<T> SetComparer(Func<T, T, bool> comparer)
+        public BindVar<T> SetComparer(Func<T, T, bool> comparer)
         {
             this.comparer = comparer;
             return this;
         }
 
-        public BindProperty(T defaultValue)
+        public BindVar(T defaultValue)
         {
             mValue = defaultValue;
         }

@@ -1,7 +1,7 @@
 using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
-using Duo1JFramework.TimerUpdate;
+using Duo1JFramework.Scheduling;
 using System;
 using System.Collections.Generic;
 

@@ -1,3 +1,5 @@
+using Duo1JFramework.Asset;
+
 namespace Duo1JFramework
 {
     /// <summary>

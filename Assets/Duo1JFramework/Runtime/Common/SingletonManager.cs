@@ -1,3 +1,4 @@
+using Duo1JFramework.Scheduling;
 using System.Collections.Generic;
 
 namespace Duo1JFramework
@@ -78,6 +79,7 @@ namespace Duo1JFramework
         {
             Log.Info("触发内部单例");
 
+            Scheduler.Instance.Trigger();
             GameManager.Instance.Trigger();
         }
 

@@ -2,7 +2,7 @@ using Duo1JFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
 
-namespace Duo1JFramework.TimerUpdate
+namespace Duo1JFramework.Scheduling
 {
     /// <summary>
     /// 计时器管理器
@@ -30,6 +30,16 @@ namespace Duo1JFramework.TimerUpdate
         }
 
         /// <summary>
+        /// 开启一个计时器
+        /// </summary>
+        /// <param name="interval">毫秒数</param>
+        /// <param name="repeat">重复次数，<0 (Def.TIMER_REPEAT_FOREVER)为无限</param>
+        public Timer StartTimer(float interval, Action callback, int repeat = 1)
+        {
+            return GetTimer(interval, callback, repeat).Start();
+        }
+
+        /// <summary>
         /// 获取一个帧计时器
         /// </summary>
         /// <param name="interval">帧数</param>
@@ -37,6 +47,16 @@ namespace Duo1JFramework.TimerUpdate
         public Timer GetFrameTimer(int frame, Action callback, int repeat = 1)
         {
             return _GetTimer(frame, true, callback, repeat);
+        }
+
+        /// <summary>
+        /// 开启一个帧计时器
+        /// </summary>
+        /// <param name="interval">帧数</param>
+        /// <param name="repeat">重复次数，<0 (Def.TIMER_REPEAT_FOREVER)为无限</param>
+        public Timer StartFrameTimer(int frame, Action callback, int repeat = 1)
+        {
+            return GetFrameTimer(frame, callback, repeat).Start();
         }
 
         /// <summary>
@@ -88,30 +108,41 @@ namespace Duo1JFramework.TimerUpdate
             }, 1);
         }
 
+        #region Inner
+
+        /// <summary>
+        /// 内部注册计时器
+        /// </summary>
         public void RegisterTimer(Timer timer)
         {
             if (timerSet == null)
             {
                 timerSet = new HashSet<Timer>();
             }
+
             timerSet.Add(timer);
             removeSet?.Remove(timer);
         }
 
+        /// <summary>
+        /// 内部取消注册计时器
+        /// </summary>
         public void UnRegisterTimer(Timer timer)
         {
             if (timerSet == null)
             {
                 return;
             }
+
             if (removeSet == null)
             {
                 removeSet = new HashSet<Timer>();
             }
+
             removeSet.Add(timer);
         }
 
-        private void Update()
+        private void OnLateUpdate()
         {
             if (timerSet != null)
             {
@@ -131,6 +162,9 @@ namespace Duo1JFramework.TimerUpdate
             }
         }
 
+        /// <summary>
+        /// 内部获取计时器
+        /// </summary>
         private Timer _GetTimer(float interval, bool isFrameTimer, Action callback, int repeat)
         {
             Assert.NotNullArg(callback, "callback");
@@ -147,6 +181,8 @@ namespace Duo1JFramework.TimerUpdate
         {
             timerSet = new HashSet<Timer>();
             removeSet = new HashSet<Timer>();
+
+            Reg.RegisterLateUpdate(OnLateUpdate);
         }
 
 #if UNITY_EDITOR
@@ -155,5 +191,7 @@ namespace Duo1JFramework.TimerUpdate
         public HashSet<Timer> RemoveSet_Editor => removeSet;
 
 #endif
+
+        #endregion Inner
     }
 }

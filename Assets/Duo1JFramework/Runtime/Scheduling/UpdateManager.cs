@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Duo1JFramework.TimerUpdate
+namespace Duo1JFramework.Scheduling
 {
     /// <summary>
     /// Mono-Update更新管理器
@@ -15,10 +15,12 @@ namespace Duo1JFramework.TimerUpdate
         /// PreUpdate集合
         /// </summary>
         private HashSet<Action> preUpdateSet;
+
         /// <summary>
         /// PreUpdate待添加列表
         /// </summary>
         private List<Action> preUpdateAddList;
+
         /// <summary>
         /// PreUpdate待移除列表
         /// </summary>
@@ -50,10 +52,12 @@ namespace Duo1JFramework.TimerUpdate
         /// Update集合
         /// </summary>
         private HashSet<Action> updateSet;
+
         /// <summary>
         /// Update待添加列表
         /// </summary>
         private List<Action> updateAddList;
+
         /// <summary>
         /// Update待移除列表
         /// </summary>
@@ -83,16 +87,6 @@ namespace Duo1JFramework.TimerUpdate
 
         private void Update()
         {
-            if (delayOneFrameSet != null)
-            {
-                foreach (Action call in delayOneFrameSet)
-                {
-                    call();
-                }
-
-                delayOneFrameSet.Clear();
-            }
-
             //预先更新
             if (preUpdateSet != null)
             {
@@ -192,10 +186,12 @@ namespace Duo1JFramework.TimerUpdate
         /// LateUpdate集合
         /// </summary>
         private HashSet<Action> lateUpdateSet;
+
         /// <summary>
         /// LateUpdate待添加列表
         /// </summary>
         private List<Action> lateUpdateAddList;
+
         /// <summary>
         /// LateUpdate待移除列表
         /// </summary>
@@ -266,10 +262,12 @@ namespace Duo1JFramework.TimerUpdate
         /// FixedUpdate集合
         /// </summary>
         private HashSet<Action> fixedUpdateSet;
+
         /// <summary>
         /// FixedUpdate待添加列表
         /// </summary>
         private List<Action> fixedUpdateAddList;
+
         /// <summary>
         /// FixedUpdate待移除列表
         /// </summary>
@@ -334,21 +332,6 @@ namespace Duo1JFramework.TimerUpdate
 
         #endregion FixedUpdate
 
-        #region Delay
-
-        private HashSet<Action> delayOneFrameSet;
-
-        /// <summary>
-        /// 延迟一帧执行
-        /// 重复传入相同的委托只执行一次
-        /// </summary>
-        public void DelayOneFrame(Action action)
-        {
-            delayOneFrameSet.Add(action);
-        }
-
-        #endregion Delay
-
         #region Yield Request
 
         private List<AsyncOperationWrap> asyncOpeWrapList;
@@ -386,7 +369,6 @@ namespace Duo1JFramework.TimerUpdate
             lateUpdateAddList = new List<Action>();
             lateUpdateDeleteList = new List<Action>();
 
-            delayOneFrameSet = new HashSet<Action>();
             asyncOpeWrapList = new List<AsyncOperationWrap>();
         }
 
@@ -408,7 +390,6 @@ namespace Duo1JFramework.TimerUpdate
             lateUpdateAddList = null;
             lateUpdateDeleteList = null;
 
-            delayOneFrameSet = null;
             asyncOpeWrapList = null;
         }
 

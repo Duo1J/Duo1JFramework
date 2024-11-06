@@ -1,4 +1,4 @@
-using Duo1JFramework.TimerUpdate;
+using Duo1JFramework.Scheduling;
 
 namespace Duo1JFramework.ObjectPool
 {
