@@ -13,6 +13,11 @@ namespace Duo1JFramework
     public abstract class BaseRegister : BaseObject, IDispose
     {
         /// <summary>
+        /// EarlyUpdate注册的更新回调
+        /// </summary>
+        private Action earlyUpdater;
+
+        /// <summary>
         /// PreUpdate注册的更新回调
         /// </summary>
         private Action preUpdater;
@@ -55,6 +60,40 @@ namespace Duo1JFramework
         #region Update
 
         /// <summary>
+        /// 注册EarlyUpdate回调
+        /// </summary>
+        public void RegisterEarlyUpdate(Action _earlyUpdater)
+        {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            UnRegisterEarlyUpdate();
+            UpdateManager.Instance.RegisterEarlyUpdate(_earlyUpdater);
+            earlyUpdater = _earlyUpdater;
+        }
+
+        /// <summary>
+        /// 取消注册EarlyUpdate回调
+        /// </summary>
+        public void UnRegisterEarlyUpdate()
+        {
+            if (CheckDisposed())
+            {
+                return;
+            }
+
+            if (earlyUpdater == null)
+            {
+                return;
+            }
+
+            UpdateManager.Instance.UnRegisterPreUpdate(earlyUpdater);
+            earlyUpdater = null;
+        }
+
+        /// <summary>
         /// 注册PreUpdate回调
         /// </summary>
         public void RegisterPreUpdate(Action _preUpdater)
@@ -64,6 +103,7 @@ namespace Duo1JFramework
                 return;
             }
 
+            UnRegisterPreUpdate();
             UpdateManager.Instance.RegisterPreUpdate(_preUpdater);
             preUpdater = _preUpdater;
         }
@@ -97,6 +137,7 @@ namespace Duo1JFramework
                 return;
             }
 
+            UnRegisterUpdate();
             UpdateManager.Instance.RegisterUpdate(_updater);
             updater = _updater;
         }
@@ -130,6 +171,7 @@ namespace Duo1JFramework
                 return;
             }
 
+            UnRegisterLateUpdate();
             UpdateManager.Instance.RegisterLateUpdate(_lateUpdater);
             lateUpdater = _lateUpdater;
         }
@@ -163,6 +205,7 @@ namespace Duo1JFramework
                 return;
             }
 
+            UnRegisterFixedUpdate();
             UpdateManager.Instance.RegisterFixedUpdate(_fixedUpdater);
             fixedUpdater = _fixedUpdater;
         }
@@ -206,6 +249,7 @@ namespace Duo1JFramework
             {
                 timerList = new List<Timer>();
             }
+
             timerList.Add(timer);
 
             return timer;
@@ -240,6 +284,7 @@ namespace Duo1JFramework
             {
                 timerList = new List<Timer>();
             }
+
             timerList.Add(timer);
 
             return timer;
@@ -545,11 +590,14 @@ namespace Duo1JFramework
 
             try
             {
+                UnRegisterEarlyUpdate();
                 UnRegisterPreUpdate();
                 UnRegisterUpdate();
                 UnRegisterLateUpdate();
                 UnRegisterFixedUpdate();
+
                 StopAllTimer();
+
                 UnRegisterEventAll();
                 UnRegisterTypeEventAll();
 

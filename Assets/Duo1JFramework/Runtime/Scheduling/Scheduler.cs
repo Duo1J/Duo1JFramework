@@ -144,7 +144,7 @@ namespace Duo1JFramework.Scheduling
 
         #region Inner
 
-        private void OnPreUpdate()
+        private void OnEarlyUpdate()
         {
             if (delayOneFrameTaskSet != null)
             {
@@ -184,7 +184,7 @@ namespace Duo1JFramework.Scheduling
             mainThreadTaskList = new List<Action>();
             delayOneFrameTaskSet = new HashSet<Action>();
 
-            Reg.RegisterLateUpdate(OnPreUpdate);
+            Reg.RegisterEarlyUpdate(OnEarlyUpdate);
             Reg.RegisterLateUpdate(OnLateUpdate);
         }
 
