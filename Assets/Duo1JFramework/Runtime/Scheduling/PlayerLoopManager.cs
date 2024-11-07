@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine.LowLevel;
 
 #if UNITY_EDITOR
@@ -13,15 +14,22 @@ namespace Duo1JFramework.Scheduling
     public class PlayerLoopManager : MonoSingleton<PlayerLoopManager>
     {
         /// <summary>
+        /// 用户循环体列表
+        /// </summary>
+        private List<Loop> loopList;
+
+        /// <summary>
         /// 添加用户循环
         /// </summary>
         /// <param name="type">循环类型 `typeof(UnityEngine.PlayerLoop.XXX)`</param>
-        public void AddPlayerLoop(Type type, PlayerLoopSystem.UpdateFunction updateFunction)
+        public Loop AddPlayerLoop(Type type, PlayerLoopSystem.UpdateFunction updateFunction)
         {
+            Loop loop = new Loop(updateFunction);
+
             PlayerLoopSystem playerLoopSystem = new PlayerLoopSystem
             {
                 type = type,
-                updateDelegate = updateFunction
+                updateDelegate = loop.Run
             };
 
             PlayerLoopSystem curPlayerLoop = PlayerLoop.GetCurrentPlayerLoop();
@@ -43,6 +51,15 @@ namespace Duo1JFramework.Scheduling
             }
 
             PlayerLoop.SetPlayerLoop(curPlayerLoop);
+
+            if (loopList == null)
+            {
+                loopList = new List<Loop>();
+            }
+
+            loopList.Add(loop);
+
+            return loop;
         }
 
 #if UNITY_EDITOR
@@ -54,7 +71,16 @@ namespace Duo1JFramework.Scheduling
         {
             if (state == PlayModeStateChange.ExitingEditMode || state == PlayModeStateChange.ExitingPlayMode)
             {
-                PlayerLoop.SetPlayerLoop(PlayerLoop.GetDefaultPlayerLoop());
+                if (loopList != null)
+                {
+                    foreach (Loop loop in loopList)
+                    {
+                        loop.Dispose();
+                    }
+
+                    loopList.Clear();
+                    loopList = null;
+                }
             }
         }
 
