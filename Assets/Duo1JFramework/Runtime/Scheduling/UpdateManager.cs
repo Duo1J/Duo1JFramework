@@ -459,6 +459,10 @@ namespace Duo1JFramework.Scheduling
         {
             PlayerLoopManager.Instance.AddPlayerLoop(typeof(UnityEngine.PlayerLoop.EarlyUpdate), OnEarlyUpdate);
 
+            earlyUpdateSet = new HashSet<Action>();
+            earlyUpdateAddList = new List<Action>();
+            earlyUpdateRemoveList = new List<Action>();
+
             preUpdateSet = new HashSet<Action>();
             preUpdateAddList = new List<Action>();
             preUpdateRemoveList = new List<Action>();
@@ -480,6 +484,10 @@ namespace Duo1JFramework.Scheduling
 
         protected override void OnDispose()
         {
+            earlyUpdateSet = null;
+            earlyUpdateAddList = null;
+            earlyUpdateRemoveList = null;
+
             preUpdateSet = null;
             preUpdateAddList = null;
             preUpdateRemoveList = null;
