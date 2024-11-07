@@ -89,7 +89,7 @@ namespace Duo1JFramework
                 return;
             }
 
-            UpdateManager.Instance.UnRegisterPreUpdate(earlyUpdater);
+            UpdateManager.Instance.UnRegisterEarlyUpdate(earlyUpdater);
             earlyUpdater = null;
         }
 
