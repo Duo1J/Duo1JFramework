@@ -451,6 +451,8 @@ namespace Duo1JFramework.Scheduling
             Assert.NotNullArg(callback, "callback");
 
             operation.completed += (req) => { callback?.Invoke(req); };
+
+            //asyncOpeWrapList.Add(new AsyncOperationWrap(operation, callback));
         }
 
         #endregion Yield Request
