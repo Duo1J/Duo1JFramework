@@ -119,10 +119,7 @@ namespace Duo1JFramework.Scheduling
         public static bool QueueOnThreadPool(Action action)
         {
             Assert.NotNullArg(action, "action");
-            return QueueOnThreadPool((state) =>
-            {
-                action();
-            });
+            return QueueOnThreadPool((state) => { action(); });
         }
 
         /// <summary>
@@ -162,16 +159,22 @@ namespace Duo1JFramework.Scheduling
 
         private void OnLateUpdate()
         {
+            Action[] actions = null;
+
             lock (locker)
             {
-                if (mainThreadTaskList != null)
+                if (mainThreadTaskList != null && mainThreadTaskList.Count > 0)
                 {
-                    foreach (Action action in mainThreadTaskList)
-                    {
-                        action();
-                    }
-
+                    actions = mainThreadTaskList.ToArray();
                     mainThreadTaskList.Clear();
+                }
+            }
+
+            if (actions != null)
+            {
+                foreach (Action action in actions)
+                {
+                    action.InvokeSafe();
                 }
             }
         }
