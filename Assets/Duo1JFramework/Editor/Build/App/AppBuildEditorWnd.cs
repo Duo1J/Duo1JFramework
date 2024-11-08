@@ -35,13 +35,13 @@ namespace Duo1JFramework.Build
 
                     GUILayout.Space(10);
                     strategy.buildAsset = EditorGUILayout.Toggle("构建资源", strategy.buildAsset);
-                    if (strategy.buildAsset)
-                    {
-                        strategy.assetLoaderType = (EAssetLoaderType)EditorGUILayout.EnumPopup("资源加载器类型", strategy.assetLoaderType);
+                    strategy.assetLoaderType = (EAssetLoaderType)EditorGUILayout.EnumPopup("资源加载器类型", strategy.assetLoaderType);
 
-                        if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle)
+                    if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle)
+                    {
+                        strategy.ABData.copyAsset = EditorGUILayout.Toggle("拷贝资源到运行时目录", strategy.ABData.copyAsset);
+                        if (strategy.ABData.copyAsset)
                         {
-                            strategy.ABData.copyAsset = EditorGUILayout.Toggle("拷贝资源到运行时目录", strategy.ABData.copyAsset);
                             if (strategy.assetLoaderType == EAssetLoaderType.AssetBundle)
                             {
                                 strategy.ABData.deleteManifest = EditorGUILayout.Toggle("删除Manifest文件", strategy.ABData.deleteManifest);
@@ -127,25 +127,25 @@ namespace Duo1JFramework.Build
             switch (assetLoaderType)
             {
                 case EAssetLoaderType.AssetDatabase:
-                    {
-                        Log.EditorError($"AssetDatabase无资源构建面板");
-                        break;
-                    }
+                {
+                    Log.EditorError($"AssetDatabase无资源构建面板");
+                    break;
+                }
                 case EAssetLoaderType.AssetBundle:
-                    {
-                        AssetBundleBuildEditorWnd.Open();
-                        break;
-                    }
+                {
+                    AssetBundleBuildEditorWnd.Open();
+                    break;
+                }
                 case EAssetLoaderType.Addressables:
-                    {
-                        Log.EditorError($"Addressables暂未实现资源构建面板");
-                        break;
-                    }
+                {
+                    Log.EditorError($"Addressables暂未实现资源构建面板");
+                    break;
+                }
                 default:
-                    {
-                        Log.EditorError($"资源加载器类型错误: {assetLoaderType}");
-                        break;
-                    }
+                {
+                    Log.EditorError($"资源加载器类型错误: {assetLoaderType}");
+                    break;
+                }
             }
         }
     }
