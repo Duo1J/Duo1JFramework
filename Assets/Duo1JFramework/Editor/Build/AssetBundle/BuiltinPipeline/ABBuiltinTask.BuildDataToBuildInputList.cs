@@ -11,13 +11,13 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class BuildDataToBuildInputList : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.BUILD_DATAS, out ABBuildData[] buildDatas))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     List<AssetBundleBuild> buildInputList = new List<AssetBundleBuild>();
@@ -34,7 +34,7 @@ namespace Duo1JFramework.Build
 
                     context.Set<List<AssetBundleBuild>>(ABBuiltinPipeline.ContextKey.BUILD_INPUT_LIST, buildInputList);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

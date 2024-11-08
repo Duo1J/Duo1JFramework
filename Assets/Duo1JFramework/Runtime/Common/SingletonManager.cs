@@ -11,6 +11,19 @@ namespace Duo1JFramework
     public class SingletonManager
     {
         /// <summary>
+        /// 触发内部单例类
+        /// </summary>
+        public static void TriggerInner()
+        {
+            Log.Info("触发内部单例");
+
+            Scheduler.Instance.Trigger();
+            GameManager.Instance.Trigger();
+        }
+
+        #region Singleton Management
+
+        /// <summary>
         /// 单例集合
         /// </summary>
         private static HashSet<ISingleton> singletonSet = new HashSet<ISingleton>();
@@ -73,17 +86,6 @@ namespace Duo1JFramework
         }
 
         /// <summary>
-        /// 触发内部单例类
-        /// </summary>
-        public static void TriggerInner()
-        {
-            Log.Info("触发内部单例");
-
-            Scheduler.Instance.Trigger();
-            GameManager.Instance.Trigger();
-        }
-
-        /// <summary>
         /// 停止所有单例类
         /// </summary>
         public static void DisposeAll()
@@ -110,6 +112,8 @@ namespace Duo1JFramework
                 monoSingletonSet.Clear();
             }
         }
+
+        #endregion Singleton Management
 
         private SingletonManager()
         {

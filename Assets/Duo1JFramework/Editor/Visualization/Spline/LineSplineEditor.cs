@@ -9,9 +9,19 @@ namespace Duo1JFramework
     [CustomEditor(typeof(LineSpline))]
     public class LineSplineEditor : BaseCustomEditor<LineSpline>
     {
+        private bool showInfo = true;
+
         protected override bool ShowOriginDefault => true;
 
         private Vector3 labelOffset = new Vector3(0, -0.1f, 0);
+
+        private SerializedProperty nodeListProp;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            nodeListProp = serializedObject.FindProperty("nodeList");
+        }
 
         private void OnSceneGUI()
         {
@@ -30,12 +40,23 @@ namespace Duo1JFramework
                 {
                     nodeList[i] = Handles.PositionHandle(nodeList[i], Quaternion.identity);
 
-                    Vector3 pos = nodeList[i];
-                    Handles.Label(nodeList[i] + labelOffset, $"<color=#00FF00>P{i} ({pos.x:F1}, {pos.y:F1}, {pos.z:F1})</color>");
+
+                    if (showInfo)
+                    {
+                        Vector3 pos = nodeList[i];
+                        Handles.Label(nodeList[i] + labelOffset, $"<color=#00FF00><size=16>P{i}</size></color> <color=#ABABAB>({pos.x:F1}, {pos.y:F1}, {pos.z:F1})</color>");
+                    }
                 }
 
                 Handles.DrawPolyLine(nodeList);
             });
+        }
+
+        protected override void DrawInspector()
+        {
+            showInfo = EditorGUILayout.Toggle("显示信息", showInfo);
+
+            EditorGUILayout.PropertyField(nodeListProp, new GUIContent("节点列表"));
         }
     }
 }

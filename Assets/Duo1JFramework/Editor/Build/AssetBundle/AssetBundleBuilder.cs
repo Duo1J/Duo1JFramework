@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System.Security.Cryptography;
+using Duo1JFramework.Pattern.Pipeline;
 
 namespace Duo1JFramework.Build
 {
@@ -16,7 +16,7 @@ namespace Duo1JFramework.Build
         /// 使用ABBuildStrategy配置构建所有AssetBundle
         /// </summary>
         /// <see cref="ABBuildStrategy"/>
-        public static bool BuildAllAssetBundle()
+        public static EPipelineState BuildAllAssetBundle()
         {
             return BuildAllAssetBundle(ABBuildStrategy.Instance.BuildTarget, ABBuildStrategy.Instance.PipelineType);
         }
@@ -24,39 +24,45 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 构建所有AssetBundle
         /// </summary>
-        public static bool BuildAllAssetBundle(BuildTarget buildTarget, EABPipelineType pipelineType)
+        public static EPipelineState BuildAllAssetBundle(BuildTarget buildTarget, EABPipelineType pipelineType)
         {
             try
             {
-                bool success = false;
+                EPipelineState state = EPipelineState.Fail;
 
                 switch (pipelineType)
                 {
                     case EABPipelineType.Builtin:
                         ABBuiltinPipelineContext context = new ABBuiltinPipelineContext(buildTarget);
-                        success = ABBuiltinPipeline.Build(context);
+                        state = ABBuiltinPipeline.Build(context);
                         break;
                     default:
                         Log.EditorError($"未处理的AssetBundle管线类型: `{pipelineType}`");
-                        success = false;
+                        state = EPipelineState.Fail;
                         break;
                 }
 
-                if (success)
+                switch (state)
                 {
-                    Log.EditorInfo($"构建 `{buildTarget.GetName()}` 平台的AssetBundle成功");
-                }
-                else
-                {
-                    Log.EditorError($"构建 `{buildTarget.GetName()}` 平台的AssetBundle失败");
+                    case EPipelineState.Success:
+                        Log.EditorInfo($"构建 `{buildTarget.GetName()}` 平台的AssetBundle成功");
+                        break;
+                    case EPipelineState.Fail:
+                        Log.EditorError($"构建 `{buildTarget.GetName()}` 平台的AssetBundle失败");
+                        break;
+                    case EPipelineState.Break:
+                        Log.EditorError($"构建 `{buildTarget.GetName()}` 平台的AssetBundle中断");
+                        break;
+                    default:
+                        break;
                 }
 
-                return success;
+                return state;
             }
             catch (Exception e)
             {
                 Assert.ExceptHandle(e, $"构建 `{buildTarget.GetName()}` 平台的AssetBundle异常");
-                return false;
+                return EPipelineState.Fail;
             }
             finally
             {

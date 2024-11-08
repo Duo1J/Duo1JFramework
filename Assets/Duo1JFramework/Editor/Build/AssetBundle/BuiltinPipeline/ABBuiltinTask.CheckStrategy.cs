@@ -9,7 +9,7 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class CheckStrategy : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
@@ -21,12 +21,12 @@ namespace Duo1JFramework.Build
                         Log.EditorError($"AB构建策略配置为空: `{ABBuildStrategy.AssetPath}`");
                         ABBuildStrategy.Instance.SelectAsset();
 
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     context.Set<ABBuildStrategy>(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, strategy);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

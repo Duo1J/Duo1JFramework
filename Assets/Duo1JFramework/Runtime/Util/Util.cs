@@ -12,9 +12,11 @@ namespace Duo1JFramework
         /// </summary>
         public static bool TryCatch(Action action)
         {
+            Assert.NotNullArg(action, "action");
+
             try
             {
-                action?.Invoke();
+                action.Invoke();
             }
             catch (Exception e)
             {
@@ -28,16 +30,18 @@ namespace Duo1JFramework
         /// <summary>
         /// TryCatch安全执行
         /// </summary>
-        public static bool TryCatch(Func<bool> action)
+        public static T TryCatch<T>(Func<T> action)
         {
+            Assert.NotNullArg(action, "action");
+
             try
             {
-                return action == null || action.Invoke();
+                return action.Invoke();
             }
             catch (Exception e)
             {
                 Assert.ExceptHandle(e);
-                return false;
+                return default(T);
             }
         }
 

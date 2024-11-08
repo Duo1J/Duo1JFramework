@@ -11,13 +11,13 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class BuildAB2AssetMap : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.BUILD_DATAS, out ABBuildData[] buildDatas))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     Dictionary<string, List<ABMapAssetData>> ab2AssetMap = new Dictionary<string, List<ABMapAssetData>>();
@@ -55,7 +55,7 @@ namespace Duo1JFramework.Build
 
                     context.Set<Dictionary<string, List<ABMapAssetData>>>(ABBuiltinPipeline.ContextKey.AB_TO_ASSET_MAP, ab2AssetMapDistinct);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

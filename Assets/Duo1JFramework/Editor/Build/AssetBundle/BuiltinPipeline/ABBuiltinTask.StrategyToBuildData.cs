@@ -9,13 +9,13 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class StrategyToBuildData : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     ABBuildData[] buildDatas = AssetBundleBuilder.StrategyToBuildData(strategy.Data);
@@ -24,12 +24,12 @@ namespace Duo1JFramework.Build
                     {
                         Log.EditorError($"AB构建数据为空，请检查策略配置: `{ABBuildStrategy.AssetPath}`");
                         ABBuildStrategy.Instance.SelectAsset();
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     context.Set<ABBuildData[]>(ABBuiltinPipeline.ContextKey.BUILD_DATAS, buildDatas);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

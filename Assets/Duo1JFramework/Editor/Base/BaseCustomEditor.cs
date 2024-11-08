@@ -41,7 +41,7 @@ namespace Duo1JFramework
             else
             {
                 serializedObject.Update();
-                Draw();
+                DrawInspector();
                 serializedObject.ApplyModifiedProperties();
             }
         }
@@ -49,7 +49,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 子面板绘制Inspector
         /// </summary>
-        protected virtual void Draw()
+        protected virtual void DrawInspector()
         {
         }
     }

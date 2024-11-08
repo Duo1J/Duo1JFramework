@@ -42,7 +42,7 @@ namespace Duo1JFramework.Build
                 GUILayout.Label("构建策略");
                 foreach (ABBuildStrategyData data in strategy.Data)
                 {
-                    GUILayout.Label($"<color={ES.GreenSL}>{data.abName}包:</color>");
+                    GUILayout.Label($"<color={ES.GreenS}>{data.abName}包:</color>");
                     foreach (string path in data.pathList)
                     {
                         GUILayout.Label($"{ED.S8}{path}");

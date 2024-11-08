@@ -24,6 +24,7 @@ namespace Duo1JFramework
     public class BezierSplineNode
     {
         public Vector3 point;
-        public Vector3 control;
+        public Vector3 controlLeft;
+        public Vector3 controlRight;
     }
 }

@@ -11,30 +11,30 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class CreateABMapData : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_ASSET_MAP, out Dictionary<string, List<ABMapAssetData>> ab2AssetMap))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_HASH_MAP, out Dictionary<string, string> ab2HashMap))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_CRC_MAP, out Dictionary<string, uint> ab2CrcMap, true);
 
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_MD5_MAP, out Dictionary<string, string> ab2MD5Map))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     ABMapData abMapData = ABMapData.Create(ab2AssetMap);
@@ -46,7 +46,7 @@ namespace Duo1JFramework.Build
 
                     abMapData.SaveToFile(Def.Asset.EncryptABMapData, null, Formatting.None);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

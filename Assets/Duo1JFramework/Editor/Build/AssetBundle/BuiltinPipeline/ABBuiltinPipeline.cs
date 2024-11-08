@@ -8,7 +8,7 @@ namespace Duo1JFramework.Build
     /// </summary>
     public class ABBuiltinPipeline : Pipeline
     {
-        public static bool Build(ABBuiltinPipelineContext context)
+        public static EPipelineState Build(ABBuiltinPipelineContext context)
         {
             return Run(context, Tasks);
         }

@@ -15,6 +15,6 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 管线运行
         /// </summary>
-        bool Run(IPipelineContext context);
+        EPipelineState Run(IPipelineContext context);
     }
 }

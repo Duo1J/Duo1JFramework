@@ -16,6 +16,11 @@ namespace Duo1JFramework.Scheduling
         private static readonly object locker = new object();
 
         /// <summary>
+        /// 主线程ID
+        /// </summary>
+        private int mainThreadID;
+
+        /// <summary>
         /// 主线程任务列表
         /// </summary>
         private List<Action> mainThreadTaskList;
@@ -93,6 +98,12 @@ namespace Duo1JFramework.Scheduling
         {
             Assert.NotNullArg(action, "action");
 
+            if (Instance.mainThreadID == Thread.CurrentThread.ManagedThreadId)
+            {
+                action.InvokeSafe();
+                return;
+            }
+
             if (Instance.mainThreadTaskList == null)
             {
                 Log.ErrorForce("主线程任务队列已销毁");
@@ -129,7 +140,7 @@ namespace Duo1JFramework.Scheduling
         public static Task QueueOnTask(Action action)
         {
             Assert.NotNullArg(action, "action");
-            return Task.Run(action);
+            return Task.Factory.StartNew(action);
         }
 
         /// <summary>
@@ -138,7 +149,7 @@ namespace Duo1JFramework.Scheduling
         public static Task QueueOnTask(Action action, CancellationToken cancellationToken)
         {
             Assert.NotNullArg(action, "action");
-            return Task.Run(action, cancellationToken);
+            return Task.Factory.StartNew(action, cancellationToken);
         }
 
         #endregion Thread
@@ -183,6 +194,7 @@ namespace Duo1JFramework.Scheduling
 
         protected override void OnInit()
         {
+            mainThreadID = Thread.CurrentThread.ManagedThreadId;
             mainThreadTaskList = new List<Action>();
             delayOneFrameTaskSet = new HashSet<Action>();
 

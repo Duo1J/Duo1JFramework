@@ -28,7 +28,7 @@ namespace Duo1JFramework.Actor
 
             gravityRate = serializedObject.FindProperty("gravityRate");
         }
-        protected override void Draw()
+        protected override void DrawInspector()
         {
             //组件列表
             ED.Vertical(() =>

@@ -10,18 +10,18 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class RenameAllAssetBundle : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.BUILD_DATAS, out ABBuildData[] buildDatas))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     bool success = false;
@@ -31,7 +31,7 @@ namespace Duo1JFramework.Build
                         case EABNameType.Hash:
                             if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_HASH_MAP, out Dictionary<string, string> ab2HashMap))
                             {
-                                return false;
+                                return EPipelineState.Fail;
                             }
 
                             success = AssetBundleBuilder.RenameAllAssetBundle(buildDatas, ab2HashMap);
@@ -39,7 +39,7 @@ namespace Duo1JFramework.Build
                         case EABNameType.MD5:
                             if (!context.TryGet(ABBuiltinPipeline.ContextKey.AB_TO_MD5_MAP, out Dictionary<string, string> ab2MD5Map))
                             {
-                                return false;
+                                return EPipelineState.Fail;
                             }
 
                             success = AssetBundleBuilder.RenameAllAssetBundle(buildDatas, ab2MD5Map);
@@ -49,7 +49,7 @@ namespace Duo1JFramework.Build
                             break;
                     }
 
-                    return success;
+                    return success ? EPipelineState.Success : EPipelineState.Fail;
                 });
             }
         }

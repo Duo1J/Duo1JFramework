@@ -2,7 +2,6 @@ using Duo1JFramework;
 using Duo1JFramework.Actor;
 using Duo1JFramework.CameraAPI;
 using Duo1JFramework.GamerInput;
-using Duo1JFramework.Scheduling;
 using Duo1JFramework.TimelineAPI;
 using Duo1JFramework.UI;
 using Duo1JFramework.World;

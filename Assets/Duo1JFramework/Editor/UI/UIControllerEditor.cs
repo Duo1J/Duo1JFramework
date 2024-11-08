@@ -12,7 +12,7 @@ namespace Duo1JFramework.UI
             base.OnEnable();
         }
 
-        protected override void Draw()
+        protected override void DrawInspector()
         {
             if (GUILayout.Button("收集节点"))
             {

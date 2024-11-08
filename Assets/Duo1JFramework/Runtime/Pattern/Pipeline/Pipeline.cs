@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Duo1JFramework.Pattern.Pipeline
 {
@@ -16,22 +15,37 @@ namespace Duo1JFramework.Pattern.Pipeline
         /// <summary>
         /// 管线运行
         /// </summary>
-        public virtual bool Run(IPipelineContext context)
+        public virtual EPipelineState Run(IPipelineContext context)
         {
             Assert.NotNull(TaskList, "管线任务列表为空");
 
-            return TaskList.All((task) =>
+            foreach (ITask task in TaskList)
             {
-                bool success = task.Run(context);
-                Log.Info($"执行管线任务: `{task.GetType().FullName}` {(success ? "成功" : "失败")}");
-                return success;
-            });
+                EPipelineState state = task.Run(context);
+                switch (state)
+                {
+                    case EPipelineState.Success:
+                        Log.Info($"执行管线任务: `{task.GetType().FullName}` 成功");
+                        break;
+                    case EPipelineState.Fail:
+                        Log.Info($"执行管线任务: `{task.GetType().FullName}` 失败");
+                        return EPipelineState.Fail;
+                    case EPipelineState.Break:
+                        Log.Info($"执行管线任务: `{task.GetType().FullName}` 中断");
+                        return EPipelineState.Break;
+                    default:
+                        Log.ErrorForce($"未处理的管线状态: `{state.GetName()}`, Task: `{task.GetType().FullName}`");
+                        return EPipelineState.Fail;
+                }
+            }
+
+            return EPipelineState.Success;
         }
 
         /// <summary>
         /// 管线运行
         /// </summary>
-        public static bool Run(IPipelineContext context, List<ITask> taskList)
+        public static EPipelineState Run(IPipelineContext context, List<ITask> taskList)
         {
             return Create(taskList).Run(context);
         }

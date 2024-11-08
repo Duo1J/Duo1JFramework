@@ -10,20 +10,20 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class BuildAB2MD5Map : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.BUILD_DATAS, out ABBuildData[] buildDatas))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     Dictionary<string, string> ab2MD5Map = AssetBundleBuilder.BuildAB2MD5Map(buildDatas);
 
                     context.Set<Dictionary<string, string>>(ABBuiltinPipeline.ContextKey.AB_TO_MD5_MAP, ab2MD5Map);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

@@ -10,18 +10,18 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class BuildAB2CRCMap : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.BUILD_DATAS, out ABBuildData[] buildDatas))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.STRATEGY_DATA, out ABBuildStrategy strategy))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     if (strategy.BuildABCRC)
@@ -30,7 +30,7 @@ namespace Duo1JFramework.Build
                         context.Set<Dictionary<string, uint>>(ABBuiltinPipeline.ContextKey.AB_TO_CRC_MAP, ab2CrcMap);
                     }
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

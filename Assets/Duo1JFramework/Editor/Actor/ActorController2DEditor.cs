@@ -10,7 +10,7 @@ namespace Duo1JFramework.Actor.Actor2D
             base.OnEnable();
         }
 
-        protected override void Draw()
+        protected override void DrawInspector()
         {
         }
     }

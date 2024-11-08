@@ -9,13 +9,13 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class ClearAllAssetBundleBuild : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     AssetBundleBuilder.ClearAllAssetBundleBuild();
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }

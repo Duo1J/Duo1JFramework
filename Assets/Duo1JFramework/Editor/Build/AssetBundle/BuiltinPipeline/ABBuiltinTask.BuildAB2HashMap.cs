@@ -10,20 +10,20 @@ namespace Duo1JFramework.Build
         /// </summary>
         public class BuildAB2HashMap : ITask
         {
-            public bool Run(IPipelineContext context)
+            public EPipelineState Run(IPipelineContext context)
             {
                 return Util.TryCatch(() =>
                 {
                     if (!context.TryGet(ABBuiltinPipeline.ContextKey.BUILD_DATAS, out ABBuildData[] buildDatas))
                     {
-                        return false;
+                        return EPipelineState.Fail;
                     }
 
                     Dictionary<string, string> ab2HashMap = AssetBundleBuilder.BuildAB2HashMap(buildDatas);
 
                     context.Set<Dictionary<string, string>>(ABBuiltinPipeline.ContextKey.AB_TO_HASH_MAP, ab2HashMap);
 
-                    return true;
+                    return EPipelineState.Success;
                 });
             }
         }
