@@ -11,6 +11,7 @@ namespace Duo1JFramework.Scheduling
     /// <summary>
     /// 用户循环管理器
     /// </summary>
+    /// <see cref="UpdateManager"/>
     public class PlayerLoopManager : MonoSingleton<PlayerLoopManager>
     {
         /// <summary>
