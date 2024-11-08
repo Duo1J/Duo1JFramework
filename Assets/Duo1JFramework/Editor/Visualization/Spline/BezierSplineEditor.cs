@@ -9,9 +9,15 @@ namespace Duo1JFramework
     [CustomEditor(typeof(BezierSpline))]
     public class BezierSplineEditor : BaseCustomEditor<BezierSpline>
     {
-        protected override bool ShowOriginDefault => true;
-
         private Vector3 labelOffset = new Vector3(0, -0.1f, 0);
+
+        private SerializedProperty nodeListProp;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            nodeListProp = serializedObject.FindProperty("nodeList");
+        }
 
         private void OnSceneGUI()
         {
@@ -57,6 +63,44 @@ namespace Duo1JFramework
                         2f);
                 }
             });
+        }
+
+        protected override void Draw()
+        {
+            EditorGUILayout.PropertyField(nodeListProp, new GUIContent("节点列表"));
+
+            if (GUILayout.Button("重置零点的控制点"))
+            {
+                if (instance == null || instance.NodeList == null)
+                {
+                    return;
+                }
+
+                BezierSplineNode[] nodeList = instance.NodeList;
+
+                for (int i = 0; i < nodeList.Length; i++)
+                {
+                    if (nodeList[i].control == Vector3.zero)
+                    {
+                        nodeList[i].control = nodeList[i].point;
+                    }
+                }
+            }
+
+            if (GUILayout.Button("重置所有控制点"))
+            {
+                if (instance == null || instance.NodeList == null)
+                {
+                    return;
+                }
+
+                BezierSplineNode[] nodeList = instance.NodeList;
+
+                for (int i = 0; i < nodeList.Length; i++)
+                {
+                    nodeList[i].control = nodeList[i].point;
+                }
+            }
         }
     }
 }
