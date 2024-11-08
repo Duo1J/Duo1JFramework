@@ -33,6 +33,12 @@ namespace Duo1JFramework.Build
                         return false;
                     }
 
+                    if (buildInputList.Count == 0)
+                    {
+                        Log.EditorError($"AssetBundle构建输入列表为空, 无需执行构建");
+                        return false;
+                    }
+
                     AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
                         PathUtil.GetAssetBundleEditorRoot().CheckDir(),
                         buildInputList.ToArray(),
@@ -42,7 +48,7 @@ namespace Duo1JFramework.Build
 
                     if (manifest == null)
                     {
-                        Log.EditorInfo($"构建 `{ctx.buildTarget.GetName()}` 平台的AssetBundle失败");
+                        Log.EditorError($"构建 `{ctx.buildTarget.GetName()}` 平台的AssetBundle失败");
                         return false;
                     }
 
