@@ -1,11 +1,12 @@
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 自定义Inspector面板基类
+    /// 自定义物体面板基类
     /// </summary>
-    public abstract class BaseCustomEditor<T> : BaseEditor where T : MonoBehaviour
+    public abstract class BaseCustomEditor<T> : BaseEditor where T : Object
     {
         /// <summary>
         /// 目标实例
@@ -17,9 +18,15 @@ namespace Duo1JFramework
         /// </summary>
         private bool showOrigin;
 
+        /// <summary>
+        /// 默认显示原始面板
+        /// </summary>
+        protected virtual bool ShowOriginDefault => false;
+
         protected virtual void OnEnable()
         {
-            instance = (T)target;
+            instance = Target<T>();
+            showOrigin = ShowOriginDefault;
         }
 
         public override void OnInspectorGUI()
@@ -39,6 +46,11 @@ namespace Duo1JFramework
             }
         }
 
-        protected abstract void Draw();
+        /// <summary>
+        /// 子面板绘制Inspector
+        /// </summary>
+        protected virtual void Draw()
+        {
+        }
     }
 }

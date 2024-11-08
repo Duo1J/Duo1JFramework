@@ -10,7 +10,7 @@ namespace Duo1JFramework
     /// <summary>
     /// 编辑器界面绘制工具
     /// </summary>
-    public class ED
+    public partial class ED
     {
         public const string S2 = "  ";
         public const string S4 = "    ";
@@ -174,6 +174,7 @@ namespace Duo1JFramework
             {
                 HelpBox(msg);
             }
+
             return con;
         }
 
@@ -190,12 +191,12 @@ namespace Duo1JFramework
 
             if (showCancel && GUILayout.Button("取消", new GUIStyle("SearchCancelButton")))
             {
-                cancelCall?.Invoke();
+                cancelCall?.InvokeSafe();
             }
 
             if (GUILayout.Button(new GUIContent("搜索"), GUILayout.Width(40), GUILayout.Height(20)))
             {
-                searchCall?.Invoke();
+                searchCall?.InvokeSafe();
             }
 
             GUILayout.EndHorizontal();
@@ -214,10 +215,7 @@ namespace Duo1JFramework
         {
             Rect lastRect = GUILayoutUtility.GetLastRect();
             GUILayout.Space(7);
-            SurrondColor(new Color(0, 0, 0, 0.3f), () =>
-            {
-                GUI.DrawTexture(Rect.MinMaxRect(lastRect.xMin, lastRect.yMax + 4, lastRect.xMax, lastRect.yMax + 6), Texture2D.whiteTexture);
-            });
+            SurrondColor(new Color(0, 0, 0, 0.3f), () => { GUI.DrawTexture(Rect.MinMaxRect(lastRect.xMin, lastRect.yMax + 4, lastRect.xMax, lastRect.yMax + 6), Texture2D.whiteTexture); });
         }
 
         /// <summary>
@@ -251,11 +249,33 @@ namespace Duo1JFramework
 
         #endregion Last Append
 
+        #region Handles
+
+        /// <summary>
+        /// 设置Handles的转换矩阵
+        /// </summary>
+        public static void HandlesMatrix(Matrix4x4 matrix, Action action)
+        {
+            Assert.GuardEditor();
+
+#if UNITY_EDITOR
+            Matrix4x4 oldMatrix = Handles.matrix;
+            Handles.matrix = matrix;
+            action?.InvokeSafe();
+            Handles.matrix = oldMatrix;
+#endif
+        }
+
+        #endregion Handles
+
         protected ED()
         {
         }
     }
 
+    /// <summary>
+    /// 编辑器界面绘制工具
+    /// </summary>
     public class EditorDrawer : ED
     {
         protected EditorDrawer()
