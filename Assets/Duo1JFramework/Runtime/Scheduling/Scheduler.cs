@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -146,14 +147,15 @@ namespace Duo1JFramework.Scheduling
 
         private void OnEarlyUpdate()
         {
-            if (delayOneFrameTaskSet != null)
+            if (delayOneFrameTaskSet != null && delayOneFrameTaskSet.Count > 0)
             {
-                foreach (Action action in delayOneFrameTaskSet)
+                Action[] actionList = delayOneFrameTaskSet.ToArray();
+                delayOneFrameTaskSet.Clear();
+
+                foreach (Action action in actionList)
                 {
                     action();
                 }
-
-                delayOneFrameTaskSet.Clear();
             }
         }
 
