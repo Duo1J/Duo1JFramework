@@ -33,6 +33,11 @@ namespace Duo1JFramework
         public float Height => position.height;
 
         /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title => titleContent.text;
+
+        /// <summary>
         /// 设置所有样式的富文本
         /// </summary>
         public static bool RichText

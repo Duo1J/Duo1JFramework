@@ -14,8 +14,10 @@ namespace Duo1JFramework
         public static void OpenReferenceAssetList(Object obj, bool recursive)
         {
             Assert.NotNullArg(obj, "obj");
+
             string assetPath = AssetDatabase.GetAssetPath(obj);
             string[] dependencies = AssetDatabase.GetDependencies(assetPath, recursive);
+
             StringListPanel.Open(dependencies, $"{obj.name} 引用资源列表");
         }
     }

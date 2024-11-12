@@ -1,4 +1,7 @@
+using Duo1JFramework.ObjectPool;
 using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace Duo1JFramework
@@ -35,7 +38,7 @@ namespace Duo1JFramework
             RichText = true;
             DrawErrMsg();
 
-            if (StringList == null)
+            if (StringList == null || StringList.Count == 0)
             {
                 SetErrMsg("字符串列表为空");
                 return;
@@ -50,6 +53,55 @@ namespace Duo1JFramework
                     ED.Horizontal(() => { GUILayout.Label(StringList[i]); }, i % 2 == 0 ? "box" : GUIStyle.none);
                 }
             });
+
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button("复制"))
+            {
+                Copy();
+            }
+
+            if (GUILayout.Button("导出到文件"))
+            {
+                ExportToFile();
+            }
+        }
+
+        private void Copy()
+        {
+            if (StringList == null || StringList.Count == 0)
+            {
+                Log.EditorError("字符串列表为空, 无法复制");
+                return;
+            }
+
+            Pool.StringBuilderPool.Using((sb) =>
+            {
+                foreach (string str in StringList)
+                {
+                    sb.AppendLine(str);
+                }
+
+                EditorUtil.CopyText(sb.ToString());
+            });
+        }
+
+        private void ExportToFile()
+        {
+            if (StringList == null || StringList.Count == 0)
+            {
+                Log.EditorError("字符串列表为空, 无法导出到文件");
+                return;
+            }
+
+            string tarPath = EditorUtility.SaveFilePanel($"选择`{Title}`导出路径", null, titleContent.text, "txt");
+            if (string.IsNullOrEmpty(tarPath))
+            {
+                return;
+            }
+
+            File.WriteAllLines(tarPath, StringList.ToArray());
+            Log.EditorInfo($"`{Title}`导出到文件成功");
         }
     }
 }
