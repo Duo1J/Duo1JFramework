@@ -7,62 +7,84 @@ using System.Collections.Generic;
 
 namespace Duo1JFramework
 {
-    /// <summary>
-    /// 编辑器定义
-    /// </summary>
-    public class EditorDef
+    public partial class EditorDef
     {
         /// <summary>
-        /// 编辑器配置路径
-        /// </summary>
-        public const string EDITOR_CONFIG_PATH = "Assets/" + Def.FRAME_WORK_NAME + "/EditorConfig/";
-
-        /// <summary>
-        /// 工具栏菜单相关定义
+        /// 编辑器菜单工具栏定义
         /// </summary>
         public class Menu
         {
             #region 工具栏路径前缀
 
-            /// <summary>
-            /// 工具栏路径前缀
-            /// </summary>
-            public const string PREFIX = Def.FRAME_WORK_NAME + "/";
+            #region Framework
 
             /// <summary>
-            /// UI
+            /// 框架工具栏
             /// </summary>
-            public const string UI_PREFIX = PREFIX + "UI/";
+            public class Framework
+            {
+                /// <summary>
+                /// 框架工具栏路径前缀
+                /// </summary>
+                public const string PREFIX = Def.FRAME_WORK_NAME + "/";
+
+                /// <summary>
+                /// UI
+                /// </summary>
+                public const string UI_PREFIX = PREFIX + "UI/";
+
+                /// <summary>
+                /// Actor
+                /// </summary>
+                public const string ACTOR_PREFIX = PREFIX + "Actor/";
+
+                /// <summary>
+                /// 路径、名称
+                /// </summary>
+                public const string PATH_PREFIX = PREFIX + "Path/";
+
+                /// <summary>
+                /// 编辑器样式表
+                /// </summary>
+                public const string EDITOR_STYLE_PREFIX = PREFIX + "EditorStyle/";
+
+                /// <summary>
+                /// 数据监视器
+                /// </summary>
+                public const string MONITOR_PREFIX = PREFIX + "Monitor/";
+
+                /// <summary>
+                /// 构建
+                /// </summary>
+                public const string BUILD_PREFIX = PREFIX + "Build/";
+
+                /// <summary>
+                /// 动画
+                /// </summary>
+                public const string ANIMATION_PREFIX = PREFIX + "Animation/";
+            }
+
+            #endregion Framework
+
+            #region Assets
 
             /// <summary>
-            /// Actor
+            /// Assets工具栏路径前缀
             /// </summary>
-            public const string ACTOR_PREFIX = PREFIX + "Actor/";
+            public class Assets
+            {
+                /// <summary>
+                /// Assets工具栏路径前缀
+                /// </summary>
+                public const string PREFIX = "Assets/" + Def.FRAME_WORK_NAME + "/";
 
-            /// <summary>
-            /// 路径、名称
-            /// </summary>
-            public const string PATH_PREFIX = PREFIX + "Path/";
+                /// <summary>
+                /// 引用
+                /// </summary>
+                public const string REF_PREFIX = PREFIX + "Reference/";
+            }
 
-            /// <summary>
-            /// 编辑器样式表
-            /// </summary>
-            public const string EDITOR_STYLE_PREFIX = PREFIX + "EditorStyle/";
-
-            /// <summary>
-            /// 数据监视器
-            /// </summary>
-            public const string MONITOR_PREFIX = PREFIX + "Monitor/";
-
-            /// <summary>
-            /// 构建
-            /// </summary>
-            public const string BUILD_PREFIX = PREFIX + "Build/";
-
-            /// <summary>
-            /// 动画
-            /// </summary>
-            public const string ANIMATION_PREFIX = PREFIX + "Animation/";
+            #endregion Assets
 
             #endregion 工具栏路径前缀
 
@@ -78,6 +100,7 @@ namespace Duo1JFramework
                     Log.EditorError("`EditorDef.editorWndNameMap`为空");
                     return t.Name;
                 }
+
                 if (editorWndNameMap.TryGetValue(t, out string ret))
                 {
                     return ret;
@@ -128,10 +151,6 @@ namespace Duo1JFramework
             private Menu()
             {
             }
-        }
-
-        private EditorDef()
-        {
         }
     }
 }

@@ -6,9 +6,7 @@ namespace Duo1JFramework
     /// 创建新的窗口后需要配置窗口名
     /// <see cref="EditorDef.Menu.editorWndNameMap"/>
     /// 需要添加到菜单
-    /// <see cref="ToolMenuConfig"/>
-
-
+    /// <see cref="MenuTool"/>
     /// <summary>
     /// 编辑器窗口基类
     /// </summary>
@@ -39,10 +37,7 @@ namespace Duo1JFramework
         /// </summary>
         public static bool RichText
         {
-            set
-            {
-                ES.SetRichText(value);
-            }
+            set { ES.SetRichText(value); }
         }
 
         /// <summary>
@@ -103,7 +98,7 @@ namespace Duo1JFramework
                 return;
             }
 
-            if (EditorStyle.RichTextLabel)
+            if (ES.RichTextLabel)
             {
                 GUILayout.Label($"<color=red>{errMsg}</color>");
             }

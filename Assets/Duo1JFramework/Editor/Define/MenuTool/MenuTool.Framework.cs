@@ -9,13 +9,13 @@ using UObject = UnityEngine.Object;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 编辑器工具栏菜单配置
+    /// 框架菜单工具栏
     /// </summary>
-    public class ToolMenuConfig
+    public partial class MenuTool
     {
         #region Path 10
 
-        [MenuItem(EditorDef.Menu.PATH_PREFIX + "UI节点快速命名 &1", priority = 10)]
+        [MenuItem(EditorDef.Menu.Framework.PATH_PREFIX + "UI节点快速命名 &1", priority = 10)]
         public static void UINodeFastName()
         {
             if (EditorUtil.GetActiveGo(out GameObject go))
@@ -27,7 +27,7 @@ namespace Duo1JFramework
             }
         }
 
-        [MenuItem(EditorDef.Menu.PATH_PREFIX + "复制文件路径(无后缀) &2", priority = 11)]
+        [MenuItem(EditorDef.Menu.Framework.PATH_PREFIX + "复制文件路径(无后缀) &2", priority = 11)]
         public static void CopyProjectFilePath()
         {
             if (EditorUtil.GetActiveObj(out UObject go))
@@ -37,7 +37,7 @@ namespace Duo1JFramework
             }
         }
 
-        [MenuItem(EditorDef.Menu.PATH_PREFIX + "复制文件路径(带后缀) &3", priority = 12)]
+        [MenuItem(EditorDef.Menu.Framework.PATH_PREFIX + "复制文件路径(带后缀) &3", priority = 12)]
         public static void CopyProjectFilePathWithSuffix()
         {
             if (EditorUtil.GetActiveObj(out UObject go))
@@ -47,7 +47,7 @@ namespace Duo1JFramework
             }
         }
 
-        [MenuItem(EditorDef.Menu.PATH_PREFIX + EditorDef.Menu.FOLDER_FAST_JUMP_EDITOR_WND, priority = 13)]
+        [MenuItem(EditorDef.Menu.Framework.PATH_PREFIX + EditorDef.Menu.FOLDER_FAST_JUMP_EDITOR_WND, priority = 13)]
         public static FolderFastJumpEditorWnd OpenFolderFastJumpEditor()
         {
             return FolderFastJumpEditorWnd.Open();
@@ -57,19 +57,19 @@ namespace Duo1JFramework
 
         #region EditorStyle 20
 
-        [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_ICON_VIEWER, priority = 20)]
+        [MenuItem(EditorDef.Menu.Framework.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_ICON_VIEWER, priority = 20)]
         private static EditorIconViewer OpenGUIIconViewer()
         {
             return EditorIconViewer.Open();
         }
 
-        [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_STYLE_VIEWER, priority = 21)]
+        [MenuItem(EditorDef.Menu.Framework.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_STYLE_VIEWER, priority = 21)]
         public static EditorStyleViewer OpenGUIStyleViewer()
         {
             return EditorStyleViewer.Open();
         }
 
-        [MenuItem(EditorDef.Menu.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_COLOR_VIEWER, priority = 22)]
+        [MenuItem(EditorDef.Menu.Framework.EDITOR_STYLE_PREFIX + EditorDef.Menu.GUI_COLOR_VIEWER, priority = 22)]
         public static EditorColorViewer OpenGUIColorViewer()
         {
             return EditorColorViewer.Open();
@@ -79,19 +79,19 @@ namespace Duo1JFramework
 
         #region Monitor 30
 
-        [MenuItem(EditorDef.Menu.MONITOR_PREFIX + EditorDef.Menu.TIMER_MONITOR, priority = 30)]
+        [MenuItem(EditorDef.Menu.Framework.MONITOR_PREFIX + EditorDef.Menu.TIMER_MONITOR, priority = 30)]
         public static TimerMonitor OpenTimerMonitor()
         {
             return TimerMonitor.Open();
         }
 
-        [MenuItem(EditorDef.Menu.MONITOR_PREFIX + EditorDef.Menu.ASSET_BUNDLE_MONITOR, priority = 31)]
+        [MenuItem(EditorDef.Menu.Framework.MONITOR_PREFIX + EditorDef.Menu.ASSET_BUNDLE_MONITOR, priority = 31)]
         public static AssetBundleMonitor OpenAssetBundleMonitor()
         {
             return AssetBundleMonitor.Open();
         }
 
-        [MenuItem(EditorDef.Menu.MONITOR_PREFIX + EditorDef.Menu.COLLISION_MONITOR, priority = 32)]
+        [MenuItem(EditorDef.Menu.Framework.MONITOR_PREFIX + EditorDef.Menu.COLLISION_MONITOR, priority = 32)]
         public static CollisionMonitor OpenCollisionMonitor()
         {
             return CollisionMonitor.Open();
@@ -101,13 +101,13 @@ namespace Duo1JFramework
 
         #region Build 40
 
-        [MenuItem(EditorDef.Menu.BUILD_PREFIX + EditorDef.Menu.APP_BUILD_EDITOR_WND, priority = 40)]
+        [MenuItem(EditorDef.Menu.Framework.BUILD_PREFIX + EditorDef.Menu.APP_BUILD_EDITOR_WND, priority = 40)]
         public static AppBuildEditorWnd OpenAppBuildEditorWnd()
         {
             return AppBuildEditorWnd.Open();
         }
 
-        [MenuItem(EditorDef.Menu.BUILD_PREFIX + EditorDef.Menu.ASSET_BUNDLE_BUILD_EDITOR_WND, priority = 41)]
+        [MenuItem(EditorDef.Menu.Framework.BUILD_PREFIX + EditorDef.Menu.ASSET_BUNDLE_BUILD_EDITOR_WND, priority = 41)]
         public static AssetBundleBuildEditorWnd OpenAssetBundleBuildEditorWnd()
         {
             return AssetBundleBuildEditorWnd.Open();
@@ -117,7 +117,7 @@ namespace Duo1JFramework
 
         #region Animation 50
 
-        [MenuItem(EditorDef.Menu.ANIMATION_PREFIX + EditorDef.Menu.FOOT_IK_CURVE_GENERATOR, priority = 50)]
+        [MenuItem(EditorDef.Menu.Framework.ANIMATION_PREFIX + EditorDef.Menu.FOOT_IK_CURVE_GENERATOR, priority = 50)]
         public static FootIKCurveGenerator OpenFootIKCurveGenerator()
         {
             return FootIKCurveGenerator.Open();
@@ -125,7 +125,7 @@ namespace Duo1JFramework
 
         #endregion Animation 50
 
-        private ToolMenuConfig()
+        private MenuTool()
         {
         }
     }

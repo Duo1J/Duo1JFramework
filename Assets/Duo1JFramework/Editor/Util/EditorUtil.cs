@@ -1,7 +1,6 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-
 using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework
@@ -21,9 +20,14 @@ namespace Duo1JFramework
             go = Selection.activeGameObject;
             if (go == null)
             {
-                if (nullWarn) Log.Error("未选中任何GameObject");
+                if (nullWarn)
+                {
+                    Log.EditorError("未选中任何GameObject");
+                }
+
                 return false;
             }
+
             return true;
         }
 
@@ -35,9 +39,14 @@ namespace Duo1JFramework
             obj = Selection.activeObject;
             if (obj == null)
             {
-                if (nullWarn) Log.Error("未选中任何Object");
+                if (nullWarn)
+                {
+                    Log.EditorError("未选中任何Object");
+                }
+
                 return false;
             }
+
             return true;
         }
 
@@ -266,7 +275,9 @@ namespace Duo1JFramework
             {
                 wnd.titleContent = new GUIContent(wndName);
             }
+
             wnd.Show();
+
             return wnd;
         }
 
