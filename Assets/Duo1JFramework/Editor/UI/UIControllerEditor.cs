@@ -7,11 +7,6 @@ namespace Duo1JFramework.UI
     [CustomEditor(typeof(UIController), true)]
     public class UIControllerEditor : BaseCustomEditor<UIController>
     {
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-        }
-
         protected override void DrawInspector()
         {
             if (GUILayout.Button("收集节点"))
@@ -19,6 +14,7 @@ namespace Duo1JFramework.UI
                 instance.CollectNode();
                 EditorUtility.SetDirty(instance);
             }
+
             DrawNodeList();
         }
 

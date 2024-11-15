@@ -28,7 +28,7 @@ namespace Duo1JFramework
 
             ED.Horizontal(() => { boxBg = GUILayout.Toggle(boxBg, "是否打开背景"); });
 
-            ED.SurrondSpace(5, () =>
+            ED.Space(5, () =>
             {
                 ED.Horizontal(() =>
                 {
@@ -37,7 +37,7 @@ namespace Duo1JFramework
                 });
             });
 
-            ED.SurrondSpace(5, () =>
+            ED.Space(5, () =>
             {
                 ED.Horizontal(() =>
                 {
@@ -56,12 +56,12 @@ namespace Duo1JFramework
                 }
             });
 
-            ED.SurrondSpace(30, () =>
+            ED.Space(30, () =>
             {
                 GUILayout.Label($"<size={size}><color={colorHex}>测试 - Test</color></size>");
             });
 
-            ED.SurrondColor(colorHex.ToColor(), () =>
+            ED.Color(colorHex.ToColor(), () =>
             {
                 GUILayout.Button("测试 - Test");
             });

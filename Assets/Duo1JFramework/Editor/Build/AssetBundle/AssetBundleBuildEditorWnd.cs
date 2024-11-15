@@ -111,7 +111,7 @@ namespace Duo1JFramework.Build
                     }
                 }
 
-                ED.SurrondColor(ES.GreenL, () =>
+                ED.Color(ES.GreenL, () =>
                 {
                     if (GUILayout.Button("构建AssetBundle"))
                     {

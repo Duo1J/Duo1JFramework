@@ -30,6 +30,7 @@ namespace Duo1JFramework.DataStructure
                 _root = value;
             }
         }
+
         private QuadTreeNode _root;
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace Duo1JFramework.DataStructure
                 {
                     evalLogic = QuadTreeEvalLogic.EvalByConeOfVisionIgnoreY;
                 }
+
                 return evalLogic;
             }
             set => evalLogic = value;

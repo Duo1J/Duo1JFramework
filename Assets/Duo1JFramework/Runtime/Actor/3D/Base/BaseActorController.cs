@@ -17,12 +17,14 @@ namespace Duo1JFramework.Actor
         /// 角色参数
         /// </summary>
         public ActorParam Param => param;
+
         private ActorParam param;
 
         /// <summary>
         /// 角色挂点
         /// </summary>
         public ActorPoint Point => point;
+
         private ActorPoint point;
 
         /// <summary>
@@ -137,11 +139,13 @@ namespace Duo1JFramework.Actor
                 {
                     float rayGroundOffsetY = param.rayGroundOffsetY;
                     float rayGroundRadius = param.rayGroundRadius;
+
                     Gizmos.color = Color.red;
                     Gizmos.DrawWireSphere(
                         rootPos + Vector3.up * (rayGroundRadius + rayGroundOffsetY),
                         rayGroundRadius
                     );
+
                     Gizmos.color = Color.blue;
                     Gizmos.DrawLine(
                         rootPos + Vector3.up * rayGroundOffsetY,

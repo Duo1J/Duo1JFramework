@@ -233,7 +233,6 @@ namespace Duo1JFramework.AnimationAPI
             Gizmos.DrawWireSphere(rightPos, 0.1f);
 
             Gizmos.color = Color.yellow;
-
             if (leftFootTF != null)
             {
                 Vector3 leftPos1 = LeftRayPos;

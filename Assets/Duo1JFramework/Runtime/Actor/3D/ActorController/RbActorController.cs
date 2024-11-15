@@ -30,6 +30,7 @@ namespace Duo1JFramework.Actor
                     SetVelocity(new Vector2(0, 0));
                     return;
                 }
+
                 axisByEye = projectVec;
             }
 
@@ -83,6 +84,7 @@ namespace Duo1JFramework.Actor
             {
                 return rb.velocity;
             }
+
             return Vector3.zero;
         }
 

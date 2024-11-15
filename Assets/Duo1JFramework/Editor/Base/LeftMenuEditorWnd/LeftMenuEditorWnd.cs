@@ -82,7 +82,7 @@ namespace Duo1JFramework
         {
             ED.Scroll(ref leftScrollPos, () =>
             {
-                ED.SurrondColor(subWndList == null, Color.red, () =>
+                ED.Color(subWndList == null, Color.red, () =>
                 {
                     if (GUILayout.Button("重新加载数据"))
                     {
@@ -92,11 +92,11 @@ namespace Duo1JFramework
 
                 if (subWndList != null)
                 {
-                    ED.SurrondSpace(10, () =>
+                    ED.Space(10, () =>
                     {
                         for (int i = 0; i < subWndList.Count; i++)
                         {
-                            ED.SurrondColor(i == subWndIdx, Color.green, () =>
+                            ED.Color(i == subWndIdx, Color.green, () =>
                             {
                                 if (GUILayout.Button(subWndList[i].MenuName))
                                 {

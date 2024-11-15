@@ -76,7 +76,7 @@ namespace Duo1JFramework.Build
                     AppBuildStrategy.Instance.SelectAsset();
                 }
 
-                ED.SurrondColor(ES.GreenL, () =>
+                ED.Color(ES.GreenL, () =>
                 {
                     if (GUILayout.Button("构建App"))
                     {

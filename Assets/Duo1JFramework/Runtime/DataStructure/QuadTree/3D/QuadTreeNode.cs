@@ -58,6 +58,7 @@ namespace Duo1JFramework.DataStructure
                             tarNode = null;
                             break;
                         }
+
                         tarNode = node;
                     }
                 }
@@ -93,6 +94,7 @@ namespace Duo1JFramework.DataStructure
                     break;
                 }
             }
+
             if (!flag)
             {
                 flag = RemoveFromItemList(item);
@@ -213,6 +215,7 @@ namespace Duo1JFramework.DataStructure
             {
                 return;
             }
+
             if (childList != null)
             {
                 return;
@@ -240,6 +243,7 @@ namespace Duo1JFramework.DataStructure
             {
                 itemList = new List<IQuadTreeItem>();
             }
+
             itemList.Add(item);
             Tree.AdjustBoundsHeightByItem(true);
         }
@@ -250,6 +254,7 @@ namespace Duo1JFramework.DataStructure
             {
                 return false;
             }
+
             bool flag = itemList.Remove(item);
             Tree.AdjustBoundsHeightByItem(true);
             return flag;
@@ -305,6 +310,8 @@ namespace Duo1JFramework.DataStructure
         /// </summary>
         public void DrawGizmos()
         {
+            Color oriColor = Gizmos.color;
+
             if (EvalActive)
             {
                 Gizmos.color = new Color(0, 1, 0, 0.2f);
@@ -335,6 +342,8 @@ namespace Duo1JFramework.DataStructure
                     childList[i].DrawGizmos();
                 }
             }
+
+            Gizmos.color = oriColor;
         }
     }
 }

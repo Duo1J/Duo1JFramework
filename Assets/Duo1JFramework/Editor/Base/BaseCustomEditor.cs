@@ -49,8 +49,6 @@ namespace Duo1JFramework
         /// <summary>
         /// 子面板绘制Inspector
         /// </summary>
-        protected virtual void DrawInspector()
-        {
-        }
+        protected abstract void DrawInspector();
     }
 }

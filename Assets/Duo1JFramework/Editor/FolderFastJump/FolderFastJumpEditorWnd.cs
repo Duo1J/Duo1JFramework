@@ -50,7 +50,7 @@ namespace Duo1JFramework
                     ReadSoData();
                 }
 
-                ED.SurrondColor(ES.GreenL, () =>
+                ED.Color(ES.GreenL, () =>
                 {
                     if (GUILayout.Button("保存数据"))
                     {
@@ -66,7 +66,7 @@ namespace Duo1JFramework
 
             ED.Horizontal(() =>
             {
-                ED.SurrondColor(ES.GreenL, () =>
+                ED.Color(ES.GreenL, () =>
                 {
                     if (GUILayout.Button("添加数据"))
                     {
@@ -158,7 +158,7 @@ namespace Duo1JFramework
                         GUILayout.Space(20);
 
                         bool nullPath = string.IsNullOrEmpty(data.path);
-                        ED.SurrondColor(nullPath ? oriColor : Color.cyan, () =>
+                        ED.Color(nullPath ? oriColor : Color.cyan, () =>
                         {
                             if (GUILayout.Button("选中", GUILayout.Width(45)))
                             {
@@ -166,7 +166,7 @@ namespace Duo1JFramework
                             }
                         });
 
-                        ED.SurrondColor(nullPath ? Color.cyan : oriColor, () =>
+                        ED.Color(nullPath ? Color.cyan : oriColor, () =>
                         {
                             if (GUILayout.Button("设置为当前选中", GUILayout.Width(100)))
                             {

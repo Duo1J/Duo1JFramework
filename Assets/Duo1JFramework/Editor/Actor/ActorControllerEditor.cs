@@ -37,7 +37,7 @@ namespace Duo1JFramework.Actor
 
                 ED.Vertical(() =>
                 {
-                    ED.SurrondSpace(3, () =>
+                    ED.Space(3, () =>
                     {
                         EditorGUILayout.ObjectField(model, new GUIContent("模型"));
                         EditorGUILayout.ObjectField(animator, new GUIContent("动画控制器"));
@@ -66,7 +66,7 @@ namespace Duo1JFramework.Actor
 
                 ED.Vertical(() =>
                 {
-                    ED.SurrondSpace(3, () =>
+                    ED.Space(3, () =>
                     {
                         if (gravityRate != null)
                             gravityRate.floatValue = EditorGUILayout.FloatField("重力比率", gravityRate.floatValue);

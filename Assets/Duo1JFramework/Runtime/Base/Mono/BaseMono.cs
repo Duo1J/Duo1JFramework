@@ -80,6 +80,22 @@ namespace Duo1JFramework
             this.enabled = enabled;
         }
 
+        /// <summary>
+        /// 获取或添加组件
+        /// </summary>
+        public T GetOrAddCom<T>() where T : Component
+        {
+            return this.GetOrAddComponent<T>();
+        }
+
+        /// <summary>
+        /// 添加组件
+        /// </summary>
+        public T AddCom<T>() where T : Component
+        {
+            return gameObjectCache.AddComponent<T>();
+        }
+
         public override string ToString()
         {
             return $"<Mono-{GetType().Name}-{name}: {GetInstanceID()}>";

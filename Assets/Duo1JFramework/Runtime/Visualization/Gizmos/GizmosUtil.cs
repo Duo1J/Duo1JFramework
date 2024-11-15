@@ -8,26 +8,6 @@ namespace Duo1JFramework
     /// </summary>
     public class GizmosUtil
     {
-        public static void SurrondColor(Color color, Action action)
-        {
-            Color oriColor = Gizmos.color;
-            Gizmos.color = color;
-            action?.InvokeSafe();
-            Gizmos.color = oriColor;
-        }
-
-        public static void SurrondColor(bool con, Color color, Action action)
-        {
-            if (con)
-            {
-                SurrondColor(color, action);
-            }
-            else
-            {
-                action?.InvokeSafe();
-            }
-        }
-
         /// <summary>
         /// 绘制线框胶囊
         /// </summary>

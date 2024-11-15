@@ -91,14 +91,14 @@ namespace Duo1JFramework
             GUILayout.EndArea();
         }
 
-        public static void SurrondSpace(float space, Action action)
+        public static void Space(float space, Action action)
         {
             GUILayout.Space(space);
             action?.InvokeSafe();
             GUILayout.Space(space);
         }
 
-        public static void SurrondColor(Color color, Action action)
+        public static void Color(Color color, Action action)
         {
             Color oriColor = GUI.color;
             GUI.color = color;
@@ -106,11 +106,11 @@ namespace Duo1JFramework
             GUI.color = oriColor;
         }
 
-        public static void SurrondColor(bool con, Color color, Action action)
+        public static void Color(bool con, Color color, Action action)
         {
             if (con)
             {
-                SurrondColor(color, action);
+                Color(color, action);
             }
             else
             {
@@ -215,7 +215,7 @@ namespace Duo1JFramework
         {
             Rect lastRect = GUILayoutUtility.GetLastRect();
             GUILayout.Space(7);
-            SurrondColor(new Color(0, 0, 0, 0.3f), () => { GUI.DrawTexture(Rect.MinMaxRect(lastRect.xMin, lastRect.yMax + 4, lastRect.xMax, lastRect.yMax + 6), Texture2D.whiteTexture); });
+            Color(new Color(0, 0, 0, 0.3f), () => { GUI.DrawTexture(Rect.MinMaxRect(lastRect.xMin, lastRect.yMax + 4, lastRect.xMax, lastRect.yMax + 6), Texture2D.whiteTexture); });
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Duo1JFramework
         {
             Rect lastRect = GUILayoutUtility.GetLastRect();
             GUILayout.Space(14);
-            SurrondColor(new Color(0, 0, 0, 0.3f), () =>
+            Color(new Color(0, 0, 0, 0.3f), () =>
             {
                 GUI.DrawTexture(new Rect(0, lastRect.yMax + 6, Screen.width, 4), Texture2D.whiteTexture);
                 GUI.DrawTexture(new Rect(0, lastRect.yMax + 6, Screen.width, 1), Texture2D.whiteTexture);
