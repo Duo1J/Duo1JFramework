@@ -11,7 +11,7 @@ namespace Duo1JFramework.DataStructure
         /// <summary>
         /// 通过Mesh生成体素组
         /// </summary>
-        public static VoxelGroup GenerateVoxelGroup(float voxelSize, Mesh mesh)
+        public static VoxelGroup GenerateVoxelGroup(float voxelSize, Mesh mesh, Vector3 rootPos, int layerMask = Def.Physics.DEFAULT_MASK)
         {
             Assert.NotNullArg(mesh, "mesh");
 
@@ -27,7 +27,10 @@ namespace Duo1JFramework.DataStructure
                     for (float z = Mathf.FloorToInt(bounds.min.z / voxelSize) * voxelSize; z <= bounds.max.z; z += voxelSize)
                     {
                         Vector3 center = new Vector3(x, y, z);
-                        //TODO duo1j
+                        if (Physics.CheckBox(center + rootPos, voxelExtend, Quaternion.identity, layerMask))
+                        {
+                            voxelList.Add(center);
+                        }
                     }
                 }
             }

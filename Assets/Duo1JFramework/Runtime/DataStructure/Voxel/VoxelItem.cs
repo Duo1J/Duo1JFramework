@@ -27,7 +27,10 @@ namespace Duo1JFramework.DataStructure
         /// </summary>
         public void GenerateVoxel()
         {
-            voxel = VoxelUtil.GenerateVoxelGroup(voxelSize, mesh);
+            MeshCollider meshCol = GetOrAddCom<MeshCollider>();
+            meshCol.sharedMesh = mesh;
+
+            voxel = VoxelUtil.GenerateVoxelGroup(voxelSize, mesh, transform.position);
         }
 
         /// <summary>

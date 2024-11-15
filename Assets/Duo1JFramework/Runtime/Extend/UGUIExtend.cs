@@ -5,10 +5,10 @@ using UnityEngine.UI;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// UGUI接口扩展,
-    /// 挂载组件逻辑在 `UIAddComponent` 中
+    /// UGUI扩展,
+    /// 挂载组件逻辑在`UIAddComExtend`中
     /// </summary>
-    /// <see cref="UIAddComponent"/>
+    /// <see cref="UIAddComExtend"/>
     public static class UGUIExtend
     {
         #region Button

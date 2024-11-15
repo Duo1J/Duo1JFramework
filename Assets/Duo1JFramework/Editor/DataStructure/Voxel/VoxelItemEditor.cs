@@ -46,6 +46,12 @@ namespace Duo1JFramework.DataStructure
             {
                 instance.ClearVoxel();
             }
+
+            if (GUILayout.Button("清理多余组件"))
+            {
+                MeshCollider meshCol = instance.GetOrAddCom<MeshCollider>();
+                meshCol?.DestroyImmediate();
+            }
         }
     }
 }

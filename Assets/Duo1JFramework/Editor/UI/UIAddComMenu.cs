@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Duo1JFramework.UI
 {
+    /// <summary>
+    /// UI添加组件菜单
+    /// </summary>
     public class UIAddComMenu
     {
         private const string Prefix = "GameObject/UI 扩展/";

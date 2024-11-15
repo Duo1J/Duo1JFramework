@@ -3,9 +3,9 @@ using UnityEngine;
 namespace Duo1JFramework.UI
 {
     /// <summary>
-    /// UI添加组件逻辑，不可重复挂载
+    /// UI添加组件扩展, 不可重复挂载
     /// </summary>
-    public static class UIAddComponent
+    public static class UIAddComExtend
     {
         public static ImageExt AddImage(this GameObject go)
         {
