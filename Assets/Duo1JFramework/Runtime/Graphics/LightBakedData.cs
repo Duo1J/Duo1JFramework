@@ -33,7 +33,7 @@ namespace Duo1JFramework.Graphics
                 lightmapBakedDataList[i] = LightmapBakedData.Create(lightmapData);
             }
 
-            reflectionProbe = RenderSettings.customReflection;
+            reflectionProbe = RenderSettings.customReflectionTexture;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Duo1JFramework.Graphics
                 LightmapSettings.lightmaps = Array.Empty<LightmapData>();
             }
 
-            RenderSettings.customReflection = ReflectionProbe;
+            RenderSettings.customReflectionTexture = ReflectionProbe;
         }
     }
 }
