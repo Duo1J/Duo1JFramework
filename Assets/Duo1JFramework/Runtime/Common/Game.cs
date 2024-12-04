@@ -23,6 +23,21 @@ namespace Duo1JFramework
         public static bool IsPlaying => Application.isPlaying;
 
         /// <summary>
+        /// 是否在预制体Stage
+        /// </summary>
+        public static bool IsPrefabStage
+        {
+            get
+            {
+#if UNITY_EDITOR
+                return UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null;
+#else
+                return false;
+#endif
+            }
+        }
+
+        /// <summary>
         /// 是否处于调试模式
         /// </summary>
         public static bool IsDebug => IsEditor;
