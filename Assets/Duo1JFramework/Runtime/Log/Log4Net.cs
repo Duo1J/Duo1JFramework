@@ -47,14 +47,24 @@ namespace Duo1JFramework
         public static readonly string LOG_CONFIG_PATH = Path.Combine(LOG_CONFIG_FOLDER, "log4net");
 
         /// <summary>
-        /// 覆写配置文件夹
+        /// 覆写配置Persistent文件夹
         /// </summary>
-        public static readonly string LOG_CONFIG_OVERRIDE_FOLDER = Path.Combine(Def.Path.Streaming, Def.FRAME_WORK_NAME);
+        public static readonly string LOG_CONFIG_OVERRIDE_PERSISTENT_FOLDER = Path.Combine(Def.Path.Persistent, Def.FRAME_WORK_NAME);
 
         /// <summary>
-        /// 覆写配置文件路径
+        /// 覆写配置文件Persistent路径
         /// </summary>
-        public static readonly string LOG_CONFIG_OVERRIDE_PATH = Path.Combine(LOG_CONFIG_OVERRIDE_FOLDER, "log4net.cfg");
+        public static readonly string LOG_CONFIG_OVERRIDE_PERSISTENT_PATH = Path.Combine(LOG_CONFIG_OVERRIDE_PERSISTENT_FOLDER, "log4net.cfg");
+
+        /// <summary>
+        /// 覆写配置Streaming文件夹
+        /// </summary>
+        public static readonly string LOG_CONFIG_OVERRIDE_STREAMING_FOLDER = Path.Combine(Def.Path.Streaming, Def.FRAME_WORK_NAME);
+
+        /// <summary>
+        /// 覆写配置文件Streaming路径
+        /// </summary>
+        public static readonly string LOG_CONFIG_OVERRIDE_STREAMING_PATH = Path.Combine(LOG_CONFIG_OVERRIDE_STREAMING_FOLDER, "log4net.cfg");
 
         /// <summary>
         /// 输出文件夹
@@ -155,12 +165,20 @@ namespace Duo1JFramework
             GlobalContext.Properties[PROPKEY_FOLDER] = LOG_FOLDER_PATH;
 
             Stream stream = null;
-            if (File.Exists(LOG_CONFIG_OVERRIDE_PATH))
+
+            if (stream == null && File.Exists(LOG_CONFIG_OVERRIDE_PERSISTENT_PATH))
+            {
+                Log.Info("Log4Net使用Persistent配置");
+                stream = new FileStream(LOG_CONFIG_OVERRIDE_PERSISTENT_PATH, FileMode.OpenOrCreate);
+            }
+
+            if (stream == null && File.Exists(LOG_CONFIG_OVERRIDE_STREAMING_PATH))
             {
                 Log.Info("Log4Net使用Streaming配置");
-                stream = new FileStream(LOG_CONFIG_OVERRIDE_PATH, FileMode.OpenOrCreate);
+                stream = new FileStream(LOG_CONFIG_OVERRIDE_STREAMING_PATH, FileMode.OpenOrCreate);
             }
-            else
+
+            if (stream == null)
             {
                 IAssetHandle<TextAsset> handle = AssetManager.Instance.LoadResourceSync<TextAsset>(LOG_CONFIG_PATH);
                 TextAsset textAsset = null;
@@ -190,8 +208,7 @@ namespace Duo1JFramework
         /// <summary>
         /// 配置文件默认内容
         /// </summary>
-        private const string ConfigFileContent = @"
-<log4net>
+        private const string ConfigFileContent = @"<log4net>
     <appender name=""UnityAppender"" type=""log4net.Appender.FileAppender"">
         <file type=""log4net.Util.PatternString"" value=""%property{ApplicationLogPath}\\%property{LogFileName}.log"" />
         <appendToFile value=""true"" />

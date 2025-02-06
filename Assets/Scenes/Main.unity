@@ -184,7 +184,7 @@ MonoBehaviour:
     useLog4Net: 1
   editor:
     assetLoaderType: 0
-    useLog4Net: 0
+    useLog4Net: 1
 --- !u!114 &164407540014407560
 MonoBehaviour:
   m_ObjectHideFlags: 0
