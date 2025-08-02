@@ -8,7 +8,7 @@
 2. 可配置化App、AssetBundle构建管线
 3. 烘培系统 (未完成)
 4. 基础3C，技能框架与编辑器 (未完成)
-5. FootIK，RootMotion(未完成)，动画曲线生成器
+5. FootIK，RootMotion(未完成)，Playable(未完成)，动画曲线生成器
 6. 基于分层UI栈的UI框架
 7. 事件系统
 8. 有限状态机
