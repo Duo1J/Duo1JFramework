@@ -4,7 +4,7 @@
 
  **暂停，做UE去了~** 
 
-1. 基于Resources和AssetBundle的资源管理系统 (Addressable未做)
+1. 基于Resources和AssetBundle的资源管理系统 (Addressable未做)，热更新 (未做)
 2. 可配置化App、AssetBundle构建管线 (Addressable未做)
 3. 烘培系统 (进行中)
 4. 基础3C，技能框架与编辑器 (未做)
@@ -24,3 +24,4 @@
 18. 平台抽象 (进行中)
 19. 配置框架与构建 (未做)
 20. 可配置自动化资源导入设置与资源检查 (未做)
+21. 网络框架 (未做)
