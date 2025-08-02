@@ -4,7 +4,7 @@
 
  **Stop，working for UE ~** 
 
-1. Asset management based on `Resources` and `AssetBundle` (Addressable not completed)
+1. Asset management based on `Resources` and `AssetBundle` (Addressable not completed), hot patch (Not completed)
 2. Configurable App and AssetBundle build pipeline
 3. Baking system (Not completed)
 4. Basic 3C，skill framework with editor tool (Not completed)
@@ -24,3 +24,4 @@
 18. Platform abstraction (Not completed)
 19. Configuration framework and building (Not completed)
 20. Configurable automated import setting and resource check (Not completed)
+21. Net framework (Not completed)
