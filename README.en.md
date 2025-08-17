@@ -1,6 +1,7 @@
 # Duo1JFramework
 
  **Lit Unity Framework**
+ Unity version: 2022.3.62f1c1
 
  **Stop，working for UE ~** 
 
