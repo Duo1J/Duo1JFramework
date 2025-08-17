@@ -1,6 +1,7 @@
 # Duo1JFramework
 
  **轻量Unity框架**
+ Unity版本: 2022.3.62f1c1
 
  **暂停，做UE去了~** 
 
