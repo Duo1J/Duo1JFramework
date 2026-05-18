@@ -35,7 +35,10 @@ namespace Duo1JFramework
         /// </summary>
         public virtual bool IsSingleton => false;
 
-        ~BaseObject()
+        /// <summary>
+        /// 释放该对象持有的AssetCollection
+        /// </summary>
+        protected void DisposeAssetCollection()
         {
             if (assetCollection != null)
             {

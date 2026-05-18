@@ -9,13 +9,13 @@ namespace Duo1JFramework
     /// </summary>
     public class UserSettingsProvider : SettingsProvider
     {
-        private Vector2 scollPos;
+        private Vector2 scrollPos;
 
         public override void OnGUI(string searchContext)
         {
             ES.SetRichText(true);
 
-            ED.Scroll(ref scollPos, () =>
+            ED.Scroll(ref scrollPos, () =>
             {
                 DrawEditor();
             });

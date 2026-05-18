@@ -59,6 +59,15 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 尝试获取已存在的单例，不会触发创建
+        /// </summary>
+        public static bool TryGetInstance(out T value)
+        {
+            value = instance;
+            return value != null;
+        }
+
+        /// <summary>
         /// 是否是单例
         /// </summary>
         public override bool IsSingleton => true;
@@ -86,6 +95,7 @@ namespace Duo1JFramework
             dispose = true;
 
             OnDispose();
+            DisposeAssetCollection();
 
             Instance = null;
         }

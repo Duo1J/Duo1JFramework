@@ -94,9 +94,10 @@ namespace Duo1JFramework
 
             if (singletonSet != null)
             {
-                foreach (ISingleton singleton in singletonSet)
+                List<ISingleton> singletonList = new List<ISingleton>(singletonSet);
+                foreach (ISingleton singleton in singletonList)
                 {
-                    singleton.Dispose();
+                    singleton?.Dispose();
                 }
 
                 singletonSet.Clear();
@@ -104,9 +105,10 @@ namespace Duo1JFramework
 
             if (monoSingletonSet != null)
             {
-                foreach (ISingleton monoSingleton in monoSingletonSet)
+                List<ISingleton> monoSingletonList = new List<ISingleton>(monoSingletonSet);
+                foreach (ISingleton monoSingleton in monoSingletonList)
                 {
-                    monoSingleton.Dispose();
+                    monoSingleton?.Dispose();
                 }
 
                 monoSingletonSet.Clear();

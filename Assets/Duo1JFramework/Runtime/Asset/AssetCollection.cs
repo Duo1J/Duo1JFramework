@@ -16,6 +16,11 @@ namespace Duo1JFramework.Asset
         private HashSet<IDispose> assetHandleSet;
 
         /// <summary>
+        /// 是否已释放
+        /// </summary>
+        public bool Disposed { get; private set; }
+
+        /// <summary>
         /// 通过加载方式异步加载
         /// </summary>
         public void LoadByType<T>(string assetPath, Action<IAssetHandle<T>> callback, EAssetLoadType loadType = EAssetLoadType.Bundle) where T : Object
@@ -23,16 +28,16 @@ namespace Duo1JFramework.Asset
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
             Assert.NotNullArg(callback, "callback");
 
-            if (assetHandleSet == null)
+            if (CheckDisposed())
             {
-                assetHandleSet = new HashSet<IDispose>();
+                return;
             }
 
             AssetManager.Instance.LoadByType<T>(assetPath, (handle) =>
             {
-                if (handle != null)
+                if (!AddHandle(handle))
                 {
-                    assetHandleSet.Add(handle);
+                    return;
                 }
 
                 callback(handle);
@@ -46,17 +51,13 @@ namespace Duo1JFramework.Asset
         {
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
 
-            if (assetHandleSet == null)
+            if (CheckDisposed())
             {
-                assetHandleSet = new HashSet<IDispose>();
+                return null;
             }
 
             IAssetHandle<T> handle = AssetManager.Instance.LoadByTypeSync<T>(assetPath, loadType);
-            if (handle != null)
-            {
-                assetHandleSet.Add(handle);
-            }
-
+            AddHandle(handle);
             return handle;
         }
 
@@ -68,16 +69,16 @@ namespace Duo1JFramework.Asset
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
             Assert.NotNullArg(callback, "callback");
 
-            if (assetHandleSet == null)
+            if (CheckDisposed())
             {
-                assetHandleSet = new HashSet<IDispose>();
+                return;
             }
 
             AssetManager.Instance.Load<T>(assetPath, (handle) =>
             {
-                if (handle != null)
+                if (!AddHandle(handle))
                 {
-                    assetHandleSet.Add(handle);
+                    return;
                 }
 
                 callback(handle);
@@ -89,19 +90,15 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public IAssetHandle<T> LoadSync<T>(string assetPath) where T : Object
         {
-            Assert.NotNullOrEmpty(assetPath, "callback");
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
 
-            if (assetHandleSet == null)
+            if (CheckDisposed())
             {
-                assetHandleSet = new HashSet<IDispose>();
+                return null;
             }
 
             IAssetHandle<T> handle = AssetManager.Instance.LoadSync<T>(assetPath);
-            if (handle != null)
-            {
-                assetHandleSet.Add(handle);
-            }
-
+            AddHandle(handle);
             return handle;
         }
 
@@ -113,16 +110,16 @@ namespace Duo1JFramework.Asset
             Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
             Assert.NotNullArg(callback, "callback");
 
-            if (assetHandleSet == null)
+            if (CheckDisposed())
             {
-                assetHandleSet = new HashSet<IDispose>();
+                return;
             }
 
             AssetManager.Instance.LoadResource<T>(assetPath, (handle) =>
             {
-                if (handle != null)
+                if (!AddHandle(handle))
                 {
-                    assetHandleSet.Add(handle);
+                    return;
                 }
 
                 callback(handle);
@@ -134,31 +131,69 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public IAssetHandle<T> LoadResourceSync<T>(string assetPath) where T : Object
         {
-            Assert.NotNullOrEmpty(assetPath, "callback");
+            Assert.NotNullOrEmpty(assetPath, "资源路径不可为空");
+
+            if (CheckDisposed())
+            {
+                return null;
+            }
+
+            IAssetHandle<T> handle = AssetManager.Instance.LoadResourceSync<T>(assetPath);
+            AddHandle(handle);
+            return handle;
+        }
+
+        private bool AddHandle(IDispose handle)
+        {
+            if (handle == null)
+            {
+                return true;
+            }
+
+            if (Disposed)
+            {
+                handle.Dispose();
+                return false;
+            }
 
             if (assetHandleSet == null)
             {
                 assetHandleSet = new HashSet<IDispose>();
             }
 
-            IAssetHandle<T> handle = AssetManager.Instance.LoadResourceSync<T>(assetPath);
-            if (handle != null)
+            assetHandleSet.Add(handle);
+            return true;
+        }
+
+        private bool CheckDisposed()
+        {
+            if (!Disposed)
             {
-                assetHandleSet.Add(handle);
+                return false;
             }
 
-            return handle;
+            Log.Warn("AssetCollection Disposed");
+            return true;
         }
 
         public void Dispose()
         {
+            if (Disposed)
+            {
+                return;
+            }
+
+            Disposed = true;
+
             if (assetHandleSet != null)
             {
-                foreach (IDispose handler in assetHandleSet)
+                List<IDispose> assetHandleList = new List<IDispose>(assetHandleSet);
+                foreach (IDispose handler in assetHandleList)
                 {
-                    handler.Dispose();
+                    handler?.Dispose();
                 }
 
+                assetHandleSet.Clear();
                 assetHandleSet = null;
             }
         }

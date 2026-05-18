@@ -162,7 +162,7 @@ namespace Duo1JFramework.Build
             string pathPrefix = Def.Path.ASSET_FULL_PATH_PREFIX;
             foreach (ABBuildStrategyData strategyData in strategyDatas)
             {
-                if (!strategyData.CheckValiad())
+                if (!strategyData.CheckValid())
                 {
                     Log.EditorError($"AB策略配置项无效，abName: {strategyData.abName}");
                     continue;

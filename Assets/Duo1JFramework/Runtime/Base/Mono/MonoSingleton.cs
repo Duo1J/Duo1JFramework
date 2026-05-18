@@ -78,6 +78,15 @@ namespace Duo1JFramework
             protected set => dispose = value;
         }
 
+        /// <summary>
+        /// 尝试获取已存在的单例，不会触发创建
+        /// </summary>
+        public static bool TryGetInstance(out T value)
+        {
+            value = instance;
+            return value != null;
+        }
+
         private void Awake()
         {
             if (instance == null)
@@ -91,10 +100,28 @@ namespace Duo1JFramework
             }
             else if (instance != this)
             {
-                DestroyImmediate(gameObject);
+                DestroySelfGameObject();
+                return;
             }
 
             OnInit();
+        }
+
+        private void DestroySelfGameObject()
+        {
+            if (gameObject == null)
+            {
+                return;
+            }
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                DestroyImmediate(gameObject);
+                return;
+            }
+#endif
+            Destroy(gameObject);
         }
 
         /// <summary>
@@ -113,7 +140,7 @@ namespace Duo1JFramework
             if (!goDestroyed && gameObject != null)
             {
                 goDestroyed = true;
-                DestroyImmediate(gameObject);
+                DestroySelfGameObject();
             }
 
             Instance = null;

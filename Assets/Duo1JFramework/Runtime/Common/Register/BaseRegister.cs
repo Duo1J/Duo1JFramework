@@ -89,7 +89,10 @@ namespace Duo1JFramework
                 return;
             }
 
-            UpdateManager.Instance.UnRegisterEarlyUpdate(earlyUpdater);
+            if (UpdateManager.TryGetInstance(out UpdateManager updateManager))
+            {
+                updateManager.UnRegisterEarlyUpdate(earlyUpdater);
+            }
             earlyUpdater = null;
         }
 
@@ -123,7 +126,10 @@ namespace Duo1JFramework
                 return;
             }
 
-            UpdateManager.Instance.UnRegisterPreUpdate(preUpdater);
+            if (UpdateManager.TryGetInstance(out UpdateManager updateManager))
+            {
+                updateManager.UnRegisterPreUpdate(preUpdater);
+            }
             preUpdater = null;
         }
 
@@ -157,7 +163,10 @@ namespace Duo1JFramework
                 return;
             }
 
-            UpdateManager.Instance.UnRegisterUpdate(updater);
+            if (UpdateManager.TryGetInstance(out UpdateManager updateManager))
+            {
+                updateManager.UnRegisterUpdate(updater);
+            }
             updater = null;
         }
 
@@ -191,7 +200,10 @@ namespace Duo1JFramework
                 return;
             }
 
-            UpdateManager.Instance.UnRegisterLateUpdate(lateUpdater);
+            if (UpdateManager.TryGetInstance(out UpdateManager updateManager))
+            {
+                updateManager.UnRegisterLateUpdate(lateUpdater);
+            }
             lateUpdater = null;
         }
 
@@ -225,7 +237,10 @@ namespace Duo1JFramework
                 return;
             }
 
-            UpdateManager.Instance.UnRegisterFixedUpdate(fixedUpdater);
+            if (UpdateManager.TryGetInstance(out UpdateManager updateManager))
+            {
+                updateManager.UnRegisterFixedUpdate(fixedUpdater);
+            }
             fixedUpdater = null;
         }
 
@@ -338,9 +353,12 @@ namespace Duo1JFramework
                 return;
             }
 
-            foreach (Timer timer in timerList)
+            if (TimerManager.TryGetInstance(out TimerManager timerManager))
             {
-                timer.Stop();
+                foreach (Timer timer in timerList)
+                {
+                    timer.Stop();
+                }
             }
 
             timerList = null;
@@ -402,7 +420,12 @@ namespace Duo1JFramework
                 }
             }
 
-            return EventManager.Instance.UnRegister(e, callback);
+            if (EventManager.TryGetInstance(out EventManager eventManager))
+            {
+                return eventManager.UnRegister(e, callback);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -428,13 +451,18 @@ namespace Duo1JFramework
                 return;
             }
 
-            foreach (KeyValuePair<object, HashSet<Action<object>>> kv in eventDict)
+            if (EventManager.TryGetInstance(out EventManager eventManager))
             {
-                foreach (Action<object> callback in kv.Value)
+                foreach (KeyValuePair<object, HashSet<Action<object>>> kv in eventDict)
                 {
-                    EventManager.Instance.UnRegister(kv.Key, callback);
+                    foreach (Action<object> callback in kv.Value)
+                    {
+                        eventManager.UnRegister(kv.Key, callback);
+                    }
                 }
             }
+
+            eventDict = null;
         }
 
         /// <summary>
@@ -515,7 +543,12 @@ namespace Duo1JFramework
                 }
             }
 
-            return EventManager.Instance.UnRegisterType<T>(callback);
+            if (EventManager.TryGetInstance(out EventManager eventManager))
+            {
+                return eventManager.UnRegisterType<T>(callback);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -533,13 +566,18 @@ namespace Duo1JFramework
                 return;
             }
 
-            foreach (KeyValuePair<Type, HashSet<object>> kv in typeEventDict)
+            if (EventManager.TryGetInstance(out EventManager eventManager))
             {
-                foreach (object callback in kv.Value)
+                foreach (KeyValuePair<Type, HashSet<object>> kv in typeEventDict)
                 {
-                    EventManager.Instance.UnRegisterType(kv.Key, callback);
+                    foreach (object callback in kv.Value)
+                    {
+                        eventManager.UnRegisterType(kv.Key, callback);
+                    }
                 }
             }
+
+            typeEventDict = null;
         }
 
         /// <summary>
@@ -578,11 +616,6 @@ namespace Duo1JFramework
         /// </summary>
         public void Dispose()
         {
-            if (Game.IsQuit)
-            {
-                return;
-            }
-
             if (Disposed)
             {
                 return;
@@ -601,10 +634,14 @@ namespace Duo1JFramework
                 UnRegisterEventAll();
                 UnRegisterTypeEventAll();
 
-                OnDispose();
+                if (!Game.IsQuit)
+                {
+                    OnDispose();
+                }
             }
             finally
             {
+                DisposeAssetCollection();
                 Disposed = true;
             }
         }
@@ -620,10 +657,5 @@ namespace Duo1JFramework
         /// 子类销毁
         /// </summary>
         protected abstract void OnDispose();
-
-        ~BaseRegister()
-        {
-            Dispose();
-        }
     }
 }

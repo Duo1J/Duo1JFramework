@@ -110,7 +110,7 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 检查是否有效
         /// </summary>
-        public bool CheckValiad()
+        public bool CheckValid()
         {
             return !string.IsNullOrEmpty(abName) &&
                     pathList != null &&

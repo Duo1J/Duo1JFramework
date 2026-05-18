@@ -166,7 +166,7 @@ namespace Duo1JFramework.FSM
 
             if (MaxTime > 0 && (CurTime - StartTime) >= MaxTime)
             {
-                FSM.SwitchState(MaxTimeChgStateName, true);
+                FSM.SwitchState(MaxTimeChgStateName, ignoreNextTick: true);
             }
         }
 

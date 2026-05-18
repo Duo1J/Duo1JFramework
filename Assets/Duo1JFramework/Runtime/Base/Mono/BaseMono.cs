@@ -101,13 +101,21 @@ namespace Duo1JFramework
             return $"<Mono-{GetType().Name}-{name}: {GetInstanceID()}>";
         }
 
-        protected virtual void OnDestroy()
+        /// <summary>
+        /// 释放该对象持有的资源集合
+        /// </summary>
+        protected void DisposeAssetCollection()
         {
             if (assetCollection != null)
             {
                 assetCollection.Dispose();
                 assetCollection = null;
             }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            DisposeAssetCollection();
         }
     }
 }

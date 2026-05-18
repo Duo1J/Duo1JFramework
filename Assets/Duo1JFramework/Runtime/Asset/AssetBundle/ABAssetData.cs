@@ -146,12 +146,14 @@ namespace Duo1JFramework.Asset
         /// </summary>
         public void RemoveRef()
         {
-            --refCnt;
-            if (refCnt < 0)
+            if (refCnt <= 0)
             {
                 Log.ErrorForce($"{ToString()} 资源引用计数异常小于0");
                 refCnt = 0;
+                return;
             }
+
+            --refCnt;
         }
 
         /// <summary>
@@ -183,10 +185,13 @@ namespace Duo1JFramework.Asset
                 loading = false;
                 asyncLoadedCallback = null;
 
-                Type assetType = asset.GetType();
-                if (!Def.Asset.UnloadIgnoreType.ContainsKey(assetType))
+                if (asset != null)
                 {
-                    Resources.UnloadAsset(asset);
+                    Type assetType = asset.GetType();
+                    if (!Def.Asset.UnloadIgnoreType.ContainsKey(assetType))
+                    {
+                        Resources.UnloadAsset(asset);
+                    }
                 }
 
                 asset = null;

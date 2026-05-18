@@ -364,13 +364,16 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
-            assetBundle = AssetBundle.LoadFromFile(abPath, crc);
-            if (assetBundle == null)
+            LoadAllDependenciesAB(true, () =>
             {
-                Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
-            }
+                assetBundle = AssetBundle.LoadFromFile(abPath, crc);
+                if (assetBundle == null)
+                {
+                    Log.ErrorForce($"{ToString()} 同步加载AssetBundle失败");
+                }
 
-            LoadAllDependenciesAB(true, () => { callback?.Invoke(); });
+                callback?.Invoke();
+            });
         }
 
         /// <summary>
@@ -380,10 +383,11 @@ namespace Duo1JFramework.Asset
         {
             if (refABList != null && refABList.Count != 0)
             {
+                List<ABData> dependencyList = new List<ABData>(refABList);
                 int loadedCnt = 0;
-                int allCnt = refABList.Count;
+                int allCnt = dependencyList.Count;
 
-                foreach (ABData abData in refABList)
+                foreach (ABData abData in dependencyList)
                 {
                     abData.AddRefThis(this);
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Duo1JFramework.FSM
 {
@@ -21,6 +22,16 @@ namespace Duo1JFramework.FSM
         /// 当前状态
         /// </summary>
         private IStateNode curState;
+
+        /// <summary>
+        /// 当前状态名
+        /// </summary>
+        public string CurrentStateName => curState?.StateName;
+
+        /// <summary>
+        /// 是否已释放
+        /// </summary>
+        public bool Disposed { get; private set; }
 
         /// <summary>
         /// 忽略下次Tick
@@ -51,6 +62,7 @@ namespace Duo1JFramework.FSM
         public void Init(string fsmName, string curStateName, params IStateNode[] stateNodeList)
         {
             Name = fsmName;
+            Disposed = false;
 
             curState = null;
             stateDict = new Dictionary<string, IStateNode>();
@@ -75,7 +87,7 @@ namespace Duo1JFramework.FSM
                 return;
             }
 
-            curState?.StateEnter(null);
+            SafeStateEnter(curState, null);
         }
 
         /// <summary>
@@ -83,9 +95,20 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public bool AddNode(IStateNode stateNode)
         {
+            if (CheckDisposed())
+            {
+                return false;
+            }
+
+            if (stateNode == null)
+            {
+                Log.ErrorForce($"{ToString()} 不可添加空状态节点");
+                return false;
+            }
+
             if (string.IsNullOrEmpty(stateNode.StateName))
             {
-                Log.ErrorForce($"{ToString()} 不可使用空的状态名");
+                Log.ErrorForce($"{ToString()} 不可使用空状态名");
                 return false;
             }
 
@@ -105,6 +128,11 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public bool RemoveNode(string stateName)
         {
+            if (CheckDisposed())
+            {
+                return false;
+            }
+
             if (!stateDict.ContainsKey(stateName))
             {
                 Log.ErrorForce($"{ToString()} 未包含状态`{stateName}`，无法移除");
@@ -127,14 +155,21 @@ namespace Duo1JFramework.FSM
         {
             Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
 
+            if (CheckDisposed())
+            {
+                return false;
+            }
+
             if (curState != null)
             {
                 if (!curState.CanSwitchTo(stateName))
                 {
+                    Log.Warn($"{ToString()} 当前状态 `{curState.StateName}` 不允许切换到 `{stateName}`，可用状态: {GetStateNameListText()}");
                     return false;
                 }
                 if (!curState.CheckSwitchCondition())
                 {
+                    Log.Warn($"{ToString()} 当前状态 `{curState.StateName}` 未满足切换到 `{stateName}` 的条件");
                     return false;
                 }
             }
@@ -149,21 +184,26 @@ namespace Duo1JFramework.FSM
         {
             Assert.NotNullOrEmpty(stateName, $"{ToString()} 状态名不可为空");
 
+            if (CheckDisposed())
+            {
+                return false;
+            }
+
             if (InState(stateName))
                 return false;
 
             if (stateDict.TryGetValue(stateName, out IStateNode state))
             {
-                curState?.StateExit(param);
+                SafeStateExit(curState, param);
                 curState = state;
-                curState.StateEnter(param);
+                SafeStateEnter(curState, param);
                 if (ignoreNextTick)
                     this.ignoreNextTick = true;
                 return true;
             }
             else
             {
-                Log.ErrorForce($"{ToString()} 未找到状态{stateName}，无法切换");
+                Log.ErrorForce($"{ToString()} 未找到状态 `{stateName}`，无法切换。当前状态: `{CurrentStateName}`，可用状态: {GetStateNameListText()}");
                 return false;
             }
         }
@@ -181,7 +221,7 @@ namespace Duo1JFramework.FSM
         /// </summary>
         public void Tick()
         {
-            if (curState == null)
+            if (Disposed || curState == null)
             {
                 return;
             }
@@ -192,22 +232,80 @@ namespace Duo1JFramework.FSM
                 return;
             }
 
-            curState.StateTick();
+            SafeStateTick(curState);
         }
 
         public void Dispose()
         {
+            if (Disposed)
+            {
+                return;
+            }
+
+            Disposed = true;
             curState = null;
             stateDict = null;
         }
 
-        private StateMachine()
+        private bool CheckDisposed()
         {
+            if (!Disposed)
+            {
+                return false;
+            }
+
+            Log.ErrorForce($"{ToString()} 已释放");
+            return true;
         }
 
-        ~StateMachine()
+        private string GetStateNameListText()
         {
-            Dispose();
+            if (stateDict == null || stateDict.Count == 0)
+            {
+                return "<Empty>";
+            }
+
+            return string.Join(", ", stateDict.Keys.ToArray());
+        }
+
+        private void SafeStateEnter(IStateNode stateNode, object param)
+        {
+            try
+            {
+                stateNode?.StateEnter(param);
+            }
+            catch (System.Exception e)
+            {
+                Assert.ExceptHandle(e, $"{ToString()} 状态 `{stateNode?.StateName}` 进入时异常");
+            }
+        }
+
+        private void SafeStateTick(IStateNode stateNode)
+        {
+            try
+            {
+                stateNode?.StateTick();
+            }
+            catch (System.Exception e)
+            {
+                Assert.ExceptHandle(e, $"{ToString()} 状态 `{stateNode?.StateName}` 更新时异常");
+            }
+        }
+
+        private void SafeStateExit(IStateNode stateNode, object param)
+        {
+            try
+            {
+                stateNode?.StateExit(param);
+            }
+            catch (System.Exception e)
+            {
+                Assert.ExceptHandle(e, $"{ToString()} 状态 `{stateNode?.StateName}` 退出时异常");
+            }
+        }
+
+        private StateMachine()
+        {
         }
 
         public override string ToString()

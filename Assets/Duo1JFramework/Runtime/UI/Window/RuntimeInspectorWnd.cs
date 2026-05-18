@@ -17,11 +17,11 @@ namespace Duo1JFramework.UI
 
         protected override void OnInit()
         {
-            GameObject rumtimeHierarchyGo = GetGo("RuntimeHierarchy");
-            rumtimeHierarchyGo.RectTF()?.BindDragPanel();
+            GameObject runtimeHierarchyGo = GetGo("RuntimeHierarchy");
+            runtimeHierarchyGo.RectTF()?.BindDragPanel();
 
-            GameObject rumtimeInspectorGo = GetGo("RuntimeInspector");
-            rumtimeInspectorGo.RectTF()?.BindDragPanel();
+            GameObject runtimeInspectorGo = GetGo("RuntimeInspector");
+            runtimeInspectorGo.RectTF()?.BindDragPanel();
         }
     }
 }
