@@ -101,7 +101,7 @@ namespace Duo1JFramework.UI
             List<Window> removeList = null;
             foreach (Window wnd in wndList)
             {
-                if (!wnd.IsConstLayer && wnd.ID < tarWnd.ID)
+                if (!wnd.IsConstLayer && wnd.ID > tarWnd.ID)
                 {
                     if (removeList == null) removeList = new List<Window>();
                     removeList.Add(wnd);
@@ -292,7 +292,24 @@ namespace Duo1JFramework.UI
 
         protected override void OnDispose()
         {
-            wndList = null;
+            if (wndList != null)
+            {
+                List<Window> closeList = new List<Window>(wndList);
+                foreach (Window wnd in closeList)
+                {
+                    try
+                    {
+                        wnd?.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        Assert.ExceptHandle(e, $"释放窗口`{(wnd == null ? "NULL" : wnd.GetType().FullName)}`失败");
+                    }
+                }
+
+                wndList.Clear();
+                wndList = null;
+            }
         }
 
         #endregion Inner

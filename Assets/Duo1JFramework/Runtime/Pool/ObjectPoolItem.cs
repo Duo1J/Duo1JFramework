@@ -22,6 +22,7 @@ namespace Duo1JFramework.ObjectPool
 
         public ObjectPoolItem(ObjectPoolModel<T> pool, T o)
         {
+            Pool = pool;
             Value = o;
             Using = true;
         }

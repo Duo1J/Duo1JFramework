@@ -20,6 +20,11 @@ namespace Duo1JFramework.Scheduling
         private HashSet<Timer> removeSet;
 
         /// <summary>
+        /// 待添加计时器集合
+        /// </summary>
+        private HashSet<Timer> addSet;
+
+        /// <summary>
         /// 获取一个计时器
         /// </summary>
         /// <param name="interval">毫秒数</param>
@@ -120,8 +125,20 @@ namespace Duo1JFramework.Scheduling
                 timerSet = new HashSet<Timer>();
             }
 
-            timerSet.Add(timer);
-            removeSet?.Remove(timer);
+            if (addSet == null)
+            {
+                addSet = new HashSet<Timer>();
+            }
+
+            if (removeSet != null)
+            {
+                removeSet.Remove(timer);
+            }
+
+            if (!timerSet.Contains(timer))
+            {
+                addSet.Add(timer);
+            }
         }
 
         /// <summary>
@@ -133,6 +150,8 @@ namespace Duo1JFramework.Scheduling
             {
                 return;
             }
+
+            addSet?.Remove(timer);
 
             if (removeSet == null)
             {
@@ -155,9 +174,25 @@ namespace Duo1JFramework.Scheduling
                     removeSet.Clear();
                 }
 
+                if (addSet != null)
+                {
+                    foreach (Timer timer in addSet)
+                    {
+                        timerSet.Add(timer);
+                    }
+                    addSet.Clear();
+                }
+
                 foreach (Timer timer in timerSet)
                 {
-                    timer.Tick();
+                    try
+                    {
+                        timer.Tick();
+                    }
+                    catch (Exception e)
+                    {
+                        Assert.ExceptHandle(e, "计时器Tick异常");
+                    }
                 }
             }
         }
@@ -175,12 +210,14 @@ namespace Duo1JFramework.Scheduling
         {
             timerSet = null;
             removeSet = null;
+            addSet = null;
         }
 
         protected override void OnInit()
         {
             timerSet = new HashSet<Timer>();
             removeSet = new HashSet<Timer>();
+            addSet = new HashSet<Timer>();
 
             Reg.RegisterLateUpdate(OnLateUpdate);
         }
@@ -189,6 +226,7 @@ namespace Duo1JFramework.Scheduling
 
         public HashSet<Timer> TimerSet_Editor => timerSet;
         public HashSet<Timer> RemoveSet_Editor => removeSet;
+        public HashSet<Timer> AddSet_Editor => addSet;
 
 #endif
 

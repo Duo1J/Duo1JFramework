@@ -13,7 +13,7 @@ namespace Duo1JFramework.Build
             {
                 return Util.TryCatch(() =>
                 {
-                    AssetBundleBuilder.ClearAllAssetBundleBuild();
+                    AssetBundleBuilder.ClearAllAssetBundleBuild(false);
 
                     return EPipelineState.Success;
                 });

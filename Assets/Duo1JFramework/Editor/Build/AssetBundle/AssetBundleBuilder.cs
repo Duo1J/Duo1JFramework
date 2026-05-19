@@ -74,20 +74,26 @@ namespace Duo1JFramework.Build
         /// <summary>
         /// 清理所有构建的AssetBundle
         /// </summary>
-        public static void ClearAllAssetBundleBuild()
+        public static void ClearAllAssetBundleBuild(bool saveAndRefresh = true)
         {
             FileUtil.DeleteDir(PathUtil.GetAssetBundleEditorRoot());
-            EditorUtil.SaveAndRefresh("AssetBundleBuilder::ClearAllAssetBundleBuild");
+            if (saveAndRefresh)
+            {
+                EditorUtil.SaveAndRefresh("AssetBundleBuilder::ClearAllAssetBundleBuild");
+            }
         }
 
         /// <summary>
         /// 清理所有拷贝的运行时AssetBundle
         /// </summary>
-        public static void ClearAllAssetBundleCopy()
+        public static void ClearAllAssetBundleCopy(bool saveAndRefresh = true)
         {
             FileUtil.DeleteDir(PathUtil.GetAssetBundleRuntimeRoot());
             FileUtil.DeleteFile(PathUtil.GetAssetBundleRuntimeRootMeta());
-            EditorUtil.SaveAndRefresh("AssetBundleBuilder::ClearAllAssetBundleCopy");
+            if (saveAndRefresh)
+            {
+                EditorUtil.SaveAndRefresh("AssetBundleBuilder::ClearAllAssetBundleCopy");
+            }
         }
 
         /// <summary>
@@ -106,7 +112,7 @@ namespace Duo1JFramework.Build
                     return false;
                 }
 
-                ClearAllAssetBundleCopy();
+                ClearAllAssetBundleCopy(false);
 
                 string runtimeRoot = PathUtil.GetAssetBundleRuntimeRoot();
                 return FileUtil.CopyDirectory(editorRoot, runtimeRoot);

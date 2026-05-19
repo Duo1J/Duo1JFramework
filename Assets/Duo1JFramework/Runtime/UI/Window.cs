@@ -236,7 +236,7 @@ namespace Duo1JFramework.UI
         {
             if (Go != null)
             {
-                Go.DestroyImmediate();
+                Go.Destroy();
                 Go = null;
             }
         }
@@ -250,7 +250,7 @@ namespace Duo1JFramework.UI
 
         public override string ToString()
         {
-            return $"<UI-{ID}-{GetType().Name}-{Go.name}>";
+            return $"<UI-{ID}-{GetType().Name}-{(Go == null ? "NULL" : Go.name)}>";
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Duo1JFramework.Event
                             continue;
                         }
 
-                        action(e);
+                        action(args);
                     }
                 }
             }

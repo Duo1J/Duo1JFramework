@@ -30,10 +30,11 @@ namespace Duo1JFramework.ObjectPool
 
             if (!item.Using)
             {
+                Log.Warn("对象池对象重复入池");
                 return;
             }
 
-            OnPushObject(item.Value);
+            item.Using = false;
             poolStack.Push(item);
         }
 
@@ -51,7 +52,7 @@ namespace Duo1JFramework.ObjectPool
             {
                 ret = poolStack.Pop();
             }
-            OnPopObject(ret.Value);
+
             ret.Using = true;
             return ret;
         }
@@ -66,8 +67,14 @@ namespace Duo1JFramework.ObjectPool
                 return;
             }
             ObjectPoolItem<T> item = Pop();
-            action(item);
-            Push(item);
+            try
+            {
+                action(item);
+            }
+            finally
+            {
+                Push(item);
+            }
         }
 
         /// <summary>
@@ -80,9 +87,14 @@ namespace Duo1JFramework.ObjectPool
                 return null;
             }
             ObjectPoolItem<T> item = Pop();
-            object ret = action(item);
-            Push(item);
-            return ret;
+            try
+            {
+                return action(item);
+            }
+            finally
+            {
+                Push(item);
+            }
         }
 
         /// <summary>
@@ -94,21 +106,6 @@ namespace Duo1JFramework.ObjectPool
             OnCreateNew?.Invoke(newItem);
             newItem.Using = true;
             return newItem;
-        }
-
-        /// <summary>
-        /// 入池对象处理
-        /// </summary>
-        public virtual void OnPushObject(T o)
-        {
-        }
-
-        /// <summary>
-        /// 出池对象处理
-        /// </summary>
-        public virtual T OnPopObject(T o)
-        {
-            return o;
         }
 
         public ObjectPoolModel()

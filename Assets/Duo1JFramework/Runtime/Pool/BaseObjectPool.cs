@@ -40,7 +40,6 @@ namespace Duo1JFramework.ObjectPool
         {
             ObjectPoolItem<T> ret = pool.Pop();
             OnPopObject(ret.Value);
-            ret.Using = true;
             return ret.Value;
         }
 
@@ -49,12 +48,20 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public void Using(Action<T> action)
         {
-            pool.Using((item) =>
+            if (action == null)
             {
-                OnPopObject(item.Value);
-                action(item.Value);
-                item.Using = true;
-            });
+                return;
+            }
+
+            T item = Pop();
+            try
+            {
+                action(item);
+            }
+            finally
+            {
+                Push(item);
+            }
         }
 
         /// <summary>
@@ -62,13 +69,20 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public object Using(Func<T, object> action)
         {
-            return pool.Using((item) =>
+            if (action == null)
             {
-                OnPopObject(item.Value);
-                object ret = action(item.Value);
-                item.Using = true;
-                return ret;
-            });
+                return null;
+            }
+
+            T item = Pop();
+            try
+            {
+                return action(item);
+            }
+            finally
+            {
+                Push(item);
+            }
         }
 
         public virtual ObjectPoolItem<T> GetPoolItemInList(T item)

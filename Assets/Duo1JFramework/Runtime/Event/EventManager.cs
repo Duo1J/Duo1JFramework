@@ -21,7 +21,7 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 延迟事件集合
         /// </summary>
-        private HashSet<object> delayEventSet = null;
+        private Queue<DelayEventData> delayEventQueue = null;
 
         #region Event
 
@@ -100,17 +100,17 @@ namespace Duo1JFramework.Event
         /// <summary>
         /// 广播事件延迟到LateUpdate或下一帧
         /// </summary>
-        public void BroadcastDelay(object e)
+        public void BroadcastDelay(object e, object args = null)
         {
-            delayEventSet.Add(e);
+            delayEventQueue.Enqueue(new DelayEventData(e, args));
         }
 
         /// <summary>
         /// 广播事件延迟到LateUpdate或下一帧
         /// </summary>
-        public void BroadcastDelay(eEvent e)
+        public void BroadcastDelay(eEvent e, object args = null)
         {
-            BroadcastDelay((object)e);
+            BroadcastDelay((object)e, args);
         }
 
         /// <summary>
@@ -245,20 +245,22 @@ namespace Duo1JFramework.Event
 
         private void OnLateUpdate()
         {
-            if (delayEventSet.Count > 0)
+            if (delayEventQueue.Count > 0)
             {
-                foreach (object e in delayEventSet)
-                {
-                    Broadcast(e);
-                }
+                Queue<DelayEventData> invokeQueue = delayEventQueue;
+                delayEventQueue = new Queue<DelayEventData>();
 
-                delayEventSet.Clear();
+                while (invokeQueue.Count > 0)
+                {
+                    DelayEventData data = invokeQueue.Dequeue();
+                    Broadcast(data.Event, data.Args);
+                }
             }
         }
 
         protected override void OnInit()
         {
-            delayEventSet = new HashSet<object>();
+            delayEventQueue = new Queue<DelayEventData>();
 
             Reg.RegisterLateUpdate(OnLateUpdate);
         }
@@ -268,10 +270,22 @@ namespace Duo1JFramework.Event
             SetEventModel(null);
             SetTypeEventModel(null);
 
-            if (delayEventSet != null)
+            if (delayEventQueue != null)
             {
-                delayEventSet.Clear();
-                delayEventSet = null;
+                delayEventQueue.Clear();
+                delayEventQueue = null;
+            }
+        }
+
+        private struct DelayEventData
+        {
+            public object Event { get; }
+            public object Args { get; }
+
+            public DelayEventData(object e, object args)
+            {
+                Event = e;
+                Args = args;
             }
         }
     }

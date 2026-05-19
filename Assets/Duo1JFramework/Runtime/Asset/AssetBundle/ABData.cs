@@ -323,14 +323,22 @@ namespace Duo1JFramework.Asset
                 return;
             }
 
-            LoadAllDependenciesAB(false, () =>
+            loading = true;
+            LoadAllDependenciesAB(false, (success) =>
             {
-                loading = true;
+                if (!success)
+                {
+                    loading = false;
+                    Log.ErrorForce($"{ToString()} 异步加载AssetBundle依赖失败");
+                    InvokeAsyncLoadedCallback();
+                    return;
+                }
+
                 AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(abPath, crc);
                 UpdateManager.Instance.RegisterAsyncRequest(request, (req) =>
                 {
                     AssetBundleCreateRequest _request = req as AssetBundleCreateRequest;
-                    AssetBundle _assetBundle = _request.assetBundle;
+                    AssetBundle _assetBundle = _request == null ? null : _request.assetBundle;
 
                     loading = false;
 
@@ -350,11 +358,7 @@ namespace Duo1JFramework.Asset
                         Log.ErrorForce($"{ToString()} 异步加载AssetBundle失败");
                     }
 
-                    if (asyncLoadedCallback != null)
-                    {
-                        asyncLoadedCallback.Invoke();
-                        asyncLoadedCallback = null;
-                    }
+                    InvokeAsyncLoadedCallback();
                 });
             });
         }
@@ -364,8 +368,15 @@ namespace Duo1JFramework.Asset
         /// </summary>
         private void InnerLoadAssetBundleSync(Action callback)
         {
-            LoadAllDependenciesAB(true, () =>
+            LoadAllDependenciesAB(true, (success) =>
             {
+                if (!success)
+                {
+                    Log.ErrorForce($"{ToString()} 同步加载AssetBundle依赖失败");
+                    callback?.Invoke();
+                    return;
+                }
+
                 assetBundle = AssetBundle.LoadFromFile(abPath, crc);
                 if (assetBundle == null)
                 {
@@ -376,16 +387,43 @@ namespace Duo1JFramework.Asset
             });
         }
 
+        private void InvokeAsyncLoadedCallback()
+        {
+            if (asyncLoadedCallback != null)
+            {
+                asyncLoadedCallback.Invoke();
+                asyncLoadedCallback = null;
+            }
+        }
+
         /// <summary>
         /// 加载所有依赖AssetBundle
         /// </summary>
-        private void LoadAllDependenciesAB(bool sync, Action callback)
+        private void LoadAllDependenciesAB(bool sync, Action<bool> callback)
         {
             if (refABList != null && refABList.Count != 0)
             {
                 List<ABData> dependencyList = new List<ABData>(refABList);
                 int loadedCnt = 0;
                 int allCnt = dependencyList.Count;
+                bool success = true;
+
+                Action<ABData> onDependencyLoaded = (abData) =>
+                {
+                    bool loaded = abData.IsABLoaded();
+                    if (!loaded)
+                    {
+                        success = false;
+                        abData.RemoveRefThis(this);
+                        Log.ErrorForce($"{ToString()} 依赖AssetBundle加载失败: {abData.ToString()}");
+                    }
+
+                    if (++loadedCnt == allCnt)
+                    {
+                        callback?.Invoke(success);
+                        callback = null;
+                    }
+                };
 
                 foreach (ABData abData in dependencyList)
                 {
@@ -393,28 +431,17 @@ namespace Duo1JFramework.Asset
 
                     if (abData.IsABLoaded())
                     {
-                        if (++loadedCnt == allCnt)
-                        {
-                            callback?.Invoke();
-                            callback = null;
-                        }
+                        onDependencyLoaded(abData);
                     }
                     else
                     {
-                        abData.LoadAssetBundle(sync, () =>
-                        {
-                            if (++loadedCnt == allCnt)
-                            {
-                                callback?.Invoke();
-                                callback = null;
-                            }
-                        });
+                        abData.LoadAssetBundle(sync, () => onDependencyLoaded(abData));
                     }
                 }
             }
             else
             {
-                callback?.Invoke();
+                callback?.Invoke(true);
                 callback = null;
             }
         }

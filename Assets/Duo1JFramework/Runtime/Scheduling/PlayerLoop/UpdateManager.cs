@@ -246,27 +246,29 @@ namespace Duo1JFramework.Scheduling
 
             if (asyncOpeWrapList != null)
             {
-                List<AsyncOperationWrap> removeList = null;
-                foreach (AsyncOperationWrap wrap in asyncOpeWrapList)
+                List<AsyncOperationWrap> completedList = null;
+                for (int i = asyncOpeWrapList.Count - 1; i >= 0; --i)
                 {
-                    if (wrap.IsDone)
+                    AsyncOperationWrap wrap = asyncOpeWrapList[i];
+                    if (!wrap.IsDone)
                     {
-                        wrap.Call();
-
-                        if (removeList == null)
-                        {
-                            removeList = new List<AsyncOperationWrap>();
-                        }
-
-                        removeList.Add(wrap);
+                        continue;
                     }
+
+                    if (completedList == null)
+                    {
+                        completedList = new List<AsyncOperationWrap>();
+                    }
+
+                    completedList.Add(wrap);
+                    asyncOpeWrapList.RemoveAt(i);
                 }
 
-                if (removeList != null)
+                if (completedList != null)
                 {
-                    foreach (AsyncOperationWrap wrap in removeList)
+                    foreach (AsyncOperationWrap wrap in completedList)
                     {
-                        asyncOpeWrapList.Remove(wrap);
+                        wrap.Call();
                     }
                 }
             }
@@ -450,9 +452,13 @@ namespace Duo1JFramework.Scheduling
             Assert.NotNullArg(operation, "operation");
             Assert.NotNullArg(callback, "callback");
 
-            operation.completed += (req) => { callback?.Invoke(req); };
+            if (asyncOpeWrapList == null)
+            {
+                Log.Warn("UpdateManager已释放，忽略异步操作回调注册");
+                return;
+            }
 
-            //asyncOpeWrapList.Add(new AsyncOperationWrap(operation, callback));
+            asyncOpeWrapList.Add(new AsyncOperationWrap(operation, callback));
         }
 
         #endregion Yield Request
@@ -527,7 +533,7 @@ namespace Duo1JFramework.Scheduling
             /// <summary>
             /// 是否完成
             /// </summary>
-            public bool IsDone => operation.isDone;
+            public bool IsDone => operation == null || operation.isDone;
 
             public AsyncOperationWrap(AsyncOperation operation, Action<AsyncOperation> callback)
             {
@@ -537,8 +543,19 @@ namespace Duo1JFramework.Scheduling
 
             public void Call()
             {
-                callback?.Invoke(operation);
-                callback = null;
+                try
+                {
+                    callback?.Invoke(operation);
+                }
+                catch (Exception e)
+                {
+                    Assert.ExceptHandle(e, "异步操作完成回调异常");
+                }
+                finally
+                {
+                    callback = null;
+                    operation = null;
+                }
             }
 
             public bool Equals(AsyncOperationWrap other)
