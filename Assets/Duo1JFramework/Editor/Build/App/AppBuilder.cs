@@ -102,8 +102,7 @@ namespace Duo1JFramework.Build
                         }
                     case EAssetLoaderType.Addressables:
                         {
-                            Log.EditorError($"资源构建时，Addressables加载器类型未实现");
-                            return false;
+                            return AddressablesBuilder.BuildAllAddressables();
                         }
                     default:
                         {
@@ -135,8 +134,7 @@ namespace Duo1JFramework.Build
                         }
                     case EAssetLoaderType.Addressables:
                         {
-                            Log.EditorError($"资源拷贝时，Addressables加载器类型未实现");
-                            return false;
+                            return AddressablesBuilder.CopyAllAddressablesBuild();
                         }
                     default:
                         {

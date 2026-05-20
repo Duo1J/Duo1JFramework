@@ -127,25 +127,25 @@ namespace Duo1JFramework.Build
             switch (assetLoaderType)
             {
                 case EAssetLoaderType.AssetDatabase:
-                {
-                    Log.EditorError($"AssetDatabase无资源构建面板");
-                    break;
-                }
+                    {
+                        Log.EditorError($"AssetDatabase无资源构建面板");
+                        break;
+                    }
                 case EAssetLoaderType.AssetBundle:
-                {
-                    AssetBundleBuildEditorWnd.Open();
-                    break;
-                }
+                    {
+                        AssetBundleBuildEditorWnd.Open();
+                        break;
+                    }
                 case EAssetLoaderType.Addressables:
-                {
-                    Log.EditorError($"Addressables暂未实现资源构建面板");
-                    break;
-                }
+                    {
+                        Log.EditorError($"Addressables无资源构建面板");
+                        break;
+                    }
                 default:
-                {
-                    Log.EditorError($"资源加载器类型错误: {assetLoaderType}");
-                    break;
-                }
+                    {
+                        Log.EditorError($"资源加载器类型错误: {assetLoaderType}");
+                        break;
+                    }
             }
         }
     }

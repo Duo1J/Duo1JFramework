@@ -2,7 +2,9 @@
     "name": "Duo1JFramework.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:c6cb2d8a47f83f74e9aa7eb154331711"
+        "GUID:c6cb2d8a47f83f74e9aa7eb154331711",
+        "Unity.Addressables.Editor",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [
         "Editor"

@@ -52,6 +52,7 @@ namespace Duo1JFramework.Asset
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
+                case EAssetLoadType.Addressables:
                     {
                         Load<T>(assetPath, callback);
                         return;
@@ -79,6 +80,7 @@ namespace Duo1JFramework.Asset
             switch (loadType)
             {
                 case EAssetLoadType.AssetBundle:
+                case EAssetLoadType.Addressables:
                     {
                         return LoadSync<T>(assetPath);
                     }
@@ -191,7 +193,8 @@ namespace Duo1JFramework.Asset
                             SetAssetLoader(EAssetLoaderType.AssetBundle);
                             break;
                         case EAssetLoaderType.Addressables:
-                            throw Except.Create("Addressables资源加载器未实现");
+                            SetAssetLoader(EAssetLoaderType.Addressables);
+                            break;
                         default:
 #if UNITY_EDITOR
                             throw Except.Create($"GameOption.editor.assetLoaderType类型错误: {GameOption.AssetLoaderType}");
@@ -226,8 +229,8 @@ namespace Duo1JFramework.Asset
                     loader = new ABAssetLoader();
                     break;
                 case EAssetLoaderType.Addressables:
-                    Log.Info("使用`ABAssetLoader`资源加载器");
-                    loader = new ABAssetLoader();
+                    Log.Info("使用`ADAssetLoader`资源加载器");
+                    loader = new ADAssetLoader();
                     break;
             }
         }
