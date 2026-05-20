@@ -5,8 +5,8 @@
 
  **Stop，working for UE ~** 
 
-1. Asset management based on `Resources` and `AssetBundle` (Addressable not completed), hot patch (Not completed)
-2. Configurable App and AssetBundle build pipeline
+1. Asset management based on Resources/AssetBundle/Addressables, hot patch (Not completed)
+2. Configurable App/AssetBundle/Addressables build pipeline
 3. Baking system (Not completed)
 4. Basic 3C，skill framework with editor tool (Not completed)
 5. Animation system, FootIK, RootMotion (Not completed), Playable (Not completed)，Animation curve generator, etc.

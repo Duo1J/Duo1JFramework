@@ -5,8 +5,8 @@
 
  **暂停，做UE去了~** 
 
-1. 基于Resources和AssetBundle的资源管理系统 (Addressable未做)，热更新 (未做)
-2. 可配置化App、AssetBundle构建管线 (Addressable未做)
+1. 基于Resources/AssetBundle/Addressables的资源管理系统，热更新 (未做)
+2. 可配置化App/AssetBundle/Addressables构建管线
 3. 烘培系统 (进行中)
 4. 基础3C，技能框架与编辑器 (未做)
 5. 动画系统，FootIK，RootMotion(进行中)，Playable (进行中)，动画曲线生成器等
