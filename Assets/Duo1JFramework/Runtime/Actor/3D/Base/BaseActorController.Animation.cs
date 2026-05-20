@@ -115,6 +115,35 @@ namespace Duo1JFramework.Actor
         #endregion IK
 
         /// <summary>
+        /// 设置是否应用Root Motion
+        /// </summary>
+        public void SetApplyRootMotion(bool applyRootMotion)
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            animator.applyRootMotion = applyRootMotion;
+        }
+
+        /// <summary>
+        /// 设置是否启用Root Motion回调
+        /// </summary>
+        public void SetRootMotionEnable(bool enable)
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            RootMotionController rootMotionCon = animator.gameObject.GetOrAddComponent<RootMotionController>();
+            rootMotionCon.Enable = enable;
+        }
+
+        /// <summary>
         /// 设置OnAnimatorMove回调
         /// </summary>
         public void SetOnAnimatorMove(Action onAnimatorMove)
@@ -144,7 +173,7 @@ namespace Duo1JFramework.Actor
 
             if (onAnimatorMove == null)
             {
-                rootMotionCon.SetOnAnimatorMove(null);
+                rootMotionCon.ClearOnAnimatorMove();
                 return;
             }
 
@@ -152,6 +181,51 @@ namespace Duo1JFramework.Actor
             {
                 onAnimatorMove(animator);
             });
+        }
+
+        /// <summary>
+        /// 设置Root Motion回调
+        /// </summary>
+        public void SetOnRootMotion(Action<RootMotionData> onRootMotion)
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            RootMotionController rootMotionCon = animator.gameObject.GetOrAddComponent<RootMotionController>();
+            rootMotionCon.SetOnRootMotion(onRootMotion);
+        }
+
+        /// <summary>
+        /// 清理OnAnimatorMove回调
+        /// </summary>
+        public void ClearOnAnimatorMove()
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            RootMotionController rootMotionCon = animator.GetComponent<RootMotionController>();
+            rootMotionCon?.ClearOnAnimatorMove();
+        }
+
+        /// <summary>
+        /// 清理Root Motion回调
+        /// </summary>
+        public void ClearOnRootMotion()
+        {
+            Animator animator = GetAnimator();
+            if (animator == null)
+            {
+                return;
+            }
+
+            RootMotionController rootMotionCon = animator.GetComponent<RootMotionController>();
+            rootMotionCon?.ClearOnRootMotion();
         }
     }
 }

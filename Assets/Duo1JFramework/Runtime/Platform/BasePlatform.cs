@@ -10,6 +10,12 @@ namespace Duo1JFramework.PlatformAPI
     {
         public abstract EPlatform Type { get; }
 
+        public virtual bool IsEditor => Type == EPlatform.Editor;
+
+        public virtual bool IsPC => Type == EPlatform.PC;
+
+        public virtual bool IsMobile => Type == EPlatform.Android || Type == EPlatform.iOS;
+
         public int GetTotalMemory()
         {
             return SystemInfo.systemMemorySize;

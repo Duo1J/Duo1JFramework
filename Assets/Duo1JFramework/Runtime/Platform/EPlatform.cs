@@ -7,6 +7,8 @@ namespace Duo1JFramework.PlatformAPI
     {
         Default,
 
+        Editor,
+
         PC,
 
         Android,

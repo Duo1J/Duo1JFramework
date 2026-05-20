@@ -38,9 +38,13 @@ namespace Duo1JFramework.PlatformAPI
             }
 
 #if UNITY_EDITOR
-            current = new PCPlatform();
+            current = new EditorPlatform();
 #elif UNITY_STANDALONE_WIN
             current = new PCPlatform();
+#elif UNITY_ANDROID
+            current = new AndroidPlatform();
+#elif UNITY_IOS
+            current = new IOSPlatform();
 #else
             current = new DefaultPlatform();
 #endif

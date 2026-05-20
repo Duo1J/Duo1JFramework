@@ -10,6 +10,21 @@ namespace Duo1JFramework.PlatformAPI
         /// </summary>
         EPlatform Type { get; }
 
+        /// <summary>
+        /// 是否编辑器平台
+        /// </summary>
+        bool IsEditor { get; }
+
+        /// <summary>
+        /// 是否PC平台
+        /// </summary>
+        bool IsPC { get; }
+
+        /// <summary>
+        /// 是否移动平台
+        /// </summary>
+        bool IsMobile { get; }
+
         #region Memory
 
         /// <summary>
