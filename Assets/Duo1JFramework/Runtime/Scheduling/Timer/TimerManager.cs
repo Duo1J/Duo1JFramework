@@ -87,6 +87,8 @@ namespace Duo1JFramework.Scheduling
                     Pool.TimerPool.Push(timer);
                 }
             }, 1);
+
+            timer.Start();
         }
 
         /// <summary>

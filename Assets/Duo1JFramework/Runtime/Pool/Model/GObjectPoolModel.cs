@@ -14,7 +14,7 @@ namespace Duo1JFramework.ObjectPool
 
         public override ObjectPoolItem<GameObject> CreateNew()
         {
-            GameObject templateGo = getTemplateCall();
+            GameObject templateGo = getTemplateCall?.Invoke();
             Assert.NotNull(templateGo, "ObjectPoolItem::CreateNew异常, `templateGo` 为空");
 
             ObjectPoolItem<GameObject> newItem = new ObjectPoolItem<GameObject>(this, UObject.Instantiate(templateGo));
@@ -22,6 +22,17 @@ namespace Duo1JFramework.ObjectPool
             newItem.Using = true;
 
             return newItem;
+        }
+
+        protected override void DestroyItem(ObjectPoolItem<GameObject> item)
+        {
+            GameObject value = item?.Value;
+            base.DestroyItem(item);
+
+            if (value != null)
+            {
+                UObject.Destroy(value);
+            }
         }
 
         public GObjectPoolModel(Func<GameObject> getTemplateCall)

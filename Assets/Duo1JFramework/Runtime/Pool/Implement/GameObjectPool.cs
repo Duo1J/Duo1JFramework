@@ -12,34 +12,70 @@ namespace Duo1JFramework.ObjectPool
 
         private GameObject templateGo;
         private Transform parentOverride;
+        private bool activeOnPop;
+        private bool inactiveOnPush;
 
         public override void OnPushObject(GameObject o)
         {
             base.OnPushObject(o);
+
+            if (o == null)
+            {
+                return;
+            }
+
             o.SetParent(ParentRoot);
-            o.SetActive(false);
+
+            if (inactiveOnPush)
+            {
+                o.SetActive(false);
+            }
         }
 
         public override void OnPopObject(GameObject o)
         {
             base.OnPopObject(o);
+
+            if (o == null)
+            {
+                return;
+            }
+
             o.SetParent(ParentRoot);
+
+            if (activeOnPop)
+            {
+                o.SetActive(true);
+            }
+        }
+
+        protected override bool IsValidObject(GameObject o)
+        {
+            return o != null;
         }
 
         public override void InitPool()
         {
-            pool = new GObjectPoolModel(() => templateGo);
+            SetPool(new GObjectPoolModel(() => templateGo));
         }
 
-        public GameObjectPool(GameObject templateGo, Func<GameObject, GameObject> initCall, Transform parentOverride = null) : base(initCall)
+        public GameObjectPool(GameObject templateGo, Func<GameObject, GameObject> initCall, Transform parentOverride = null, bool activeOnPop = false, bool inactiveOnPush = true) : base(initCall)
         {
             Assert.NotNullArg(templateGo, "templateGo");
 
             this.templateGo = templateGo;
             this.parentOverride = parentOverride;
+            this.activeOnPop = activeOnPop;
+            this.inactiveOnPush = inactiveOnPush;
+
+            InitPool();
 
             templateGo.SetParent(ParentRoot);
-            templateGo.SetActive(false);
+
+            if (inactiveOnPush)
+            {
+                templateGo.SetActive(false);
+            }
         }
     }
 }

@@ -14,35 +14,39 @@ namespace Duo1JFramework.Scheduling
     /// </summary>
     public class UpdateManager : MonoSingleton<UpdateManager>
     {
+        /// <summary>
+        /// EarlyUpdate更新组
+        /// </summary>
+        private UpdateGroup earlyUpdateGroup;
+
+        /// <summary>
+        /// PreUpdate更新组
+        /// </summary>
+        private UpdateGroup preUpdateGroup;
+
+        /// <summary>
+        /// Update更新组
+        /// </summary>
+        private UpdateGroup updateGroup;
+
+        /// <summary>
+        /// LateUpdate更新组
+        /// </summary>
+        private UpdateGroup lateUpdateGroup;
+
+        /// <summary>
+        /// FixedUpdate更新组
+        /// </summary>
+        private UpdateGroup fixedUpdateGroup;
+
         #region EarlyUpdate
-
-        /// <summary>
-        /// EarlyUpdate集合
-        /// </summary>
-        private HashSet<Action> earlyUpdateSet;
-
-        /// <summary>
-        /// EarlyUpdate待添加列表
-        /// </summary>
-        private List<Action> earlyUpdateAddList;
-
-        /// <summary>
-        /// EarlyUpdate待移除列表
-        /// </summary>
-        private List<Action> earlyUpdateRemoveList;
 
         /// <summary>
         /// 注册EarlyUpdate
         /// </summary>
         public void RegisterEarlyUpdate(Action updater)
         {
-            if ((earlyUpdateSet.Contains(updater) || earlyUpdateAddList.Contains(updater)) && !earlyUpdateRemoveList.Contains(updater))
-            {
-                Log.ErrorForce("重复注册EarlyUpdate");
-                return;
-            }
-
-            earlyUpdateAddList.Add(updater);
+            earlyUpdateGroup.Register(updater);
         }
 
         /// <summary>
@@ -50,46 +54,12 @@ namespace Duo1JFramework.Scheduling
         /// </summary>
         public void UnRegisterEarlyUpdate(Action updater)
         {
-            earlyUpdateAddList.Remove(updater);
-            earlyUpdateRemoveList.Add(updater);
+            earlyUpdateGroup.UnRegister(updater);
         }
 
         private void OnEarlyUpdate()
         {
-            if (earlyUpdateSet != null)
-            {
-                if (earlyUpdateRemoveList != null)
-                {
-                    foreach (Action action in earlyUpdateRemoveList)
-                    {
-                        earlyUpdateSet.Remove(action);
-                    }
-
-                    earlyUpdateRemoveList.Clear();
-                }
-
-                if (earlyUpdateAddList != null)
-                {
-                    foreach (Action action in earlyUpdateAddList)
-                    {
-                        earlyUpdateSet.Add(action);
-                    }
-
-                    earlyUpdateAddList.Clear();
-                }
-
-                foreach (Action action in earlyUpdateSet)
-                {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.ExceptHandle(e);
-                    }
-                }
-            }
+            earlyUpdateGroup.Tick();
         }
 
         #endregion EarlyUpdate
@@ -97,32 +67,11 @@ namespace Duo1JFramework.Scheduling
         #region Update
 
         /// <summary>
-        /// PreUpdate集合
-        /// </summary>
-        private HashSet<Action> preUpdateSet;
-
-        /// <summary>
-        /// PreUpdate待添加列表
-        /// </summary>
-        private List<Action> preUpdateAddList;
-
-        /// <summary>
-        /// PreUpdate待移除列表
-        /// </summary>
-        private List<Action> preUpdateRemoveList;
-
-        /// <summary>
         /// 注册PreUpdate
         /// </summary>
         public void RegisterPreUpdate(Action updater)
         {
-            if ((preUpdateSet.Contains(updater) || preUpdateAddList.Contains(updater)) && !preUpdateRemoveList.Contains(updater))
-            {
-                Log.ErrorForce("重复注册PreUpdate");
-                return;
-            }
-
-            preUpdateAddList.Add(updater);
+            preUpdateGroup.Register(updater);
         }
 
         /// <summary>
@@ -130,37 +79,15 @@ namespace Duo1JFramework.Scheduling
         /// </summary>
         public void UnRegisterPreUpdate(Action updater)
         {
-            preUpdateAddList.Remove(updater);
-            preUpdateRemoveList.Add(updater);
+            preUpdateGroup.UnRegister(updater);
         }
-
-        /// <summary>
-        /// Update集合
-        /// </summary>
-        private HashSet<Action> updateSet;
-
-        /// <summary>
-        /// Update待添加列表
-        /// </summary>
-        private List<Action> updateAddList;
-
-        /// <summary>
-        /// Update待移除列表
-        /// </summary>
-        private List<Action> updateRemoveList;
 
         /// <summary>
         /// 注册Update
         /// </summary>
         public void RegisterUpdate(Action updater)
         {
-            if ((updateSet.Contains(updater) || updateAddList.Contains(updater)) && !updateRemoveList.Contains(updater))
-            {
-                Log.ErrorForce("重复注册Update");
-                return;
-            }
-
-            updateAddList.Add(updater);
+            updateGroup.Register(updater);
         }
 
         /// <summary>
@@ -168,110 +95,14 @@ namespace Duo1JFramework.Scheduling
         /// </summary>
         public void UnRegisterUpdate(Action updater)
         {
-            updateAddList.Remove(updater);
-            updateRemoveList.Add(updater);
+            updateGroup.UnRegister(updater);
         }
 
         private void Update()
         {
-            if (preUpdateSet != null)
-            {
-                if (preUpdateRemoveList != null)
-                {
-                    foreach (Action action in preUpdateRemoveList)
-                    {
-                        preUpdateSet.Remove(action);
-                    }
-
-                    preUpdateRemoveList.Clear();
-                }
-
-                if (preUpdateAddList != null)
-                {
-                    foreach (Action action in preUpdateAddList)
-                    {
-                        preUpdateSet.Add(action);
-                    }
-
-                    preUpdateAddList.Clear();
-                }
-
-                foreach (Action action in preUpdateSet)
-                {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.ExceptHandle(e);
-                    }
-                }
-            }
-
-            if (updateSet != null)
-            {
-                if (updateRemoveList != null)
-                {
-                    foreach (Action action in updateRemoveList)
-                    {
-                        updateSet.Remove(action);
-                    }
-
-                    updateRemoveList.Clear();
-                }
-
-                if (updateAddList != null)
-                {
-                    foreach (Action action in updateAddList)
-                    {
-                        updateSet.Add(action);
-                    }
-
-                    updateAddList.Clear();
-                }
-
-                foreach (Action action in updateSet)
-                {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.ExceptHandle(e);
-                    }
-                }
-            }
-
-            if (asyncOpeWrapList != null)
-            {
-                List<AsyncOperationWrap> completedList = null;
-                for (int i = asyncOpeWrapList.Count - 1; i >= 0; --i)
-                {
-                    AsyncOperationWrap wrap = asyncOpeWrapList[i];
-                    if (!wrap.IsDone)
-                    {
-                        continue;
-                    }
-
-                    if (completedList == null)
-                    {
-                        completedList = new List<AsyncOperationWrap>();
-                    }
-
-                    completedList.Add(wrap);
-                    asyncOpeWrapList.RemoveAt(i);
-                }
-
-                if (completedList != null)
-                {
-                    foreach (AsyncOperationWrap wrap in completedList)
-                    {
-                        wrap.Call();
-                    }
-                }
-            }
+            preUpdateGroup.Tick();
+            updateGroup.Tick();
+            TickAsyncOperation();
         }
 
         #endregion Update
@@ -279,32 +110,11 @@ namespace Duo1JFramework.Scheduling
         #region LateUpdate
 
         /// <summary>
-        /// LateUpdate集合
-        /// </summary>
-        private HashSet<Action> lateUpdateSet;
-
-        /// <summary>
-        /// LateUpdate待添加列表
-        /// </summary>
-        private List<Action> lateUpdateAddList;
-
-        /// <summary>
-        /// LateUpdate待移除列表
-        /// </summary>
-        private List<Action> lateUpdateRemoveList;
-
-        /// <summary>
         /// 注册LateUpdate
         /// </summary>
         public void RegisterLateUpdate(Action updater)
         {
-            if ((lateUpdateSet.Contains(updater) || lateUpdateAddList.Contains(updater)) && !lateUpdateRemoveList.Contains(updater))
-            {
-                Log.ErrorForce("重复注册LateUpdate");
-                return;
-            }
-
-            lateUpdateAddList.Add(updater);
+            lateUpdateGroup.Register(updater);
         }
 
         /// <summary>
@@ -312,47 +122,12 @@ namespace Duo1JFramework.Scheduling
         /// </summary>
         public void UnRegisterLateUpdate(Action updater)
         {
-            lateUpdateAddList.Remove(updater);
-            lateUpdateRemoveList.Add(updater);
+            lateUpdateGroup.UnRegister(updater);
         }
 
         private void LateUpdate()
         {
-            //延迟更新
-            if (lateUpdateSet != null)
-            {
-                if (lateUpdateRemoveList != null)
-                {
-                    foreach (Action action in lateUpdateRemoveList)
-                    {
-                        lateUpdateSet.Remove(action);
-                    }
-
-                    lateUpdateRemoveList.Clear();
-                }
-
-                if (lateUpdateAddList != null)
-                {
-                    foreach (Action action in lateUpdateAddList)
-                    {
-                        lateUpdateSet.Add(action);
-                    }
-
-                    lateUpdateAddList.Clear();
-                }
-
-                foreach (Action action in lateUpdateSet)
-                {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.ExceptHandle(e);
-                    }
-                }
-            }
+            lateUpdateGroup.Tick();
         }
 
         #endregion LateUpdate
@@ -360,32 +135,11 @@ namespace Duo1JFramework.Scheduling
         #region FixedUpdate
 
         /// <summary>
-        /// FixedUpdate集合
-        /// </summary>
-        private HashSet<Action> fixedUpdateSet;
-
-        /// <summary>
-        /// FixedUpdate待添加列表
-        /// </summary>
-        private List<Action> fixedUpdateAddList;
-
-        /// <summary>
-        /// FixedUpdate待移除列表
-        /// </summary>
-        private List<Action> fixedUpdateRemoveList;
-
-        /// <summary>
         /// 注册FixedUpdate
         /// </summary>
         public void RegisterFixedUpdate(Action updater)
         {
-            if ((fixedUpdateSet.Contains(updater) || fixedUpdateAddList.Contains(updater)) && !fixedUpdateRemoveList.Contains(updater))
-            {
-                Log.ErrorForce("重复注册FixedUpdate");
-                return;
-            }
-
-            fixedUpdateAddList.Add(updater);
+            fixedUpdateGroup.Register(updater);
         }
 
         /// <summary>
@@ -393,46 +147,12 @@ namespace Duo1JFramework.Scheduling
         /// </summary>
         public void UnRegisterFixedUpdate(Action updater)
         {
-            fixedUpdateAddList.Remove(updater);
-            fixedUpdateRemoveList.Add(updater);
+            fixedUpdateGroup.UnRegister(updater);
         }
 
         private void FixedUpdate()
         {
-            if (fixedUpdateSet != null)
-            {
-                if (fixedUpdateRemoveList != null)
-                {
-                    foreach (Action action in fixedUpdateRemoveList)
-                    {
-                        fixedUpdateSet.Remove(action);
-                    }
-
-                    fixedUpdateRemoveList.Clear();
-                }
-
-                if (fixedUpdateAddList != null)
-                {
-                    foreach (Action action in fixedUpdateAddList)
-                    {
-                        fixedUpdateSet.Add(action);
-                    }
-
-                    fixedUpdateAddList.Clear();
-                }
-
-                foreach (Action action in fixedUpdateSet)
-                {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.ExceptHandle(e);
-                    }
-                }
-            }
+            fixedUpdateGroup.Tick();
         }
 
         #endregion FixedUpdate
@@ -443,6 +163,11 @@ namespace Duo1JFramework.Scheduling
         /// 异步操作回调包装列表
         /// </summary>
         private List<AsyncOperationWrap> asyncOpeWrapList;
+
+        /// <summary>
+        /// 异步操作完成回调缓存
+        /// </summary>
+        private List<AsyncOperationWrap> asyncOpeCompletedList;
 
         /// <summary>
         /// 注册异步操作回调
@@ -461,59 +186,63 @@ namespace Duo1JFramework.Scheduling
             asyncOpeWrapList.Add(new AsyncOperationWrap(operation, callback));
         }
 
+        private void TickAsyncOperation()
+        {
+            if (asyncOpeWrapList == null)
+            {
+                return;
+            }
+
+            asyncOpeCompletedList.Clear();
+
+            for (int i = asyncOpeWrapList.Count - 1; i >= 0; --i)
+            {
+                AsyncOperationWrap wrap = asyncOpeWrapList[i];
+                if (!wrap.IsDone)
+                {
+                    continue;
+                }
+
+                asyncOpeCompletedList.Add(wrap);
+                asyncOpeWrapList.RemoveAt(i);
+            }
+
+            foreach (AsyncOperationWrap wrap in asyncOpeCompletedList)
+            {
+                wrap.Call();
+            }
+
+            asyncOpeCompletedList.Clear();
+        }
+
         #endregion Yield Request
 
         protected override void OnInit()
         {
             PlayerLoopManager.Instance.AddPlayerLoop(typeof(UnityEngine.PlayerLoop.EarlyUpdate), OnEarlyUpdate);
 
-            earlyUpdateSet = new HashSet<Action>();
-            earlyUpdateAddList = new List<Action>();
-            earlyUpdateRemoveList = new List<Action>();
-
-            preUpdateSet = new HashSet<Action>();
-            preUpdateAddList = new List<Action>();
-            preUpdateRemoveList = new List<Action>();
-
-            updateSet = new HashSet<Action>();
-            updateAddList = new List<Action>();
-            updateRemoveList = new List<Action>();
-
-            fixedUpdateSet = new HashSet<Action>();
-            fixedUpdateAddList = new List<Action>();
-            fixedUpdateRemoveList = new List<Action>();
-
-            lateUpdateSet = new HashSet<Action>();
-            lateUpdateAddList = new List<Action>();
-            lateUpdateRemoveList = new List<Action>();
+            earlyUpdateGroup = new UpdateGroup("EarlyUpdate");
+            preUpdateGroup = new UpdateGroup("PreUpdate");
+            updateGroup = new UpdateGroup("Update");
+            fixedUpdateGroup = new UpdateGroup("FixedUpdate");
+            lateUpdateGroup = new UpdateGroup("LateUpdate");
 
             asyncOpeWrapList = new List<AsyncOperationWrap>();
+            asyncOpeCompletedList = new List<AsyncOperationWrap>();
         }
 
         protected override void OnDispose()
         {
-            earlyUpdateSet = null;
-            earlyUpdateAddList = null;
-            earlyUpdateRemoveList = null;
-
-            preUpdateSet = null;
-            preUpdateAddList = null;
-            preUpdateRemoveList = null;
-
-            updateSet = null;
-            updateAddList = null;
-            updateRemoveList = null;
-
-            fixedUpdateSet = null;
-            fixedUpdateAddList = null;
-            fixedUpdateRemoveList = null;
-
-            lateUpdateSet = null;
-            lateUpdateAddList = null;
-            lateUpdateRemoveList = null;
+            earlyUpdateGroup = null;
+            preUpdateGroup = null;
+            updateGroup = null;
+            fixedUpdateGroup = null;
+            lateUpdateGroup = null;
 
             asyncOpeWrapList = null;
+            asyncOpeCompletedList = null;
         }
+
 
         /// <summary>
         /// 异步操作回调包装

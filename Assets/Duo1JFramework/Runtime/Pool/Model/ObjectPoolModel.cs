@@ -14,9 +14,24 @@ namespace Duo1JFramework.ObjectPool
         public Action<ObjectPoolItem<T>> OnCreateNew;
 
         /// <summary>
+        /// 销毁对象钩子
+        /// </summary>
+        public Action<ObjectPoolItem<T>> OnDestroyItem;
+
+        /// <summary>
         /// 对象池栈
         /// </summary>
         private Stack<ObjectPoolItem<T>> poolStack;
+
+        /// <summary>
+        /// 最大空闲容量，<0表示不限制
+        /// </summary>
+        public int MaxCapacity { get; set; } = -1;
+
+        /// <summary>
+        /// 空闲对象数
+        /// </summary>
+        public int CountInactive => poolStack.Count;
 
         /// <summary>
         /// 入池
@@ -35,6 +50,13 @@ namespace Duo1JFramework.ObjectPool
             }
 
             item.Using = false;
+
+            if (MaxCapacity >= 0 && poolStack.Count >= MaxCapacity)
+            {
+                DestroyItem(item);
+                return;
+            }
+
             poolStack.Push(item);
         }
 
@@ -55,6 +77,38 @@ namespace Duo1JFramework.ObjectPool
 
             ret.Using = true;
             return ret;
+        }
+
+        /// <summary>
+        /// 预热对象池
+        /// </summary>
+        public void Prewarm(int count)
+        {
+            if (count <= 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                if (MaxCapacity >= 0 && poolStack.Count >= MaxCapacity)
+                {
+                    return;
+                }
+
+                Push(CreateNew());
+            }
+        }
+
+        /// <summary>
+        /// 清空空闲对象
+        /// </summary>
+        public void Clear()
+        {
+            while (poolStack.Count > 0)
+            {
+                DestroyItem(poolStack.Pop());
+            }
         }
 
         /// <summary>
@@ -106,6 +160,27 @@ namespace Duo1JFramework.ObjectPool
             OnCreateNew?.Invoke(newItem);
             newItem.Using = true;
             return newItem;
+        }
+
+        /// <summary>
+        /// 销毁对象
+        /// </summary>
+        public void Destroy(ObjectPoolItem<T> item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            DestroyItem(item);
+        }
+
+        /// <summary>
+        /// 销毁对象
+        /// </summary>
+        protected virtual void DestroyItem(ObjectPoolItem<T> item)
+        {
+            OnDestroyItem?.Invoke(item);
         }
 
         public ObjectPoolModel()

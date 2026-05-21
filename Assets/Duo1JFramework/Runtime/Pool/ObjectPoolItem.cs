@@ -11,6 +11,11 @@ namespace Duo1JFramework.ObjectPool
         public ObjectPoolModel<T> Pool { get; private set; }
 
         /// <summary>
+        /// 所属对象池实例
+        /// </summary>
+        private BaseObjectPool<T> ownerPool;
+
+        /// <summary>
         /// 对象值
         /// </summary>
         public T Value { get; private set; }
@@ -28,10 +33,24 @@ namespace Duo1JFramework.ObjectPool
         }
 
         /// <summary>
+        /// 设置所属对象池实例
+        /// </summary>
+        public void SetOwnerPool(BaseObjectPool<T> pool)
+        {
+            ownerPool = pool;
+        }
+
+        /// <summary>
         /// 返回对象池
         /// </summary>
         public void Return()
         {
+            if (ownerPool != null)
+            {
+                ownerPool.Push(Value);
+                return;
+            }
+
             Pool?.Push(this);
         }
     }

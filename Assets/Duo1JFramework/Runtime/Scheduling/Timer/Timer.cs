@@ -125,6 +125,12 @@ namespace Duo1JFramework.Scheduling
         /// <see cref="Def.TIMER_REPEAT_FOREVER"/>
         public Timer Init(float interval, bool isFrameTimer, Action callback, int repeat)
         {
+            if (interval <= 0)
+            {
+                Log.ErrorForce(isFrameTimer ? "帧计时器frame必须大于0" : "计时器interval必须大于0");
+                interval = 1;
+            }
+
             if (repeat == 0)
             {
                 Log.ErrorForce("计时器重复次数repeat不可为0");
@@ -182,7 +188,7 @@ namespace Duo1JFramework.Scheduling
         {
             if (isFrameTimer)
             {
-                callback?.Invoke();
+                InvokeCallbackSafe();
                 startTime = Time.unscaledTime;
             }
             else
@@ -190,13 +196,25 @@ namespace Duo1JFramework.Scheduling
                 int executeTimes = Mathf.Max(1, Mathf.FloorToInt(curInterval / interval));
                 for (int i = 0; i < executeTimes; i++)
                 {
-                    callback?.Invoke();
+                    InvokeCallbackSafe();
                 }
                 startTime = Mathf.Max(0, Time.unscaledTime - curInterval % interval);
             }
 
             curInterval = 0;
             curRepeat++;
+        }
+
+        private void InvokeCallbackSafe()
+        {
+            try
+            {
+                callback?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Assert.ExceptHandle(e, "计时器回调异常");
+            }
         }
 
         public Timer(float interval, bool isFrameTimer, Action callback, int repeat)

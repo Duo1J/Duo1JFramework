@@ -60,12 +60,12 @@ namespace Duo1JFramework.Scheduling
                 hasOriginPlayerLoop = true;
             }
 
-            Loop loop = new Loop(updateFunction);
+            Loop loop = new Loop(type, updateFunction);
 
             PlayerLoopSystem playerLoopSystem = new PlayerLoopSystem
             {
                 type = type,
-                updateDelegate = loop.Run
+                updateDelegate = loop.InjectedFunction
             };
 
             PlayerLoopSystem curPlayerLoop = PlayerLoop.GetCurrentPlayerLoop();
@@ -106,6 +106,105 @@ namespace Duo1JFramework.Scheduling
             loopList.Add(loop);
 
             return loop;
+        }
+
+        /// <summary>
+        /// 移除用户循环
+        /// </summary>
+        public bool RemovePlayerLoop(Loop loop)
+        {
+            if (loop == null || loop.Disposed)
+            {
+                return false;
+            }
+
+            return RemovePlayerLoop(loop.Type, loop.UpdateFunction, loop);
+        }
+
+        /// <summary>
+        /// 移除用户循环
+        /// </summary>
+        public bool RemovePlayerLoop(Type type, PlayerLoopSystem.UpdateFunction updateFunction)
+        {
+            Assert.NotNullArg(type, "type");
+            Assert.NotNullArg(updateFunction, "updateFunction");
+
+            return RemovePlayerLoop(type, updateFunction, null);
+        }
+
+        private bool RemovePlayerLoop(Type type, PlayerLoopSystem.UpdateFunction updateFunction, Loop loop)
+        {
+            Assert.NotNullArg(type, "type");
+            Assert.NotNullArg(updateFunction, "updateFunction");
+
+            if (loop == null && loopList != null)
+            {
+                loop = loopList.Find(item => item != null && item.Type == type && item.UpdateFunction == updateFunction);
+            }
+
+            PlayerLoopSystem.UpdateFunction injectedFunction = loop == null ? updateFunction : loop.InjectedFunction;
+            PlayerLoopSystem curPlayerLoop = PlayerLoop.GetCurrentPlayerLoop();
+            bool removed = false;
+
+            for (int i = 0; i < curPlayerLoop.subSystemList.Length; i++)
+            {
+                if (curPlayerLoop.subSystemList[i].type != type)
+                {
+                    continue;
+                }
+
+                PlayerLoopSystem[] oldSubSystemList = curPlayerLoop.subSystemList[i].subSystemList;
+                if (oldSubSystemList == null || oldSubSystemList.Length == 0)
+                {
+                    break;
+                }
+
+                int removeIndex = -1;
+                for (int j = 0; j < oldSubSystemList.Length; j++)
+                {
+                    if (oldSubSystemList[j].updateDelegate == injectedFunction)
+                    {
+                        removeIndex = j;
+                        break;
+                    }
+                }
+
+                if (removeIndex < 0)
+                {
+                    break;
+                }
+
+                PlayerLoopSystem[] newSubSystemList = new PlayerLoopSystem[oldSubSystemList.Length - 1];
+                if (removeIndex > 0)
+                {
+                    Array.Copy(oldSubSystemList, 0, newSubSystemList, 0, removeIndex);
+                }
+
+                if (removeIndex < oldSubSystemList.Length - 1)
+                {
+                    Array.Copy(oldSubSystemList, removeIndex + 1, newSubSystemList, removeIndex, oldSubSystemList.Length - removeIndex - 1);
+                }
+
+                curPlayerLoop.subSystemList[i].subSystemList = newSubSystemList;
+                removed = true;
+                break;
+            }
+
+            if (!removed)
+            {
+                return false;
+            }
+
+            PlayerLoop.SetPlayerLoop(curPlayerLoop);
+            injectedFunctionSet?.Remove(updateFunction);
+
+            if (loop != null)
+            {
+                loopList?.Remove(loop);
+                loop.Dispose();
+            }
+
+            return true;
         }
 
         private void DisposeAllLoop()

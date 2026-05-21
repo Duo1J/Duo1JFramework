@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.LowLevel;
 
 namespace Duo1JFramework.Scheduling
@@ -13,14 +14,42 @@ namespace Duo1JFramework.Scheduling
         private PlayerLoopSystem.UpdateFunction updateFunction;
 
         /// <summary>
+        /// 循环类型
+        /// </summary>
+        public Type Type { get; private set; }
+
+        /// <summary>
+        /// 原始更新方法
+        /// </summary>
+        public PlayerLoopSystem.UpdateFunction UpdateFunction => updateFunction;
+
+        /// <summary>
+        /// 注入到PlayerLoop的更新方法
+        /// </summary>
+        public PlayerLoopSystem.UpdateFunction InjectedFunction => Run;
+
+        /// <summary>
         /// 是否已销毁
         /// </summary>
         public bool Disposed { get; private set; }
 
-        public Loop(PlayerLoopSystem.UpdateFunction updateFunction)
+        public Loop(Type type, PlayerLoopSystem.UpdateFunction updateFunction)
+        {
+            Assert.NotNullArg(type, "type");
+            Assert.NotNullArg(updateFunction, "updateFunction");
+
+            Type = type;
+            this.updateFunction = updateFunction;
+        }
+
+        public Loop(PlayerLoopSystem.UpdateFunction updateFunction) : this()
         {
             Assert.NotNullArg(updateFunction, "updateFunction");
             this.updateFunction = updateFunction;
+        }
+
+        private Loop()
+        {
         }
 
         /// <summary>
@@ -35,6 +64,7 @@ namespace Duo1JFramework.Scheduling
         {
             Disposed = true;
             updateFunction = null;
+            Type = null;
         }
     }
 }

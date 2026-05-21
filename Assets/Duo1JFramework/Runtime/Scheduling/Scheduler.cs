@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -26,9 +25,19 @@ namespace Duo1JFramework.Scheduling
         private List<Action> mainThreadTaskList;
 
         /// <summary>
+        /// 主线程任务执行缓存
+        /// </summary>
+        private List<Action> mainThreadExecutingList;
+
+        /// <summary>
         /// 延迟一帧执行任务集合
         /// </summary>
         private HashSet<Action> delayOneFrameTaskSet;
+
+        /// <summary>
+        /// 延迟一帧执行缓存
+        /// </summary>
+        private List<Action> delayOneFrameTaskList;
 
         #region Delay
 
@@ -140,7 +149,7 @@ namespace Duo1JFramework.Scheduling
         public static Task QueueOnTask(Action action)
         {
             Assert.NotNullArg(action, "action");
-            return Task.Factory.StartNew(action);
+            return Task.Run(action);
         }
 
         /// <summary>
@@ -149,7 +158,7 @@ namespace Duo1JFramework.Scheduling
         public static Task QueueOnTask(Action action, CancellationToken cancellationToken)
         {
             Assert.NotNullArg(action, "action");
-            return Task.Factory.StartNew(action, cancellationToken);
+            return Task.Run(action, cancellationToken);
         }
 
         #endregion Thread
@@ -160,35 +169,39 @@ namespace Duo1JFramework.Scheduling
         {
             if (delayOneFrameTaskSet != null && delayOneFrameTaskSet.Count > 0)
             {
-                Action[] actionList = delayOneFrameTaskSet.ToArray();
+                delayOneFrameTaskList.Clear();
+                delayOneFrameTaskList.AddRange(delayOneFrameTaskSet);
                 delayOneFrameTaskSet.Clear();
 
-                foreach (Action action in actionList)
+                foreach (Action action in delayOneFrameTaskList)
                 {
-                    action();
+                    action.InvokeSafe();
                 }
+
+                delayOneFrameTaskList.Clear();
             }
         }
 
         private void OnLateUpdate()
         {
-            Action[] actions = null;
-
             lock (locker)
             {
                 if (mainThreadTaskList != null && mainThreadTaskList.Count > 0)
                 {
-                    actions = mainThreadTaskList.ToArray();
-                    mainThreadTaskList.Clear();
+                    List<Action> temp = mainThreadExecutingList;
+                    mainThreadExecutingList = mainThreadTaskList;
+                    mainThreadTaskList = temp;
                 }
             }
 
-            if (actions != null)
+            if (mainThreadExecutingList != null && mainThreadExecutingList.Count > 0)
             {
-                foreach (Action action in actions)
+                foreach (Action action in mainThreadExecutingList)
                 {
                     action.InvokeSafe();
                 }
+
+                mainThreadExecutingList.Clear();
             }
         }
 
@@ -196,7 +209,9 @@ namespace Duo1JFramework.Scheduling
         {
             mainThreadID = Thread.CurrentThread.ManagedThreadId;
             mainThreadTaskList = new List<Action>();
+            mainThreadExecutingList = new List<Action>();
             delayOneFrameTaskSet = new HashSet<Action>();
+            delayOneFrameTaskList = new List<Action>();
 
             Reg.RegisterEarlyUpdate(OnEarlyUpdate);
             Reg.RegisterLateUpdate(OnLateUpdate);
@@ -211,12 +226,24 @@ namespace Duo1JFramework.Scheduling
                     mainThreadTaskList.Clear();
                     mainThreadTaskList = null;
                 }
+
+                if (mainThreadExecutingList != null)
+                {
+                    mainThreadExecutingList.Clear();
+                    mainThreadExecutingList = null;
+                }
             }
 
             if (delayOneFrameTaskSet != null)
             {
                 delayOneFrameTaskSet.Clear();
                 delayOneFrameTaskSet = null;
+            }
+
+            if (delayOneFrameTaskList != null)
+            {
+                delayOneFrameTaskList.Clear();
+                delayOneFrameTaskList = null;
             }
         }
 
