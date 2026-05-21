@@ -11,6 +11,12 @@ namespace Duo1JFramework.AudioAPI
         {
             base.OnAwake();
 
+            if (data == null)
+            {
+                Log.ErrorForce("AudioController data为空，无法播放");
+                return;
+            }
+
             switch (audioPlayType)
             {
                 case EAudioPlayType.OneShot:

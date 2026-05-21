@@ -13,7 +13,7 @@ namespace Duo1JFramework.AudioAPI
         /// <summary>
         /// 播放背景音乐
         /// </summary>
-        public void PlayBackgroundMusic(AudioData audioData)
+        public void PlayBackgroundMusic(AudioData audioData, float fadeInTime = 0f)
         {
             if (!IsBackgroundMusic)
             {
@@ -22,13 +22,13 @@ namespace Duo1JFramework.AudioAPI
             }
 
             audioPlayType = EAudioPlayType.Keep;
-            SetAudioDataAndLoad(audioData, Play);
+            PlayKeep(audioData, fadeInTime);
         }
 
         /// <summary>
         /// 停止背景音乐
         /// </summary>
-        public void StopBackgroundMusic()
+        public void StopBackgroundMusic(float fadeOutTime = 0f)
         {
             if (!IsBackgroundMusic)
             {
@@ -36,16 +36,23 @@ namespace Duo1JFramework.AudioAPI
                 return;
             }
 
-            Stop();
+            if (fadeOutTime > 0f)
+            {
+                FadeOutAndStop(fadeOutTime);
+            }
+            else
+            {
+                Stop();
+            }
         }
 
         protected override void OnStop()
         {
             base.OnStop();
 
-            if (!IsBackgroundMusic)
+            if (!IsBackgroundMusic && AudioManager.TryGetInstance(out AudioManager audioManager))
             {
-                AudioManager.Instance.PushCon(this);
+                audioManager.PushCon(this);
             }
         }
 
