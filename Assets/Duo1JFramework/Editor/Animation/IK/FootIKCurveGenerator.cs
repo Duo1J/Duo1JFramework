@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -187,6 +186,13 @@ namespace Duo1JFramework.AnimationAPI
 
             leftFootBoneTF = animator.GetBoneTransform(HumanBodyBones.LeftFoot);
             rightFootBoneTF = animator.GetBoneTransform(HumanBodyBones.RightFoot);
+            if (leftFootBoneTF == null || rightFootBoneTF == null)
+            {
+                SetErrMsg($"采样目标`{sampleGo.name}`错误，无法获取左右脚骨骼");
+                ClearData();
+                return false;
+            }
+
             leftBottomHeight = animator.leftFeetBottomHeight;
             rightBottomHeight = animator.rightFeetBottomHeight;
 
@@ -244,13 +250,17 @@ namespace Duo1JFramework.AnimationAPI
                     }
 
                     ModelImporterClipAnimation[] anims = importer.clipAnimations;
-                    int animIndex = Enumerable.Range(0, anims.Length).FirstOrDefault(i => anims[i].name == clip.name);
+                    int animIndex = Array.FindIndex(anims, anim => anim.name == clip.name);
+                    if (animIndex < 0)
+                    {
+                        SetErrMsg($"无法在`{clip.name}`的ModelImporter中找到同名动画片段");
+                        continue;
+                    }
 
-                    anims[animIndex].curves = anims[animIndex].curves
-                        .Where(c =>
-                            !leftFootIKCurveName.Equals(c.name) &&
-                            !rightFootIKCurveName.Equals(c.name))
-                        .ToArray();
+                    ClipAnimationInfoCurve[] oldCurves = anims[animIndex].curves ?? new ClipAnimationInfoCurve[0];
+                    anims[animIndex].curves = Array.FindAll(oldCurves, c =>
+                        !leftFootIKCurveName.Equals(c.name) &&
+                        !rightFootIKCurveName.Equals(c.name));
 
                     int frames = Mathf.CeilToInt(clip.length * sampleRate);
                     List<Keyframe> leftFootKeyList = new List<Keyframe>();
@@ -304,7 +314,12 @@ namespace Duo1JFramework.AnimationAPI
                     leftInfoCurve.curve = new AnimationCurve(leftFootKeyList.ToArray());
                     rightInfoCurve.curve = new AnimationCurve(rightFootKeyList.ToArray());
 
-                    anims[animIndex].curves = anims[animIndex].curves.Concat(new[] { leftInfoCurve, rightInfoCurve }).ToArray();
+                    ClipAnimationInfoCurve[] curves = anims[animIndex].curves;
+                    int curveCount = curves.Length;
+                    Array.Resize(ref curves, curveCount + 2);
+                    curves[curveCount] = leftInfoCurve;
+                    curves[curveCount + 1] = rightInfoCurve;
+                    anims[animIndex].curves = curves;
                     importer.clipAnimations = anims;
                     importer.SaveAndReimport();
                 }

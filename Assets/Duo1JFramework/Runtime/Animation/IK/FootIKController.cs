@@ -7,6 +7,24 @@ namespace Duo1JFramework.AnimationAPI
     /// </summary>
     public class FootIKController : MonoRegister
     {
+        /// <summary>
+        /// 单脚IK状态
+        /// </summary>
+        private class FootIKState
+        {
+            public AvatarIKGoal IKGoal;
+            public Transform FootTF;
+
+            public float CurGoal;
+            public float TarGoal;
+
+            public bool Hit;
+            public bool HasTarget;
+
+            public Vector3 Pos;
+            public Quaternion Rot;
+        }
+
         [Label("动画控制器")]
         [SerializeField]
         private Animator animator;
@@ -18,6 +36,22 @@ namespace Duo1JFramework.AnimationAPI
         [Label("权重过渡速度")]
         [SerializeField]
         private float goalLerpSpeed = 10;
+
+        [Label("目标位置平滑速度")]
+        [SerializeField]
+        private float posLerpSpeed = 20;
+
+        [Label("目标旋转平滑速度")]
+        [SerializeField]
+        private float rotLerpSpeed = 20;
+
+        [Label("最大地面坡度")]
+        [SerializeField]
+        private float maxGroundAngle = 60;
+
+        [Label("应用脚部旋转")]
+        [SerializeField]
+        private bool applyFootRotation = true;
 
         [Space]
         [Label("左侧脚TF")]
@@ -31,16 +65,6 @@ namespace Duo1JFramework.AnimationAPI
         [Label("目标位置偏移")]
         [SerializeField]
         private Vector3 tarPosOffset = new Vector3(0, 0.1f, 0);
-
-        /// <summary>
-        /// 左侧射线起点
-        /// </summary>
-        private Vector3 LeftRayPos => leftFootTF.position + rayPosOffset;
-
-        /// <summary>
-        /// 右侧射线起点
-        /// </summary>
-        private Vector3 RightRayPos => rightFootTF.position + rayPosOffset;
 
         [Space]
         [Label("射线检测层")]
@@ -64,54 +88,14 @@ namespace Duo1JFramework.AnimationAPI
         private float rayMaxDistance = 1f;
 
         /// <summary>
-        /// 当前左脚权重
+        /// 左脚IK状态
         /// </summary>
-        private float leftGoal = 0;
+        private FootIKState leftFoot;
 
         /// <summary>
-        /// 当前右脚权重
+        /// 右脚IK状态
         /// </summary>
-        private float rightGoal = 0;
-
-        /// <summary>
-        /// 目标左脚权重
-        /// </summary>
-        private float tarLeftGoal = 0;
-
-        /// <summary>
-        /// 目标右脚权重
-        /// </summary>
-        private float tarRightGoal = 0;
-
-        /// <summary>
-        /// 左侧命中
-        /// </summary>
-        private bool leftHit = false;
-
-        /// <summary>
-        /// 右侧命中
-        /// </summary>
-        private bool rightHit = false;
-
-        /// <summary>
-        /// 左侧目标位置
-        /// </summary>
-        private Vector3 leftPos;
-
-        /// <summary>
-        /// 右侧目标位置
-        /// </summary>
-        private Vector3 rightPos;
-
-        /// <summary>
-        /// 左侧目标旋转
-        /// </summary>
-        private Quaternion leftRot;
-
-        /// <summary>
-        /// 右侧目标旋转
-        /// </summary>
-        private Quaternion rightRot;
+        private FootIKState rightFoot;
 
         /// <summary>
         /// 设置权重
@@ -127,11 +111,7 @@ namespace Duo1JFramework.AnimationAPI
         /// </summary>
         public void SetLeftGoal(float goal, bool immediately = false)
         {
-            tarLeftGoal = goal;
-            if (immediately)
-            {
-                leftGoal = goal;
-            }
+            SetGoal(leftFoot, goal, immediately);
         }
 
         /// <summary>
@@ -139,127 +119,198 @@ namespace Duo1JFramework.AnimationAPI
         /// </summary>
         public void SetRightGoal(float goal, bool immediately = false)
         {
-            tarRightGoal = goal;
+            SetGoal(rightFoot, goal, immediately);
+        }
+
+        /// <summary>
+        /// 设置单脚权重
+        /// </summary>
+        private void SetGoal(FootIKState foot, float goal, bool immediately)
+        {
+            if (foot == null)
+            {
+                return;
+            }
+
+            goal = Mathf.Clamp01(goal);
+            foot.TarGoal = goal;
             if (immediately)
             {
-                rightGoal = goal;
+                foot.CurGoal = goal;
             }
         }
 
         private void OnAnimatorIK(int layerIndex)
         {
-            if (layerIndex == tarLayerIdx)
+            if (layerIndex != tarLayerIdx)
             {
-                RaycastUpdate();
-
-                if (leftHit)
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, leftGoal);
-                    animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, leftGoal);
-                    animator.SetIKPosition(AvatarIKGoal.LeftFoot, leftPos);
-                    animator.SetIKRotation(AvatarIKGoal.LeftFoot, leftRot);
-                }
-                else
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 0);
-                    animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 0);
-                }
-
-                if (rightHit)
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, rightGoal);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, rightGoal);
-                    animator.SetIKPosition(AvatarIKGoal.RightFoot, rightPos);
-                    animator.SetIKRotation(AvatarIKGoal.RightFoot, rightRot);
-                }
-                else
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 0);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 0);
-                }
+                return;
             }
+
+            RaycastUpdate(leftFoot);
+            RaycastUpdate(rightFoot);
+            ApplyIK(leftFoot);
+            ApplyIK(rightFoot);
         }
 
         /// <summary>
         /// 射线更新
         /// </summary>
-        private void RaycastUpdate()
+        private void RaycastUpdate(FootIKState foot)
         {
-            leftHit = Physics.CapsuleCast(LeftRayPos, LeftRayPos + leftFootTF.forward * rayCapsuleLen, rayCapsuleRadius,
-                Vector3.down, out RaycastHit hitInfoLeft, rayMaxDistance, rayLayerMask);
-
-            if (leftHit)
+            if (foot?.FootTF == null)
             {
-                Plane plane = new Plane(hitInfoLeft.normal, hitInfoLeft.point);
-                leftPos = plane.ClosestPointOnPlane(leftFootTF.position) + tarPosOffset;
-                leftRot = Quaternion.FromToRotation(leftFootTF.up, hitInfoLeft.normal) * leftFootTF.rotation;
+                return;
             }
 
-            rightHit = Physics.CapsuleCast(RightRayPos, RightRayPos + rightFootTF.forward * rayCapsuleLen, rayCapsuleRadius,
-                Vector3.down, out RaycastHit hitInfoRight, rayMaxDistance, rayLayerMask);
-            if (rightHit)
+            Vector3 rayPos = GetRayPos(foot.FootTF);
+            foot.Hit = Physics.CapsuleCast(rayPos, rayPos + foot.FootTF.forward * rayCapsuleLen, rayCapsuleRadius,
+                Vector3.down, out RaycastHit hitInfo, rayMaxDistance, rayLayerMask);
+
+            if (!foot.Hit)
             {
-                Plane plane = new Plane(hitInfoRight.normal, hitInfoRight.point);
-                rightPos = plane.ClosestPointOnPlane(rightFootTF.position) + tarPosOffset;
-                rightRot = Quaternion.FromToRotation(rightFootTF.up, hitInfoRight.normal) * rightFootTF.rotation;
+                return;
             }
+
+            float groundAngle = Vector3.Angle(Vector3.up, hitInfo.normal);
+            if (groundAngle > maxGroundAngle)
+            {
+                foot.Hit = false;
+                return;
+            }
+
+            Plane plane = new Plane(hitInfo.normal, hitInfo.point);
+            Vector3 tarPos = plane.ClosestPointOnPlane(foot.FootTF.position) + tarPosOffset;
+            Quaternion tarRot = applyFootRotation
+                ? Quaternion.FromToRotation(foot.FootTF.up, hitInfo.normal) * foot.FootTF.rotation
+                : foot.FootTF.rotation;
+
+            SmoothTarget(foot, tarPos, tarRot);
+        }
+
+        /// <summary>
+        /// 应用单脚IK
+        /// </summary>
+        private void ApplyIK(FootIKState foot)
+        {
+            if (foot == null)
+            {
+                return;
+            }
+
+            if (foot.Hit)
+            {
+                animator.SetIKPositionWeight(foot.IKGoal, foot.CurGoal);
+                animator.SetIKRotationWeight(foot.IKGoal, applyFootRotation ? foot.CurGoal : 0);
+                animator.SetIKPosition(foot.IKGoal, foot.Pos);
+                animator.SetIKRotation(foot.IKGoal, foot.Rot);
+            }
+            else
+            {
+                animator.SetIKPositionWeight(foot.IKGoal, 0);
+                animator.SetIKRotationWeight(foot.IKGoal, 0);
+            }
+        }
+
+        /// <summary>
+        /// 平滑目标位置和旋转
+        /// </summary>
+        private void SmoothTarget(FootIKState foot, Vector3 tarPos, Quaternion tarRot)
+        {
+            if (!foot.HasTarget)
+            {
+                foot.Pos = tarPos;
+                foot.Rot = tarRot;
+                foot.HasTarget = true;
+                return;
+            }
+
+            float posLerpT = GetLerpT(posLerpSpeed);
+            float rotLerpT = GetLerpT(rotLerpSpeed);
+            foot.Pos = Vector3.Lerp(foot.Pos, tarPos, posLerpT);
+            foot.Rot = Quaternion.Slerp(foot.Rot, tarRot, rotLerpT);
         }
 
         private void OnPreUpdate()
         {
-            if (Mathf.Abs(leftGoal - tarLeftGoal) < 0.01f)
+            UpdateGoal(leftFoot);
+            UpdateGoal(rightFoot);
+        }
+
+        /// <summary>
+        /// 更新单脚权重
+        /// </summary>
+        private void UpdateGoal(FootIKState foot)
+        {
+            if (foot == null)
             {
-                leftGoal = tarLeftGoal;
-            }
-            else
-            {
-                leftGoal = Mathf.Lerp(leftGoal, tarLeftGoal, goalLerpSpeed * Time.deltaTime);
+                return;
             }
 
-            if (Mathf.Abs(rightGoal - tarRightGoal) < 0.01f)
+            if (Mathf.Abs(foot.CurGoal - foot.TarGoal) < 0.01f)
             {
-                rightGoal = tarRightGoal;
+                foot.CurGoal = foot.TarGoal;
             }
             else
             {
-                rightGoal = Mathf.Lerp(rightGoal, tarRightGoal, goalLerpSpeed * Time.deltaTime);
+                foot.CurGoal = Mathf.Lerp(foot.CurGoal, foot.TarGoal, GetLerpT(goalLerpSpeed));
             }
+        }
+
+        /// <summary>
+        /// 获取插值比例
+        /// </summary>
+        private float GetLerpT(float lerpSpeed)
+        {
+            if (lerpSpeed <= 0)
+            {
+                return 1;
+            }
+
+            return Mathf.Clamp01(lerpSpeed * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// 获取射线起点
+        /// </summary>
+        private Vector3 GetRayStartPos(Transform footTF)
+        {
+            return footTF.position + rayPosOffset;
         }
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(leftPos, 0.1f);
-            Gizmos.DrawWireSphere(rightPos, 0.1f);
+            DrawFootGizmos(leftFootTF, leftFoot);
+            DrawFootGizmos(rightFootTF, rightFoot);
+        }
+
+        /// <summary>
+        /// 绘制单脚Gizmos
+        /// </summary>
+        private void DrawFootGizmos(Transform footTF, FootIKState foot)
+        {
+            if (foot != null && foot.HasTarget)
+            {
+                Gizmos.color = foot.Hit ? Color.magenta : Color.gray;
+                Gizmos.DrawWireSphere(foot.Pos, 0.1f);
+            }
+
+            if (footTF == null)
+            {
+                return;
+            }
 
             Gizmos.color = Color.yellow;
-            if (leftFootTF != null)
-            {
-                Vector3 leftPos1 = LeftRayPos;
-                Vector3 leftPos2 = LeftRayPos + leftFootTF.forward * rayCapsuleLen;
-                GizmosUtil.DrawWireCapsule(leftPos1, leftPos2, rayCapsuleRadius);
+            Vector3 rayStartPos = GetRayStartPos(footTF);
+            Vector3 rayStartPos2 = rayStartPos + footTF.forward * rayCapsuleLen;
+            GizmosUtil.DrawWireCapsule(rayStartPos, rayStartPos2, rayCapsuleRadius);
 
-                Vector3 leftPos3 = LeftRayPos + Vector3.down * rayMaxDistance;
-                Vector3 leftPos4 = LeftRayPos + leftFootTF.forward * rayCapsuleLen + Vector3.down * rayMaxDistance;
-                GizmosUtil.DrawWireCapsule(leftPos3, leftPos4, rayCapsuleRadius);
+            Vector3 rayEndPos = rayStartPos + Vector3.down * rayMaxDistance;
+            Vector3 rayEndPos2 = rayStartPos2 + Vector3.down * rayMaxDistance;
+            GizmosUtil.DrawWireCapsule(rayEndPos, rayEndPos2, rayCapsuleRadius);
 
-                Gizmos.DrawLine(leftPos1, leftPos3);
-                Gizmos.DrawLine(leftPos2, leftPos4);
-            }
-
-            if (rightFootTF != null)
-            {
-                Vector3 rightPos1 = RightRayPos;
-                Vector3 rightPos2 = RightRayPos + rightFootTF.forward * rayCapsuleLen;
-                GizmosUtil.DrawWireCapsule(rightPos1, rightPos2, rayCapsuleRadius);
-
-                Vector3 rightPos3 = RightRayPos + Vector3.down * rayMaxDistance;
-                Vector3 rightPos4 = RightRayPos + rightFootTF.forward * rayCapsuleLen + Vector3.down * rayMaxDistance;
-                GizmosUtil.DrawWireCapsule(rightPos3, rightPos4, rayCapsuleRadius);
-
-                Gizmos.DrawLine(rightPos1, rightPos3);
-                Gizmos.DrawLine(rightPos2, rightPos4);
-            }
+            Gizmos.DrawLine(rayStartPos, rayEndPos);
+            Gizmos.DrawLine(rayStartPos2, rayEndPos2);
         }
 
         private void Awake()
@@ -275,6 +326,19 @@ namespace Duo1JFramework.AnimationAPI
                 enabled = false;
                 return;
             }
+
+            leftFoot = new FootIKState()
+            {
+                IKGoal = AvatarIKGoal.LeftFoot,
+                FootTF = leftFootTF,
+                Rot = leftFootTF.rotation,
+            };
+            rightFoot = new FootIKState()
+            {
+                IKGoal = AvatarIKGoal.RightFoot,
+                FootTF = rightFootTF,
+                Rot = rightFootTF.rotation,
+            };
 
             Reg.RegisterPreUpdate(OnPreUpdate);
         }

@@ -107,9 +107,20 @@ namespace Duo1JFramework.Actor
         public void SetFootIKGoalByCurve()
         {
             Animator anim = GetAnimator();
-            float leftGoal = anim.GetFloat(Def.Anim.LEFT_FOOT_IK_CURVE_PARAM);
-            float rightGoal = anim.GetFloat(Def.Anim.RIGHT_FOOT_IK_CURVE_PARAM);
-            SetFootIKGoal(leftGoal, rightGoal, true);
+            if (anim == null || anim.runtimeAnimatorController == null)
+            {
+                return;
+            }
+
+            FootIKController footIKCon = GetFootIKCon();
+            if (footIKCon == null)
+            {
+                return;
+            }
+
+            float leftGoal = Mathf.Clamp01(anim.GetFloat(Def.Anim.LEFT_FOOT_IK_CURVE_PARAM));
+            float rightGoal = Mathf.Clamp01(anim.GetFloat(Def.Anim.RIGHT_FOOT_IK_CURVE_PARAM));
+            footIKCon.SetGoal(leftGoal, rightGoal, true);
         }
 
         #endregion IK
