@@ -34,9 +34,9 @@ namespace Duo1JFramework.Actor
         {
             get
             {
-                if (CameraBinded)
+                if (CameraBinded && point != null && point.TryGetCameraPoint(out Transform cameraPoint))
                 {
-                    return Vector3.Cross(point.CameraPoint.right, Vector3.up).normalized;
+                    return Vector3.Cross(cameraPoint.right, Vector3.up).normalized;
                 }
                 return Vector3.forward.normalized;
             }
@@ -49,9 +49,9 @@ namespace Duo1JFramework.Actor
         {
             get
             {
-                if (CameraBinded)
+                if (CameraBinded && point != null && point.TryGetCameraPoint(out Transform cameraPoint))
                 {
-                    return point.CameraPoint.right.normalized;
+                    return cameraPoint.right.normalized;
                 }
                 return Vector3.right.normalized;
             }

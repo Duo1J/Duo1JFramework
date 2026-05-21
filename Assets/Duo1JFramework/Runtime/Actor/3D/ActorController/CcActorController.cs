@@ -6,7 +6,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// CharactorController角色控制器
     /// </summary>
-    public class CcActorController : ActorController
+    public class CcActorController : ActorController, IActorMotor
     {
         /// <summary>
         /// 角色控制器
@@ -34,6 +34,11 @@ namespace Duo1JFramework.Actor
         /// 当前重力速度
         /// </summary>
         private float gravityVelocity;
+
+        /// <summary>
+        /// 当前速度
+        /// </summary>
+        private Vector3 moveVelocity;
 
         #region Control
 
@@ -65,7 +70,49 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public float GetJumpVeloByHeight()
         {
-            return Convert.ToSingle(Math.Sqrt(-2 * Param.jumpHeight * RateGravity));
+            return GetJumpVeloByHeight(Param.jumpHeight);
+        }
+
+        /// <summary>
+        /// 获取通过高度数值跳跃的速度
+        /// </summary>
+        public float GetJumpVeloByHeight(float jumpHeight)
+        {
+            return Convert.ToSingle(Math.Sqrt(-2 * jumpHeight * RateGravity));
+        }
+
+        /// <summary>
+        /// 当前速度
+        /// </summary>
+        public Vector3 Velocity => GetVelocity();
+
+        /// <summary>
+        /// 设置移动
+        /// </summary>
+        public void Move(Vector3 moveDir, float speed)
+        {
+            moveVelocity = Vector3.ProjectOnPlane(moveDir, Normal).normalized * speed;
+        }
+
+        /// <summary>
+        /// 跳跃
+        /// </summary>
+        public void Jump(float height)
+        {
+            if (!Grounded)
+            {
+                return;
+            }
+
+            gravityVelocity = GetJumpVeloByHeight(height);
+        }
+
+        /// <summary>
+        /// 停止移动
+        /// </summary>
+        public void Stop()
+        {
+            moveVelocity = Vector3.zero;
         }
 
         #endregion Control
@@ -110,20 +157,20 @@ namespace Duo1JFramework.Actor
 
         protected void UpdateVelocity()
         {
-            Vector3 velocity = Vector3.zero;
+            Vector3 velocity = moveVelocity;
 
-            //重力速度
-            if (Grounded)
+            if (Grounded && gravityVelocity <= 0)
             {
                 gravityVelocity = 0;
             }
             else
             {
                 gravityVelocity += RateGravity * Time.deltaTime;
-                velocity.y += gravityVelocity;
             }
 
-            if (velocity.y != 0)
+            velocity.y = gravityVelocity;
+
+            if (gravityVelocity < 0)
             {
                 velocity.y -= Param.fallSpeedUp * Time.deltaTime;
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Duo1JFramework.Actor
 {
@@ -25,10 +26,28 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public BaseActor CreateActor(ActorData actorData, bool autoCreate = true)
         {
+            if (actorData == null)
+            {
+                Log.ErrorForce("创建Actor失败: ActorData为空");
+                return null;
+            }
+
             Type logicType = actorData.LogicType;
+            if (logicType == null || !typeof(BaseActor).IsAssignableFrom(logicType))
+            {
+                Log.ErrorForce($"创建Actor失败: LogicType无效，{actorData.ToString()}");
+                return null;
+            }
+
             try
             {
                 BaseActor actor = Activator.CreateInstance(logicType) as BaseActor;
+                if (actor == null)
+                {
+                    Log.ErrorForce($"创建Actor失败: LogicType无法转换BaseActor，{actorData.ToString()}");
+                    return null;
+                }
+
                 actor.Init(incID.NewID, actorData);
                 if (autoCreate)
                 {
@@ -69,11 +88,12 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void RemoveAllActor()
         {
-            foreach (BaseActor actor in actorDict.Values)
+            BaseActor[] actors = actorDict.Values.ToArray();
+            actorDict.Clear();
+            foreach (BaseActor actor in actors)
             {
                 actor.Dispose();
             }
-            actorDict = new Dictionary<long, BaseActor>();
         }
 
         /// <summary>

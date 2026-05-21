@@ -10,41 +10,41 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 坐标
         /// </summary>
-        public Vector3 Pos => AssetTf.position;
+        public Vector3 Pos => AssetTf == null ? Vector3.zero : AssetTf.position;
 
         /// <summary>
         /// 本地坐标
         /// </summary>
-        public Vector3 LocPos => AssetTf.localPosition;
+        public Vector3 LocPos => AssetTf == null ? Vector3.zero : AssetTf.localPosition;
 
         /// <summary>
         /// 旋转四元数
         /// </summary>
-        public Quaternion Rot => AssetTf.rotation;
+        public Quaternion Rot => AssetTf == null ? Quaternion.identity : AssetTf.rotation;
 
         /// <summary>
         /// 本地旋转四元数
         /// </summary>
-        public Quaternion LocRot => AssetTf.localRotation;
+        public Quaternion LocRot => AssetTf == null ? Quaternion.identity : AssetTf.localRotation;
 
         /// <summary>
         /// 旋转欧拉角
         /// </summary>
-        public Vector3 Angle => AssetTf.eulerAngles;
+        public Vector3 Angle => AssetTf == null ? Vector3.zero : AssetTf.eulerAngles;
 
         /// <summary>
         /// 本地旋转欧拉角
         /// </summary>
-        public Vector3 LocAngle => AssetTf.localEulerAngles;
+        public Vector3 LocAngle => AssetTf == null ? Vector3.zero : AssetTf.localEulerAngles;
 
         /// <summary>
         /// 缩放
         /// </summary>
-        public Vector3 Scale => AssetTf.lossyScale;
+        public Vector3 Scale => AssetTf == null ? Vector3.one : AssetTf.lossyScale;
 
         /// <summary>
         /// 本地缩放
         /// </summary>
-        public Vector3 LocScale => AssetTf.localScale;
+        public Vector3 LocScale => AssetTf == null ? Vector3.one : AssetTf.localScale;
     }
 }

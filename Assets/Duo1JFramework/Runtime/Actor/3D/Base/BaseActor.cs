@@ -31,17 +31,17 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 角色预制体Tf
         /// </summary>
-        public Transform AssetTf => AssetGo.transform;
+        public Transform AssetTf => AssetGo == null ? null : AssetGo.transform;
 
         /// <summary>
         /// 角色模型Go
         /// </summary>
-        public GameObject Model => Controller.Model;
+        public GameObject Model => Controller == null ? null : Controller.Model;
 
         /// <summary>
         /// 角色模型Tf
         /// </summary>
-        public Transform ModelTf => Model.transform;
+        public Transform ModelTf => Model == null ? null : Model.transform;
 
         /// <summary>
         /// 角色控制器
@@ -57,6 +57,25 @@ namespace Duo1JFramework.Actor
         /// 角色挂点
         /// </summary>
         public ActorPoint Point { get; private set; }
+
+        /// <summary>
+        /// 输入源
+        /// </summary>
+        public IActorInput InputSource { get; private set; } = new DefaultActorInput();
+
+        /// <summary>
+        /// 生命周期状态
+        /// </summary>
+        public EActorLifeState LifeState { get; private set; } = EActorLifeState.None;
+
+        /// <summary>
+        /// 设置输入源
+        /// </summary>
+        public BaseActor SetInputSource(IActorInput inputSource)
+        {
+            InputSource = inputSource ?? new DefaultActorInput();
+            return this;
+        }
 
         public override string ToString()
         {
@@ -88,8 +107,9 @@ namespace Duo1JFramework.Actor
             try
             {
                 BeforeCreate();
-                LoadAsset();
+                LifeState = EActorLifeState.Loading;
                 Disposed = false;
+                LoadAsset();
                 return this;
             }
             catch (Exception e)
@@ -126,7 +146,19 @@ namespace Duo1JFramework.Actor
         {
             Assert.NotNull(handle, $"{ToString()} 资源加载失败: `{Data.Path}`");
 
+            if (Disposed || LifeState != EActorLifeState.Loading)
+            {
+                handle.Release();
+                return;
+            }
+
             AssetGo = handle.Instantiate();
+            if (AssetGo == null)
+            {
+                handle.Release();
+                return;
+            }
+
             AssetGo.name = $"{Data.Name}-{ID} ({AssetGo.name})";
             AssetGo.SetParent(Root.ActorRoot);
             AssetGo.ResetSRT();
@@ -136,6 +168,7 @@ namespace Duo1JFramework.Actor
 
             Param = Controller.Param;
             Point = Controller.Point;
+            LifeState = EActorLifeState.Created;
 
             OnCreated();
         }
@@ -145,6 +178,13 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected void UnLoadAsset()
         {
+            if (LifeState == EActorLifeState.Disposed)
+            {
+                return;
+            }
+
+            LifeState = EActorLifeState.Disposed;
+            UnBindCamera();
             BeforeUnLoadAsset();
 
             if (AssetGo != null)
@@ -153,6 +193,8 @@ namespace Duo1JFramework.Actor
                 AssetGo = null;
             }
             Controller = null;
+            Param = null;
+            Point = null;
 
             AfterUnLoadAsset();
         }

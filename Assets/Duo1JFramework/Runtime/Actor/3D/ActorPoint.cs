@@ -34,6 +34,20 @@ namespace Duo1JFramework.Actor
         private Transform cameraPoint;
 
         /// <summary>
+        /// 是否存在相机挂点
+        /// </summary>
+        public bool HasCameraPoint => cameraPoint != null;
+
+        /// <summary>
+        /// 尝试获取相机挂点
+        /// </summary>
+        public bool TryGetCameraPoint(out Transform point)
+        {
+            point = cameraPoint;
+            return point != null;
+        }
+
+        /// <summary>
         /// 相机挂点原始本地坐标
         /// </summary>
         public Vector3 OriCameraPointLocPos { get; private set; }

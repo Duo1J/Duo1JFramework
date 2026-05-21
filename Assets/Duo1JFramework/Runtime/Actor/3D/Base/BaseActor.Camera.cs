@@ -1,5 +1,4 @@
 using Duo1JFramework.CameraAPI;
-using Duo1JFramework.GamerInput;
 using UnityEngine;
 
 namespace Duo1JFramework.Actor
@@ -29,10 +28,13 @@ namespace Duo1JFramework.Actor
         /// </summary>
         protected virtual void UpdateCamera()
         {
-            float mx = InputManager.GetAxisMX();
-            float my = InputManager.GetAxisMY();
-            Controller.RotateCameraPoint(mx, my);
-            Controller.UpdateCameraPointPos();
+            if (Controller == null || InputSource == null)
+            {
+                return;
+            }
+
+            Controller.CameraRig.Rotate(InputSource.Look);
+            Controller.CameraRig.UpdatePosition();
         }
 
         /// <summary>
@@ -40,11 +42,13 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public Transform GetCameraPoint()
         {
-            if (Controller == null)
+            if (Controller == null || Point == null)
             {
                 return null;
             }
-            return Point.CameraPoint;
+
+            Point.TryGetCameraPoint(out Transform point);
+            return point;
         }
 
         /// <summary>

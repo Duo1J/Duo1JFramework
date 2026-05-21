@@ -6,7 +6,7 @@ namespace Duo1JFramework.Actor
     /// <summary>
     /// Rigidbody角色控制器
     /// </summary>
-    public class RbActorController : ActorController
+    public class RbActorController : ActorController, IActorMotor
     {
         /// <summary>
         /// 角色刚体
@@ -14,20 +14,29 @@ namespace Duo1JFramework.Actor
         [SerializeField]
         private Rigidbody rigidBody;
 
+        private Vector2 fixedVelocityPlane;
+
+        private float? fixedJumpVelocityY;
+
         #region Control
 
         /// <summary>
-        /// 通过轴设置速度 (以目视Forward为参考系)
+        /// 当前速度
         /// </summary>
-        public void SetMoveSpeedByAxis(float h, float v, float speed)
+        public Vector3 Velocity => GetVelocity();
+
+        /// <summary>
+        /// 设置移动
+        /// </summary>
+        public void Move(Vector3 moveDir, float speed)
         {
-            Vector3 axisByEye = GetAxisByEye(h, v);
+            Vector3 axisByEye = moveDir;
             if (Normal != Vector3.up)
             {
                 Vector3 projectVec = Vector3.ProjectOnPlane(axisByEye, Normal).normalized;
                 if ((projectVec.y - axisByEye.y) > 0 && Vector3.Angle(Vector3.up, Normal) > Param.maxSlopeAngle)
                 {
-                    SetVelocity(new Vector2(0, 0));
+                    fixedVelocityPlane = Vector2.zero;
                     return;
                 }
 
@@ -35,12 +44,41 @@ namespace Duo1JFramework.Actor
             }
 
 #if UNITY_EDITOR
-            if (h != 0 || v != 0)
+            if (axisByEye != Vector3.zero)
                 editor_moveAxisByEye = axisByEye;
 #endif
 
-            Vector3 velocity = axisByEye * speed;
-            SetVelocity(new Vector2(velocity.x, velocity.z));
+            Vector3 velocity = axisByEye.normalized * speed;
+            fixedVelocityPlane = new Vector2(velocity.x, velocity.z);
+        }
+
+        /// <summary>
+        /// 跳跃
+        /// </summary>
+        public void Jump(float height)
+        {
+            if (!Grounded)
+            {
+                return;
+            }
+
+            fixedJumpVelocityY = Convert.ToSingle(Math.Sqrt(-2 * height * Physics.gravity.y));
+        }
+
+        /// <summary>
+        /// 停止移动
+        /// </summary>
+        public void Stop()
+        {
+            fixedVelocityPlane = Vector2.zero;
+        }
+
+        /// <summary>
+        /// 通过轴设置速度 (以目视Forward为参考系)
+        /// </summary>
+        public void SetMoveSpeedByAxis(float h, float v, float speed)
+        {
+            Move(GetAxisByEye(h, v), speed);
         }
 
         /// <summary>
@@ -57,8 +95,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void JumpByHeight(float jumpHeight)
         {
-            float velocityY = Convert.ToSingle(Math.Sqrt(-2 * jumpHeight * Physics.gravity.y));
-            SetVelocityY(velocityY);
+            Jump(jumpHeight);
         }
 
         #endregion Control
@@ -139,23 +176,34 @@ namespace Duo1JFramework.Actor
 
         #region Override
 
+        private void ApplyFixedVelocity()
+        {
+            Rigidbody rb = GetRigidBody();
+            if (rb == null)
+            {
+                return;
+            }
+
+            Vector3 velocity = rb.velocity;
+            velocity.x = fixedVelocityPlane.x;
+            velocity.z = fixedVelocityPlane.y;
+            if (fixedJumpVelocityY.HasValue)
+            {
+                velocity.y = fixedJumpVelocityY.Value;
+                fixedJumpVelocityY = null;
+            }
+            else if (FallSpeedUp && velocity.y != 0)
+            {
+                velocity.y -= Param.fallSpeedUp * Time.fixedDeltaTime;
+            }
+            rb.velocity = velocity;
+        }
+
         /// <summary>
         /// 下落加速
         /// </summary>
         protected override void UpdateFallSpeedUp()
         {
-            if (rigidBody == null)
-                return;
-
-            Vector3 velocity = rigidBody.velocity;
-            if (velocity.y != 0)
-            {
-                rigidBody.velocity = new Vector3(
-                    velocity.x,
-                    velocity.y - Param.fallSpeedUp * Time.deltaTime,
-                    velocity.z
-                );
-            }
         }
 
         protected override void OnInitComponent()
@@ -176,6 +224,12 @@ namespace Duo1JFramework.Actor
             {
                 rigidBody = gameObject.GetAndAssertComponent<Rigidbody>();
             }
+        }
+
+        protected override void OnFixedUpdateSub()
+        {
+            base.OnFixedUpdateSub();
+            ApplyFixedVelocity();
         }
 
         #endregion Override

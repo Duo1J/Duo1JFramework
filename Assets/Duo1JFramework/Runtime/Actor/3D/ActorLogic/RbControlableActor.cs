@@ -1,5 +1,4 @@
 using Duo1JFramework.FSM;
-using Duo1JFramework.GamerInput;
 using UnityEngine;
 
 namespace Duo1JFramework.Actor
@@ -22,12 +21,14 @@ namespace Duo1JFramework.Actor
                     null,
                     () =>
                     {
-                        InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Con.SetMoveSpeedByAxis(h, v, InWalk() ? Param.walkSpeed : Param.moveSpeed);
-                        Con.RotateByAxis(h, v);
+                        Vector2 move = InputSource.Move;
+                        Vector3 moveDir = Con.GetAxisByEye(move.x, move.y);
+                        Con.Move(moveDir, InWalk() ? Param.walkSpeed : Param.moveSpeed);
+                        Con.RotateByAxis(move.x, move.y);
 
-                        if (Con.CheckAxisZero(h, v))
+                        if (Con.CheckAxisZero(move.x, move.y))
                         {
+                            Con.Stop();
                             Con.AnimCrossFade(Param.idleAniName);
                             Con.CameraOffsetZ = 0;
                             Con.SetFootIKGoal(1, 1, false);
@@ -41,6 +42,7 @@ namespace Duo1JFramework.Actor
                     },
                     (param) =>
                     {
+                        Con.Stop();
                         Con.SetFootIKGoal(0, 0, true);
                     }),
                 StateNode.Create("Jump",
@@ -52,7 +54,7 @@ namespace Duo1JFramework.Actor
                             return;
                         }
                         jumpFrameStartCnt = Time.frameCount;
-                        Con.JumpByHeight(Param.jumpHeight);
+                        Con.Jump(Param.jumpHeight);
                         Con.AnimCrossFade(Param.jumpAniName);
                     },
                     () =>
@@ -77,7 +79,7 @@ namespace Duo1JFramework.Actor
 
         public virtual bool InWalk()
         {
-            return InputManager.GetKey(KeyCode.LeftControl);
+            return InputSource.Walk;
         }
 
         protected virtual void OnUpdate()
@@ -88,7 +90,7 @@ namespace Duo1JFramework.Actor
 
             if (Con.Grounded &&
                 !Con.InState("Jump") &&
-                InputManager.GetKeyDown(KeyCode.Space))
+                InputSource.JumpDown)
             {
                 Con.SwitchState("Jump");
             }

@@ -8,6 +8,31 @@ namespace Duo1JFramework.Actor
     public abstract partial class BaseActorController
     {
         /// <summary>
+        /// 角色相机Rig
+        /// </summary>
+        public IActorCameraRig CameraRig
+        {
+            get
+            {
+                if (cameraRig == null)
+                {
+                    cameraRig = CreateCameraRig();
+                }
+                return cameraRig;
+            }
+        }
+
+        private IActorCameraRig cameraRig;
+
+        /// <summary>
+        /// 创建角色相机Rig
+        /// </summary>
+        protected virtual IActorCameraRig CreateCameraRig()
+        {
+            return new ActorCameraRig(this);
+        }
+
+        /// <summary>
         /// 是否绑定了相机
         /// </summary>
         public bool CameraBinded => Logic == null ? false : Logic.CameraBinded;
@@ -15,40 +40,51 @@ namespace Duo1JFramework.Actor
         /// <summary>
         /// 相机X轴左右偏移
         /// </summary>
-        public float CameraOffsetX { get; set; }
+        public float CameraOffsetX
+        {
+            get => CameraRig.Offset.x;
+            set
+            {
+                Vector3 offset = CameraRig.Offset;
+                offset.x = value;
+                CameraRig.Offset = offset;
+            }
+        }
 
         /// <summary>
         /// 相机Y轴上下偏移
         /// </summary>
-        public float CameraOffsetY { get; set; }
+        public float CameraOffsetY
+        {
+            get => CameraRig.Offset.y;
+            set
+            {
+                Vector3 offset = CameraRig.Offset;
+                offset.y = value;
+                CameraRig.Offset = offset;
+            }
+        }
 
         /// <summary>
         /// 相机Z轴前后偏移
         /// </summary>
-        public float CameraOffsetZ { get; set; }
+        public float CameraOffsetZ
+        {
+            get => CameraRig.Offset.z;
+            set
+            {
+                Vector3 offset = CameraRig.Offset;
+                offset.z = value;
+                CameraRig.Offset = offset;
+            }
+        }
 
         /// <summary>
         /// 旋转相机挂点
         /// </summary>
         public void RotateCameraPoint(float mx, float my)
         {
-            if (CheckAxisZero(mx, my))
-            {
-                return;
-            }
-
-            Transform cameraPoint = point.CameraPoint;
-
-            Vector3 angle = cameraPoint.eulerAngles;
-            float x = angle.x - my * param.mouseSpeedY * Time.deltaTime;
-            if (x > 180) x -= 360;
-            x = Mathf.Clamp(x, param.cameraMinRotate, param.cameraMaxRotate);
-
-            cameraPoint.localRotation = Quaternion.Euler(
-                    x,
-                    angle.y + mx * param.mouseSpeedX * Time.deltaTime,
-                    angle.z
-                );
+            CameraRig.Rotate(new Vector2(mx, my));
         }
 
         /// <summary>
@@ -56,9 +92,7 @@ namespace Duo1JFramework.Actor
         /// </summary>
         public void UpdateCameraPointPos()
         {
-            Transform cameraPoint = point.CameraPoint;
-            point.CameraPoint.localPosition = (point.OriCameraPointLocPos - cameraPoint.forward * param.cameraToActorLen) +
-                cameraPoint.forward * CameraOffsetZ + cameraPoint.right * CameraOffsetX + cameraPoint.up * CameraOffsetY;
+            CameraRig.UpdatePosition();
         }
     }
 }

@@ -1,5 +1,4 @@
 using Duo1JFramework.FSM;
-using Duo1JFramework.GamerInput;
 using UnityEngine;
 
 namespace Duo1JFramework.Actor
@@ -12,9 +11,6 @@ namespace Duo1JFramework.Actor
         protected int jumpFrameStartCnt = 0;
         protected int minJumpFrameCnt = 30;
 
-        protected Vector3 moveVelocity;
-        protected Vector3 jumpVelocity;
-
         /// <summary>
         /// 初始化状态机
         /// </summary>
@@ -25,13 +21,15 @@ namespace Duo1JFramework.Actor
                     null,
                     () =>
                     {
-                        InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Vector3 moveDir = Con.GetMoveDirByAxis(h, v);
-                        moveVelocity = moveDir * (InWalk() ? Param.walkSpeed : Param.moveSpeed);
-                        Con.RotateByAxis(h, v);
+                        Vector2 move = InputSource.Move;
+                        Vector3 moveDir = Con.GetMoveDirByAxis(move.x, move.y);
+                        float speed = InWalk() ? Param.walkSpeed : Param.moveSpeed;
+                        Con.Move(moveDir, speed);
+                        Con.RotateByAxis(move.x, move.y);
 
-                        if (Con.CheckAxisZero(h, v))
+                        if (Con.CheckAxisZero(move.x, move.y))
                         {
+                            Con.Stop();
                             Con.AnimCrossFade(Param.idleAniName);
                             Con.CameraOffsetZ = 0;
                             Con.SetFootIKGoal(1, 1, false);
@@ -45,7 +43,7 @@ namespace Duo1JFramework.Actor
                     },
                     (param) =>
                     {
-                        moveVelocity = Vector3.zero;
+                        Con.Stop();
                         Con.SetFootIKGoal(0, 0, true);
                     }),
                 StateNode.Create("Jump",
@@ -57,10 +55,10 @@ namespace Duo1JFramework.Actor
                             return;
                         }
                         jumpFrameStartCnt = Time.frameCount;
-                        InputManager.GetCircleMapAxisRaw(out float h, out float v);
-                        Vector3 moveDir = Con.GetMoveDirByAxis(h, v);
-                        jumpVelocity = moveDir * (InWalk() ? Param.walkSpeed : Param.moveSpeed);
-                        jumpVelocity.y = Con.GetJumpVeloByHeight();
+                        Vector2 move = InputSource.Move;
+                        Vector3 moveDir = Con.GetMoveDirByAxis(move.x, move.y);
+                        Con.Move(moveDir, InWalk() ? Param.walkSpeed : Param.moveSpeed);
+                        Con.Jump(Param.jumpHeight);
                         Con.AnimCrossFade(Param.jumpAniName);
                     },
                     () =>
@@ -72,18 +70,10 @@ namespace Duo1JFramework.Actor
                     },
                     (param) =>
                     {
-                        jumpVelocity = Vector3.zero;
+                        Con.Stop();
                         Con.CameraOffsetY = 0f;
                     }).SetSwitchList("Move")
             );
-        }
-
-        protected virtual Vector3 OnUpdateVelocity(Vector3 input)
-        {
-            input += moveVelocity;
-            input += jumpVelocity;
-
-            return input;
         }
 
         protected override void OnCreated()
@@ -93,12 +83,11 @@ namespace Duo1JFramework.Actor
 
             RegisterUpdate(OnUpdate);
             InitFSM();
-            Con.RegisterOnUpdateVelocity(OnUpdateVelocity);
         }
 
         public virtual bool InWalk()
         {
-            return InputManager.GetKey(KeyCode.LeftControl);
+            return InputSource.Walk;
         }
 
         protected virtual void OnUpdate()
@@ -109,7 +98,7 @@ namespace Duo1JFramework.Actor
 
             if (Con.Grounded &&
                 !Con.InState("Jump") &&
-                InputManager.GetKeyDown(KeyCode.Space))
+                InputSource.JumpDown)
             {
                 Con.SwitchState("Jump");
             }
