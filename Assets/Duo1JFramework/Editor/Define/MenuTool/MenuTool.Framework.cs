@@ -113,6 +113,15 @@ namespace Duo1JFramework
             return AssetBundleBuildEditorWnd.Open();
         }
 
+        [MenuItem(EditorDef.Menu.Framework.BUILD_PREFIX + EditorDef.Menu.ADDRESSABLES_BUILD, priority = 42)]
+        public static void BuildAllAddressables()
+        {
+            if (EditorUtility.DisplayDialog("", "是否执行构建全量Addressables", "确认", "取消"))
+            {
+                AddressablesBuilder.BuildAllAddressables();
+            }
+        }
+
         #endregion Build 40
 
         #region Animation 50

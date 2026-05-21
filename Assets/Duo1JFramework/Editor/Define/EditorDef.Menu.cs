@@ -122,6 +122,7 @@ namespace Duo1JFramework
 
             public const string APP_BUILD_EDITOR_WND = "构建App";
             public const string ASSET_BUNDLE_BUILD_EDITOR_WND = "构建AssetBundle";
+            public const string ADDRESSABLES_BUILD = "构建Addressables";
 
             public const string FOOT_IK_CURVE_GENERATOR = "足部IK曲线生成器";
 

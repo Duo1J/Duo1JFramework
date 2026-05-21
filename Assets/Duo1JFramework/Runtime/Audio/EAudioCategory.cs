@@ -21,6 +21,11 @@ namespace Duo1JFramework.AudioAPI
         BGM,
 
         /// <summary>
+        /// 环境音
+        /// </summary>
+        Ambient,
+
+        /// <summary>
         /// 音效
         /// </summary>
         SFX,
