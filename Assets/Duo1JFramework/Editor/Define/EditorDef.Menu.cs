@@ -59,6 +59,11 @@ namespace Duo1JFramework
                 public const string BUILD_PREFIX = PREFIX + "Build/";
 
                 /// <summary>
+                /// 烘焙
+                /// </summary>
+                public const string BAKE_PREFIX = PREFIX + "Bake/";
+
+                /// <summary>
                 /// 动画
                 /// </summary>
                 public const string ANIMATION_PREFIX = PREFIX + "Animation/";
@@ -122,7 +127,10 @@ namespace Duo1JFramework
 
             public const string APP_BUILD_EDITOR_WND = "构建App";
             public const string ASSET_BUNDLE_BUILD_EDITOR_WND = "构建AssetBundle";
-            public const string ADDRESSABLES_BUILD = "构建Addressables";
+            public const string ADDRESSABLES_BUILD_ALL = "全量构建Addressables";
+
+            public const string BAKE_ALL = "全量烘焙";
+            public const string LOC_BAKE_CONF = "定位烘焙配置";
 
             public const string FOOT_IK_CURVE_GENERATOR = "足部IK曲线生成器";
 

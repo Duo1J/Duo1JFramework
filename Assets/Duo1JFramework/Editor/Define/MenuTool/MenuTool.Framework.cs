@@ -1,6 +1,7 @@
 using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
+using Duo1JFramework.Bake;
 using Duo1JFramework.Scheduling;
 using UnityEditor;
 using UnityEngine;
@@ -113,10 +114,10 @@ namespace Duo1JFramework
             return AssetBundleBuildEditorWnd.Open();
         }
 
-        [MenuItem(EditorDef.Menu.Framework.BUILD_PREFIX + EditorDef.Menu.ADDRESSABLES_BUILD, priority = 42)]
+        [MenuItem(EditorDef.Menu.Framework.BUILD_PREFIX + EditorDef.Menu.ADDRESSABLES_BUILD_ALL, priority = 42)]
         public static void BuildAllAddressables()
         {
-            if (EditorUtility.DisplayDialog("", "是否执行构建全量Addressables", "确认", "取消"))
+            if (EditorUtility.DisplayDialog("", "是否执行全量构建Addressables", "确认", "取消"))
             {
                 AddressablesBuilder.BuildAllAddressables();
             }
@@ -124,9 +125,28 @@ namespace Duo1JFramework
 
         #endregion Build 40
 
-        #region Animation 50
+        #region Bake 50
 
-        [MenuItem(EditorDef.Menu.Framework.ANIMATION_PREFIX + EditorDef.Menu.FOOT_IK_CURVE_GENERATOR, priority = 50)]
+        [MenuItem(EditorDef.Menu.Framework.BAKE_PREFIX + EditorDef.Menu.BAKE_ALL, priority = 50)]
+        public static void BakeAll()
+        {
+            if (EditorUtility.DisplayDialog("", "是否执行全量烘焙", "确认", "取消"))
+            {
+                BakeSystem.BakeAll();
+            }
+        }
+
+        [MenuItem(EditorDef.Menu.Framework.BAKE_PREFIX + EditorDef.Menu.LOC_BAKE_CONF, priority = 51)]
+        public static void LocBakeConf()
+        {
+            BakeStrategy.Instance.SelectAsset();
+        }
+
+        #endregion Bake 50
+
+        #region Animation 60
+
+        [MenuItem(EditorDef.Menu.Framework.ANIMATION_PREFIX + EditorDef.Menu.FOOT_IK_CURVE_GENERATOR, priority = 60)]
         public static FootIKCurveGenerator OpenFootIKCurveGenerator()
         {
             return FootIKCurveGenerator.Open();
