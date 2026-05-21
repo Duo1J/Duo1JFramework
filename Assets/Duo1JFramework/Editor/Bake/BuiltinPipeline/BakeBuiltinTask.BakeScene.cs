@@ -83,7 +83,7 @@ namespace Duo1JFramework.Bake
             /// </summary>
             private static void ApplySceneBakeSetting(BakeSceneData sceneData)
             {
-                Lightmapping.giWorkflowMode = GIWorkflowMode.OnDemand;
+                Lightmapping.giWorkflowMode = Lightmapping.GIWorkflowMode.OnDemand;
                 RenderSettings.fog = sceneData.enableFog;
             }
 

@@ -163,7 +163,7 @@ namespace Duo1JFramework.AnimationAPI
                 return;
             }
 
-            Vector3 rayPos = GetRayPos(foot.FootTF);
+            Vector3 rayPos = GetRayStartPos(foot.FootTF);
             foot.Hit = Physics.CapsuleCast(rayPos, rayPos + foot.FootTF.forward * rayCapsuleLen, rayCapsuleRadius,
                 Vector3.down, out RaycastHit hitInfo, rayMaxDistance, rayLayerMask);
 
