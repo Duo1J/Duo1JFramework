@@ -2,6 +2,7 @@ using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
 using Duo1JFramework.Bake;
+using Duo1JFramework.Net;
 using Duo1JFramework.Scheduling;
 using UnityEditor;
 using UnityEngine;
@@ -102,6 +103,12 @@ namespace Duo1JFramework
         public static WorldMonitor OpenWorldMonitor()
         {
             return WorldMonitor.Open();
+        }
+
+        [MenuItem(EditorDef.Menu.Framework.MONITOR_PREFIX + EditorDef.Menu.NET_MONITOR, priority = 34)]
+        public static NetMonitor OpenNetMonitor()
+        {
+            return NetMonitor.Open();
         }
 
         #endregion Monitor 40

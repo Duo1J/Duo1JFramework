@@ -1,6 +1,8 @@
 using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
+using Duo1JFramework.Bake;
+using Duo1JFramework.Net;
 using Duo1JFramework.Scheduling;
 using System;
 using System.Collections.Generic;
@@ -130,6 +132,7 @@ namespace Duo1JFramework
             public const string ASSET_BUNDLE_MONITOR = "AssetBundle监视";
             public const string COLLISION_MONITOR = "碰撞、触发监视";
             public const string WORLD_MONITOR = "世界监视";
+            public const string NET_MONITOR = "网络消息监视";
 
             public const string APP_BUILD_EDITOR_WND = "构建App";
             public const string ASSET_BUNDLE_BUILD_EDITOR_WND = "构建AssetBundle";
@@ -155,6 +158,7 @@ namespace Duo1JFramework
                 [typeof(AssetBundleMonitor)] = ASSET_BUNDLE_MONITOR,
                 [typeof(CollisionMonitor)] = COLLISION_MONITOR,
                 [typeof(WorldMonitor)] = WORLD_MONITOR,
+                [typeof(NetMonitor)] = NET_MONITOR,
 
                 [typeof(AppBuildEditorWnd)] = APP_BUILD_EDITOR_WND,
                 [typeof(AssetBundleBuildEditorWnd)] = ASSET_BUNDLE_BUILD_EDITOR_WND,

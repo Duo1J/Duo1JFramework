@@ -18,6 +18,7 @@ namespace Duo1JFramework.Net
         private readonly object receiveLock = new object();
         private readonly object errorLock = new object();
 
+        public event Action<NetMessage> OnMessageSent;
         public event Action<NetMessage> OnMessageReceived;
         public event Action<Exception> OnNetError;
 
@@ -123,13 +124,19 @@ namespace Duo1JFramework.Net
                 return;
             }
 
-            SendBytes(channelId, codec.Encode(message));
+            SendBytes(channelId, codec.Encode(message), format);
         }
 
         /// <summary>
         /// 发送原始字节消息
         /// </summary>
         public void SendBytes(string channelId, byte[] bytes)
+        {
+            ENetMessageFormat format = channelFormats.TryGetValue(channelId, out ENetMessageFormat value) ? value : ENetMessageFormat.Json;
+            SendBytes(channelId, bytes, format);
+        }
+
+        private void SendBytes(string channelId, byte[] bytes, ENetMessageFormat format)
         {
             if (!channels.TryGetValue(channelId, out INetChannel channel))
             {
@@ -138,6 +145,7 @@ namespace Duo1JFramework.Net
             }
 
             channel.Send(bytes);
+            OnMessageSent?.Invoke(new NetMessage(channelId, channel.Protocol, format, bytes));
         }
 
         /// <summary>
