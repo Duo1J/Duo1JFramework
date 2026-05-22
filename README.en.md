@@ -3,7 +3,7 @@
  **Lit Unity Framework**
  Unity version: 2022.3.62f1c1
 
- **Stop，working for UE ~** 
+ **Stopping，UE ing~** 
 
 1. Asset management based on Resources/AssetBundle/Addressables, hot patch (Not completed)
 2. Configurable App/AssetBundle/Addressables build pipeline
@@ -20,9 +20,9 @@
 13. World scene management (Not completed)
 14. Visual editing controls
 15. Editor tool framework and partial system editor tool support
-16. Audio management (Not completed)
+16. Audio management
 17. Logging framework based on Log4Net
-18. Platform abstraction (Not completed)
+18. Platform abstraction
 19. Configuration framework and building (Not completed)
-20. Configurable automated import setting and resource check (Not completed)
-21. Net framework (Not completed)
+20. Configurable automated import setting and asset check
+21. Network framework
