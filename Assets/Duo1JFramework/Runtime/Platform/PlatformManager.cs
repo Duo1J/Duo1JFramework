@@ -5,12 +5,14 @@ namespace Duo1JFramework.PlatformAPI
     /// </summary>
     public class PlatformManager : MonoSingleton<PlatformManager>
     {
-        protected override void OnDispose()
-        {
-        }
-
         protected override void OnInit()
         {
+            Platform.Init();
+        }
+
+        protected override void OnDispose()
+        {
+            Platform.Reset();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Duo1JFramework.PlatformAPI
+namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
     /// 编辑器平台实现

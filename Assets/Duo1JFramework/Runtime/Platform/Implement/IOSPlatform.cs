@@ -1,4 +1,4 @@
-﻿namespace Duo1JFramework.PlatformAPI
+namespace Duo1JFramework.PlatformAPI
 {
     /// <summary>
     /// iOS平台实现
@@ -6,5 +6,10 @@
     public class IOSPlatform : BasePlatform
     {
         public override EPlatform Type => EPlatform.iOS;
+
+        public override bool OpenPermissionSettings()
+        {
+            return OpenURL("app-settings:");
+        }
     }
 }
