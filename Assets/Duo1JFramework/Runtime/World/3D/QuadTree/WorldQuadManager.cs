@@ -13,10 +13,7 @@ namespace Duo1JFramework.World
         {
             set
             {
-                if (container != null)
-                {
-                    container.DestroyImmediate();
-                }
+                container?.DestroySmart();
                 container = value;
                 container.CreateTree();
             }

@@ -47,7 +47,7 @@ namespace Duo1JFramework.World
         /// </summary>
         public void Destroy()
         {
-            AssetGo?.DestroyImmediate();
+            AssetGo?.DestroySmart();
             AssetGo = null;
 
             OnSubDestroy();

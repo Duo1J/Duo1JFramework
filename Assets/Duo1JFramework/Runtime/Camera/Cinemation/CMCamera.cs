@@ -129,10 +129,7 @@ namespace Duo1JFramework.CameraAPI
         /// </summary>
         public void DestroyCamera()
         {
-            if (VirtualCamera != null)
-            {
-                VirtualCamera.gameObject.DestroyImmediate();
-            }
+            VirtualCamera?.gameObject.DestroySmart();
         }
 
         public CMCamera()

@@ -172,7 +172,7 @@ namespace Duo1JFramework.CameraAPI
             if (ret == null)
             {
                 Log.ErrorForce($"无法从{cameraGo.name}上获取到CinemachineVirtualCamera组件");
-                cameraGo.DestroyImmediate();
+                cameraGo?.DestroySmart();
                 return null;
             }
 

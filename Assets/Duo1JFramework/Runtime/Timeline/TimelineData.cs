@@ -255,17 +255,7 @@ namespace Duo1JFramework.TimelineAPI
             go = null;
             pd = null;
 
-            if (destroyGo != null)
-            {
-                if (Application.isPlaying)
-                {
-                    UObject.Destroy(destroyGo);
-                }
-                else
-                {
-                    UObject.DestroyImmediate(destroyGo);
-                }
-            }
+            destroyGo?.DestroySmart();
         }
 
         public TimelineData DestroyOnStop()

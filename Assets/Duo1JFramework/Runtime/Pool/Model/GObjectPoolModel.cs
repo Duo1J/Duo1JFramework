@@ -29,10 +29,7 @@ namespace Duo1JFramework.ObjectPool
             GameObject value = item?.Value;
             base.DestroyItem(item);
 
-            if (value != null)
-            {
-                UObject.Destroy(value);
-            }
+            value?.DestroySmart();
         }
 
         public GObjectPoolModel(Func<GameObject> getTemplateCall)

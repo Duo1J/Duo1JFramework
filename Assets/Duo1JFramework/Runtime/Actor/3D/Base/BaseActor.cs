@@ -187,11 +187,8 @@ namespace Duo1JFramework.Actor
             UnBindCamera();
             BeforeUnLoadAsset();
 
-            if (AssetGo != null)
-            {
-                AssetGo.DestroyImmediate();
-                AssetGo = null;
-            }
+            AssetGo?.DestroySmart();
+            AssetGo = null;
             Controller = null;
             Param = null;
             Point = null;

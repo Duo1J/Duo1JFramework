@@ -1,3 +1,4 @@
+using UnityEngine;
 using UObject = UnityEngine.Object;
 
 namespace Duo1JFramework
@@ -29,6 +30,26 @@ namespace Duo1JFramework
         public static void Destroy(this UObject obj, float t = 0)
         {
             UObject.Destroy(obj, t);
+        }
+
+        /// <summary>
+        /// 智能销毁
+        /// </summary>
+        public static void DestroySmart(this UObject obj)
+        {
+            if (obj == null)
+            {
+                return;
+            }
+
+            if (Application.isPlaying)
+            {
+                obj.Destroy(0);
+            }
+            else
+            {
+                obj.DestroyImmediate(false);
+            }
         }
 
         #region Convert

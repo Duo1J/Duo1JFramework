@@ -163,10 +163,7 @@ namespace Duo1JFramework
             }
             finally
             {
-                if (instance != null)
-                {
-                    instance.DestroyImmediate(false);
-                }
+                instance?.DestroyImmediate();
             }
         }
 

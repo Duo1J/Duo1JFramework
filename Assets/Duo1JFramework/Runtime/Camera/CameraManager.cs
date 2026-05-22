@@ -133,10 +133,7 @@ namespace Duo1JFramework.CameraAPI
         /// </summary>
         public void DestroyMainCamera()
         {
-            if (MainCamera != null)
-            {
-                MainCamera.gameObject.DestroyImmediate();
-            }
+            MainCamera?.gameObject.DestroySmart();
         }
     }
 }

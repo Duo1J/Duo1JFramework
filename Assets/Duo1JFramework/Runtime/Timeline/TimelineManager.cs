@@ -96,17 +96,7 @@ namespace Duo1JFramework.TimelineAPI
             catch (Exception e)
             {
                 Assert.ExceptHandle(e);
-                if (go != null)
-                {
-                    if (Application.isPlaying)
-                    {
-                        UObject.Destroy(go);
-                    }
-                    else
-                    {
-                        UObject.DestroyImmediate(go);
-                    }
-                }
+                go?.DestroySmart();
                 return null;
             }
         }

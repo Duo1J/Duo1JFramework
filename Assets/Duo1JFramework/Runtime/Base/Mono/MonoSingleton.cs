@@ -100,28 +100,11 @@ namespace Duo1JFramework
             }
             else if (instance != this)
             {
-                DestroySelfGameObject();
+                gameObject?.DestroySmart();
                 return;
             }
 
             OnInit();
-        }
-
-        private void DestroySelfGameObject()
-        {
-            if (gameObject == null)
-            {
-                return;
-            }
-
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                DestroyImmediate(gameObject);
-                return;
-            }
-#endif
-            Destroy(gameObject);
         }
 
         /// <summary>
@@ -140,7 +123,7 @@ namespace Duo1JFramework
             if (!goDestroyed && gameObject != null)
             {
                 goDestroyed = true;
-                DestroySelfGameObject();
+                gameObject?.DestroySmart();
             }
 
             Instance = null;
