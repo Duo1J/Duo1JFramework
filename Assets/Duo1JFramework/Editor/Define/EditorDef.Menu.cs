@@ -87,6 +87,11 @@ namespace Duo1JFramework
                 /// 引用
                 /// </summary>
                 public const string REF_PREFIX = PREFIX + "Reference/";
+
+                /// <summary>
+                /// 资产检查
+                /// </summary>
+                public const string ASSET_CHECK = PREFIX + "资产检查";
             }
 
             #endregion Assets
