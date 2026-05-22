@@ -89,8 +89,6 @@ namespace Duo1JFramework.DataStructure
                 AddItem(item);
                 return;
             }
-
-            RebuildAll();
         }
 
         /// <summary>

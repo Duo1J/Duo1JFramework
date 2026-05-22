@@ -87,7 +87,13 @@ namespace Duo1JFramework.World
         {
             Assert.NotNullArg(worldData, "worldData");
             DestroyWorld(worldData.Name);
-            LoadWorld(worldData, callback ?? (_result) => { });
+
+            if (callback == null)
+            {
+                callback = (_result) => { };
+            }
+
+            LoadWorld(worldData, callback);
         }
 
         /// <summary>
@@ -95,7 +101,12 @@ namespace Duo1JFramework.World
         /// </summary>
         public void PreloadWorld(WorldData worldData, Action<WorldLoadResult> callback = null)
         {
-            LoadWorld(worldData, callback ?? (_result) => { });
+            if (callback == null)
+            {
+                callback = (_result) => { };
+            }
+
+            LoadWorld(worldData, callback);
         }
 
         /// <summary>

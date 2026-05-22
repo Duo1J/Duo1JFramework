@@ -27,7 +27,7 @@ namespace Duo1JFramework.Asset
             if (checker == null)
             {
                 AssetCheckResult result = new AssetCheckResult();
-                result.AddError($"未找到资源类型`{asset?.GetType().Name}`对应的检查器");
+                result.AddInfo($"未找到资源类型`{asset?.GetType().Name}`对应的检查器");
                 return result;
             }
 

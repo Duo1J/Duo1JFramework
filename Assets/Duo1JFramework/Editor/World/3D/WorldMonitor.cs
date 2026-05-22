@@ -14,6 +14,8 @@ namespace Duo1JFramework.World
 
         private void OnGUI()
         {
+            RichText = true;
+
             if (!ED.IsPlayingHelpBox())
             {
                 return;
@@ -23,7 +25,7 @@ namespace Duo1JFramework.World
 
             ED.Scroll(ref scrollPos, () =>
             {
-                GUILayout.Label("世界管理器");
+                GUILayout.Label("<color=yellow><size=14>世界管理器</size></color>");
                 ED.Vertical(() =>
                 {
                     WorldManager.Instance.DrawEditorInfo();
@@ -31,7 +33,7 @@ namespace Duo1JFramework.World
 
                 GUILayout.Space(10);
 
-                GUILayout.Label("世界四叉树管理器");
+                GUILayout.Label("<color=aqua><size=14>世界四叉树管理器</size></color>");
                 ED.Vertical(() =>
                 {
                     WorldQuadManager.Instance.DrawEditorInfo();

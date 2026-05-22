@@ -12,7 +12,6 @@ namespace Duo1JFramework.Asset
 
         protected override void OnProcess(AssetImporter importer, string assetPath)
         {
-            base.OnProcess(importer, assetPath);
         }
     }
 }

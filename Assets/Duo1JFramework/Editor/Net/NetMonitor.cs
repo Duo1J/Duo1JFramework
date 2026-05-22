@@ -26,6 +26,8 @@ namespace Duo1JFramework.Net
 
         private void OnGUI()
         {
+            RichText = true;
+
             if (!ED.IsPlayingHelpBox())
             {
                 return;
@@ -45,7 +47,7 @@ namespace Duo1JFramework.Net
 
             ED.Scroll(ref scrollPos, () =>
             {
-                GUILayout.Label($"网络消息列表：{itemList.Count}");
+                GUILayout.Label($"<color=aqua><size=14>网络消息列表：{itemList.Count}</size></color>");
 
                 for (int i = itemList.Count - 1; i >= 0; --i)
                 {
