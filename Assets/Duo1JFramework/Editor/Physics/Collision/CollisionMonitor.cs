@@ -1,8 +1,10 @@
-using Duo1JFramework.PhysicsAPI;
 using UnityEngine;
 
-namespace Duo1JFramework
+namespace Duo1JFramework.PhysicsAPI
 {
+    /// <summary>
+    /// 碰撞监视器
+    /// </summary>
     public class CollisionMonitor : BaseEditorWindow<CollisionMonitor>
     {
         private Vector2 scrollPos;

@@ -1,4 +1,4 @@
-namespace Duo1JFramework.World.World2D
+namespace Duo1JFramework.World
 {
     /// <summary>
     /// 2D世界场景环境

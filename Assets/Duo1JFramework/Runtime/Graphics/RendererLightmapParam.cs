@@ -15,9 +15,14 @@ namespace Duo1JFramework.Graphics
         [SerializeField]
         private Vector4 lightmapScaleOffset;
 
+        [SerializeField]
+        private string rendererPath;
+
         public int LightmapIndex => lightmapIndex;
 
         public Vector4 LightmapScaleOffset => lightmapScaleOffset;
+
+        public string RendererPath => rendererPath;
 
         /// <summary>
         /// 从Renderer拷贝数据
@@ -27,6 +32,15 @@ namespace Duo1JFramework.Graphics
             lightmapIndex = renderer.lightmapIndex;
             lightmapScaleOffset = renderer.lightmapScaleOffset;
 
+            return this;
+        }
+
+        /// <summary>
+        /// 设置Renderer路径
+        /// </summary>
+        public RendererLightmapParam SetRendererPath(string rendererPath)
+        {
+            this.rendererPath = rendererPath;
             return this;
         }
 

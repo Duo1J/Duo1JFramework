@@ -49,6 +49,20 @@ namespace Duo1JFramework.World
             WorldQuadManager.Instance.AddItem(this);
         }
 
+        /// <summary>
+        /// 更新四叉树管理
+        /// </summary>
+        public void UpdateQuadTree()
+        {
+            if (!addToQT)
+            {
+                AddToQuadTree();
+                return;
+            }
+
+            WorldQuadManager.Instance.UpdateItem(this);
+        }
+
         protected virtual void Start()
         {
             AddToQuadTree();

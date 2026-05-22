@@ -104,6 +104,14 @@ namespace Duo1JFramework.DataStructure
         }
 
         /// <summary>
+        /// 更新对象
+        /// </summary>
+        public void UpdateItem(IQuadTreeItem item)
+        {
+            Tree.UpdateItem(item);
+        }
+
+        /// <summary>
         /// 重置对象的评估状态
         /// </summary>
         public void ResetEvaluate()

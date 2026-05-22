@@ -61,6 +61,11 @@ namespace Duo1JFramework.DataStructure
         /// </summary>
         public void AddItem(IQuadTreeItem item)
         {
+            if (itemList.Contains(item))
+            {
+                return;
+            }
+
             root.AddItem(item);
             itemList.Add(item);
         }
@@ -72,6 +77,20 @@ namespace Duo1JFramework.DataStructure
         {
             itemList.Remove(item);
             return root.RemoveItem(item);
+        }
+
+        /// <summary>
+        /// 更新对象
+        /// </summary>
+        public void UpdateItem(IQuadTreeItem item)
+        {
+            if (!itemList.Contains(item))
+            {
+                AddItem(item);
+                return;
+            }
+
+            RebuildAll();
         }
 
         /// <summary>

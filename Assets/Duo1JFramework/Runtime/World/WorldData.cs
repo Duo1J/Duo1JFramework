@@ -1,4 +1,5 @@
 using Duo1JFramework.Asset;
+using UnityEngine.Assertions;
 
 namespace Duo1JFramework.World
 {
@@ -27,6 +28,11 @@ namespace Duo1JFramework.World
         /// </summary>
         public EAssetLoadType LoadType { get; private set; } = EAssetLoadType.Bundle;
 
+        /// <summary>
+        /// 实例名称
+        /// </summary>
+        public string InstanceName { get; private set; }
+
         public WorldData SetLoadType(EAssetLoadType loadType)
         {
             LoadType = loadType;
@@ -39,10 +45,20 @@ namespace Duo1JFramework.World
             return this;
         }
 
+        public WorldData SetInstanceName(string instanceName)
+        {
+            InstanceName = instanceName;
+            return this;
+        }
+
         public WorldData(string name, string path)
         {
+            Assert.NotNullOrEmpty(name, "世界场景名不可为空");
+            Assert.NotNullOrEmpty(path, "世界预制体路径不可为空");
+
             Name = name;
             Path = path;
+            InstanceName = name;
         }
     }
 }

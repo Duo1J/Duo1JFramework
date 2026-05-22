@@ -77,17 +77,27 @@ namespace Duo1JFramework.World
         }
 
         /// <summary>
+        /// 更新对象
+        /// </summary>
+        public void UpdateItem(IQuadTreeItem item)
+        {
+            RemoveItem(item);
+            AddItem(item);
+        }
+
+        /// <summary>
         /// 检测评估
         /// </summary>
         public void Evaluate(object param)
         {
+            Assert.NotNull(tree, "四叉树未初始化");
+
             foreach (WorldQuadController con in controllerSet)
             {
                 con.SetQuadState(tree.EvalLogic(con, param));
                 con.Evaluate(param);
             }
 
-            Assert.NotNull(tree, "四叉树未初始化");
             tree.Evaluate(param);
         }
 
@@ -145,6 +155,10 @@ namespace Duo1JFramework.World
         protected override void OnDestroy()
         {
             base.OnDestroy();
+            if (!Game.IsQuit)
+            {
+                WorldQuadManager.Instance.ClearContainer(this);
+            }
         }
 
 #if UNITY_EDITOR

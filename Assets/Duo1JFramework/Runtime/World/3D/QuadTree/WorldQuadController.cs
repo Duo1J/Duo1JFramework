@@ -32,6 +32,15 @@ namespace Duo1JFramework.World
         }
 
         /// <summary>
+        /// 更新对象
+        /// </summary>
+        public void UpdateItem(IQuadTreeItem item)
+        {
+            Assert.NotNull(tree, "四叉树未初始化");
+            tree.UpdateItem(item);
+        }
+
+        /// <summary>
         /// 检测评估
         /// </summary>
         public void Evaluate(object param)
@@ -84,8 +93,8 @@ namespace Duo1JFramework.World
 
         protected override void Start()
         {
-            base.Start();
             CreateTree();
+            base.Start();
         }
 
 #if UNITY_EDITOR

@@ -98,6 +98,12 @@ namespace Duo1JFramework
             return CollisionMonitor.Open();
         }
 
+        [MenuItem(EditorDef.Menu.Framework.MONITOR_PREFIX + EditorDef.Menu.WORLD_MONITOR, priority = 33)]
+        public static WorldMonitor OpenWorldMonitor()
+        {
+            return WorldMonitor.Open();
+        }
+
         #endregion Monitor 40
 
         #region Build 40

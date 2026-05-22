@@ -23,6 +23,11 @@ namespace Duo1JFramework.DataStructure
         bool RemoveItem(IQuadTreeItem item);
 
         /// <summary>
+        /// 更新对象
+        /// </summary>
+        void UpdateItem(IQuadTreeItem item);
+
+        /// <summary>
         /// 检测评估
         /// </summary>
         void Evaluate(object param = null);
