@@ -5,8 +5,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+using UObject = UnityEngine.Object;
+
 namespace Duo1JFramework.TimelineAPI
 {
+    /// <summary>
+    /// Timeline播放参数
+    /// </summary>
+    public class TimelinePlayOptions
+    {
+        public Transform SyncTarget;
+        public Vector3? Position;
+        public Quaternion? Rotation;
+        public DirectorWrapMode? WrapMode;
+        public Dictionary<string, UObject> Bindings;
+        public bool DisablePreviousBinding;
+        public bool DestroyOnStop;
+        public Action<TimelineData> OnPlayed;
+        public Action<TimelineData> OnPaused;
+        public Action<TimelineData> OnStopped;
+        public Action<TimelineData> OnDestroyed;
+        public bool AutoPlay = true;
+    }
+
     /// <summary>
     /// Timeline管理器
     /// </summary>
@@ -36,6 +57,28 @@ namespace Duo1JFramework.TimelineAPI
         }
 
         /// <summary>
+        /// 异步播放Timeline
+        /// </summary>
+        public void PlayTimeline(string timelinePath, TimelinePlayOptions options = null, Action<TimelineData> callback = null, EAssetLoadType loadType = EAssetLoadType.Bundle)
+        {
+            LoadTimeline(timelinePath, (td) =>
+            {
+                ApplyPlayOptions(td, options);
+                callback?.Invoke(td);
+            }, loadType);
+        }
+
+        /// <summary>
+        /// 同步播放Timeline
+        /// </summary>
+        public TimelineData PlayTimelineSync(string timelinePath, TimelinePlayOptions options = null, EAssetLoadType loadType = EAssetLoadType.Bundle)
+        {
+            TimelineData td = LoadTimelineSync(timelinePath, loadType);
+            ApplyPlayOptions(td, options);
+            return td;
+        }
+
+        /// <summary>
         /// 创建Timeline包装类
         /// </summary>
         private TimelineData WrapTimelinePrefab(IAssetHandle<GameObject> handle)
@@ -55,7 +98,14 @@ namespace Duo1JFramework.TimelineAPI
                 Assert.ExceptHandle(e);
                 if (go != null)
                 {
-                    go.DestroyImmediate();
+                    if (Application.isPlaying)
+                    {
+                        UObject.Destroy(go);
+                    }
+                    else
+                    {
+                        UObject.DestroyImmediate(go);
+                    }
                 }
                 return null;
             }
@@ -70,44 +120,65 @@ namespace Duo1JFramework.TimelineAPI
             {
                 resumableList = new List<ResumablePlayableWrap>();
             }
-            resumableList.Add(new ResumablePlayableWrap(playable, resumeMouse, resumeKey));
+
+            PlayableDirector director = TimelineUtil.GetDirectorByPlayable(playable);
+            if (director == null)
+            {
+                return;
+            }
+
+            foreach (ResumablePlayableWrap item in resumableList)
+            {
+                if (item.IsSameDirector(director))
+                {
+                    return;
+                }
+            }
+
+            ResumablePlayableWrap wrap = new ResumablePlayableWrap(playable, director, resumeMouse, resumeKey);
+            if (wrap.IsValid)
+            {
+                resumableList.Add(wrap);
+            }
         }
 
         private void OnUpdate()
         {
-            if (resumableList != null)
+            if (resumableList == null || resumableList.Count == 0)
             {
-                List<ResumablePlayableWrap> removeList = null;
+                return;
+            }
 
-                InputManager.IgnoreLimit(() =>
+            List<ResumablePlayableWrap> removeList = null;
+
+            InputManager.IgnoreLimit(() =>
+            {
+                foreach (ResumablePlayableWrap item in resumableList)
                 {
-                    foreach (ResumablePlayableWrap item in resumableList)
+                    if (item.Resume())
                     {
-                        if (item.Resume())
+                        if (removeList == null)
                         {
-                            if (removeList == null)
-                            {
-                                removeList = new List<ResumablePlayableWrap>();
-                            }
-                            removeList.Add(item);
+                            removeList = new List<ResumablePlayableWrap>();
                         }
+                        removeList.Add(item);
                     }
-                });
-
-                if (removeList != null)
-                {
-                    for (int i = 0; i < removeList.Count; i++)
-                    {
-                        resumableList.RemoveAt(i);
-                    }
-                    removeList.Clear();
                 }
+            });
+
+            if (removeList != null)
+            {
+                for (int i = 0; i < removeList.Count; i++)
+                {
+                    resumableList.Remove(removeList[i]);
+                }
+                removeList.Clear();
             }
         }
 
         protected override void OnDispose()
         {
-            resumableList.Clear();
+            resumableList?.Clear();
             resumableList = null;
         }
 
@@ -116,6 +187,77 @@ namespace Duo1JFramework.TimelineAPI
             resumableList = new List<ResumablePlayableWrap>();
 
             Reg.RegisterUpdate(OnUpdate);
+        }
+
+        private void ApplyPlayOptions(TimelineData td, TimelinePlayOptions options)
+        {
+            if (td == null)
+            {
+                return;
+            }
+
+            if (options == null)
+            {
+                td.Play();
+                return;
+            }
+
+            if (options.SyncTarget != null)
+            {
+                td.SyncTransform(options.SyncTarget);
+            }
+            else
+            {
+                if (options.Position.HasValue)
+                {
+                    td.Tf.position = options.Position.Value;
+                }
+
+                if (options.Rotation.HasValue)
+                {
+                    td.Tf.rotation = options.Rotation.Value;
+                }
+            }
+
+            if (options.WrapMode.HasValue)
+            {
+                td.SetWrapMode(options.WrapMode.Value);
+            }
+
+            if (options.Bindings != null)
+            {
+                td.SetGenericBindings(options.Bindings, options.DisablePreviousBinding);
+            }
+
+            if (options.OnPlayed != null)
+            {
+                td.OnPlayed += options.OnPlayed;
+            }
+
+            if (options.OnPaused != null)
+            {
+                td.OnPaused += options.OnPaused;
+            }
+
+            if (options.OnStopped != null)
+            {
+                td.OnStopped += options.OnStopped;
+            }
+
+            if (options.OnDestroyed != null)
+            {
+                td.SetDestroyCallback(options.OnDestroyed);
+            }
+
+            if (options.DestroyOnStop)
+            {
+                td.DestroyOnStop();
+            }
+
+            if (options.AutoPlay)
+            {
+                td.Play();
+            }
         }
 
         /// <summary>
@@ -128,8 +270,15 @@ namespace Duo1JFramework.TimelineAPI
             public int resumeMouse;
             public KeyCode resumeKey;
 
+            public bool IsValid => director != null;
+
             public bool Resume()
             {
+                if (!IsValid)
+                {
+                    return true;
+                }
+
                 if (!CheckResumable())
                 {
                     return false;
@@ -142,7 +291,10 @@ namespace Duo1JFramework.TimelineAPI
 
             private void Pause()
             {
-                director.Pause();
+                if (director != null)
+                {
+                    director.Pause();
+                }
             }
 
             public bool CheckResumable()
@@ -150,13 +302,17 @@ namespace Duo1JFramework.TimelineAPI
                 return InputManager.GetMouseBtnDown(resumeMouse) || InputManager.GetKeyDown(resumeKey);
             }
 
-            public ResumablePlayableWrap(Playable playable, int resumeMouse, KeyCode resumeKey)
+            public bool IsSameDirector(PlayableDirector targetDirector)
+            {
+                return director == targetDirector;
+            }
+
+            public ResumablePlayableWrap(Playable playable, PlayableDirector director, int resumeMouse, KeyCode resumeKey)
             {
                 this.playable = playable;
+                this.director = director;
                 this.resumeMouse = resumeMouse;
                 this.resumeKey = resumeKey;
-
-                director = TimelineUtil.GetDirectorByPlayble(playable);
 
                 Pause();
             }

@@ -9,7 +9,12 @@ namespace Duo1JFramework.TimelineAPI
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            return ScriptPlayable<EndPauseBehaviour>.Create(graph, behaviour);
+            EndPauseBehaviour clone = new EndPauseBehaviour
+            {
+                resumeMouse = behaviour.resumeMouse,
+                resumeKey = behaviour.resumeKey
+            };
+            return ScriptPlayable<EndPauseBehaviour>.Create(graph, clone);
         }
     }
 }

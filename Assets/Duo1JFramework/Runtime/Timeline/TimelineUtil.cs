@@ -10,7 +10,7 @@ namespace Duo1JFramework.TimelineAPI
         /// <summary>
         /// 通过Playable获取其依赖的PlayableDirector
         /// </summary>
-        public static PlayableDirector GetDirectorByPlayble(Playable playable)
+        public static PlayableDirector GetDirectorByPlayable(Playable playable)
         {
             PlayableDirector director = playable.GetGraph().GetResolver() as PlayableDirector;
             if (director == null)
