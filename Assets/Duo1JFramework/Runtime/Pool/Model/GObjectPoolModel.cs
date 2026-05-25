@@ -32,7 +32,7 @@ namespace Duo1JFramework.ObjectPool
             value?.DestroySmart();
         }
 
-        public GObjectPoolModel(Func<GameObject> getTemplateCall)
+        public GObjectPoolModel(Func<GameObject> getTemplateCall, int initialCapacity = 0) : base(initialCapacity)
         {
             Assert.NotNullArg(getTemplateCall, "getTemplateCall");
             this.getTemplateCall = getTemplateCall;

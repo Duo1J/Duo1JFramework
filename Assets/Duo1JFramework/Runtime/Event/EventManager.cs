@@ -102,6 +102,12 @@ namespace Duo1JFramework.Event
         /// </summary>
         public void BroadcastDelay(object e, object args = null)
         {
+            if (delayEventQueue == null)
+            {
+                Log.Warn("EventManager已释放，忽略延迟事件广播");
+                return;
+            }
+
             delayEventQueue.Enqueue(new DelayEventData(e, args));
         }
 
@@ -245,16 +251,18 @@ namespace Duo1JFramework.Event
 
         private void OnLateUpdate()
         {
-            if (delayEventQueue.Count > 0)
+            if (delayEventQueue == null || delayEventQueue.Count == 0)
             {
-                Queue<DelayEventData> invokeQueue = delayEventQueue;
-                delayEventQueue = new Queue<DelayEventData>();
+                return;
+            }
 
-                while (invokeQueue.Count > 0)
-                {
-                    DelayEventData data = invokeQueue.Dequeue();
-                    Broadcast(data.Event, data.Args);
-                }
+            Queue<DelayEventData> invokeQueue = delayEventQueue;
+            delayEventQueue = new Queue<DelayEventData>();
+
+            while (invokeQueue.Count > 0)
+            {
+                DelayEventData data = invokeQueue.Dequeue();
+                Broadcast(data.Event, data.Args);
             }
         }
 
@@ -267,6 +275,8 @@ namespace Duo1JFramework.Event
 
         protected override void OnDispose()
         {
+            Reg.UnRegisterLateUpdate(OnLateUpdate);
+
             SetEventModel(null);
             SetTypeEventModel(null);
 

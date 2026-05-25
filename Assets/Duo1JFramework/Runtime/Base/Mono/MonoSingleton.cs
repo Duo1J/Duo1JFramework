@@ -13,6 +13,11 @@ namespace Duo1JFramework
         private static T instance;
 
         /// <summary>
+        /// 是否正在销毁或已销毁
+        /// </summary>
+        private static bool disposingOrDisposed = false;
+
+        /// <summary>
         /// 是否是单例
         /// </summary>
         public override bool IsSingleton => true;
@@ -41,9 +46,9 @@ namespace Duo1JFramework
             {
                 if (instance == null)
                 {
-                    if (Game.IsQuit)
+                    if (Game.IsQuit || disposingOrDisposed)
                     {
-                        Log.ErrorForce($"游戏状态已退出，但仍在创建{typeof(T).FullName}，请使用 `Game.IsQuit` 判断处理");
+                        Log.ErrorForce($"`{typeof(T).FullName}` 正处于退出/销毁阶段，禁止通过Instance重新创建，请在调用前判断 `Game.IsQuit` 或使用 `TryGetInstance`");
                         return null;
                     }
                     Instance = FindObjectOfType<T>();
@@ -62,6 +67,7 @@ namespace Duo1JFramework
 
                 if (instance != null)
                 {
+                    disposingOrDisposed = false;
                     SingletonManager.AddMonoSingleton(instance as ISingleton);
                 }
 
@@ -89,6 +95,13 @@ namespace Duo1JFramework
 
         private void Awake()
         {
+            if (Game.IsQuit || disposingOrDisposed)
+            {
+                Log.ErrorForce($"`{typeof(T).FullName}` 在退出/销毁阶段被唤醒，已销毁当前物体: `{gameObject.name}`");
+                gameObject?.DestroySmart();
+                return;
+            }
+
             if (instance == null)
             {
                 Instance = this.Convert<T>();
@@ -98,8 +111,9 @@ namespace Duo1JFramework
                     gameObject.SetParent(Root.SingletonRoot);
                 }
             }
-            else if (instance != this)
+            else if (!ReferenceEquals(instance, this))
             {
+                Log.ErrorForce($"检测到重复Mono单例 `{typeof(T).FullName}`，保留 `{instance.gameObject.name}`，销毁重复物体 `{gameObject.name}`，请检查场景或预制体中是否误放了多个实例");
                 gameObject?.DestroySmart();
                 return;
             }
@@ -116,6 +130,12 @@ namespace Duo1JFramework
             {
                 return;
             }
+
+            bool isCurrentInstance = ReferenceEquals(instance, this);
+            if (isCurrentInstance)
+            {
+                disposingOrDisposed = true;
+            }
             dispose = true;
 
             OnDispose();
@@ -126,14 +146,21 @@ namespace Duo1JFramework
                 gameObject?.DestroySmart();
             }
 
-            Instance = null;
+            if (isCurrentInstance)
+            {
+                Instance = null;
+            }
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
             goDestroyed = true;
-            Dispose();
+            if (instance == this)
+            {
+                disposingOrDisposed = true;
+                Dispose();
+            }
         }
 
         /// <summary>

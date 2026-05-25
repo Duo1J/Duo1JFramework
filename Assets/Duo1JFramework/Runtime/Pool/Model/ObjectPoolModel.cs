@@ -183,9 +183,9 @@ namespace Duo1JFramework.ObjectPool
             OnDestroyItem?.Invoke(item);
         }
 
-        public ObjectPoolModel()
+        public ObjectPoolModel(int initialCapacity = 0)
         {
-            poolStack = new Stack<ObjectPoolItem<T>>();
+            poolStack = new Stack<ObjectPoolItem<T>>(initialCapacity < 0 ? 0 : initialCapacity);
         }
     }
 }

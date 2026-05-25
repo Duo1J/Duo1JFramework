@@ -15,7 +15,7 @@ namespace Duo1JFramework.ObjectPool
             OnPopCall?.Invoke(o);
         }
 
-        public CommonPool(Func<T, T> onPopCall)
+        public CommonPool(Func<T, T> onPopCall, int initialCapacity = 0) : base(initialCapacity)
         {
             OnPopCall = onPopCall;
         }

@@ -28,6 +28,7 @@ namespace Duo1JFramework.Build
 
         private void DrawBuildInfo()
         {
+            EditorGUI.BeginChangeCheck();
             ED.Scroll(ref scrollPos, () =>
             {
                 strategy.PipelineType = (EABPipelineType)EditorGUILayout.EnumPopup("管线类型", strategy.PipelineType);
@@ -49,6 +50,11 @@ namespace Duo1JFramework.Build
                     }
                 }
             });
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                MarkDirty();
+            }
         }
 
         private void DrawBottomButton()
@@ -142,6 +148,7 @@ namespace Duo1JFramework.Build
             {
                 EditorUtility.SetDirty(strategy);
                 EditorUtil.SaveAndRefresh("AssetBundleBuildEditorWnd::SaveData");
+                ClearDirty();
             }
         }
     }

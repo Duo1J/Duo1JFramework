@@ -22,6 +22,11 @@ namespace Duo1JFramework.AudioAPI
         private readonly List<AudioMgrController> activeControllerList = new List<AudioMgrController>();
 
         /// <summary>
+        /// 活跃控制器快照缓存
+        /// </summary>
+        private readonly List<AudioMgrController> activeControllerSnapshotCache = new List<AudioMgrController>();
+
+        /// <summary>
         /// 音频分组字典
         /// </summary>
         private readonly Dictionary<EAudioCategory, AudioGroup> audioGroupDict = new Dictionary<EAudioCategory, AudioGroup>();
@@ -483,7 +488,9 @@ namespace Duo1JFramework.AudioAPI
         /// </summary>
         private List<AudioMgrController> GetActiveControllerSnapshot()
         {
-            return new List<AudioMgrController>(activeControllerList);
+            activeControllerSnapshotCache.Clear();
+            activeControllerSnapshotCache.AddRange(activeControllerList);
+            return activeControllerSnapshotCache;
         }
 
         /// <summary>
@@ -508,6 +515,7 @@ namespace Duo1JFramework.AudioAPI
             }
 
             activeControllerList.Clear();
+            activeControllerSnapshotCache.Clear();
             audioLastPlayTimeDict.Clear();
             audioGroupDict.Clear();
             bgmController = null;

@@ -53,6 +53,11 @@ namespace Duo1JFramework
         private string errMsg;
 
         /// <summary>
+        /// 是否有待保存变更
+        /// </summary>
+        protected bool IsDirty { get; private set; }
+
+        /// <summary>
         /// 打开编辑器窗口
         /// </summary>
         /// <param name="wndName">窗口名，不填则使用配置的名称</param>
@@ -80,6 +85,22 @@ namespace Duo1JFramework
         #endregion Override
 
         #region Tool Function
+
+        /// <summary>
+        /// 标记窗口数据已变更
+        /// </summary>
+        protected void MarkDirty()
+        {
+            IsDirty = true;
+        }
+
+        /// <summary>
+        /// 清理窗口数据变更标记
+        /// </summary>
+        protected void ClearDirty()
+        {
+            IsDirty = false;
+        }
 
         /// <summary>
         /// 设置错误消息
@@ -143,11 +164,18 @@ namespace Duo1JFramework
         protected virtual void OnEnable()
         {
             LoadData();
+            ClearDirty();
         }
 
         protected virtual void OnDisable()
         {
+            if (!IsDirty || EditorApplication.isCompiling)
+            {
+                return;
+            }
+
             SaveData();
+            ClearDirty();
         }
 
         #endregion Lifecycle

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UObject = UnityEngine.Object;
@@ -244,6 +245,38 @@ namespace Duo1JFramework
         }
 
         /// <summary>
+        /// 进度条，异常向外抛出
+        /// </summary>
+        public static void ProgressBarUnsafe(Action action, string title, string content, float fakeProgress = 0.3f)
+        {
+            try
+            {
+                EditorUtility.DisplayProgressBar(title, content, fakeProgress);
+                action?.Invoke();
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        /// <summary>
+        /// 通过回调修改进度的进度条，异常向外抛出
+        /// </summary>
+        public static void ProgressBarUnsafe(Action<Action<float>> action, string title, string content)
+        {
+            try
+            {
+                EditorUtility.DisplayProgressBar(title, content, 0);
+                action?.Invoke((progress) => EditorUtility.DisplayProgressBar(title, content, progress));
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        /// <summary>
         /// 复制
         /// </summary>
         public static void CopyText(string text)
@@ -314,6 +347,8 @@ namespace Duo1JFramework
             T so = AssetDatabase.LoadAssetAtPath<T>(path);
             if (so == null)
             {
+                EnsureAssetFolder(Path.GetDirectoryName(path));
+
                 Log.Warn($"创建默认编辑器下配置: `{path}`");
                 so = ScriptableObject.CreateInstance<T>();
                 AssetDatabase.CreateAsset(so, path);
@@ -322,6 +357,31 @@ namespace Duo1JFramework
             }
 
             return so;
+        }
+
+        /// <summary>
+        /// 确保AssetDatabase路径目录存在
+        /// </summary>
+        public static void EnsureAssetFolder(string folderPath)
+        {
+            folderPath = PathUtil.SplitUnify(folderPath);
+            if (string.IsNullOrEmpty(folderPath) || AssetDatabase.IsValidFolder(folderPath))
+            {
+                return;
+            }
+
+            string[] folders = folderPath.Split('/');
+            string curPath = folders[0];
+            for (int i = 1; i < folders.Length; i++)
+            {
+                string nextPath = $"{curPath}/{folders[i]}";
+                if (!AssetDatabase.IsValidFolder(nextPath))
+                {
+                    AssetDatabase.CreateFolder(curPath, folders[i]);
+                }
+
+                curPath = nextPath;
+            }
         }
 
         /// <summary>

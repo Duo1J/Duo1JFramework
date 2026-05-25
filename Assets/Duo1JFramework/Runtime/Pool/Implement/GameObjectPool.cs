@@ -56,10 +56,10 @@ namespace Duo1JFramework.ObjectPool
 
         public override void InitPool()
         {
-            SetPool(new GObjectPoolModel(() => templateGo));
+            SetPool(new GObjectPoolModel(() => templateGo, poolItemList?.Capacity ?? 0));
         }
 
-        public GameObjectPool(GameObject templateGo, Func<GameObject, GameObject> initCall, Transform parentOverride = null, bool activeOnPop = false, bool inactiveOnPush = true) : base(initCall)
+        public GameObjectPool(GameObject templateGo, Func<GameObject, GameObject> initCall, Transform parentOverride = null, bool activeOnPop = false, bool inactiveOnPush = true, int initialCapacity = 0, int prewarmCount = 0) : base(initCall, initialCapacity)
         {
             Assert.NotNullArg(templateGo, "templateGo");
 
@@ -76,6 +76,8 @@ namespace Duo1JFramework.ObjectPool
             {
                 templateGo.SetActive(false);
             }
+
+            Prewarm(prewarmCount);
         }
     }
 }

@@ -9,6 +9,11 @@ namespace Duo1JFramework.ObjectPool
     public abstract class BaseObjectPool<T> where T : class, new()
     {
         /// <summary>
+        /// 默认无效对象弹出保护次数
+        /// </summary>
+        private const int DEFAULT_INVALID_POP_GUARD = 1024;
+
+        /// <summary>
         /// 对象池实现
         /// </summary>
         protected ObjectPoolModel<T> pool;
@@ -80,9 +85,16 @@ namespace Duo1JFramework.ObjectPool
         public T Pop()
         {
             ObjectPoolItem<T> ret = pool.Pop();
-            while (!IsValidObject(ret.Value))
+            int invalidCount = 0;
+            while (ret == null || !IsValidObject(ret.Value))
             {
                 pool.Destroy(ret);
+                invalidCount++;
+                if (invalidCount >= DEFAULT_INVALID_POP_GUARD)
+                {
+                    throw new InvalidOperationException($"对象池 `{GetType().FullName}` 连续弹出无效对象超过 {DEFAULT_INVALID_POP_GUARD} 次，请检查对象创建或有效性判断逻辑");
+                }
+
                 ret = pool.Pop();
             }
 
@@ -201,7 +213,7 @@ namespace Duo1JFramework.ObjectPool
         /// </summary>
         public virtual void InitPool()
         {
-            SetPool(new ObjectPoolModel<T>());
+            SetPool(new ObjectPoolModel<T>(poolItemList?.Capacity ?? 0));
         }
 
         /// <summary>
@@ -239,11 +251,12 @@ namespace Duo1JFramework.ObjectPool
             }
         }
 
-        public BaseObjectPool()
+        public BaseObjectPool(int initialCapacity = 0)
         {
-            poolItemList = new List<ObjectPoolItem<T>>();
-            poolItemMap = new Dictionary<T, ObjectPoolItem<T>>();
-            SetPool(new ObjectPoolModel<T>());
+            initialCapacity = initialCapacity < 0 ? 0 : initialCapacity;
+            poolItemList = new List<ObjectPoolItem<T>>(initialCapacity);
+            poolItemMap = new Dictionary<T, ObjectPoolItem<T>>(initialCapacity);
+            SetPool(new ObjectPoolModel<T>(initialCapacity));
         }
     }
 }

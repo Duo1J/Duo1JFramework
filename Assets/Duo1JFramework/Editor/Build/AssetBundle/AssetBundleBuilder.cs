@@ -165,6 +165,7 @@ namespace Duo1JFramework.Build
                 return ret.ToArray();
             }
 
+            Dictionary<string, string> asset2ABMap = new Dictionary<string, string>();
             string pathPrefix = Def.Path.ASSET_FULL_PATH_PREFIX;
             foreach (ABBuildStrategyData strategyData in strategyDatas)
             {
@@ -189,23 +190,29 @@ namespace Duo1JFramework.Build
                         return p.Replace(pathPrefix, Def.Path.ASSET_PATH_PREFIX);
                     });
 
-                    if (buildData.AssetPathList == null || buildData.AssetPathList.Count == 0)
+                    if (buildData.AssetPathList == null)
                     {
-                        buildData.AssetPathList = resultList;
+                        buildData.AssetPathList = new List<string>();
                     }
-                    else
+
+                    foreach (string item in resultList)
                     {
-                        List<string> assetPathList = buildData.AssetPathList;
-                        foreach (string item in resultList)
+                        if (asset2ABMap.TryGetValue(item, out string existABName))
                         {
-                            assetPathList.Add(item);
+                            Log.EditorError($"资源被多个AssetBundle策略包含，资源: `{item}`，已存在AB: `{existABName}`，当前AB: `{buildData.ABName}`");
+                            continue;
                         }
+
+                        asset2ABMap[item] = buildData.ABName;
+                        buildData.AssetPathList.Add(item);
                     }
                 }
 
+                buildData.AssetPathList?.Sort(StringComparer.Ordinal);
                 ret.Add(buildData);
             }
 
+            ret.Sort((a, b) => string.CompareOrdinal(a.ABName, b.ABName));
             return ret.ToArray();
         }
 
@@ -251,6 +258,7 @@ namespace Duo1JFramework.Build
         public static Dictionary<string, string> BuildAB2HashMap(ABBuildData[] buildDatas)
         {
             Dictionary<string, string> ab2HashMap = new Dictionary<string, string>();
+            Dictionary<string, string> hash2ABMap = new Dictionary<string, string>();
 
             foreach (ABBuildData buildData in buildDatas)
             {
@@ -271,12 +279,13 @@ namespace Duo1JFramework.Build
                 {
                     string hashStr = hash.ToString();
 
-                    if (ab2HashMap.ContainsValue(hashStr))
+                    if (hash2ABMap.TryGetValue(hashStr, out string existABName))
                     {
-                        Log.EditorError($"构建Hash重复, AssetBundle: `{abPath}`, Hash: `{hashStr}`");
+                        Log.EditorError($"构建Hash重复, AssetBundle: `{abPath}`, 已存在AB: `{existABName}`, Hash: `{hashStr}`");
                         continue;
                     }
 
+                    hash2ABMap.Add(hashStr, buildData.ABName);
                     ab2HashMap.Add(buildData.ABName, hashStr);
                 }
                 else
@@ -295,6 +304,7 @@ namespace Duo1JFramework.Build
         public static Dictionary<string, string> BuildAB2MD5Map(ABBuildData[] buildDatas)
         {
             Dictionary<string, string> ab2MD5Map = new Dictionary<string, string>();
+            Dictionary<string, string> md52ABMap = new Dictionary<string, string>();
 
             foreach (ABBuildData buildData in buildDatas)
             {
@@ -322,12 +332,13 @@ namespace Duo1JFramework.Build
                             continue;
                         }
 
-                        if (ab2MD5Map.ContainsValue(md5Str))
+                        if (md52ABMap.TryGetValue(md5Str, out string existABName))
                         {
-                            Log.EditorError($"构建MD5重复, AssetBundle: `{abPath}`, MD5: `{md5Str}`");
+                            Log.EditorError($"构建MD5重复, AssetBundle: `{abPath}`, 已存在AB: `{existABName}`, MD5: `{md5Str}`");
                             continue;
                         }
 
+                        md52ABMap.Add(md5Str, buildData.ABName);
                         ab2MD5Map.Add(buildData.ABName, md5Str);
                     }
                 }

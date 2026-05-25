@@ -16,9 +16,10 @@ namespace Duo1JFramework.Bake
         {
             public EPipelineState Run(IPipelineContext context)
             {
-                try
+                EPipelineState ret = EPipelineState.Fail;
+                EditorUtil.ProgressBarUnsafe(() =>
                 {
-                    return Util.TryCatch(() =>
+                    ret = Util.TryCatch(() =>
                     {
                         if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                         {
@@ -41,11 +42,9 @@ namespace Duo1JFramework.Bake
 
                         return EPipelineState.Success;
                     });
-                }
-                finally
-                {
-                    EditorUtility.ClearProgressBar();
-                }
+                }, "烘焙", "准备烘焙", 0f);
+
+                return ret;
             }
 
             /// <summary>

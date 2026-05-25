@@ -40,11 +40,36 @@ namespace Duo1JFramework
             {
                 if (uiRoot == null)
                 {
+                    if (Game.IsQuit)
+                    {
+                        Log.ErrorForce("游戏状态已退出，但仍在创建UIRoot");
+                        return null;
+                    }
+
                     IAssetHandle<GameObject> uiRootGoHandle = AssetManager.Instance.LoadResourceSync<GameObject>(Def.UI.ROOT_PATH);
+                    if (uiRootGoHandle == null)
+                    {
+                        Log.ErrorForce($"加载UIRoot资源失败，资源句柄为空: `{Def.UI.ROOT_PATH}`");
+                        return null;
+                    }
+
                     GameObject uiRootGo = uiRootGoHandle.Instantiate();
                     uiRootGoHandle.Release();
+                    if (uiRootGo == null)
+                    {
+                        Log.ErrorForce($"实例化UIRoot资源失败: `{Def.UI.ROOT_PATH}`");
+                        return null;
+                    }
+
                     uiRootGo.transform.position = Def.UI.ROOT_DEFAULT_POS;
                     uiRoot = uiRootGo.GetComponent<UIRoot>();
+                    if (uiRoot == null)
+                    {
+                        Log.ErrorForce($"UIRoot资源缺少 `{nameof(UIRoot)}` 组件: `{Def.UI.ROOT_PATH}`");
+                        uiRootGo.DestroySmart();
+                        return null;
+                    }
+
                     Object.DontDestroyOnLoad(uiRootGo);
                 }
                 return uiRoot;

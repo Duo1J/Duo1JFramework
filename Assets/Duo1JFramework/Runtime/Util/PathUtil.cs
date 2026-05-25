@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Duo1JFramework
 {
     /// <summary>
@@ -11,7 +13,34 @@ namespace Duo1JFramework
         /// <see cref="StringExtend.SplitUnify(string)"/>
         public static string SplitUnify(string path)
         {
-            return path.Replace("\\", "/");
+            return string.IsNullOrEmpty(path) ? path : path.Replace("\\", "/");
+        }
+
+        /// <summary>
+        /// 组合路径并统一分隔符
+        /// </summary>
+        public static string Combine(params string[] paths)
+        {
+            if (paths == null || paths.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return SplitUnify(Path.Combine(paths));
+        }
+
+        /// <summary>
+        /// 确保路径以统一分隔符结尾
+        /// </summary>
+        public static string EnsureTrailingSlash(string path)
+        {
+            path = SplitUnify(path);
+            if (string.IsNullOrEmpty(path) || path.EndsWith("/"))
+            {
+                return path;
+            }
+
+            return $"{path}/";
         }
 
         /// <summary>
@@ -29,14 +58,8 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundlePath(string assetBundleName, bool ignoreSuffix = false)
         {
-            if (ignoreSuffix)
-            {
-                return $"{GetAssetBundleRoot()}{assetBundleName}";
-            }
-            else
-            {
-                return $"{GetAssetBundleRoot()}{assetBundleName}{Def.Path.ASSET_BUNDLE_SUFFIX}";
-            }
+            string fileName = ignoreSuffix ? assetBundleName : $"{assetBundleName}{Def.Path.ASSET_BUNDLE_SUFFIX}";
+            return Combine(GetAssetBundleRoot(), fileName);
         }
 
         /// <summary>
@@ -56,7 +79,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundleEditorRoot()
         {
-            return $"{Def.Path.DataPath}/../{Def.Path.ASSET_BUNDLE_BUILD_FOLDER}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}/";
+            return EnsureTrailingSlash(Combine(Def.Path.DataPath, "..", Def.Path.ASSET_BUNDLE_BUILD_FOLDER, Def.Path.ASSET_BUNDLE_MAIN_NAME));
         }
 
         /// <summary>
@@ -64,7 +87,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundleRuntimeRoot()
         {
-            return $"{Def.Path.Streaming}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}/";
+            return EnsureTrailingSlash(Combine(Def.Path.Streaming, Def.Path.ASSET_BUNDLE_MAIN_NAME));
         }
 
         /// <summary>
@@ -72,7 +95,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetAssetBundleRuntimeRootMeta()
         {
-            return $"{Def.Path.Streaming}/{Def.Path.ASSET_BUNDLE_MAIN_NAME}{Def.Path.META_SUFFIX}";
+            return Combine(Def.Path.Streaming, $"{Def.Path.ASSET_BUNDLE_MAIN_NAME}{Def.Path.META_SUFFIX}");
         }
 
         /// <summary>
@@ -80,7 +103,7 @@ namespace Duo1JFramework
         /// </summary>
         public static string GetABMapDataPath()
         {
-            return $"{GetAssetBundleRoot()}/{Def.Path.ASSET_BUNDLE_MAP_DATA_NAME}";
+            return Combine(GetAssetBundleRoot(), Def.Path.ASSET_BUNDLE_MAP_DATA_NAME);
         }
 
         /// <summary>

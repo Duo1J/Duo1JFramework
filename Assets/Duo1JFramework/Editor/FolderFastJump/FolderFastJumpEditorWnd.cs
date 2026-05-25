@@ -71,6 +71,7 @@ namespace Duo1JFramework
                     if (GUILayout.Button("添加数据"))
                     {
                         AddData();
+                        MarkDirty();
                     }
 
                     if (GUILayout.Button("添加当前选中目标"))
@@ -84,6 +85,7 @@ namespace Duo1JFramework
                             string[] splited = p.Split('\\');
                             data.name = splited[splited.Length - 1] ?? "";
                             data.path = p;
+                            MarkDirty();
                         }
                         else
                         {
@@ -142,6 +144,7 @@ namespace Duo1JFramework
             int removeIdx = -1;
 
             GUILayout.Label("自定义列表");
+            EditorGUI.BeginChangeCheck();
             for (int i = 0; i < dataList.Count; i++)
             {
                 FolderFastJumpData data = dataList[i];
@@ -178,6 +181,7 @@ namespace Duo1JFramework
                                     string[] splited = p.Split('\\');
                                     data.name = splited[splited.Length - 1] ?? "";
                                     data.path = p;
+                                    MarkDirty();
                                 }
                                 else
                                 {
@@ -195,9 +199,15 @@ namespace Duo1JFramework
                 GUILayout.Space(3);
             }
 
+            if (EditorGUI.EndChangeCheck())
+            {
+                MarkDirty();
+            }
+
             if (removeIdx != -1)
             {
                 DeleteData(removeIdx);
+                MarkDirty();
             }
         }
 
@@ -237,10 +247,8 @@ namespace Duo1JFramework
                 return;
             }
 
-            try
+            EditorUtil.ProgressBarUnsafe(() =>
             {
-                EditorUtility.DisplayProgressBar("", "保存文件夹快速选择配置", 0.7f);
-
                 So.list = new List<FolderFastJumpData>();
                 foreach (FolderFastJumpData data in dataList)
                 {
@@ -249,12 +257,9 @@ namespace Duo1JFramework
 
                 EditorUtility.SetDirty(So);
                 EditorUtil.SaveAndRefresh("FolderFastJumpEditorWnd::SaveSoData");
+                ClearDirty();
                 System.GC.Collect();
-            }
-            finally
-            {
-                EditorUtility.ClearProgressBar();
-            }
+            }, "", "保存文件夹快速选择配置", 0.7f);
         }
 
         private bool CheckChange()

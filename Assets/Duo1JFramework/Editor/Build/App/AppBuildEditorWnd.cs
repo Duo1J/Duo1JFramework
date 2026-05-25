@@ -26,6 +26,7 @@ namespace Duo1JFramework.Build
 
         private void DrawBuildInfo()
         {
+            EditorGUI.BeginChangeCheck();
             ED.Scroll(ref scrollPos, () =>
             {
                 ED.Vertical(() =>
@@ -50,6 +51,11 @@ namespace Duo1JFramework.Build
                     }
                 });
             });
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                MarkDirty();
+            }
         }
 
         private void DrawBottomButton()
@@ -116,6 +122,7 @@ namespace Duo1JFramework.Build
             {
                 EditorUtility.SetDirty(strategy);
                 EditorUtil.SaveAndRefresh("AppBuildEditorWnd::SaveData");
+                ClearDirty();
             }
         }
 

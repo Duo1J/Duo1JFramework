@@ -39,6 +39,11 @@ namespace Duo1JFramework.Scheduling
         /// </summary>
         private UpdateGroup fixedUpdateGroup;
 
+        /// <summary>
+        /// EarlyUpdate循环句柄
+        /// </summary>
+        private Loop earlyUpdateLoop;
+
         #region EarlyUpdate
 
         /// <summary>
@@ -204,7 +209,9 @@ namespace Duo1JFramework.Scheduling
                 }
 
                 asyncOpeCompletedList.Add(wrap);
-                asyncOpeWrapList.RemoveAt(i);
+                int lastIndex = asyncOpeWrapList.Count - 1;
+                asyncOpeWrapList[i] = asyncOpeWrapList[lastIndex];
+                asyncOpeWrapList.RemoveAt(lastIndex);
             }
 
             foreach (AsyncOperationWrap wrap in asyncOpeCompletedList)
@@ -219,26 +226,35 @@ namespace Duo1JFramework.Scheduling
 
         protected override void OnInit()
         {
-            PlayerLoopManager.Instance.AddPlayerLoop(typeof(UnityEngine.PlayerLoop.EarlyUpdate), OnEarlyUpdate);
-
             earlyUpdateGroup = new UpdateGroup("EarlyUpdate");
             preUpdateGroup = new UpdateGroup("PreUpdate");
             updateGroup = new UpdateGroup("Update");
             fixedUpdateGroup = new UpdateGroup("FixedUpdate");
             lateUpdateGroup = new UpdateGroup("LateUpdate");
 
-            asyncOpeWrapList = new List<AsyncOperationWrap>();
-            asyncOpeCompletedList = new List<AsyncOperationWrap>();
+            earlyUpdateLoop = PlayerLoopManager.Instance.AddPlayerLoop(typeof(UnityEngine.PlayerLoop.EarlyUpdate), OnEarlyUpdate);
+
+            asyncOpeWrapList = new List<AsyncOperationWrap>(16);
+            asyncOpeCompletedList = new List<AsyncOperationWrap>(16);
         }
 
         protected override void OnDispose()
         {
+            if (earlyUpdateLoop != null)
+            {
+                PlayerLoopManager.TryGetInstance(out PlayerLoopManager playerLoopManager);
+                playerLoopManager?.RemovePlayerLoop(earlyUpdateLoop);
+                earlyUpdateLoop = null;
+            }
+
             earlyUpdateGroup = null;
             preUpdateGroup = null;
             updateGroup = null;
             fixedUpdateGroup = null;
             lateUpdateGroup = null;
 
+            asyncOpeWrapList?.Clear();
+            asyncOpeCompletedList?.Clear();
             asyncOpeWrapList = null;
             asyncOpeCompletedList = null;
         }
