@@ -89,7 +89,7 @@ namespace Duo1JFramework.PlatformAPI
             current = new DefaultPlatform();
 #endif
 
-            Log.Info($"初始化平台`{current.GetType().Name}` Type: {current.Type}, RuntimeType: {current.RuntimeType}, OS: {SystemInfo.operatingSystem}, Device: {SystemInfo.deviceModel}, Memory: {SystemInfo.systemMemorySize}MB");
+            Log.Info($"初始化平台: {current.GetType().Name} Type: {current.Type}, RuntimeType: {current.RuntimeType}, OS: {SystemInfo.operatingSystem}, Device: {SystemInfo.deviceModel}, Memory: {SystemInfo.systemMemorySize}MB");
         }
 
         /// <summary>

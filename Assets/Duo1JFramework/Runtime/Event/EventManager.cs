@@ -275,7 +275,7 @@ namespace Duo1JFramework.Event
 
         protected override void OnDispose()
         {
-            Reg.UnRegisterLateUpdate(OnLateUpdate);
+            Reg.UnRegisterLateUpdate();
 
             SetEventModel(null);
             SetTypeEventModel(null);

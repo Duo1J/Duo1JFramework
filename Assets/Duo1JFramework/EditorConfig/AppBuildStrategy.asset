@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildTarget: 19
   buildOptions: 0
-  buildAsset: 1
+  buildAsset: 0
   assetLoaderType: 1
   abData:
     copyAsset: 1

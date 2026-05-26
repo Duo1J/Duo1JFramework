@@ -144,7 +144,7 @@ namespace Duo1JFramework.PlatformAPI
                 return false;
             }
 
-            Handheld.Vibrate();
+            // Handheld.Vibrate();
             return true;
         }
 
