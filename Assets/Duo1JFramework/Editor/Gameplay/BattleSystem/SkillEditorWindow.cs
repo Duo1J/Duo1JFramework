@@ -102,12 +102,13 @@ namespace Duo1JFramework.Gameplay.BattleSystem
         [NonSerialized]
         private CombatUnitController previewUnit;
 
-        private const float LEFT_PANEL_WIDTH = 240f;
-        private const float RIGHT_PANEL_WIDTH = 320f;
-        private const float TOOLBAR_HEIGHT = 24f;
-        private const float RULER_HEIGHT = 22f;
+        private const float TOOLBAR_HEIGHT = 26f;
+        private const float RULER_HEIGHT = 24f;
         private const float TRACK_HEADER_WIDTH = 140f;
-        private const float TRACK_HEIGHT = 34f;
+        private const float TRACK_HEIGHT = 40f;
+
+        private float leftPanelWidth = 360f;
+        private float rightPanelWidth = 400f;
 
         /// <summary>
         /// 打开并编辑指定技能
@@ -179,7 +180,7 @@ namespace Duo1JFramework.Gameplay.BattleSystem
         {
             ED.Horizontal(() =>
             {
-                SkillConfig newSkilConfig = (SkillConfig)EditorGUILayout.ObjectField(target, typeof(SkillConfig), false, GUILayout.Width(200));
+                SkillConfig newSkilConfig = (SkillConfig)EditorGUILayout.ObjectField(target, typeof(SkillConfig), false, GUILayout.Width(180));
                 if (newSkilConfig != target)
                 {
                     target = newSkilConfig;
@@ -194,12 +195,19 @@ namespace Duo1JFramework.Gameplay.BattleSystem
 
                 GUILayout.Space(10);
                 GUILayout.Label("预览对象:", GUILayout.Width(58));
-                GameObject newGo = (GameObject)EditorGUILayout.ObjectField(previewObject, typeof(GameObject), true, GUILayout.Width(180));
+                GameObject newGo = (GameObject)EditorGUILayout.ObjectField(previewObject, typeof(GameObject), true, GUILayout.Width(160));
                 if (newGo != previewObject)
                 {
                     StopPreview();
                     previewObject = newGo;
                 }
+
+                GUILayout.Space(15);
+
+                GUILayout.Label("Left");
+                leftPanelWidth = GUILayout.HorizontalSlider(leftPanelWidth, 240f, 600f, GUILayout.Width(80));
+                GUILayout.Label("Right");
+                rightPanelWidth = GUILayout.HorizontalSlider(rightPanelWidth, 300f, 600f, GUILayout.Width(80));
 
                 GUILayout.FlexibleSpace();
 
@@ -219,12 +227,12 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                     Repaint();
                 }
 
-                snapEnable = GUILayout.Toggle(snapEnable, "吸附", EditorStyles.toolbarButton, GUILayout.Width(40));
+                snapEnable = GUILayout.Toggle(snapEnable, "吸附", EditorStyles.toolbarButton, GUILayout.Width(50));
 
-                GUILayout.Label("缩放", GUILayout.Width(30));
-                pixelPerSec = GUILayout.HorizontalSlider(pixelPerSec, 40f, 800f, GUILayout.Width(120));
+                GUILayout.Label("缩放", GUILayout.Width(50));
+                pixelPerSec = GUILayout.HorizontalSlider(pixelPerSec, 40f, 800f, GUILayout.Width(80));
 
-                if (GUILayout.Button("保存", EditorStyles.toolbarButton, GUILayout.Width(48)))
+                if (GUILayout.Button("保存", EditorStyles.toolbarButton, GUILayout.Width(60)))
                 {
                     if (target != null)
                     {
@@ -277,7 +285,10 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("效果库", EditorStyles.boldLabel);
                 EffectListInspector.Draw(target);
-            }, GUILayout.Width(LEFT_PANEL_WIDTH));
+
+                GUILayout.FlexibleSpace();
+
+            }, "box", GUILayout.Width(leftPanelWidth));
         }
 
         private void DrawRightPanel()
@@ -289,15 +300,17 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                 if (selectedSeg == null)
                 {
                     ED.HelpBox_Editor("在时间轴上选择一个片段", MessageType.Info);
+                    GUILayout.FlexibleSpace();
                     return;
                 }
 
                 ED.Scroll(ref inspectorScroll, () =>
                 {
                     SegmentInspector.Draw(selectedSeg, target);
-                });
+                }, "box");
 
                 EditorGUILayout.Space();
+
                 if (GUILayout.Button("删除片段"))
                 {
                     if (selectedTrack != null)
@@ -308,7 +321,10 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                         EditorUtility.SetDirty(target);
                     }
                 }
-            }, GUILayout.Width(RIGHT_PANEL_WIDTH));
+
+                GUILayout.FlexibleSpace();
+
+            }, "box", GUILayout.Width(rightPanelWidth));
         }
 
         private void DrawCenter()
@@ -382,7 +398,7 @@ namespace Duo1JFramework.Gameplay.BattleSystem
             Rect nameRect = new Rect(header.x + 4, header.y + 4, header.width - 60, 18);
             tk.Name = EditorGUI.TextField(nameRect, tk.Name);
 
-            Rect typeRect = new Rect(header.x + 4, header.y + 18, header.width - 60, 14);
+            Rect typeRect = new Rect(header.x + 4, header.y + 22, header.width - 60, 14);
             EditorGUI.LabelField(typeRect, tk.Type.ToString(), EditorStyles.miniLabel);
 
             Rect addRect = new Rect(header.xMax - 54, header.y + 6, 24, 20);

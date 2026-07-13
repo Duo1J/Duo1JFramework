@@ -1,0 +1,205 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e35bac0a8066743a04e00564cb0f6b, type: 3}
+  m_Name: SkillConfig01
+  m_EditorClassIdentifier: 
+  Id: 123
+  DisplayName: qwe
+  Description: 
+  Icon: {fileID: 0}
+  InputId: 1
+  Cooldown: 1
+  CostMana: 10
+  RequiredTags: []
+  BlockedTags: []
+  OwnedTags: []
+  Sequence:
+    Duration: 5
+    Loop: 1
+    Tracks:
+    - Name: Animation
+      Type: 0
+      Disabled: 0
+      Segments:
+      - rid: 4699092005220777984
+    - Name: Vfx
+      Type: 3
+      Disabled: 0
+      Segments:
+      - rid: 4699092005220777985
+    - Name: Sfx
+      Type: 4
+      Disabled: 0
+      Segments:
+      - rid: 4699092005220777986
+    - Name: EffectApply
+      Type: 2
+      Disabled: 0
+      Segments: []
+    - Name: CameraShake
+      Type: 6
+      Disabled: 0
+      Segments:
+      - rid: 4699092005220777987
+    - Name: Movement
+      Type: 5
+      Disabled: 0
+      Segments:
+      - rid: 4699092005220777988
+  Effects:
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 1
+    Duration: 1
+    Period: 0
+    Modifiers:
+    - Attribute: 4
+      Op: 0
+      Magnitude: 0
+      AsDamage: 0
+    - Attribute: 2
+      Op: 1
+      Magnitude: 0
+      AsDamage: 0
+    - Attribute: 0
+      Op: 0
+      Magnitude: 0
+      AsDamage: 0
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers:
+    - Attribute: 0
+      Op: 0
+      Magnitude: 0
+      AsDamage: 0
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers: []
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers: []
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers: []
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers: []
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers: []
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  - Id: NewEffect
+    Name: 
+    DurationPolicy: 0
+    Duration: 1
+    Period: 0
+    Modifiers: []
+    GrantedTags: []
+    BlockedByTags: []
+    RequiredTags: []
+    MaxStack: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 4699092005220777984
+      type: {class: AnimationSegment, ns: Duo1JFramework.Gameplay.BattleSystem, asm: Duo1JFramework}
+      data:
+        Name: "\u52A8\u753B\u7247\u6BB5"
+        StartTime: 1.8000001
+        EndTime: 2.98
+        StateName: 
+        CrossFade: 0.1
+        Layer: -1
+    - rid: 4699092005220777985
+      type: {class: VfxSegment, ns: Duo1JFramework.Gameplay.BattleSystem, asm: Duo1JFramework}
+      data:
+        Name: "\u7279\u6548"
+        StartTime: 0.5
+        EndTime: 1.53
+        VfxPath: 
+        Offset: {x: 0, y: 0, z: 0}
+        EulerAngles: {x: 0, y: 0, z: 0}
+        AttachToOwner: 1
+        Scale: 1
+    - rid: 4699092005220777986
+      type: {class: SfxSegment, ns: Duo1JFramework.Gameplay.BattleSystem, asm: Duo1JFramework}
+      data:
+        Name: "\u97F3\u6548"
+        StartTime: 1.45
+        EndTime: 2.31
+        SfxPath: 
+        Volume: 1
+        AttachToOwner: 1
+        LoadType: 3
+        Category: 4
+    - rid: 4699092005220777987
+      type: {class: CameraShakeSegment, ns: Duo1JFramework.Gameplay.BattleSystem, asm: Duo1JFramework}
+      data:
+        Name: "\u76F8\u673A\u9707\u52A8"
+        StartTime: 1.7
+        EndTime: 4.87
+        Amplitude: 0.15
+        Frequency: 30
+    - rid: 4699092005220777988
+      type: {class: MovementSegment, ns: Duo1JFramework.Gameplay.BattleSystem, asm: Duo1JFramework}
+      data:
+        Name: "\u4F4D\u79FB"
+        StartTime: 0
+        EndTime: 0.2
+        LocalDir: {x: 0, y: 0, z: 1}
+        Distance: 1
+        UseCharacterController: 0

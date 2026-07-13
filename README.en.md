@@ -26,3 +26,4 @@
 19. Configuration framework and building (Not completed)
 20. Configurable automated import setting and asset check
 21. Network framework
+22. Skill system and skill editor

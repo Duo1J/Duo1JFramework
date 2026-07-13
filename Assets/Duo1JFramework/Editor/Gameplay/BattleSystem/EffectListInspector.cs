@@ -32,7 +32,8 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                     skillConfig.Effects.Add(new EffectConfig { Id = "NewEffect" });
                     EditorUtility.SetDirty(skillConfig);
                 }
-            }, GUILayout.MaxHeight(250));
+
+            }, "box");
         }
 
         /// <summary>
