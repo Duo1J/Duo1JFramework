@@ -266,6 +266,20 @@ namespace Duo1JFramework
 #endif
         }
 
+        /// <summary>
+        /// 在Handles中开启GUI绘制
+        /// </summary>
+        public static void HandlesGUI(Action action)
+        {
+            Assert.GuardEditor();
+
+#if UNITY_EDITOR
+            Handles.BeginGUI();
+            action?.InvokeSafe();
+            Handles.EndGUI();
+#endif
+        }
+
         #endregion Handles
 
         protected ED()

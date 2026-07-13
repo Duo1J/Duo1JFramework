@@ -2,6 +2,7 @@ using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
 using Duo1JFramework.Bake;
+using Duo1JFramework.Gameplay.BattleSystem;
 using Duo1JFramework.Net;
 using Duo1JFramework.Scheduling;
 using Duo1JFramework.PhysicsAPI;
@@ -169,6 +170,16 @@ namespace Duo1JFramework
         }
 
         #endregion Animation 50
+
+        #region BattleSystem 70
+
+        [MenuItem(EditorDef.Menu.Framework.BATTLE_SYSTEM_PREFIX + EditorDef.Menu.SKILL_EDITOR_WND, priority = 70)]
+        public static SkillEditorWindow OpenSkillEditorWindow()
+        {
+            return SkillEditorWindow.Open();
+        }
+
+        #endregion BattleSystem 70
 
         private MenuTool()
         {

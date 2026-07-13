@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Duo1JFramework
 {
     /// <summary>
-    /// 运行时配置ScriptableObject
+    /// 运行时配置ScriptableObject单例
     /// </summary>
     public abstract class RuntimeConfigSO<T> : ScriptableObject where T : ScriptableObject
     {

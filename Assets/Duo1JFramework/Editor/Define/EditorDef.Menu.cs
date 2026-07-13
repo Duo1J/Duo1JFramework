@@ -1,6 +1,7 @@
 using Duo1JFramework.AnimationAPI;
 using Duo1JFramework.Asset;
 using Duo1JFramework.Build;
+using Duo1JFramework.Gameplay.BattleSystem;
 using Duo1JFramework.Net;
 using Duo1JFramework.Scheduling;
 using Duo1JFramework.PhysicsAPI;
@@ -70,6 +71,11 @@ namespace Duo1JFramework
                 /// 动画
                 /// </summary>
                 public const string ANIMATION_PREFIX = PREFIX + "Animation/";
+
+                /// <summary>
+                /// 战斗系统
+                /// </summary>
+                public const string BATTLE_SYSTEM_PREFIX = PREFIX + "BattleSystem/";
             }
 
             #endregion Framework
@@ -144,6 +150,8 @@ namespace Duo1JFramework
 
             public const string FOOT_IK_CURVE_GENERATOR = "足部IK曲线生成器";
 
+            public const string SKILL_EDITOR_WND = "技能编辑器";
+
             /// <summary>
             /// 工具窗口名称映射配置
             /// </summary>
@@ -165,6 +173,8 @@ namespace Duo1JFramework
                 [typeof(AssetBundleBuildEditorWnd)] = ASSET_BUNDLE_BUILD_EDITOR_WND,
 
                 [typeof(FootIKCurveGenerator)] = FOOT_IK_CURVE_GENERATOR,
+
+                [typeof(SkillEditorWindow)] = SKILL_EDITOR_WND,
             };
 
             #endregion 工具窗口名称
