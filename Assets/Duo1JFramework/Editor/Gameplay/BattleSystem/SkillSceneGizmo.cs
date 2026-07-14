@@ -38,7 +38,11 @@ namespace Duo1JFramework.Gameplay.BattleSystem
             Transform tf = preview.transform;
             foreach (SequenceTrack tk in skillConfig.Sequence.Tracks)
             {
-                if (tk.Type != ESequenceTrackType.HitBox) continue;
+                if (tk.Type != ESequenceTrackType.HitBox)
+                {
+                    continue;
+                }
+
                 foreach (SequenceSegment seg in tk.Segments)
                 {
                     if (seg is HitBoxSegment hb)

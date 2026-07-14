@@ -410,7 +410,10 @@ namespace Duo1JFramework.Gameplay.BattleSystem
             if (GUI.Button(delRect, "-"))
             {
                 target.Sequence.Tracks.Remove(tk);
-                if (selectedTrack == tk) { selectedSeg = null; selectedTrack = null; }
+                if (selectedTrack == tk)
+                {
+                    selectedSeg = null; selectedTrack = null;
+                }
                 EditorUtility.SetDirty(target);
                 return;
             }
@@ -626,7 +629,10 @@ namespace Duo1JFramework.Gameplay.BattleSystem
 
         private float Snap(float v)
         {
-            if (!snapEnable || snapValue <= 0f) return v;
+            if (!snapEnable || snapValue <= 0f)
+            {
+                return v;
+            }
             return Mathf.Round(v / snapValue) * snapValue;
         }
 
