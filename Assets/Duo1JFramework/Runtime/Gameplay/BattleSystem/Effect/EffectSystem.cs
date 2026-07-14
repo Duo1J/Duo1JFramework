@@ -153,7 +153,10 @@ namespace Duo1JFramework.Gameplay.BattleSystem
             for (int i = 0; i < actives.Count; i++)
             {
                 ActiveEffect a = actives[i];
-                if (a.Expired) continue;
+                if (a.Expired)
+                {
+                    continue;
+                }
 
                 if (a.Config.Period > 0f)
                 {
@@ -162,7 +165,10 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                         a.NextPeriodTime += a.Config.Period;
                         ExecuteModifiers(a, true);
                         OnEffectExecuted?.Invoke(a);
-                        if (a.Expired) break;
+                        if (a.Expired)
+                        {
+                            break;
+                        }
                     }
                 }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Duo1JFramework.Asset;
+using Duo1JFramework.ParticleAPI;
 using UnityEngine;
 
 namespace Duo1JFramework.Gameplay.BattleSystem
@@ -16,16 +16,6 @@ namespace Duo1JFramework.Gameplay.BattleSystem
         public string VfxPath;
 
         /// <summary>
-        /// 相对Owner的偏移
-        /// </summary>
-        public Vector3 Offset;
-
-        /// <summary>
-        /// 相对Owner的旋转
-        /// </summary>
-        public Vector3 EulerAngles;
-
-        /// <summary>
         /// 是否跟随Owner
         /// </summary>
         public bool AttachToOwner = true;
@@ -36,10 +26,7 @@ namespace Duo1JFramework.Gameplay.BattleSystem
         public float Scale = 1f;
 
         [NonSerialized]
-        private GameObject spawnedGo;
-
-        [NonSerialized]
-        private IAssetHandle<GameObject> handle;
+        private ParticleMgrController controller;
 
         public override void OnEnter(SkillContext ctx)
         {
@@ -48,48 +35,36 @@ namespace Duo1JFramework.Gameplay.BattleSystem
                 return;
             }
 
-            handle = AssetManager.Instance.LoadResourceSync<GameObject>(VfxPath);
-            if (handle == null)
+            if (!ParticleManager.TryGetInstance(out ParticleManager particleManager))
             {
                 return;
             }
 
-            spawnedGo = handle.Instantiate();
-            if (spawnedGo == null)
-            {
-                handle.Release();
-                handle = null;
-                return;
-            }
+            ParticleData data = new ParticleData(VfxPath)
+                .SetSync(true)
+                .SetCategory(EParticleCategory.Combat)
+                .SetScale(Scale);
 
-            Transform tf = spawnedGo.transform;
             Transform ownerTf = ctx.Owner.transform;
             if (AttachToOwner)
             {
-                tf.SetParent(ownerTf, false);
-                tf.localPosition = Offset;
-                tf.localRotation = Quaternion.Euler(EulerAngles);
-                tf.localScale = Vector3.one * Scale;
+                controller = particleManager.PlayKeepAt(data, ownerTf);
             }
             else
             {
-                tf.position = ownerTf.TransformPoint(Offset);
-                tf.rotation = ownerTf.rotation * Quaternion.Euler(EulerAngles);
-                tf.localScale = Vector3.one * Scale;
+                controller = particleManager.PlayOneShotAt(data, ownerTf.position, ownerTf.rotation);
             }
         }
 
         public override void OnExit(SkillContext ctx)
         {
-            if (spawnedGo != null)
+            if (controller != null)
             {
-                spawnedGo.DestroySmart();
-                spawnedGo = null;
-            }
-            if (handle != null)
-            {
-                handle.Release();
-                handle = null;
+                if (AttachToOwner)
+                {
+                    controller.Stop();
+                }
+                controller = null;
             }
         }
     }
