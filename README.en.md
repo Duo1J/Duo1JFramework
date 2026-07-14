@@ -5,9 +5,11 @@
 
  **Stopping，UE ing~** 
 
+Framework Path: `/duo1j-framework/Assets/Duo1JFramework`
+
 1. Asset management based on Resources/AssetBundle/Addressables, hot patch (Not completed)
 2. Configurable App/AssetBundle/Addressables build pipeline
-3. Baking pipeline system (Not completed)
+3. Baking pipeline and level build system (Not completed)
 4. Basic 3C，skill framework with editor tool
 5. Animation system, FootIK, RootMotion (Not completed), Playable (Not completed)，Animation curve generator, etc.
 6. UI framework based on hierarchical UI stack

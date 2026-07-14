@@ -5,9 +5,11 @@
 
  **暂停，UE ing~** 
 
+框架路径: `/duo1j-framework/Assets/Duo1JFramework`
+
 1. 基于Resources/AssetBundle/Addressables的资源管理系统，热更新 (未做)
 2. 可配置化App/AssetBundle/Addressables构建管线
-3. 烘培管线系统 (进行中)
+3. 烘培管线及场景构建系统 (进行中)
 4. 基础3C，技能框架与编辑器
 5. 动画系统，FootIK，RootMotion (进行中)，Playable (进行中)，动画曲线生成器等
 6. 基于分层UI栈的UI框架
