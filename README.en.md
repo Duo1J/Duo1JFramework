@@ -7,8 +7,8 @@
 
 1. Asset management based on Resources/AssetBundle/Addressables, hot patch (Not completed)
 2. Configurable App/AssetBundle/Addressables build pipeline
-3. Baking system (Not completed)
-4. Basic 3C，skill framework with editor tool (Not completed)
+3. Baking pipeline system (Not completed)
+4. Basic 3C，skill framework with editor tool
 5. Animation system, FootIK, RootMotion (Not completed), Playable (Not completed)，Animation curve generator, etc.
 6. UI framework based on hierarchical UI stack
 7. Event system
@@ -26,4 +26,4 @@
 19. Configuration framework and building (Not completed)
 20. Configurable automated import setting and asset check
 21. Network framework
-22. Skill system and skill editor
+22. Particle system management
