@@ -100,7 +100,12 @@ namespace Duo1JFramework
                 /// <summary>
                 /// 资产检查
                 /// </summary>
-                public const string ASSET_CHECK = PREFIX + "资产检查";
+                public const string ASSET_CHECK = PREFIX + "AssetCheck";
+
+                /// <summary>
+                /// ScriptableObject
+                /// </summary>
+                public const string SCRIPTABLE_OBJECT_PREFIX = PREFIX + "ScriptableObject/";
             }
 
             #endregion Assets
